@@ -1,8 +1,13 @@
 # <https://github.com/viperML/dotfiles/tree/master/hosts/gen6>
 # <https://github.com/IceDBorn/IceDOS/blob/nixos/configuration.nix>
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let
+  nixos-hardware = builtins.fetchGit {
+    url = "https://github.com/NixOS/nixos-hardware";
+  };
+in {
   imports = [
-    "${builtins.fetchGit { url = https://github.com/NixOS/nixos-hardware.git; }}/lenovo/thinkpad/p14s/amd/gen2"
+    "${nixos-hardware}/lenovo/thinkpad/p14s/amd/gen2"
     ./filesystems.nix
   ];
   
@@ -40,7 +45,7 @@
     loader = {
       systemd-boot.enable = true;
       systemd-boot.editor = false;
-      systemd-boot.configurationLimit = 15;
+      systemd-boot.configurationLimit = 5;
 
       timeout = 3;
 
@@ -113,7 +118,7 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 14d";
+    options = "--delete-older-than 7d";
   };
 
   # For ALSA support
@@ -139,7 +144,6 @@
     alacritty
     # Text Editors
     neovim
-    xed-editor
     kate
 
     # Desktop Environment
