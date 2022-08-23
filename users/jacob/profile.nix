@@ -1,4 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
+  imports = [
+    inputs.hyprland.homeManagerModules.default
+  ];
+
   home.username = "jacob";
   home.homeDirectory = "/home/jacob";
 
@@ -11,12 +15,19 @@
     # Text Editors
     vscode
 
+    # Office Suite
+    onlyoffice-bin
+
     # Desktop Theming
     papirus-icon-theme
     materia-theme
     materia-kde-theme
     libsForQt5.qtstyleplugin-kvantum
   ];
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+  };
 
   programs.home-manager.enable = true;
 

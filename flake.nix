@@ -8,9 +8,13 @@
       url = "github:nix-community/home-manager/release-22.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland = {
+      url = "github:hyprwm/hyprland/v0.11.0beta";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, nixos-hardware, home-manager, ... }: {
+  outputs = { nixpkgs, nixos-hardware, home-manager, hyprland, ... }: {
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -19,6 +23,7 @@
           ./system/filesystems.nix
           ./system/configuration.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen2
+          hyprland.nixosModules.default
         ];
       };
     };
