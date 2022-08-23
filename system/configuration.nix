@@ -1,24 +1,24 @@
 # <https://github.com/viperML/dotfiles/tree/master/hosts/gen6>
 # <https://github.com/IceDBorn/IceDOS/blob/nixos/configuration.nix>
 # <https://github.com/yrashk/nix-home/blob/master/home.nix>
-{ config, pkgs, ... }:
-let
-  nixos-hardware = builtins.fetchGit {
-    url = "https://github.com/NixOS/nixos-hardware";
+{ config, pkgs, nixpkgs, ... }: {
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowBroken = true;
   };
-  home-manager = builtins.fetchGit {
-    url = "https://github.com/nix-community/home-manager";
-    ref = "release-22.05";
+
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
   };
-in {
-  imports = [
-    ./filesystems.nix
-    "${nixos-hardware}/lenovo/thinkpad/p14s/amd/gen2"
-    "${home-manager}/nixos"
-  ];
-  
-  nixpkgs.config.allowBroken = true;  
-  nixpkgs.config.allowUnfree = true;
 
   boot = {
     supportedFilesystems = [ "zfs" ];
@@ -121,12 +121,6 @@ in {
     #flatpak.enable = true;
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-
   # For ALSA support
   sound.enable = true;
   # For Flatpak support
@@ -156,93 +150,14 @@ in {
     rofi-wayland
   ];
 
-  home-manager.useGlobalPkgs = true;
-  home-manager.users = {
+  users.users = {
     jacob = {
-      home.username = "jacob";
-      home.homeDirectory = "/home/jacob";
-
-      home.packages = with pkgs; [
-        # Email
-        thunderbird
-        # Messaging
-        discord
-        neochat
-        # Text Editors
-        vscode
-
-        # Desktop Theming
-        papirus-icon-theme
-        materia-theme
-        materia-kde-theme
-        libsForQt5.qtstyleplugin-kvantum
-      ];
-
-      programs.home-manager.enable = true;
-
-      programs.git = {
-        enable = true;
-        userName = "Jacob Birkett";
-        userEmail = "jacob@birkett.dev";
-
-        delta.enable = true;
-      };
-
-      programs.bat = {
-        enable = true;
-      };
-
-      programs.exa = {
-        enable = true;
-      };
-
-      programs.lsd = {
-        enable = true;
-      };
-
-      programs.fzf = {
-        enable = true;
-      };
-
-      programs.firefox = {
-        enable = true;
-      };
-
-      programs.chromium = {
-        enable = true;
-      };
-
-      programs.helix = {
-        enable = true;
-      };
-
-      programs.neovim = {
-        enable = true;
-      };
-
-      programs.hexchat = {
-        enable = true;
-      };
-
-      programs.obs-studio = {
-        enable = true;
-      };
-
-      home.sessionVariables = {
-        MOZ_ENABLE_WAYLAND = 1;
-      };
-
-      home.stateVersion = "22.05";
+      description = "Jacob Birkett";
+      isNormalUser = true;
+      initialPassword = "password";
+      extraGroups = [ "networkmanager" "wheel" ];
     };
   };
 
-  users.users.jacob = {
-    description = "Jacob Birkett";
-    isNormalUser = true;
-    initialPassword = "password";
-    extraGroups = [ "networkmanager" "wheel" ];
-  };
-
-  system.copySystemConfiguration = true;
   system.stateVersion = "22.05";
 }
