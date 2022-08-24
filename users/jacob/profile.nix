@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+inputs: { pkgs, ... }: {
   imports = [
     inputs.hyprland.homeManagerModules.default
   ];
@@ -7,6 +7,10 @@
   home.homeDirectory = "/home/jacob";
 
   home.packages = with pkgs; [
+    # Diagnostics
+    wev
+    neofetch
+
     # Email
     thunderbird
     # Messaging
