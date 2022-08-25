@@ -2,9 +2,12 @@
 set -e
 
 #./partition.sh
-mkdir -p /mnt/etc/nixos
-cp configuration.nix /mnt/etc/nixos/
-NIXPKGS_ALLOW_BROKEN=1 & nixos-install
-umount -Rl /mnt
-zpool export -a
 
+NIXPKGS_ALLOW_BROKEN=1
+nixos-install --flake path:$(pwd)#
+
+if grep -qs '/mnt ' /proc/mounts; then
+    umount -Rl /mnt
+fi
+
+zpool export -a
