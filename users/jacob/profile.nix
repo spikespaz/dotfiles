@@ -7,6 +7,8 @@
   home.homeDirectory = "/home/jacob";
 
   home.packages = with pkgs; [
+    xfce.thunar
+
     # Diagnostics
     wev
     neofetch
@@ -70,6 +72,10 @@
   };
 
   programs.neovim = {
+    enable = true;
+  };
+
+  programs.vscode = {
     enable = true;
   };
 
