@@ -1,3 +1,7 @@
+# DOCUMENTATION
+# <https://nix-community.github.io/home-manager/options.html>
+# REFERENCES
+# <https://github.com/MatthewCroughan/nixcfg>
 { pkgs, nixpkgs, ... }: {
   # <https://github.com/nix-community/home-manager/issues/2942>
   #nixpkgs.config.allowUnfree = true;
@@ -18,20 +22,36 @@
     # Messaging
     discord
     neochat
-    # Text Editors
-    vscode
 
     # Office Suite
     onlyoffice-bin
 
     # Desktop Theming
-    papirus-icon-theme
-    materia-theme
+    #papirus-icon-theme
+    #materia-theme
     materia-kde-theme
     libsForQt5.qtstyleplugin-kvantum
   ];
 
-  xdg.configFile."hypr/hyprland.conf".source = ./configs/hyprland.conf;
+  xdg.configFile = {
+    "hypr/hyprland.conf".source = ./configs/hyprland.conf;
+  };
+
+  gtk.iconTheme.package = pkgs.papirus-icon-theme;
+  gtk.iconTheme.name = "Papirus-Dark";
+
+  gtk.theme.package = pkgs.materia-theme;
+  gtk.theme.name = "Materia-dark-compact";
+
+  xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
+    [General]
+    theme=MateriaDark
+  '';
+
+  home.sessionVariables = {
+    QT_STYLE_OVERRIDE = "kvantum";
+    GTK_USE_PORTAL = 1;
+  };
 
   programs.home-manager.enable = true;
 
