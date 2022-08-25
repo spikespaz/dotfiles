@@ -18,15 +18,10 @@
     };
   };
 
-  outputs = inputs @ { nixpkgs, nixos-hardware, home-manager, hyprland, ... }:
+  outputs = { nixpkgs, nixos-hardware, home-manager, hyprland, ... }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-
-        config.allowUnfree = true;
-      };
-#       pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = nixpkgs.legacyPackages.${system};
     in
   {
     nixosConfigurations = {
