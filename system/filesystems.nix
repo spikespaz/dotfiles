@@ -17,7 +17,6 @@ in
       device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
-    "/etc/nixos" = zfsAuto "ospool/etc/nixos";
     "/var/lib" = zfsAuto "ospool/var/lib";
     "/var/log" = zfsAuto "ospool/var/log";
     "/var/cache" = zfsAuto "ospool/var/cache";

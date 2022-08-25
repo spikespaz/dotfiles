@@ -54,8 +54,6 @@ zpool create \
   $ROOT_PART
 
 # Create system datasets
-zfs create  -o canmount=off  -o mountpoint=/etc                                                        $POOL_NAME/etc
-zfs create  -o canmount=on                                                                             $POOL_NAME/etc/nixos
 zfs create  -o canmount=off  -o mountpoint=/var                                                        $POOL_NAME/var
 zfs create  -o canmount=on                                                  -o atime=off               $POOL_NAME/var/lib
 zfs create  -o canmount=on                        -o compression=zstd-fast  -o atime=off               $POOL_NAME/var/log
@@ -75,14 +73,3 @@ sleep 1s
 # Mount the boot partition
 mkdir /mnt/boot
 mount -t vfat /dev/disk/by-label/boot /mnt/boot
-
-# Pause once more, just in case
-sleep 1s
-
-# Clear cache so that the system boots, because IDs are wrong
-mkdir -p /mnt/etc/zfs/
-rm -f /mnt/etc/zfs/zpool.cache
-touch /mnt/etc/zfs/zpool.cache
-chmod a-w /mnt/etc/zfs/zpool.cache
-chattr +i /mnt/etc/zfs/zpool.cache
-
