@@ -123,9 +123,11 @@
 
   # For ALSA support
   sound.enable = true;
-  # For Flatpak support
-  #xdg.portal.enable = true;
-  #xdg.portal.wlr.enable = true;
+
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+  };
 
   security.polkit.enable = true;
 
