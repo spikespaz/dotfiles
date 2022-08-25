@@ -1,7 +1,7 @@
 { ... }:
 let
   zfsAuto = device: {
-      device = "${device}";
+      inherit device;
       fsType = "zfs";
       options = [ "zfsutil" "X-mount.mkdir" ];
   };
