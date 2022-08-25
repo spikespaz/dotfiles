@@ -51,6 +51,7 @@
   home.sessionVariables = {
     QT_STYLE_OVERRIDE = "kvantum";
     GTK_USE_PORTAL = 1;
+    MOZ_ENABLE_WAYLAND = 1;
   };
 
   programs.home-manager.enable = true;
@@ -105,10 +106,6 @@
 
   programs.obs-studio = {
     enable = true;
-  };
-
-  home.sessionVariables = {
-    MOZ_ENABLE_WAYLAND = 1;
   };
 
   home.stateVersion = "22.05";
