@@ -37,11 +37,15 @@
     "hypr/hyprland.conf".source = ./configs/hyprland.conf;
   };
 
-  gtk.iconTheme.package = pkgs.papirus-icon-theme;
-  gtk.iconTheme.name = "Papirus-Dark";
+  gtk = {
+    enable = true;
 
-  gtk.theme.package = pkgs.materia-theme;
-  gtk.theme.name = "Materia-dark-compact";
+    iconTheme.package = pkgs.papirus-icon-theme;
+    iconTheme.name = "Papirus-Dark";
+
+    theme.package = pkgs.materia-theme;
+    theme.name = "Materia-dark-compact";
+  };
 
   xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
     [General]
