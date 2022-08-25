@@ -1,8 +1,4 @@
-inputs: { pkgs, ... }: {
-  imports = [
-    inputs.hyprland.homeManagerModules.default
-  ];
-
+{ pkgs, ... }: {
   home.username = "jacob";
   home.homeDirectory = "/home/jacob";
 
@@ -28,10 +24,6 @@ inputs: { pkgs, ... }: {
     materia-kde-theme
     libsForQt5.qtstyleplugin-kvantum
   ];
-
-  wayland.windowManager.hyprland = {
-    enable = true;
-  };
 
   xdg.configFile."hypr/hyprland.conf".text = ''
     monitor = eDP-1,preferred,1920x1080,1

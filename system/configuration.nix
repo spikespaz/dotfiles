@@ -98,7 +98,6 @@
       libinput.enable = true;
 
       displayManager.gdm.enable = true;
-      desktopManager.xfce.enable = true;
     };
 
     pipewire = {
