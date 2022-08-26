@@ -3,7 +3,10 @@
 #####
 # <https://github.com/nix-community/impermanence>
 {
-  description = "A very basic flake";
+  description = ''
+    A Nix flake for reproducing the Linux system on
+    Jacob Birkett's personal ThinkPad.
+  '';
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
