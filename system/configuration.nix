@@ -141,7 +141,8 @@
     # Web Browsers
     firefox
     # File Managers
-    dolphin
+    libsForQt5.dolphin
+    libsForQt5.ark
     # Terminals
     alacritty
     # Text Editors
