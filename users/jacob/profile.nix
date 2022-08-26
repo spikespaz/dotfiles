@@ -33,9 +33,7 @@
     libsForQt5.qtstyleplugin-kvantum
   ];
 
-  xdg.configFile = {
-    "hypr/hyprland.conf".source = ./configs/hyprland.conf;
-  };
+  xdg.configFile."hypr/hyprland.conf".text = builtins.readFile ./configs/hyprland.conf;
 
   gtk = {
     enable = true;
