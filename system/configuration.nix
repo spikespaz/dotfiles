@@ -124,10 +124,10 @@
   # For ALSA support
   sound.enable = true;
 
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-  };
+  # xdg.portal = {
+  #   enable = true;
+  #   wlr.enable = true;
+  # };
 
   security.polkit.enable = true;
 
