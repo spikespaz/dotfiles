@@ -150,6 +150,8 @@
 
     # Desktop Environment
     rofi-wayland
+    #pavucontrol
+    lxqt.pavucontrol-qt
   ];
 
   users.users = {
