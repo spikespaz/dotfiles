@@ -118,7 +118,7 @@
       autoScrub.interval = "weekly";
     };
 
-    #flatpak.enable = true;
+    flatpak.enable = true;
   };
 
   # For ALSA support
