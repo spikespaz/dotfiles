@@ -10,18 +10,24 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland = {
-      url = "github:hyprwm/hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+  
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  
+    hyprland.url = "github:hyprwm/hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, nixos-hardware, home-manager, hyprland, ... }:
+  outputs = {
+    nixpkgs,
+    nixos-hardware,
+    home-manager,
+    hyprland,
+    hypr-contrib,
+    ...
+  }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
