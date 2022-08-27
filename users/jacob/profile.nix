@@ -22,6 +22,10 @@
   home.username = "jacob";
   home.homeDirectory = "/home/jacob";
 
+  xdg.enable = true;
+  xdg.userDirs.enable = true;
+  xdg.userDirs.createDirectories = true;
+
   home.packages = with pkgs; [
     # Diagnostics
     wev
