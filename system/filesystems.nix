@@ -1,3 +1,6 @@
+# Further reading:
+# - <https://grahamc.com/blog/erase-your-darlings>
+# - <https://github.com/nix-community/impermanence>
 { ... }:
 let
   zfsAuto = device: {

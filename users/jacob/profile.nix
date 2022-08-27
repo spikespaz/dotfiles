@@ -1,8 +1,7 @@
 # DOCUMENTATION
 # <https://nix-community.github.io/home-manager/options.html>
-# REFERENCES
-# <https://github.com/MatthewCroughan/nixcfg>
-# <https://git.gaze.systems/dusk/ark>
+# PACKAGE SEARCH
+# <https://search.nixos.org/packages>
 { config, pkgs, nixpkgs, ... }:
 {
   ################

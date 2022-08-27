@@ -1,11 +1,7 @@
-# <https://github.com/MatthiasBenaets/nixos-config>
-# <https://github.com/NobbZ/nixos-config>
-#####
-# <https://github.com/nix-community/impermanence>
 {
   description = ''
-    A Nix flake for reproducing the Linux system on
-    Jacob Birkett's personal ThinkPad.
+    A Nix flake for reproducing the Linux system configurations used on
+    Jacob Birkett's personal computers.
   '';
 
   inputs = {

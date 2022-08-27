@@ -1,7 +1,3 @@
-# <https://github.com/viperML/dotfiles/tree/master/hosts/gen6>
-# <https://github.com/IceDBorn/IceDOS/blob/nixos/configuration.nix>
-# <https://github.com/yrashk/nix-home/blob/master/home.nix>
-# <https://github.com/MatthiasBenaets/nixos-config/blob/master/flake.nix>
 { config, pkgs, nixpkgs, ... }: {
   nixpkgs.config = {
     allowUnfree = true;
