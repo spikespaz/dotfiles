@@ -2,39 +2,85 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # REFERENCES
 # <https://github.com/MatthewCroughan/nixcfg>
+# <https://git.gaze.systems/dusk/ark>
 { config, pkgs, nixpkgs, ... }:
 {
+  ################
+  ### PREAMBLE ###
+  ################
+
+  imports = [
+    ../user_lib.nix
+  ];
+
   # <https://github.com/nix-community/home-manager/issues/2942>
-  #nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
 
+  home.stateVersion = "22.05";
+
+  ###################
+  ### BASIC SETUP ###
+  ###################
+
   home.username = "jacob";
-  home.homeDirectory = "/home/jacob";
+  home.homeDirectory = "/home/${config.home.username}";
 
   xdg.enable = true;
   xdg.userDirs.enable = true;
   xdg.userDirs.createDirectories = true;
 
-  home.packages = with pkgs; [
-    # Diagnostics
+  ##############################
+  ### MISCELLANEOUS SOFTWARE ###
+  ##############################
+
+  # System Management
+
+  programs.home-manager.enable = true;
+
+  # Diagnostic Tools
+
+  userPackages.diagnostics = with pkgs; [
     wev
     neofetch
+  ];
 
-    # Email
+  # Communication & Messaging
+
+  userPackages.communication = with pkgs; [
     thunderbird
-    # Messaging
     discord
     neochat
+  ];
 
-    # Office Suite
+  programs.hexchat.enable = true;
+
+  # Office Software
+
+  userPackages.office = with pkgs; [
     onlyoffice-bin
+  ];
 
-    # Desktop Themes
+  # Content Sharing
+
+  programs.obs-studio.enable = true;
+
+
+  ###########################
+  ### DESKTOP ENVIRONMENT ###
+  ###########################
+
+  userPackages.desktop = with pkgs; [
+    # Themes
     materia-kde-theme
   ];
 
-  xdg.configFile."hypr/hyprland.conf".text = builtins.readFile ./configs/hyprland.conf;
+  # enable automatic-mounting of new drives
+  services.udiskie.enable = true;
 
+  xdg.configFile."hypr/hyprland.conf".source = ./configs/hyprland.conf;
+
+  # specify packages to use for gtk theming
   gtk = {
     enable = true;
 
@@ -48,88 +94,60 @@
     theme.name = "Materia-dark-compact";
   };
 
+  # set the kvantum theme, still needs qt5ct to be manually configured
+  # expects pkgs.materia-kde-theme
   xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
     [General]
     theme=MateriaDark
   '';
 
-  # home.sessionVariables = {
-  #   QT_QPA_PLATFORM = "wayland";
-  #   #XDG_CURRENT_DESKTOP = "sway"
-  #   #XDG_SESSION_DESKTOP = "sway"
-  #   #XDG_CURRENT_SESSION_TYPE = "wayland"
-  #   QT_QPA_PLATFORMTHEME = "qt5ct";
-  #   QT_STYLE_OVERRIDE = "kvantum";
-  #   GTK_USE_PORTAL = 1;
-  #   MOZ_ENABLE_WAYLAND = 1;
-  #   _JAVA_AWT_WM_NONREPARENTING = 1;
-  #   XCURSOR_SIZE = 24;
-  # };
-
-  # pam.sessionVariables = config.home.sessionVariables;
+  ####################
+  ### WEB BROWSERS ###
+  ####################
   
-  # xdg.configFile."hypr/hyprland.conf".text =
-  #   (mkHyprEnvVars { vars = config.home.sessionVariables; })
-  #   + (builtins.readFile ./configs/hyprland.conf);
+  programs.firefox.enable = true;
 
-  programs.home-manager.enable = true;
+  programs.chromium.enable = true;
+
+  #########################
+  ### DEVELOPMENT TOOLS ###
+  #########################
 
   programs.git = {
     enable = true;
     userName = "Jacob Birkett";
     userEmail = "jacob@birkett.dev";
 
+    # better looking diffs
     delta.enable = true;
   };
 
-  programs.bat = {
-    enable = true;
-  };
+  ####################
+  ### CODE EDITORS ###
+  ####################
 
-  programs.exa = {
-    enable = true;
-  };
+  programs.vscode.enable = true;
 
-  programs.lsd = {
-    enable = true;
-  };
+  programs.helix.enable = true;
 
-  programs.fzf = {
-    enable = true;
-  };
+  programs.neovim.enable = true;
 
-  programs.firefox = {
-    enable = true;
-  };
+  #########################
+  ### GENERIC CLI TOOLS ###
+  #########################
 
-  programs.chromium = {
-    enable = true;
-  };
+  # cat with wings
+  programs.bat.enable = true;
 
-  programs.helix = {
-    enable = true;
-  };
+  # colorized ls
+  # programs.exa.enable = true
 
-  programs.neovim = {
-    enable = true;
-  };
+  # iconified and colorized ls
+  programs.lsd.enable = true;
 
-  programs.vscode = {
-    enable = true;
-  };
-
-  programs.hexchat = {
-    enable = true;
-  };
-
-  programs.obs-studio = {
-    enable = true;
-  };
-
-  home.stateVersion = "22.05";
+  # fuzzy finder
+  programs.fzf.enable = true;
 }
-
-
 
 # ========
 # This function is for prepending the Hyprland config with environment variables.
