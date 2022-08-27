@@ -4,8 +4,12 @@ set -e
 here="$(dirname $0)"
 
 fail () {
-  printf '\nIncorrect arguments, did you make a typo?\n'
-  printf "Usage: $(basename $0) [[-]s|[--]system] [[-]u|[--]user [<name>]]\n"
+  printf
+  printf 'Incorrect arguments, did you make a typo?\n'
+  printf
+  printf "Usage: $(basename $0) [[-]s|[--]system] [[-]u|[--]user [<name>]] [-l|--lock]\n"
+  printf "The `--lock` option deletes '$(here)/flake.lock', take care!\n"
+  printf
   exit 1
 }
 
@@ -17,6 +21,7 @@ label () {
 
 update_system=0
 update_user=0
+new_lockfile=0
 user=''
 
 while [ $# -gt 0 ]; do
@@ -33,6 +38,10 @@ while [ $# -gt 0 ]; do
       fi
       shift
       ;;
+    -l|--lock)
+      new_lockfile=1
+      shift
+      ;;
     *)
       fail
       ;;
@@ -41,6 +50,8 @@ done
 
 if [ $update_system -ne 1 ] && [ $update_user -ne 1 ]; then
   fail
+elif [ $new_lockfile -eq 1 ]; then
+  rm -f "$here/flake.lock"
 fi
 
 if [ $update_system -eq 1 ]; then
