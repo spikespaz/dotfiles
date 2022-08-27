@@ -25,7 +25,6 @@
     nixos-hardware,
     home-manager,
     hyprland,
-    hypr-contrib,
     ...
   }:
     let
