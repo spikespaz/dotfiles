@@ -133,6 +133,22 @@
   ### GENERIC CLI TOOLS ###
   #########################
 
+  userPackages.cli = with pkgs; [
+    # Bash Line Editor
+    blesh
+  ];
+
+  programs.bash = {
+    enable = true;
+    bashrcExtra = ''
+      source "${pkgs.blesh}/share/ble.sh"
+    '';
+    historyIgnore = [
+      "reboot"
+      "exit"
+    ];
+  };
+
   # cat with wings
   programs.bat = {
     enable = true;
