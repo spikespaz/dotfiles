@@ -35,6 +35,11 @@
 
   programs.home-manager.enable = true;
 
+  programs.nix-index = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
   # Diagnostic Tools
 
   userPackages.diagnostics = with pkgs; [
