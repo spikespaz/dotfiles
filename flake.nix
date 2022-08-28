@@ -50,6 +50,7 @@
 
         modules = [
           ./users/jacob/profile.nix
+          ./users/jacob/vscode.nix
         ];
 
         extraSpecialArgs = {
