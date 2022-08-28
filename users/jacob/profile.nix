@@ -186,6 +186,8 @@
 
       ## Language Servers ##
 
+      "perl.pls" = "${pkgs.perlPackages.PLS}/bin/pls";
+
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${inputs.nil.packages.${pkgs.system}.default}/bin/nil";
     
