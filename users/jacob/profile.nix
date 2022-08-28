@@ -73,8 +73,12 @@
   ];
 
   # enable automatic-mounting of new drives
-  services.udiskie.enable = true;
+  services.udiskie = {
+    enable = true;
+    tray = "never";
+  };
 
+  # configure the wm
   xdg.configFile."hypr/hyprland.conf".source = ./configs/hyprland.conf;
 
   # specify packages to use for gtk theming

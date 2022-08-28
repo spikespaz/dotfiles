@@ -104,6 +104,7 @@
     };
 
     printing.enable = true;
+    udisks2.enable = true;
 
     zfs = {
       trim.enable = true;
