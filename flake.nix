@@ -14,9 +14,12 @@
   
     hyprland.url = "github:hyprwm/hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
+
+    nil.url = "github:oxalica/nil";
+    nil.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {
+  outputs = inputs @ {
     nixpkgs,
     nixos-hardware,
     home-manager,
@@ -48,6 +51,10 @@
         modules = [
           ./users/jacob/profile.nix
         ];
+
+        extraSpecialArgs = {
+          inherit inputs;
+        };
       };
     };
   };
