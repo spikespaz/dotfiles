@@ -8,9 +8,7 @@
   ### PREAMBLE ###
   ################
 
-  imports = [
-    ../user_lib.nix
-  ];
+  imports = [ ../user_lib.nix ];
 
   # <https://github.com/nix-community/home-manager/issues/2942>
   # nixpkgs.config.allowUnfree = true;
@@ -136,7 +134,10 @@
   #########################
 
   # cat with wings
-  programs.bat.enable = true;
+  programs.bat = {
+    enable = true;
+    config.theme = "gruvbox-dark";
+  };
 
   # colorized ls
   # programs.exa.enable = true
