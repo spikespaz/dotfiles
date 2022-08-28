@@ -18,15 +18,13 @@
   };
 
   boot = {
-    supportedFilesystems = [ "zfs" ];
+    zfs.enableUnstable = true;
 
     kernelModules = [
-      "zfs"
       "kvm-amd"
     ];
 
-    initrd = {
-      availableKernelModules = [
+    initrd.availableKernelModules = [
         "nvme"
         "ehci_pci"
         "xhci_pci"
@@ -35,13 +33,6 @@
         "sd_mod"
         "rtsx_pci_sdmmc"
       ];
-    };
-    
-    zfs = {
-      enableUnstable = true;
-      forceImportAll = false;
-      forceImportRoot = false;
-    };
     
     #kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     
@@ -105,15 +96,6 @@
 
     printing.enable = true;
     udisks2.enable = true;
-
-    zfs = {
-      trim.enable = true;
-      trim.interval = "weekly";
-
-      autoScrub.enable = true;
-      autoScrub.pools = [ "ospool" ];
-      autoScrub.interval = "weekly";
-    };
 
     flatpak.enable = true;
   };
