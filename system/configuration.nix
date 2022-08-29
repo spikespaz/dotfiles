@@ -25,14 +25,14 @@
     ];
 
     initrd.availableKernelModules = [
-        "nvme"
-        "ehci_pci"
-        "xhci_pci"
-        "usb_storage"
-        "usbhid"
-        "sd_mod"
-        "rtsx_pci_sdmmc"
-      ];
+      "nvme"
+      "ehci_pci"
+      "xhci_pci"
+      "usb_storage"
+      "usbhid"
+      "sd_mod"
+      "rtsx_pci_sdmmc"
+    ];
     
     #kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     
@@ -100,13 +100,10 @@
     flatpak.enable = true;
   };
 
-  # For ALSA support
-  sound.enable = true;
-
-  # xdg.portal = {
-  #   enable = true;
-  #   wlr.enable = true;
-  # };
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+  };
 
   security.polkit.enable = true;
 
@@ -130,7 +127,6 @@
 
     # Desktop Environment
     rofi-wayland
-    #pavucontrol
     lxqt.pavucontrol-qt
     # Theme Engines
     libsForQt5.qtstyleplugin-kvantum
