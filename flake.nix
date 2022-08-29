@@ -50,6 +50,7 @@
 
         modules = [
           ./users/jacob/profile.nix
+          ./users/jacob/alacritty.nix
           ./users/jacob/vscode.nix
         ];
 
