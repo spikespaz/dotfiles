@@ -80,11 +80,24 @@
     # Screen Capture
     grim
     slurp
+
+    # Configuration Tools
+    lxqt.pavucontrol-qt
+
+    # File Manager
+    lxqt.pcmanfm-qt
+  ];
+
+  # application launcher
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi-wayland;
   };
 
   userPackages.theming = with pkgs; [
     swaybg
-    # Themes
+    libsForQt5.qtstyleplugin-kvantum
+    libsForQt5.qt5ct
     materia-kde-theme
   ];
 

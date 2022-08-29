@@ -112,10 +112,12 @@
     wget
     curl
     tree
-    # Development
+    btop
     git
     # Web Browsers
     firefox
+    # Media Viewers
+    qimgv
     # File Managers
     libsForQt5.dolphin
     libsForQt5.ark
@@ -124,13 +126,6 @@
     # Text Editors
     neovim
     kate
-
-    # Desktop Environment
-    rofi-wayland
-    lxqt.pavucontrol-qt
-    # Theme Engines
-    libsForQt5.qtstyleplugin-kvantum
-    libsForQt5.qt5ct
   ];
 
   environment.sessionVariables = {
