@@ -42,6 +42,8 @@ my $mode_conflict = 'Option `--active` conflicts when'
     . ' `--mode` is either `region` or `desktop`';
 my $filepath_unable = 'Saving to a default path requires either the'
     . ' `XDG_PICTURES_DIR` or the `HOME` environment variable to be set';
+my $invalid_filetype = 'Invalid filetype provided,'
+    . ' expected one of `png`, `jpeg`, or `ppm`';
 
 use Getopt::Long qw(GetOptions
     :config require_order no_getopt_compat
@@ -77,6 +79,10 @@ GetOptions (
     },
 
     # How to save the file (grim)
+    't|filetype=s' => sub {
+        $_[1] =~ /^(png|jpeg|ppm)$/ or die $invalid_filetype;
+        $filetype = $_[1];
+    },
     'q|jpeg-quality=i' => \$jpeg_quality,
     'l|png-level=i' => \$png_level,
 
