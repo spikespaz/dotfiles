@@ -103,7 +103,11 @@
     executable= true;
   };
   # screenshot utility
-  xdg.configFile."hypr/prtsc.pl".source = ./scripts/prtsc.pl;
+  # this is an exec bind in hyprland config
+  xdg.configFile."hypr/prtsc.pl" = {
+    source = ./scripts/prtsc.pl;
+    executable = true;
+  };
 
   # specify packages to use for gtk theming
   gtk = {
