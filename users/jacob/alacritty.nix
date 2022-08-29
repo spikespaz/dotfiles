@@ -26,7 +26,10 @@
         white = "0xebdbb2";
       };
     };
-    gruvbox_dark_custom = gruvbox_dark // { primary.background = "0x1f1f1f"; };
+    gruvbox_dark_custom = gruvbox_dark // {
+      primary.background = "0x1b1b1b";
+      normal.black = "0x5c5c5c";
+    };
   in
 {
   programs.alacritty.enable = true;
