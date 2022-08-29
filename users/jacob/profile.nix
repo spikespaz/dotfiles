@@ -89,6 +89,8 @@
 
   # configure the wm
   xdg.configFile."hypr/hyprland.conf".source = ./configs/hyprland.conf;
+  # screenshot utility
+  xdg.configFile."hypr/prtsc.pl".source = ./scripts/prtsc.pl;
 
   # specify packages to use for gtk theming
   gtk = {
