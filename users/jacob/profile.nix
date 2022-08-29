@@ -3,6 +3,9 @@
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
 { config, pkgs, nixpkgs, inputs, ... }:
+  let
+    wallpaper = "/home/jacob/OneDrive/Pictures/Wallpapers/RykyArt Patreon/Favorites/antlers.png";
+  in
 {
   ################
   ### PREAMBLE ###
@@ -76,7 +79,10 @@
     # Screen Capture
     grim
     slurp
+  };
 
+  userPackages.theming = with pkgs; [
+    swaybg
     # Themes
     materia-kde-theme
   ];
@@ -89,6 +95,12 @@
 
   # configure the wm
   xdg.configFile."hypr/hyprland.conf".source = ./configs/hyprland.conf;
+  # write the script for the wallpaper
+  # this is an exec in hyprland config
+  xdg.configFile."hypr/wallpaper.sh" = {
+    text = "swaybg -m fit --image '${wallpaper}'";
+    executable= true;
+  };
   # screenshot utility
   xdg.configFile."hypr/prtsc.pl".source = ./scripts/prtsc.pl;
 
