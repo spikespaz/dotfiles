@@ -76,6 +76,9 @@
     # Screen Capture
     grim
     slurp
+
+    # Themes
+    materia-kde-theme
   ];
 
   # enable automatic-mounting of new drives
