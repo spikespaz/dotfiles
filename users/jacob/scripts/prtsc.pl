@@ -149,3 +149,56 @@ if (!($clipboard || defined $filepath)) {
     # set the filepath
     $filepath = "$outdir/$filename";
 }
+
+my $slurp_cmd = 'slurp';
+my $grim_cmd = 'grim';
+
+$slurp_cmd = "$slurp_cmd -d" if $show_dimensions;
+$slurp_cmd = "$slurp_cmd -b $background_color";
+$slurp_cmd = "$slurp_cmd -c $select_border_color";
+$slurp_cmd = "$slurp_cmd -s $select_fill_color";
+$slurp_cmd = "$slurp_cmd -B $window_border_color";
+$slurp_cmd = "$slurp_cmd -w $border_weight";
+
+$grim_cmd = "$grim_cmd -s $scale_factor" if defined $scale_factor;
+$grim_cmd = "$grim_cmd -t $filetype";
+$grim_cmd = "$grim_cmd -q $jpeg_quality" if $filetype eq 'jpeg';
+$grim_cmd = "$grim_cmd -l $png_level" if $filetype eq 'png';
+$grim_cmd = "$grim_cmd -c" if $include_pointers;
+
+my $cmd;
+
+if ($mode eq 'region') {
+    $cmd = "$grim_cmd -g \"\$($slurp_cmd)\"";
+} elsif ($mode eq 'window') {
+    if ($active) {
+        die 'TODO';
+        my $region = 'TODO';
+        $cmd = "$grim_cmd -g '$region'";
+    } else {
+        die 'TODO';
+        my $regions = 'TODO';
+        $slurp_cmd = "$slurp_cmd -r";
+        $cmd = "$grim_cmd -g \"\$($regions | $slurp_cmd)\"";
+    }
+} elsif ($mode eq 'monitor') {
+    if ($active) {
+        die 'TODO';
+        my $region = 'TODO';
+        $cmd = "$grim_cmd -g '$region'";
+    } else {
+        $slurp_cmd = "$slurp_cmd -o";
+        $slurp_cmd = "$slurp_cmd -r";
+        $cmd = "$grim_cmd -g \"\$($slurp_cmd)\"";
+    }
+} elsif ($mode eq 'desktop') {
+    $cmd = $grim_cmd;
+}
+
+if ($clipboard) {
+    $cmd = "$cmd - | wl-copy";
+} else {
+    $cmd = "$cmd '$filepath'";
+}
+
+exec $cmd;
