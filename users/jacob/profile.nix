@@ -63,6 +63,7 @@
   # Office Software
 
   userPackages.office = with pkgs; [
+    qalculate-gtk
     onedrive
     onlyoffice-bin
   ];
