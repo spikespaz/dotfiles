@@ -73,8 +73,9 @@
   ###########################
 
   userPackages.desktop = with pkgs; [
-    # Themes
-    materia-kde-theme
+    # Screen Capture
+    grim
+    slurp
   ];
 
   # enable automatic-mounting of new drives
@@ -141,8 +142,8 @@
   #########################
 
   userPackages.cli = with pkgs; [
-    # Bash Line Editor
-    blesh
+    blesh  # Bash Line Editor
+    wl-clipboard
   ];
 
   programs.bash = {
