@@ -53,7 +53,7 @@
   # Communication & Messaging
 
   userPackages.communication = with pkgs; [
-    thunderbird
+    mailspring
     discord
     neochat
   ];
@@ -63,6 +63,7 @@
   # Office Software
 
   userPackages.office = with pkgs; [
+    onedrive
     onlyoffice-bin
   ];
 
