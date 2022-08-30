@@ -129,7 +129,10 @@
   ];
 
   environment.sessionVariables = {
-    QT_QPA_PLATFORM = "wayland";
+    # Qt doesn't work well with wayland on wlroots compositors.
+    # Run programs under Xwayland to ensure that popup menus are visible.
+    # QT_QPA_PLATFORM = "wayland";
+    QT_QPA_PLATFORM = "xcb";
     QT_QPA_PLATFORMTHEME = "qt5ct";
     GTK_USE_PORTAL = "1";
     MOZ_ENABLE_WAYLAND = "1";
