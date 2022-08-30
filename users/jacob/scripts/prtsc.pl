@@ -54,26 +54,26 @@ use Pod::Usage;
 GetOptions (
     # Where to save the file (grim)
     'c|clipboard' => sub {
-        !$filepath_changed or die $dest_conflict;
+        $filepath_changed and die $dest_conflict;
         $clipboard = $_[1];
     },
     'd|outdir=s' => sub {
-        !$clipboard or die $dest_conflict;
+        $clipboard and die $dest_conflict;
         $filepath_changed = 1;
         $outdir = $_[1];
     },
     'n|filename=s' => sub {
-        !$clipboard or die $dest_conflict;
+        $clipboard and die $dest_conflict;
         $filepath_changed = 1;
         $filename = $_[1];
     },
     'f|filename-format=s' => sub {
-        !$clipboard or die $dest_conflict;
+        $clipboard and die $dest_conflict;
         $filepath_changed = 1;
         $filename_format = $_[1];
     },
     'p|filepath=s' => sub {
-        !$clipboard or die $dest_conflict;
+        $clipboard and die $dest_conflict;
         $filepath_changed = 1;
         $filepath = $_[1];
     },
@@ -93,22 +93,22 @@ GetOptions (
     # Selection modes
     'm|mode=s' => sub {
         if ($_[1] =~ /^(r|region)$/) {
-            !$active or die $mode_conflict;
+            $active and die $mode_conflict;
             $mode = "region";
         } elsif ($_[1] =~ /^(w|window)$/) {
             $mode = "window";
         } elsif ($_[1] =~ /^(m|monitor)$/) {
             $mode = "monitor";
         } elsif ($_[1] =~ /^(d|desktop)$/) {
-            !$active or die $mode_conflict;
+            $active and die $mode_conflict;
             $mode = "desktop";
         } else {
             die "Unknown selection mode: `$_[1]`";
         }
     },
     'a|active' => sub {
-        !(defined $mode && $mode =~ /^(region|desktop)$/)
-            or die $mode_conflict;
+        (defined $mode && $mode =~ /^(region|desktop)$/)
+            and die $mode_conflict;
         $active = 1;
     },
 
@@ -121,20 +121,20 @@ GetOptions (
     'W|border-weight=i' => \$border_weight,
 ) or die "test";
 
-$mode = 'region' if !defined $mode;
+$mode = 'region' unless defined $mode;
 
 # if clipboard has not been specifically requested
 # and the filepath was not explicitly defined
-if (!($clipboard || defined $filepath)) {
+unless ($clipboard || defined $filepath) {
     # if the filename was not explicitly defined
-    if (!defined $filename) {
+    unless (defined $filename) {
         my $timestamp = strftime $filename_format, localtime();
         # set the default filename
         $filename = "$timestamp.$filetype";
     }
 
     # if the outdir was not explicitly defined
-    if (!defined $outdir) {
+    unless (defined $outdir) {
         # set the outdir to the most suitable default
         if (defined $ENV{'XDG_PICTURES_DIR'}) {
             $outdir = "${ENV{'XDG_PICTURES_DIR'}}/Screenshots";
