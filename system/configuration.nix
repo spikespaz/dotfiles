@@ -41,7 +41,7 @@
       systemd-boot.editor = false;
       systemd-boot.configurationLimit = 5;
 
-      timeout = 3;
+      timeout = 1;
 
       efi.efiSysMountPoint = "/boot";
       efi.canTouchEfiVariables = true;

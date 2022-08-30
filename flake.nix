@@ -38,6 +38,7 @@
         modules = [
           ./system/filesystems.nix
           ./system/configuration.nix
+          ./system/powersave.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen2
           hyprland.nixosModules.default
           { programs.hyprland.enable = true; }
