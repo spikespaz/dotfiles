@@ -144,6 +144,10 @@
     # Text Editors
     neovim
     kate
+    # Filesystems
+    cryptsetup
+    ntfs3g
+    exfatprogs
   ];
 
   environment.sessionVariables = {
