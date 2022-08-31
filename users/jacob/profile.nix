@@ -80,6 +80,9 @@
   ###########################
 
   userPackages.desktop = with pkgs; [
+    # Wallpaper
+    swaybg
+
     # Screen Capture
     grim
     slurp
@@ -98,14 +101,6 @@
     enable = true;
     package = pkgs.rofi-wayland;
   };
-
-  userPackages.theming = with pkgs; [
-    swaybg
-    lxqt.lxqt-qtplugin
-    libsForQt5.qt5ct
-    libsForQt5.qtstyleplugin-kvantum
-    materia-kde-theme
-  ];
 
   # enable automatic-mounting of new drives
   services.udiskie = {
@@ -128,23 +123,6 @@
     executable = true;
   };
 
-  # specify packages to use for gtk theming
-  gtk = {
-    enable = true;
-
-    cursorTheme.package = pkgs.quintom-cursor-theme;
-    cursorTheme.name = "Quintom_Ink";
-
-    iconTheme.package = pkgs.papirus-icon-theme;
-    iconTheme.name = "Papirus-Dark";
-
-    theme.package = pkgs.materia-theme;
-    theme.name = "Materia-dark-compact";
-
-    font.package = pkgs.ubuntu_font_family;
-    font.name = "Ubuntu";
-  };
-
   # should already be enabled at system level
   # fontconfig required to make user-fonts by name
   # todo: figure out how to make ~/.local/share/fonts
@@ -161,38 +139,6 @@
       ];
     })
   ];
-
-  # libadwaita doesn't respect any precedent
-  dconf.settings."org/gnome/desktop/interface" = {
-    color-scheme = "prefer-dark";
-    cursor-size = 24;
-  };
-
-  # set the kvantum theme, still needs qt5ct to be manually configured
-  # expects pkgs.materia-kde-theme
-  xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
-    [General]
-    theme=MateriaDark
-  '';
-
-  # use lxqt-qtplugin because qt5ct uses a weird config format
-  # the font has more parameters, but this seems to work fine without
-  # monospace is currently broken
-  xdg.configFile."lxqt/lxqt.conf".text = ''
-    [General]
-    icon_theme=Papirus-Dark
-
-    [Qt]
-    font="Ubuntu,9"
-    style=kvantum
-  '';
-
-  # don't know why the mouse settings are in the session file
-  xdg.configFile."lxqt/session.conf".text = ''
-    [General]
-    cursor_size=24
-    cursor_theme=Quintom_Ink
-  '';
 
   ####################
   ### WEB BROWSERS ###
