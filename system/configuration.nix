@@ -94,7 +94,21 @@
       alsa.support32Bit = true;
     };
 
-    printing.enable = true;
+    printing = {
+      enable = true;
+      drivers = with pkgs; [
+        gutenprint
+        hplip
+      ];
+    };
+
+    # required for network discovery of printers
+    avahi = {
+      enable = true;
+      # resolve .local domains for printers
+      nssmdns = true;
+    };
+
     udisks2.enable = true;
 
     flatpak.enable = true;
