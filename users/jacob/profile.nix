@@ -161,6 +161,12 @@
     })
   ];
 
+  # libadwaita doesn't respect any precedent
+  dconf.settings."org/gnome/desktop/interface" = {
+    color-scheme = "prefer-dark";
+    cursor-size = 24;
+  };
+
   # set the kvantum theme, still needs qt5ct to be manually configured
   # expects pkgs.materia-kde-theme
   xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
