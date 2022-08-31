@@ -65,6 +65,8 @@
   userPackages.office = with pkgs; [
     qalculate-gtk
     onedrive
+    # OnlyOffice needs to be run once with:
+    # `DesktopEditors --force-scale=1 --system-title-bar`
     onlyoffice-bin
   ];
 
