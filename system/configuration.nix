@@ -150,19 +150,6 @@
     exfatprogs
   ];
 
-  environment.sessionVariables = {
-    # Qt doesn't work well with wayland on wlroots compositors.
-    # Run programs under Xwayland to ensure that popup menus are visible.
-    # QT_QPA_PLATFORM = "wayland";
-    QT_QPA_PLATFORM = "xcb";
-    # QT_QPA_PLATFORMTHEME = "qt5ct";
-    SDL_VIDEODRIVER = "wayland";
-    GTK_USE_PORTAL = "1";
-    MOZ_ENABLE_WAYLAND = "1";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    XCURSOR_SIZE = "24";
-  };
-
   users.users = {
     jacob = {
       description = "Jacob Birkett";
