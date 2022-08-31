@@ -109,7 +109,11 @@
       nssmdns = true;
     };
 
+    # storage daemon required for udiskie auto-mount
     udisks2.enable = true;
+
+    # firmware updater for machine hardware
+    fwupd.enable = true;
 
     flatpak.enable = true;
   };
