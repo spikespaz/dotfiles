@@ -70,6 +70,8 @@
     "editor.rulers" = [ 80 120 ];
     # fancy features with the integrated terminal
     "terminal.integrated.shellIntegration.enabled" = true;
+    # files can be recovered with undo
+    "explorer.confirmDelete" = false;
 
     ## Language Specific -- Rust ##
 
