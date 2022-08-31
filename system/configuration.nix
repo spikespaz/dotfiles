@@ -149,5 +149,16 @@
     };
   };
 
+  fonts = {
+    fontconfig.enable = true;
+    fontDir.enable = true;
+    fonts = with pkgs; [
+      corefonts
+      noto-fonts
+      open-sans
+      ubuntu_font_family
+    ];
+  };
+
   system.stateVersion = "22.05";
 }

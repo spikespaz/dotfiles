@@ -87,6 +87,8 @@
     # Configuration Tools
     lxqt.pavucontrol-qt
 
+    font-manager
+
     # File Manager
     lxqt.pcmanfm-qt
   ];
@@ -137,7 +139,27 @@
 
     theme.package = pkgs.materia-theme;
     theme.name = "Materia-dark-compact";
+
+    font.package = pkgs.ubuntu_font_family;
+    font.name = "Ubuntu";
   };
+
+  # should already be enabled at system level
+  # fontconfig required to make user-fonts by name
+  # todo: figure out how to make ~/.local/share/fonts
+  fonts.fontconfig.enable = true;
+
+  userPackages.fonts = with pkgs; [
+    # google-fonts
+    (nerdfonts.override {
+      fonts = [
+        "Iosevka"
+        "FiraCode"
+        "JetBrainsMono"
+        "FantasqueSansMono"
+      ];
+    })
+  ];
 
   # set the kvantum theme, still needs qt5ct to be manually configured
   # expects pkgs.materia-kde-theme

@@ -23,6 +23,10 @@
   programs.vscode.userSettings = {
     ## Appearances ##
 
+    # the most important setting
+    "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
+    "editor.fontSize" = 14;
+
     # scale the ui down
     "window.zoomLevel" = -1;
     # hide the menu bar unless alt is pressed

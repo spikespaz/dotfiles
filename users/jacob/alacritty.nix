@@ -45,8 +45,8 @@
     scrolling.history = 100000;
 
     font = {
-      # normal.family = "JetBrainsMono Nerd Font Mono";
-      size = 10.0;
+      normal.family = "JetBrainsMono Nerd Font Mono";
+      size = 9;
     };
 
     colors = gruvbox_dark_custom;
