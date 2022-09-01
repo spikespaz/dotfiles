@@ -72,6 +72,21 @@
     neochat
   ];
 
+  nixpkgs.overlays =
+    let
+      discordOverlay = self: super: {
+        discord = super.discord.override {
+          # <https://github.com/GooseMod/OpenAsar>
+          withOpenASAR = true;
+          # fix for not respecting system browser
+          nss = pkgs.nss_latest;
+        };
+      };
+    in
+  [
+    discordOverlay
+  ];
+
   programs.hexchat.enable = true;
 
   # Office Software
