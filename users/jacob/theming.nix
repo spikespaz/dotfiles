@@ -47,9 +47,6 @@
   gtk = {
     enable = true;
 
-    cursorTheme.package = theme.cursor.package;
-    cursorTheme.name = theme.cursor.name;
-
     iconTheme.package = theme.icons.package;
     iconTheme.name = theme.icons.name;
 
@@ -64,7 +61,16 @@
   dconf.settings."org/gnome/desktop/interface" = {
     monospace-font-name = theme.fonts.monospace.name;
     color-scheme = if theme.dark then "prefer-dark" else "prefer-light";
-    cursor-size = 24;
+    # don't know if this is needed
+    # cursor-size = 24;
+  };
+
+  home.pointerCursor = {
+    package = theme.cursor.package;
+    name = theme.cursor.name;
+    size = theme.cursor.size;
+    gtk.enable = true;
+    x11.enable = true;
   };
 
   # set the kvantum theme, still needs qt5ct to be manually configured
