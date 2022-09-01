@@ -94,6 +94,7 @@
     # OnlyOffice needs to be run once with:
     # `DesktopEditors --force-scale=1 --system-title-bar`
     onlyoffice-bin
+    apostrophe  # Replace this
   ];
 
   # Content Sharing
@@ -112,13 +113,21 @@
     grim
     slurp
 
-    # Configuration Tools
-    lxqt.pavucontrol-qt
+    # Device Configuration
+    lxqt.pavucontrol-qt  # Pulse Audio Volume Control
+    system-config-printer
 
+    # Dolphin File Manager
+    libsForQt5.dolphin
+    libsForQt5.ark  # Archive GUI
+
+    # KDE Utilities
+    libsForQt5.kate  # Text Editor
+
+    # LXQT Utilities
+    lxqt.lximage-qt  # Image Viewer
     font-manager
 
-    # File Manager
-    lxqt.pcmanfm-qt
   ];
 
   # application launcher

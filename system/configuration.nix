@@ -132,20 +132,12 @@
     tree
     btop
     git
-    # System Configuration
-    system-config-printer
     # Web Browsers
     firefox
-    # Media Viewers
-    qimgv
-    # File Managers
-    libsForQt5.dolphin
-    libsForQt5.ark
     # Terminals
     alacritty
     # Text Editors
     neovim
-    kate
     # Filesystems
     cryptsetup
     ntfs3g
