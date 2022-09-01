@@ -79,14 +79,6 @@
   };
 
   services = {
-    xserver = {
-      enable = true;
-      layout = "us";
-      libinput.enable = true;
-
-      displayManager.gdm.enable = true;
-    };
-
     pipewire = {
       enable = true;
       pulse.enable = true;
