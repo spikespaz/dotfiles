@@ -50,8 +50,8 @@ done
 
 if [ $update_system -ne 1 ] && [ $update_user -ne 1 ]; then
   fail
-elif [ $new_lockfile -eq 1 ]; then
-  rm -f "$here/flake.lock"
+elif [ $new_lockfile -eq 1 ] && [ -f "$here/flake.lock" ]; then
+  mv -f "$here/flake.lock" "$here/flake.lock.$(date +%s)"
 fi
 
 if [ $update_system -eq 1 ]; then
