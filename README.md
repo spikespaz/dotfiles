@@ -12,6 +12,7 @@ If there are any issues with programs, search the codebase for the name of the p
 
 It would have been an impossibility to set everything up without the support of several people. I thank them for both their conversational guidance and graciously sharing their personal configurations for me to read and learn from.
 
+- <https://github.com/fufexan/dotfiles>
 - <https://github.com/NobbZ/nixos-config>
 - <https://github.com/viperML/dotfiles>
 - <https://github.com/IceDBorn/IceDOS>
