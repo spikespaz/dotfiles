@@ -132,6 +132,9 @@
     tree
     btop
     git
+    zip
+    # Hardware
+    v4l-utils
     # Web Browsers
     firefox
     # Terminals
