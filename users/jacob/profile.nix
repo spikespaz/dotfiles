@@ -129,6 +129,11 @@
 
     # KDE Utilities
     libsForQt5.kate  # Text Editor
+    libsForQt5.kdf  # Disk Usage
+    libsForQt5.kompare  # Difference Viewer
+    libsForQt5.okular  # Document Viewer
+    libsForQt5.print-manager  # Print Manager
+    libsForQt5.skanlite  # Lightweight Document Scanner
 
     # LXQT Utilities
     lxqt.lximage-qt  # Image Viewer
