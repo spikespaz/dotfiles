@@ -132,7 +132,7 @@
 
         ## Disables automatic calibration for screen backlight.
         ## Then, it can only be manually triggered by bus api.
-        # no_auto_calibration = true;
+        no_auto_calibration = false;
 
         ## Uncomment to let BACKLIGHT module pause automatic calibration when laptop lid is closed.
         ## Mostly useful when laptop gets docked and thus internal webcam
