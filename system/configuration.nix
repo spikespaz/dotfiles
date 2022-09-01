@@ -132,6 +132,8 @@
     tree
     btop
     git
+    # System Configuration
+    system-config-printer
     # Web Browsers
     firefox
     # Media Viewers
