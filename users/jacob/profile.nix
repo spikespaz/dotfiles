@@ -34,10 +34,7 @@
   xdg.userDirs.createDirectories = true;
 
   home.sessionVariables = {
-    # Qt doesn't work well with wayland on wlroots compositors.
-    # Run programs under Xwayland to ensure that popup menus are visible.
-    # QT_QPA_PLATFORM = "wayland";
-    QT_QPA_PLATFORM = "xcb";
+    QT_QPA_PLATFORM = "wayland";
     SDL_VIDEODRIVER = "wayland";
     GTK_USE_PORTAL = "1";
     MOZ_ENABLE_WAYLAND = "1";
