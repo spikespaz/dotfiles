@@ -38,8 +38,6 @@
     # Run programs under Xwayland to ensure that popup menus are visible.
     # QT_QPA_PLATFORM = "wayland";
     QT_QPA_PLATFORM = "xcb";
-    # QT_QPA_PLATFORMTHEME = "qt5ct";
-    QT_QPA_PLATFORMTHEME = "lxqt";
     SDL_VIDEODRIVER = "wayland";
     GTK_USE_PORTAL = "1";
     MOZ_ENABLE_WAYLAND = "1";
