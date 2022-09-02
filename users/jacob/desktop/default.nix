@@ -27,28 +27,39 @@
     };
 
     # prepend the config with more exec lines,
-    # for setting the wallpaper and starting swayidle
+    # for starting swayidle
     extraConfig = ''
       exec-once=${lib.getExe pkgs.swayidle}
-      exec=sleep 0.1 && ${config.xdg.configHome}/hypr/wallpaper.sh
     '' + builtins.readFile ./configs/hyprland.conf;
   };
 
-  # create a service for swaybg so that we don't
-  # start a new process every time the wallpaper is changed  
-  systemd.user.services.swaybg = {
-    Unit.Description = "wayland wallpaper utility";
-    Service.ExecStart = "${lib.getExe pkgs.swaybg} -c '#121212'";
+  # create a service for swaybg that sets a wallpaper randomly
+  systemd.user.services.random-wallpaper = let
+    # 25% chance to change the wallpaper on each hour
+    interval = 1 * 60 * 60;
+    chance = 25;
+    img_dir = "${config.home.homeDirectory}/Pictures/Wallpapers";
+  in{
+    Unit = {
+      Description = "wayland random wallpaper utility";
+      PartOf = "graphical-session.target";
+    };
+    Service = {
+      Type = "notify";
+      NotifyAccess = "all";  # because of a bug?
+      Environment = ''
+        PATH=${with pkgs; lib.makeBinPath [
+          systemd coreutils procps findutils swaybg
+        ]}
+      '';
+      ExecStart = ''
+        ${./scripts/wallpaper.sh} \
+          ${toString interval} ${toString chance} '${img_dir}'
+      '';
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
     Install.WantedBy = [ "hyprland-session.target" ];
-  };
-
-  # write the script for the wallpaper
-  # this is an exec in hyprland config
-  xdg.configFile."hypr/wallpaper.sh" = let
-    wallpaper = "/home/jacob/OneDrive/Pictures/Wallpapers/RykyArt Patreon/Favorites/antlers.png";
-  in {
-    text = "swaybg -m fit --image '${wallpaper}'";
-    executable= true;
   };
 
   # screenshot utility
