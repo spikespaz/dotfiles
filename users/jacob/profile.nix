@@ -190,11 +190,17 @@
   services.swayidle = {
     enable = true;
     events = [
-      { event = "before-sleep"; command = "swaylock"; }
-      { event = "lock"; command = "swaylock"; }
+      { event = "before-sleep"; command = "swaylock -f"; }
+      { event = "lock"; command = "swaylock -f"; }
     ];
     timeouts = [
-      { timeout = 60; command = "swaylock -fF"; }
+      # lock after 1 minute with a grace of 30 seconds
+      {
+        timeout = 2 * 60;
+        command = "swaylock -f --grace 30";
+      }
+      # for testing
+      { timeout = 5; command = "swaylock -f --grace 10"; }
     ];
   };
 
