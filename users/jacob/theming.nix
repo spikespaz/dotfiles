@@ -1,39 +1,37 @@
 # Consistent theming between Qt and GTK on Wayland with a custom compositor
 # is really not an easy feat. This module contains setup to handle that.
-{ pkgs, ... }:
-  let
-    theme = with pkgs; {
-      dark = true;
-      cursor = {
-        package = quintom-cursor-theme;
-        name = "Quintom_Ink";
-        size = 24;
+{ pkgs, ... }: let
+  theme = with pkgs; {
+    dark = true;
+    cursor = {
+      package = quintom-cursor-theme;
+      name = "Quintom_Ink";
+      size = 24;
+    };
+    icons = {
+      package = papirus-icon-theme;
+      name = "Papirus-Dark";
+    };
+    gtk = {
+      package = materia-theme;
+      name = "Materia-dark-compact";
+    };
+    kde = {
+      package = materia-kde-theme;
+      # name = "MateriaDark";
+    };
+    fonts = {
+      default = {
+        package = ubuntu_font_family;
+        name = "Ubuntu";
       };
-      icons = {
-        package = papirus-icon-theme;
-        name = "Papirus-Dark";
-      };
-      gtk = {
-        package = materia-theme;
-        name = "Materia-dark-compact";
-      };
-      kde = {
-        package = materia-kde-theme;
-        # name = "MateriaDark";
-      };
-      fonts = {
-        default = {
-          package = ubuntu_font_family;
-          name = "Ubuntu";
-        };
-        monospace = {
-          package = dejavu_fonts;
-          name = "DejaVu Sans Mono";
-        };
+      monospace = {
+        package = dejavu_fonts;
+        name = "DejaVu Sans Mono";
       };
     };
-  in
-{
+  };
+in {
   # specify packages that are required for some stuff below
   home.packages = [
     # lxqt.lxqt-qtplugin

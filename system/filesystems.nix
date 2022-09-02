@@ -7,15 +7,13 @@
 # Further reading:
 # - <https://grahamc.com/blog/erase-your-darlings>
 # - <https://github.com/nix-community/impermanence>
-{ ... }:
 let
   zfsAuto = device: {
     inherit device;
     fsType = "zfs";
     options = [ "zfsutil" "X-mount.mkdir" ];
   };
-in
-{
+in {
   fileSystems = {
     "/" = {
       device = "none";

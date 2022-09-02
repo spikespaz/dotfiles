@@ -2,12 +2,10 @@
 # - <https://www.kernel.org/doc/Documentation/power/states.txt>
 # - `man sleep.conf.d`
 # - `man logind.conf`
-{ ... }:
-  let
-    idle_after = 5 * 60;
-    hibernate_delay = 30 * 60;
-  in
-{
+let
+  idle_after = 5 * 60;
+  hibernate_delay = 30 * 60;
+in {
   services.logind = {
     lidSwitch = "suspend-then-hibernate";
     killUserProcesses = true;
