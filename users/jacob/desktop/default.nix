@@ -79,4 +79,10 @@
     # <https://github.com/coldfix/udiskie/blob/master/doc/udiskie.8.txt#configuration>
     # settings = {}
   };
+
+  home.sessionVariables = {
+    # some nixpkgs modules have wrapers
+    # that force electron apps to use wayland
+    NIXOS_OZONE_WL = "1";
+  };
 }
