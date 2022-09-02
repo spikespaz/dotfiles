@@ -79,10 +79,13 @@
     # <https://github.com/NixOS/nixpkgs/pull/189452>
     # swaylock = lib.getExe pkgs.swaylock-effects;
     swaylock = "${pkgs.swaylock-effects}/bin/swaylock";
+    auto_lock.timeout = 2 * 60;
+    auto_lock.grace = 30;
+    forced_lock.grace = 5;
   in ''
-    timeout ${toString (2 * 60)} '${swaylock} -f --grace 30'
+    timeout ${toString auto_lock.timeout} '${swaylock} -f --grace ${toString auto_lock.grace}'
     before-sleep '${swaylock} -f'
-    lock '${swaylock} -f --grace 5 --grace-no-mouse'
+    lock '${swaylock} -f --grace ${toString forced_lock.grace} --grace-no-mouse'
   '';
 
   # # runs commands when events from logind or inactive timeout

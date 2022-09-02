@@ -214,7 +214,7 @@ in {
         ## Timeouts on AC/on BATT for keyboard auto dimming.
         ## Set any of these to <= 0 to disable kbd backlight
         ## in the corresponding AC state.
-        timeouts = [ 15 7 ];
+        timeouts = [ 60 10 ];
         
         ## Curves used to match screen backlight to keyboard backlight level for each AC state.
         ## X axis: default screen backlight level (from 0 to 10)
@@ -344,7 +344,10 @@ in {
         ## Timeouts on AC/on BATT. 
         ## Set any of these to <= 0 to disable dimmer
         ## in the corresponding AC state.
-        timeouts = [ 30 15 ];
+        timeouts = [
+          (2.5 * 60)
+          (1 * 60)
+        ];
 
         ## Change dimmed backlight level, in percentage
         dimmed_pct = 0.2;

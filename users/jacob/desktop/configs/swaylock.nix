@@ -40,7 +40,7 @@ in {
   ### Behavior ###
 
   ignore-empty-password = true;
-  daemonize = true;
+  # daemonize = true;
   # grace = 5;  # Specify when auto-lock
   # grace-no-mouse = true;
   indicator = true;
