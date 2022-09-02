@@ -107,15 +107,15 @@
     # Dolphin File Manager
     libsForQt5.dolphin
     libsForQt5.dolphin-plugins
+    libsForQt5.kio-extras
     libsForQt5.ffmpegthumbs  # Video Thumbnails
     libsForQt5.kimageformats  # Proprieary Image Formats
     resvg  # SVG Thumbnails
     taglib  # Audio File Tags
-    # libsForQt5.kio-extras  # ???
     libsForQt5.ark  # Archive GUI
 
     # KDE Utilities
-    libsForQt5.kcolorchooser
+    libsForQt5.kcolorchooser  # Color Chooser
     libsForQt5.kate  # Text Editor
     libsForQt5.kdf  # Disk Usage
     libsForQt5.kompare  # Difference Viewer
