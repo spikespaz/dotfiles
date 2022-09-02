@@ -1,4 +1,8 @@
 { pkgs, lib, ... }: {
+  imports = [
+    ./theming.nix
+  ];
+
   home.packages = [
     # Lock Screen
     pkgs.swaylock-effects
@@ -18,17 +22,15 @@
       enable = true;
       hidpi = true;
     };
-    extraConfig = builtins.readFile ./hyprland.conf;
+    extraConfig = builtins.readFile ./configs/hyprland.conf;
   };
 
-  systemd.user.services = {
-    # create a service for swaybg so that we don't
-    # start a new process every time the wallpaper is changed
-    swaybg = {
-      Unit.Description = "wayland wallpaper utility";
-      Service.ExecStart = "${lib.getExe pkgs.swaybg} -c '#121212'";
-      Install.WantedBy = [ "hyprland-session.target" ];
-    };
+  # create a service for swaybg so that we don't
+  # start a new process every time the wallpaper is changed  
+  systemd.user.services.swaybg = {
+    Unit.Description = "wayland wallpaper utility";
+    Service.ExecStart = "${lib.getExe pkgs.swaybg} -c '#121212'";
+    Install.WantedBy = [ "hyprland-session.target" ];
   };
 
   # write the script for the wallpaper
@@ -47,15 +49,8 @@
     executable = true;
   };
 
-  # service that auto-mounts storage devices with udisks2
-  services.udiskie = {
-    enable = true;
-    automount = true;
-    notify = true;
-    tray = "auto";
-    # <https://github.com/coldfix/udiskie/blob/master/doc/udiskie.8.txt#configuration>
-    # settings = {}
-  };
+  # configure swaylock theme
+  programs.swaylock.settings = import ./configs/swaylock.nix;
 
   # runs commands when events from logind or inactive timeout
   services.swayidle = {
@@ -73,5 +68,15 @@
       # for testing
       { timeout = 5; command = "swaylock -f --grace 10"; }
     ];
+  };
+
+  # service that auto-mounts storage devices with udisks2
+  services.udiskie = {
+    enable = true;
+    automount = true;
+    notify = true;
+    tray = "auto";
+    # <https://github.com/coldfix/udiskie/blob/master/doc/udiskie.8.txt#configuration>
+    # settings = {}
   };
 }

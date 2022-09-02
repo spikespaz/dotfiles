@@ -51,8 +51,6 @@
           hyprland.homeManagerModules.default
           ./users/jacob/profile.nix
 	        ./users/jacob/desktop
-          ./users/jacob/swaylock.nix
-          ./users/jacob/theming.nix
           ./users/jacob/alacritty.nix
           ./users/jacob/vscode.nix
         ];
