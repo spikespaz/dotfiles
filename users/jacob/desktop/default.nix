@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }: {
   imports = [
     ./theming.nix
   ];
@@ -22,7 +22,9 @@
       enable = true;
       hidpi = true;
     };
-    extraConfig = builtins.readFile ./configs/hyprland.conf;
+    extraConfig = ''
+      exec=sleep 0.1 && ${config.xdg.configHome}/hypr/wallpaper.sh
+    '' + builtins.readFile ./configs/hyprland.conf;
   };
 
   # create a service for swaybg so that we don't
