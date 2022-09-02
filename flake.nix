@@ -40,8 +40,6 @@
           ./system/configuration.nix
           ./system/powersave.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen2
-          hyprland.nixosModules.default
-          { programs.hyprland.enable = true; }
         ];
       };
     };
@@ -50,7 +48,9 @@
         inherit pkgs;
 
         modules = [
+          hyprland.homeManagerModules.default
           ./users/jacob/profile.nix
+	        ./users/jacob/desktop
           ./users/jacob/swaylock.nix
           ./users/jacob/theming.nix
           ./users/jacob/alacritty.nix
