@@ -95,7 +95,7 @@ in {
       ##############################
       backlight = {
         ## Uncomment to disable
-        disabled = true;
+        disabled = false;
         
         ## Uncomment to restore screen backlight on exit
         restore_on_exit = true;
@@ -360,7 +360,10 @@ in {
         ## Timeouts on AC/on BATT.
         ## Set any of these to <= 0 to disable dpms
         ## in the corresponding AC state.
-        timeouts = [ 900 300 ];
+        timeouts = [
+          (10 * 60)  # AC
+          (3 * 60)  # Battery
+        ];
       };
 
       ############################
