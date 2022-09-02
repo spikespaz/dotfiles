@@ -155,8 +155,6 @@
     tray = "never";
   };
 
-  # configure the wm
-  xdg.configFile."hypr/hyprland.conf".source = ./configs/hyprland.conf;
   # write the script for the wallpaper
   # this is an exec in hyprland config
   xdg.configFile."hypr/wallpaper.sh" = {
@@ -268,50 +266,3 @@
   # fuzzy finder
   programs.fzf.enable = true;
 }
-
-# ========
-# This function is for prepending the Hyprland config with environment variables.
-# No shell session seemed to respect these.
-# ========
-#
-# let
-#   mkHyprEnvVars = { vars, index ? 0, head ? "" }:
-#     if index < builtins.length (builtins.attrNames vars) then
-#       mkHyprEnvVars {
-#         inherit vars;
-#         index = index + 1;
-#         head = head + "exec-once=export ${builtins.elemAt (builtins.attrNames vars) index}='${builtins.toString (builtins.elemAt (builtins.attrValues vars) index)}'\n";
-#       }
-#     else
-#       head + "\n";
-# in
-#
-# --------
-#
-# xdg.configFile."hypr/hyprland.conf".text =
-#   (mkHyprEnvVars { vars = config.home.sessionVariables; })
-#   + (builtins.readFile ./configs/hyprland.conf);
-#
-# ========
-# This should have made all variables accessible to programs whom do not respect `~/.profile`.
-# It appears to change nothing.
-# ========
-#
-# home.sessionVariables = {
-#   QT_QPA_PLATFORM = "wayland";
-#   #XDG_CURRENT_DESKTOP = "sway"
-#   #XDG_SESSION_DESKTOP = "sway"
-#   #XDG_CURRENT_SESSION_TYPE = "wayland"
-#   QT_QPA_PLATFORMTHEME = "qt5ct";
-#   QT_STYLE_OVERRIDE = "kvantum";
-#   GTK_USE_PORTAL = 1;
-#   MOZ_ENABLE_WAYLAND = 1;
-#   _JAVA_AWT_WM_NONREPARENTING = 1;
-#   XCURSOR_SIZE = 24;
-# };
-#
-# --------
-#
-# pam.sessionVariables = config.home.sessionVariables;
-#
-# ========
