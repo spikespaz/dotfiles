@@ -115,6 +115,8 @@
     wlr.enable = true;
   };
 
+  security.pam.services.swaylock = {};
+
   security.polkit.enable = true;
 
   environment.systemPackages = with pkgs; [

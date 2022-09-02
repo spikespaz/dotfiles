@@ -1,5 +1,4 @@
-{ pkgs, inputs, ... }:
-{
+{ pkgs, inputs, ... }: {
   home.packages = with pkgs; [
     # Perl Language Server
     perlPackages.PLS
