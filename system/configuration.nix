@@ -115,7 +115,8 @@
     wlr.enable = true;
   };
 
-  security.pam.services.swaylock = {};
+  # <https://github.com/swaywm/swaylock/blob/master/pam/swaylock>
+  security.pam.services.swaylock.text = "auth include login";
 
   security.polkit.enable = true;
 
