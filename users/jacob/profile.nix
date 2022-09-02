@@ -2,11 +2,7 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-{ config, pkgs, nixpkgs, inputs, ... }:
-  let
-    wallpaper = "/home/jacob/OneDrive/Pictures/Wallpapers/RykyArt Patreon/Favorites/antlers.png";
-  in
-{
+{ config, pkgs, nixpkgs, inputs, ... }: {
   ################
   ### PREAMBLE ###
   ################
@@ -104,16 +100,6 @@
   ###########################
 
   userPackages.desktop = with pkgs; [
-    # Wallpaper
-    swaybg
-
-    # Session Manager & Lock Screen
-    swaylock-effects
-
-    # Screen Capture
-    grim
-    slurp
-
     # Device Configuration
     lxqt.pavucontrol-qt  # Pulse Audio Volume Control
     system-config-printer
@@ -149,25 +135,6 @@
     package = pkgs.rofi-wayland;
   };
 
-  # enable automatic-mounting of new drives
-  services.udiskie = {
-    enable = true;
-    tray = "never";
-  };
-
-  # write the script for the wallpaper
-  # this is an exec in hyprland config
-  xdg.configFile."hypr/wallpaper.sh" = {
-    text = "swaybg -m fit --image '${wallpaper}'";
-    executable= true;
-  };
-  # screenshot utility
-  # this is an exec bind in hyprland config
-  xdg.configFile."hypr/prtsc.pl" = {
-    source = ./scripts/prtsc.pl;
-    executable = true;
-  };
-
   # should already be enabled at system level
   # fontconfig required to make user-fonts by name
   # todo: figure out how to make ~/.local/share/fonts
@@ -184,23 +151,6 @@
       ];
     })
   ];
-
-  services.swayidle = {
-    enable = true;
-    events = [
-      { event = "before-sleep"; command = "swaylock -f"; }
-      { event = "lock"; command = "swaylock -f"; }
-    ];
-    timeouts = [
-      # lock after 1 minute with a grace of 30 seconds
-      {
-        timeout = 2 * 60;
-        command = "swaylock -f --grace 30";
-      }
-      # for testing
-      { timeout = 5; command = "swaylock -f --grace 10"; }
-    ];
-  };
 
   ####################
   ### WEB BROWSERS ###
