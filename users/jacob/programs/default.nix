@@ -47,9 +47,9 @@
     programs.obs-studio.enable = true;
   };
 
-  #######################
-  ### OFFICE SOFTWARE ###
-  #######################
+  #################################
+  ### OFFICE & WRITING SOFTWARE ###
+  #################################
 
   onlyoffice = {
     home.packages = [ pkgs.onlyoffice-bin ];
@@ -77,6 +77,7 @@
   };
   neovim = {
     programs.neovim.enable = true;
+    home.packages = [ pkgs.neovide ];
   };
   helix = {
     programs.helix.enable = true;
@@ -123,6 +124,9 @@
   };
   fzf = {
     programs.fzf.enable = true;
+  };
+  gallery-dl = {
+    home.packages = [ pkgs.gallery-dl ];
   };
 
   ###########################################

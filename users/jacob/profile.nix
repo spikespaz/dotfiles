@@ -93,24 +93,44 @@ in {
     ### USER-SPECIFIC SOFTWARE ###
     ##############################
 
+    ### WEB BROWSERS ###
     programs.firefox
     programs.chromium
+
+    ### COMMUNICATION & MESSAGING ###
     programs.mailspring
     programs.discord
     programs.neochat
     programs.hexchat
+
+    ### MEDIA CREATION ###
     programs.obs-studio
+
+    ### OFFICE & WRITING SOFTWARE ###
     programs.onlyoffice
     programs.apostrophe
+
+    ### TERMINAL EMULATORS ###
     programs.alacritty
+
+    ### CODE EDITORS ###
     programs.vscode
     programs.neovim
     programs.helix
+
+    ### DEVELOPMENT TOOLS ###
     programs.git
+
+    ### SHELL ENVIRONMENTS ###
     programs.bash
+
+    ### CLI UTILITIES ###
     programs.bat
     programs.lsd
     programs.fzf
+    programs.gallery-dl
+
+    ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
     programs.neofetch
     programs.wev
     programs.nix-index
