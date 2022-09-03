@@ -25,21 +25,19 @@
     home-manager,
     hyprland,
     ...
-  }:
-    let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
-  {
+  }: let
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+  in {
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {
         inherit system;
 
         modules = [
+          nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen2
           ./system/filesystems.nix
           ./system/configuration.nix
           ./system/powersave.nix
-          nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen2
         ];
       };
     };
@@ -51,8 +49,6 @@
           hyprland.homeManagerModules.default
           ./users/jacob/profile.nix
 	        ./users/jacob/desktop
-          ./users/jacob/alacritty.nix
-          ./users/jacob/vscode.nix
         ];
 
         extraSpecialArgs = {

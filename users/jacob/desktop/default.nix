@@ -18,6 +18,12 @@
     pkgs.slurp
   ];
 
+  # application launcher
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi-wayland;
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     systemdIntegration = true;
@@ -65,7 +71,7 @@
   # screenshot utility
   # this is an exec bind in hyprland config
   xdg.configFile."hypr/prtsc.pl" = {
-    source = ../scripts/prtsc.pl;
+    source = ./scripts/prtsc.pl;
     executable = true;
   };
 
@@ -88,31 +94,6 @@
     lock '${swaylock} -f --grace ${toString forced_lock.grace} --grace-no-mouse'
   '';
 
-  # # runs commands when events from logind or inactive timeout
-  # services.swayidle = {
-  #   enable = true;
-  #   events = [
-  #     { event = "before-sleep"; command = "swaylock -f"; }
-  #     { event = "lock"; command = "swaylock -f"; }
-  #   ];
-  #   timeouts = [
-  #     # lock after 1 minute with a grace of 30 seconds
-  #     {
-  #       timeout = 2 * 60;
-  #       command = "swaylock -f --grace 30";
-  #     }
-  #     # for testing
-  #     { timeout = 5; command = "swaylock -f --grace 10"; }
-  #   ];
-  # };
-
-  # # make some modifications to the swayidle service
-  # # WantedBy is sway-session.target by default
-  # systemd.user.services.swayidle.Install.WantedBy =
-  #   lib.mkForce [ "hyprland-session.target" ];
-  # systemd.user.services.swayidle.Service.Restart = "on-failure";
-  # systemd.user.services.swayidle.Service.RestartSec = 5;
-
   # service that auto-mounts storage devices with udisks2
   services.udiskie = {
     enable = true;
@@ -123,9 +104,20 @@
     # settings = {}
   };
 
+  # should already be enabled at system level
+  # fontconfig required to make user-fonts by name
+  # todo: figure out how to make ~/.local/share/fonts
+  fonts.fontconfig.enable = true;
+
   home.sessionVariables = {
     # some nixpkgs modules have wrapers
     # that force electron apps to use wayland
     NIXOS_OZONE_WL = "1";
+    # make qt apps expect wayland
+    QT_QPA_PLATFORM = "wayland";
+    # set backend for sdl
+    SDL_VIDEODRIVER = "wayland";
+    # fix modals from being attached on tiling wms
+    _JAVA_AWT_WM_NONREPARENTING = "1";
   };
 }

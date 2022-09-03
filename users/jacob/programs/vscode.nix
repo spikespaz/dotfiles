@@ -6,8 +6,6 @@
     inputs.nil.packages.${pkgs.system}.default
   ];
 
-  programs.vscode.enable = true;
-
   programs.vscode.extensions = with pkgs.vscode-extensions; [
     # Theme
     jdinhlife.gruvbox

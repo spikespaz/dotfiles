@@ -1,51 +1,45 @@
-{ config, pkgs, nixpkgs, ... }: {
+args @ { config, pkgs, nixpkgs, ... }: {
   nixpkgs.config = {
+    # allow packages that have proprietary licenses
     allowUnfree = true;
+    # packages that are marked as broken; usually just incompatible
+    # with complicated setups, or with popular software
+    # needed for zfs on recent linux kernel
     allowBroken = true;
   };
 
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+  # configure experimenta; support for flakes,
+  nix.package = pkgs.nixFlakes;
+  nix.extraOptions = "experimental-features = nix-command flakes";
 
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
+  # set up garbage collection to run weekly,
+  # removing unused packages after seven days
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
   };
 
-  boot = {
-    zfs.enableUnstable = true;
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.initrd.availableKernelModules = [
+    "nvme"
+    "ehci_pci"
+    "xhci_pci"
+    "usb_storage"
+    "usbhid"
+    "sd_mod"
+    "rtsx_pci_sdmmc"
+  ];
 
-    kernelModules = [
-      "kvm-amd"
-    ];
+  boot.loader = {
+    systemd-boot.enable = true;
+    systemd-boot.editor = false;
+    systemd-boot.configurationLimit = 5;
 
-    initrd.availableKernelModules = [
-      "nvme"
-      "ehci_pci"
-      "xhci_pci"
-      "usb_storage"
-      "usbhid"
-      "sd_mod"
-      "rtsx_pci_sdmmc"
-    ];
-    
-    #kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-    
-    loader = {
-      systemd-boot.enable = true;
-      systemd-boot.editor = false;
-      systemd-boot.configurationLimit = 5;
+    timeout = 1;
 
-      timeout = 1;
-
-      efi.efiSysMountPoint = "/boot";
-      efi.canTouchEfiVariables = true;
-    };
+    efi.efiSysMountPoint = "/boot";
+    efi.canTouchEfiVariables = true;
   };
 
   networking = {
@@ -56,20 +50,75 @@
   };
   
   hardware = {
+    # enable proprietary firmware that is still redistributable
+    # required for some hardware, drivers contain proprietary blobs
     enableRedistributableFirmware = true;
 
+    # update processor firmware by loading from memory at boot
     cpu.amd.updateMicrocode = true;
 
+    # enable bluetooth but turn off power by default
     bluetooth.enable = true;
     bluetooth.powerOnBoot = false;
 
+    # enable opengl just in case the compositor doesn't
     opengl.enable = true;
     opengl.driSupport32Bit = true;
 
+    # enable the lenovo trackpoint (default) but decrease sensitivity
     trackpoint.enable = true;
     trackpoint.speed = 85;
   };
 
+  # audio and video drivers with legacy alsa, jack, and pulse support
+  services.pipewire = {
+    enable = true;
+    pulse.enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+  };
+
+  # enable cups and add some drivers for common printers
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      gutenprint
+      hplip
+    ];
+  };
+
+  # required for network discovery of printers
+  services.avahi = {
+    enable = true;
+    # resolve .local domains for printers
+    nssmdns = true;
+  };
+
+  # storage daemon required for udiskie auto-mount
+  services.udisks2.enable = true;
+
+  # firmware updater for machine hardware
+  services.fwupd.enable = true;
+
+  services.flatpak.enable = true;
+
+  # cross-desktop group; they make specifications
+  # for what ceratin environment variables should be
+  # <https://github.com/fufexan/dotfiles/blob/785b65436f5849a8dea175d967d901159f689edd/modules/desktop.nix#L153>
+  xdg.portal.enable = true;
+  xdg.portal.wlr.enable = true;
+
+  # <https://github.com/swaywm/swaylock/blob/master/pam/swaylock>
+  security.pam.services.swaylock.text = "auth include login";
+
+  # policy kit;
+  # communication between unpriviledged and proviledged processes
+  security.polkit.enable = true;
+
+  # registry for linux, thanks to gnome
+  programs.dconf.enable = true;
+
+  # locale and timezone
   time.timeZone = "America/Phoenix";
   i18n.defaultLocale = "en_US.utf8";
 
@@ -78,78 +127,8 @@
     useXkbConfig = true;
   };
 
-  services = {
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-    };
-
-    printing = {
-      enable = true;
-      drivers = with pkgs; [
-        gutenprint
-        hplip
-      ];
-    };
-
-    # required for network discovery of printers
-    avahi = {
-      enable = true;
-      # resolve .local domains for printers
-      nssmdns = true;
-    };
-
-    # storage daemon required for udiskie auto-mount
-    udisks2.enable = true;
-
-    # firmware updater for machine hardware
-    fwupd.enable = true;
-
-    flatpak.enable = true;
-  };
-
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-  };
-
-  # <https://github.com/swaywm/swaylock/blob/master/pam/swaylock>
-  security.pam.services.swaylock.text = "auth include login";
-
-  security.polkit.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    # Essentials
-    wget
-    curl
-    tree
-    btop
-    git
-    zip
-    # Hardware
-    v4l-utils
-    # Web Browsers
-    firefox
-    # Terminals
-    alacritty
-    # Text Editors
-    neovim
-    # Filesystems
-    cryptsetup
-    ntfs3g
-    exfatprogs
-  ];
-
-  users.users = {
-    jacob = {
-      description = "Jacob Birkett";
-      isNormalUser = true;
-      initialPassword = "password";
-      extraGroups = [ "networkmanager" "wheel" ];
-    };
-  };
+  # default packages that are good to have on any system
+  environment.systemPackages = import ./packages.nix args;
 
   fonts = {
     fontconfig.enable = true;
@@ -162,7 +141,14 @@
     ];
   };
 
-  programs.dconf.enable = true;
+  users.users = {
+    jacob = {
+      description = "Jacob Birkett";
+      isNormalUser = true;
+      initialPassword = "password";
+      extraGroups = [ "networkmanager" "wheel" "video" ];
+    };
+  };
 
   system.stateVersion = "22.05";
 }
