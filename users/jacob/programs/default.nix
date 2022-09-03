@@ -141,6 +141,5 @@
   };
   nix-index = {
     programs.nix-index.enable = true;
-    programs.nix-index.enableBashIntegration = true;
   };
 }

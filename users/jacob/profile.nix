@@ -132,7 +132,6 @@ in {
 
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
     programs.neofetch
-    programs.wev
     programs.nix-index
   ];
 }

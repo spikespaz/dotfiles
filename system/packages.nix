@@ -3,8 +3,7 @@
   ### ESSENTIALS ###
   ##################
 
-  # CLI Utilities
-
+  ### CLI UTILITIES ###
   btop  # system process monitor
   tree  # directory tree listing
   wget  # simple downloader utility
@@ -14,24 +13,22 @@
   bat  # cat with wings
   fzf  # fuzzy finder
   exa  # colored alternative to ls
+
+  ### CODE EDITORS ###
+  neovim
   
   ################
   ### HARDWARE ###
   ################
 
-  # System
-
+  ### SYSTEM DEVICES ###
   v4l-utils  # proprietary media hardware and encoding
 
-  # Storage Devices
-
+  ### STORAGE DEVICE DRIVERS ###
   cryptsetup
   ntfs3g
   exfatprogs
-  
-  ########################
-  ### DEFAULT SOFTWARE ###
-  ########################
 
-  neovim  # Text Editor
+  ### HARDWARE DIAGNOSTICS ###
+  wev  # input button code utility
 ]
