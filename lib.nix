@@ -1,0 +1,4 @@
+{
+  mkConfigs = specs: ;
+  config = 
+}
