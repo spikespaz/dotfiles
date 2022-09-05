@@ -45,6 +45,7 @@
           ./system/filesystems.nix
           ./system/configuration.nix
           ./system/powersave.nix
+          ./system/greeter.nix
         ];
       };
     };
