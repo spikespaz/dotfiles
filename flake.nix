@@ -7,6 +7,9 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    dotpkgs.url = "path:./packages";
+    dotpkgs.inputs.nixpkgs.follows = "nixpkgs";
+
     nixos-hardware.url = "github:nixos/nixos-hardware";
   
     home-manager.url = "github:nix-community/home-manager";
@@ -21,6 +24,7 @@
 
   outputs = inputs @ {
     nixpkgs,
+    dotpkgs,
     nixos-hardware,
     home-manager,
     hyprland,
@@ -47,6 +51,7 @@
 
         modules = [
           hyprland.homeManagerModules.default
+          dotpkgs.homeManagerModules.idlehack
           ./users/jacob/profile.nix
 	        ./users/jacob/desktop
         ];

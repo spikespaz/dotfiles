@@ -94,6 +94,10 @@
     lock '${swaylock} -f --grace ${toString forced_lock.grace} --grace-no-mouse'
   '';
 
+  # enable the idlehack deamon, it watches for inhibits
+  # on dbus and sends them to swayidle/anything listening
+  services.idlehack.enable = true;
+
   # service that auto-mounts storage devices with udisks2
   services.udiskie = {
     enable = true;
