@@ -100,6 +100,7 @@ in {
     ### COMMUNICATION & MESSAGING ###
     programs.mailspring
     programs.discord
+    programs.webcord
     programs.neochat
     programs.hexchat
 

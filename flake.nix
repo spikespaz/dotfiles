@@ -20,6 +20,9 @@
 
     nil.url = "github:oxalica/nil";
     nil.inputs.nixpkgs.follows = "nixpkgs";
+
+    webcord.url = "github:fufexan/webcord-flake";
+    webcord.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {

@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs, ... }: {
+{ pkgs, nixpkgs, inputs, ... }: {
   ####################
   ### WEB BROWSERS ###
   ####################
@@ -31,6 +31,9 @@
     in [
       discordOverlay
     ];
+  };
+  webcord = {
+    home.packages = [ inputs.webcord.packages.${pkgs.system}.default ];
   };
   neochat = {
     home.packages = [ pkgs.neochat ];
