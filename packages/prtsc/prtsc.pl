@@ -187,6 +187,7 @@ if ($mode eq 'region') {
         my $region = 'TODO';
         $cmd = "$grim_cmd -g '$region'";
     } else {
+        $slurp_cmd = "$slurp_cmd -B $background_color";
         $slurp_cmd = "$slurp_cmd -o";
         $slurp_cmd = "$slurp_cmd -r";
         $cmd = "$grim_cmd -g \"\$($slurp_cmd)\"";
