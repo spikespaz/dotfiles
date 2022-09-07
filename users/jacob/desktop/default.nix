@@ -1,8 +1,8 @@
-{ config, lib, pkgs, inputs, ... }: {
+{ config, lib, pkgs, dotpkgs, ... }: {
   imports = [
     ./theming.nix
-    inputs.dotpkgs.homeManagerModules.randbg
-    inputs.dotpkgs.homeManagerModules.idlehack
+    dotpkgs.homeManagerModules.randbg
+    dotpkgs.homeManagerModules.idlehack
   ];
 
   home.packages = [

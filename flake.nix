@@ -7,8 +7,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    dotpkgs.url = "path:./packages";
-
     nixos-hardware.url = "github:nixos/nixos-hardware";
   
     home-manager.url = "github:nix-community/home-manager";
@@ -26,7 +24,6 @@
 
   outputs = inputs @ {
     nixpkgs,
-    dotpkgs,
     nixos-hardware,
     home-manager,
     hyprland,
@@ -34,7 +31,12 @@
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+    dotpkgs = (import ./packages/flake.nix).outputs inputs;
   in {
+    # dotpkgs is not used as a subflake because there
+    # are locking issues with subflakes, and this works fine
+    inherit (dotpkgs) packages homeManagerModules;
+
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {
         inherit system;
@@ -46,6 +48,11 @@
           ./system/powersave.nix
           ./system/greeter.nix
         ];
+
+        specialArgs = {
+          inherit inputs;
+          inherit dotpkgs;
+        };
       };
     };
     homeConfigurations = {
@@ -60,6 +67,7 @@
 
         extraSpecialArgs = {
           inherit inputs;
+          inherit dotpkgs;
         };
       };
     };
