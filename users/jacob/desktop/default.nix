@@ -34,9 +34,13 @@
 
     # prepend the config with more exec lines,
     # for starting swayidle
-    extraConfig = ''
-      exec-once=${lib.getExe pkgs.swayidle}
-    '' + builtins.readFile ./configs/hyprland.conf;
+    extraConfig = lib.concatStringsSep "\n\n" [
+      "exec-once=${lib.getExe pkgs.swayidle}"
+      (builtins.readFile ./configs/hyprland/hyprland.conf)
+      (builtins.readFile ./configs/hyprland/displays.conf)
+      (builtins.readFile ./configs/hyprland/keybinds.conf)
+      (builtins.readFile ./configs/hyprland/windowrules.conf)
+    ];
   };
 
   # create a service for swaybg that sets a wallpaper randomly
