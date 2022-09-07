@@ -20,26 +20,34 @@ args @ { config, pkgs, nixpkgs, ... }: {
     options = "--delete-older-than 7d";
   };
 
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.initrd.availableKernelModules = [
-    "nvme"
-    "ehci_pci"
-    "xhci_pci"
-    "usb_storage"
-    "usbhid"
-    "sd_mod"
-    "rtsx_pci_sdmmc"
-  ];
 
-  boot.loader = {
-    systemd-boot.enable = true;
-    systemd-boot.editor = false;
-    systemd-boot.configurationLimit = 5;
 
-    timeout = 1;
+  boot = {
+    kernelModules = [ "kvm-amd" ];
 
-    efi.efiSysMountPoint = "/boot";
-    efi.canTouchEfiVariables = true;
+    # make the boot quiet and enable the plymouth splash
+    plymouth.enable = true;
+    consoleLogLevel = 3;
+    kernelParams = [ "quiet" "vt.global_cursor_default=0" ];
+    initrd.verbose = false;
+
+    initrd.availableKernelModules = [
+      "nvme" "ehci_pci" "xhci_pci" "usb_storage"
+      "usbhid" "sd_mod" "rtsx_pci_sdmmc"
+    ];
+
+    initrd.systemd.enable = true;
+
+    loader = {
+      systemd-boot.enable = true;
+      systemd-boot.editor = false;
+      systemd-boot.configurationLimit = 5;
+
+      timeout = 1;
+
+      efi.efiSysMountPoint = "/boot";
+      efi.canTouchEfiVariables = true;
+    };
   };
 
   networking = {
@@ -120,15 +128,19 @@ args @ { config, pkgs, nixpkgs, ... }: {
 
   # locale and timezone
   time.timeZone = "America/Phoenix";
-  i18n.defaultLocale = "en_US.utf8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
   console = {
+    keyMap = "us";
     font = "Lat2-Terminus16";
-    useXkbConfig = true;
+    earlySetup = true;
   };
 
   # default packages that are good to have on any system
   environment.systemPackages = import ./packages.nix args;
+
+  # allow users to mount fuse filesystems with allow_other
+  programs.fuse.userAllowOther = true;
 
   fonts = {
     fontconfig.enable = true;

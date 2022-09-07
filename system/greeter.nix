@@ -8,7 +8,14 @@
     vt = 2;
     settings = {
       default_session = {
-        command = "${lib.getExe pkgs.greetd.tuigreet} --time --remember --remember-user-session --asterisks --cmd Hyprland";
+        command = ''
+          ${lib.getExe pkgs.greetd.tuigreet} \
+            --time \
+            --remember \
+            --remember-user-session \
+            --asterisks \
+            --cmd 'Hyprland &>/dev/null'
+        '';
         user = "greeter";
       };
     };
