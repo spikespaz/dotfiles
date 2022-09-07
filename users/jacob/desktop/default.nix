@@ -1,6 +1,8 @@
-{ config, pkgs, lib, ... }: {
+{ config, lib, pkgs, inputs, ... }: {
   imports = [
     ./theming.nix
+    inputs.dotpkgs.homeManagerModules.randbg
+    inputs.dotpkgs.homeManagerModules.idlehack
   ];
 
   home.packages = [
@@ -43,33 +45,12 @@
     ];
   };
 
-  # create a service for swaybg that sets a wallpaper randomly
-  systemd.user.services.random-wallpaper = let
-    # 25% chance to change the wallpaper on each hour
-    interval = 1 * 60 * 60;
+  # randomly cycle the wallpaper every hour with a 25% chance
+  services.randbg = {
+    enable = true;
+    interval = 60 * 60;
     chance = 25;
-    img_dir = "${config.home.homeDirectory}/Pictures/Wallpapers";
-  in{
-    Unit = {
-      Description = "wayland random wallpaper utility";
-      PartOf = "graphical-session.target";
-    };
-    Service = {
-      Type = "notify";
-      NotifyAccess = "all";  # because of a bug?
-      Environment = ''
-        PATH=${with pkgs; lib.makeBinPath [
-          systemd coreutils procps findutils swaybg
-        ]}
-      '';
-      ExecStart = ''
-        ${./scripts/wallpaper.sh} \
-          ${toString interval} ${toString chance} '${img_dir}'
-      '';
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
-    Install.WantedBy = [ "hyprland-session.target" ];
+    directory = "${config.home.homeDirectory}/Pictures/Wallpapers";
   };
 
   # screenshot utility

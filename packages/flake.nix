@@ -20,6 +20,7 @@
 
     homeManagerModules = {
       idlehack = import ./idlehack/hm-module.nix self;
+      randbg = import ./randbg/hm-module.nix self;
     };
   };
 }
