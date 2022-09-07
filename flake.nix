@@ -59,10 +59,12 @@
       jacob = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
-        modules = [
-          hyprland.homeManagerModules.default
+        modules = let
+          desktops = import ./users/jacob/desktops;
+        in [
           ./users/jacob/profile.nix
-	        ./users/jacob/desktop
+	        desktops.hyprland
+	        desktops.software
         ];
 
         extraSpecialArgs = {

@@ -4,6 +4,7 @@
 # <https://search.nixos.org/packages>
 args @ { config, pkgs, nixpkgs, inputs, ... }: let
   programs = import ./programs args;
+  services = import ./services.nix args;
 in {
   ################
   ### PREAMBLE ###
@@ -36,57 +37,14 @@ in {
   home.sessionVariables = {
     # gtk applications should use filepickers specified by xdg
     GTK_USE_PORTAL = "1";
-    # firefox and mozilla software expect wayland
-    MOZ_ENABLE_WAYLAND = "1";
   };
 
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
-    # things that should possibly be a part of the desktop environment
-    qalculate-gtk
-    onedrive
-
-    # google-fonts
-    (nerdfonts.override {
-      fonts = [
-        "Iosevka"
-        "FiraCode"
-        "JetBrainsMono"
-        "FantasqueSansMono"
-      ];
-    })
-
-    ###########################
-    ### DESKTOP ENVIRONMENT ###
-    ###########################
-
-    # Device Configuration
-    lxqt.pavucontrol-qt  # Pulse Audio Volume Control
-    system-config-printer
-
-    # Dolphin File Manager
-    libsForQt5.dolphin
-    libsForQt5.dolphin-plugins
-    libsForQt5.kio-extras
-    libsForQt5.ffmpegthumbs  # Video Thumbnails
-    libsForQt5.kimageformats  # Proprieary Image Formats
-    resvg  # SVG Thumbnails
-    taglib  # Audio File Tags
-    libsForQt5.ark  # Archive GUI
-
-    # KDE Utilities
-    libsForQt5.kcolorchooser  # Color Chooser
-    libsForQt5.kate  # Text Editor
-    libsForQt5.kdf  # Disk Usage
-    libsForQt5.kompare  # Difference Viewer
-    libsForQt5.okular  # Document Viewer
-    libsForQt5.print-manager  # Print Manager
-    libsForQt5.skanlite  # Lightweight Document Scanner
-
-    # LXQT Utilities
-    lxqt.lximage-qt  # Image Viewer
-  ];
+  # should already be enabled at system level
+  # fontconfig required to make user-fonts by name
+  # todo: figure out how to make ~/.local/share/fonts
+  fonts.fontconfig.enable = true;
 
   imports = [
     ##############################
@@ -134,5 +92,15 @@ in {
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
     programs.neofetch
     programs.nix-index
+
+    ##############################
+    ### USER-SPECIFIC SERVICES ###
+    ##############################
+
+    ### FILE SYNCHRONIZATION ###
+    services.onedrive
+
+    ### DEVICE MANAGEMENT ###
+    # services.udiskie
   ];
 }

@@ -1,5 +1,9 @@
 { pkgs, inputs, ... }: {
   home.packages = with pkgs; [
+    ### FONTS ###
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+
+    ### LANGUAGE SERVERS ###
     # Perl Language Server
     perlPackages.PLS
     # Nix Language Server
