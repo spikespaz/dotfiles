@@ -22,7 +22,7 @@ in {
       interval = lib.mkOption {
         type = lib.types.ints.positive;
         default = 30 * 60;
-        defaultText = lib.literalDocBook "`30 * 60` seconds";
+        defaultText = lib.mdDoc "`30 * 60` seconds";
         description = ''
           The time interval between wallpaper cycles, in seconds.
         '';
@@ -31,7 +31,7 @@ in {
       chance = lib.mkOption {
         type = lib.types.ints.between 1 100;
         default = 25;
-        defaultText = lib.literalDocBook "`25` percent chance";
+        defaultText = lib.mdDoc "`25` percent chance";
         description = ''
           The percentage chance that the wallpaper will change
           after each interval.
