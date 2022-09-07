@@ -42,6 +42,10 @@ while [ $# -gt 0 ]; do
       new_lockfile=1
       shift
       ;;
+    --)
+      shift
+      break
+      ;;
     *)
       fail
       ;;
@@ -57,9 +61,7 @@ fi
 if [ $update_system -eq 1 ]; then
   label "UPDATING SYSTEM"
 
-  module="path:$here#"
-  
-  sudo nixos-rebuild switch --flake $module
+  sudo nixos-rebuild switch --flake "path:$here#" $@
 fi
 
 if [ $update_user -eq 1 ]; then
@@ -71,6 +73,6 @@ if [ $update_user -eq 1 ]; then
 
   module="path:$here#homeConfigurations.$user.activationPackage"
 
-  nix build --no-link $module
+  nix build --no-link $module $@
   "$(nix path-info $module)/activate"
 fi
