@@ -16,8 +16,8 @@
   src = fetchFromGitHub {
     owner = "loops";
     repo = "idlehack";
-    rev = "298336d4609b328d71a1b460d4c241fd344be79d";
-    sha256 = "sha256-ZG52/jwtqxUh+R/+hcmqNEVGAtaZbDg3I6xIokMS3+A=";
+    rev = "fd73c76c2d289f9eb9ad9b0695fa9e9f151be22f";
+    sha256 = "sha256-vURFnGid52F1Jy5S9O3LRskzzxeyMzlhbwdEYQrUvWc=";
   };
 
   strictDeps = true;
@@ -42,7 +42,7 @@
       disabling the screen blanking.
     '';
     inherit (src.meta) homepage;
-    license = licenses.mit;
+    license = licenses.isc;
     platforms = platforms.linux;
     maintainers = with import ../maintainers.nix; [ spikespaz ];
   };
