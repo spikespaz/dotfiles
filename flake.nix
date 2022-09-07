@@ -23,6 +23,7 @@
   };
 
   outputs = inputs @ {
+    self,
     nixpkgs,
     nixos-hardware,
     home-manager,
@@ -31,11 +32,15 @@
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    dotpkgs = (import ./packages/flake.nix).outputs inputs;
+    dotpkgs_flake = (import ./packages/flake.nix).outputs inputs;
+    dotpkgs = {
+      pkgs = self.packages.${system};
+      inherit (self) homeManagerModules;
+    };
   in {
     # dotpkgs is not used as a subflake because there
     # are locking issues with subflakes, and this works fine
-    inherit (dotpkgs) packages homeManagerModules;
+    inherit (dotpkgs_flake) packages homeManagerModules;
 
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {

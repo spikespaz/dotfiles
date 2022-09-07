@@ -48,6 +48,8 @@
 
   obs-studio = {
     programs.obs-studio.enable = true;
+    # needed for screen selection on wayland
+    home.packages = [ pkgs.slurp ];
   };
 
   #################################

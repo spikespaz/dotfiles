@@ -16,6 +16,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       idlehack = pkgs.callPackage ./idlehack {};
+      prtsc = pkgs.callPackage ./prtsc {};
     });
 
     homeManagerModules = {

@@ -1,12 +1,11 @@
-{ lib, pkgs, inputs, ... }: {
+{ lib, pkgs, inputs, dotpkgs, ... }: {
   imports = [
     inputs.hyprland.homeManagerModules.default
   ];
 
   home.packages = [
     # Screen Capture
-    pkgs.grim
-    pkgs.slurp
+    dotpkgs.pkgs.prtsc
   ];
 
   wayland.windowManager.hyprland = {
@@ -26,12 +25,5 @@
       (builtins.readFile ./keybinds.conf)
       (builtins.readFile ./windowrules.conf)
     ];
-  };
-
-  # screenshot utility
-  # this is an exec bind in hyprland config
-  xdg.configFile."hypr/prtsc.pl" = {
-    source = ./prtsc.pl;
-    executable = true;
   };
 }
