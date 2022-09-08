@@ -23,7 +23,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
   console = {
     keyMap = "us";
     font = "Lat2-Terminus16";
-    # earlySetup = true;
+    earlySetup = true;
   };
 
   # systemd pivots to ramfs on shutdown
