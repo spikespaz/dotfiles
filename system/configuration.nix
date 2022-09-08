@@ -147,8 +147,16 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
   # cross-desktop group; they make specifications
   # for what ceratin environment variables should be
   # <https://github.com/fufexan/dotfiles/blob/785b65436f5849a8dea175d967d901159f689edd/modules/desktop.nix#L153>
-  xdg.portal.enable = true;
-  xdg.portal.wlr.enable = true;
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    # lxqt.enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      # xdg-desktop-portal-gnome
+      # libsForQt5.xdg-desktop-portal-kde
+    ];
+  };
 
   # <https://github.com/swaywm/swaylock/blob/master/pam/swaylock>
   security.pam.services.swaylock.text = "auth include login";
