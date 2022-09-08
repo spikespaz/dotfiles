@@ -43,6 +43,10 @@
     "workbench.list.smoothScrolling" = true;
     # blink the cursor in terminal
     "terminal.integrated.cursorBlinking" = true;
+    # line style cursor in terminal
+    "terminal.integrated.cursorStyle" = "line";
+    # fix fuzzy text in integrated terminal
+    "terminal.integrated.gpuAcceleration" = "on";
     
     ## VCS Behavior ##
 
