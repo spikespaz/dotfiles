@@ -46,7 +46,15 @@ in {
   # todo: figure out how to make ~/.local/share/fonts
   fonts.fontconfig.enable = true;
 
+  home.sessionVariables = {
+    BROWSER = "firefox";
+    TERMINAL = "alacritty";
+  };
+
   imports = [
+    # set the default programs
+    ./mimeapps.nix
+
     ##############################
     ### USER-SPECIFIC SOFTWARE ###
     ##############################
