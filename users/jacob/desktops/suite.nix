@@ -27,6 +27,9 @@
     libsForQt5.print-manager  # Print Manager
     libsForQt5.skanlite  # Lightweight Document Scanner
 
+    # Video Player
+    haruna
+
     # LXQT Utilities
     lxqt.lximage-qt  # Image Viewer
 
