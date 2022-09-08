@@ -18,6 +18,7 @@
       fastfetch = pkgs.callPackage ./fastfetch {};
       idlehack = pkgs.callPackage ./idlehack {};
       prtsc = pkgs.callPackage ./prtsc {};
+      plymouth-themes = pkgs.callPackage ./plymouth-themes {};
     });
 
     homeManagerModules = {
