@@ -24,6 +24,7 @@
 
   ### SYSTEM DEVICES ###
   v4l-utils  # proprietary media hardware and encoding
+  pciutils  # utilities for pci and pcie devices
 
   ### STORAGE DEVICE DRIVERS ###
   cryptsetup
