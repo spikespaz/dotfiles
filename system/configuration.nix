@@ -1,4 +1,4 @@
-args @ { config, pkgs, nixpkgs, ... }: {
+args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
   nixpkgs.config = {
     # allow packages that have proprietary licenses
     allowUnfree = true;
@@ -20,22 +20,55 @@ args @ { config, pkgs, nixpkgs, ... }: {
     options = "--delete-older-than 7d";
   };
 
+  console = {
+    keyMap = "us";
+    font = "Lat2-Terminus16";
+    # earlySetup = true;
+  };
 
+  # systemd pivots to ramfs on shutdown
+  # this is so that the root fs can be unmounted safely
+  # it is not worth my time, I live on the edge
+  # systemd.shutdownRamfs.enable = false;
 
   boot = {
     kernelModules = [ "kvm-amd" ];
 
-    # make the boot quiet and enable the plymouth splash
-    plymouth.enable = true;
-    consoleLogLevel = 3;
-    kernelParams = [ "quiet" "vt.global_cursor_default=0" ];
-    initrd.verbose = false;
+    # configure plymouth theme
+    # <https://github.com/adi1090x/plymouth-themes>
+    plymouth = let
+      pack = 3;
+      theme = "hud_3";
+    in {
+      enable = true;
+      themePackages = [
+        (dotpkgs.pkgs.plymouth-themes.override { inherit pack theme; })
+      ];
+      inherit theme;
+    };
 
+    # make the boot quiet
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    
+    kernelParams = [
+      "amdgpu"
+      "fbcon=nodefer"
+      "logo.nologo"
+      "quiet"
+      "rd.systemd.show_status=auto"
+      "rd.udev.log_level=3"
+      "vt.global_cursor_default=0"
+      "vt.handoff=7"
+    ];
+
+    initrd.kernelModules = [ "amdgpu" "nvme" ];
     initrd.availableKernelModules = [
-      "nvme" "ehci_pci" "xhci_pci" "usb_storage"
+      "ehci_pci" "xhci_pci" "usb_storage"
       "usbhid" "sd_mod" "rtsx_pci_sdmmc"
     ];
 
+    initrd.systemd.strip = false;
     initrd.systemd.enable = true;
 
     loader = {
@@ -43,7 +76,8 @@ args @ { config, pkgs, nixpkgs, ... }: {
       systemd-boot.editor = false;
       systemd-boot.configurationLimit = 5;
 
-      timeout = 1;
+      # need to hold space to get the boot menu to appear
+      timeout = 0;
 
       efi.efiSysMountPoint = "/boot";
       efi.canTouchEfiVariables = true;
@@ -129,12 +163,6 @@ args @ { config, pkgs, nixpkgs, ... }: {
   # locale and timezone
   time.timeZone = "America/Phoenix";
   i18n.defaultLocale = "en_US.UTF-8";
-
-  console = {
-    keyMap = "us";
-    font = "Lat2-Terminus16";
-    earlySetup = true;
-  };
 
   # default packages that are good to have on any system
   environment.systemPackages = import ./packages.nix args;
