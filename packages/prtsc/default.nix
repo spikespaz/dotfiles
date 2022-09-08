@@ -14,21 +14,19 @@
   src = ./.;
 
   strictDeps = true;
-  # buildInputs = [ perl ];
   nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
     runHook preInstall
-    install -Dm755 ./prtsc.pl $out/bin/prtsc
-    wrapProgram $out/bin/prtsc \
-      --set PATH \
-      "${lib.makeBinPath ([
-        perl
-        wl-clipboard
-        slurp
-        grim
-      ])}"
+    install -Dm755 ./prtsc.pl $out/bin/prtsc.pl
     runHook postInstall
+  '';
+
+  postInstall = ''
+    makeWrapper ${lib.getExe perl} $out/bin/prtsc \
+      --add-flags "$out/bin/prtsc.pl" \
+      --set PATH \
+      "${lib.makeBinPath [ wl-clipboard slurp grim ]}"
   '';
 
   meta = with lib; {

@@ -15,7 +15,7 @@
 
   src = fetchFromGitHub {
     owner = "loops";
-    repo = "idlehack";
+    repo = pname;
     rev = "fd73c76c2d289f9eb9ad9b0695fa9e9f151be22f";
     sha256 = "sha256-vURFnGid52F1Jy5S9O3LRskzzxeyMzlhbwdEYQrUvWc=";
   };
