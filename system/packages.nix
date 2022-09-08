@@ -1,9 +1,10 @@
-{ pkgs, ... }: with pkgs; [
+{ pkgs, dotpkgs, ... }: with pkgs; [
   ##################
   ### ESSENTIALS ###
   ##################
 
   ### CLI UTILITIES ###
+  dotpkgs.pkgs.fastfetch # neofetch but made in c
   btop  # system process monitor
   tree  # directory tree listing
   wget  # simple downloader utility

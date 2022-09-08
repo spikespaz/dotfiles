@@ -15,6 +15,7 @@
     packages = genSystems (system: let
       pkgs = nixpkgs.legacyPackages.${system};
     in {
+      fastfetch = pkgs.callPackage ./fastfetch {};
       idlehack = pkgs.callPackage ./idlehack {};
       prtsc = pkgs.callPackage ./prtsc {};
     });
