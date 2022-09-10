@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs, inputs, ... }: {
+{ pkgs, nixpkgs, dotpkgs, inputs, ... }: {
   ####################
   ### WEB BROWSERS ###
   ####################
@@ -116,6 +116,12 @@
       enable = true;
       bashrcExtra = "source '${pkgs.blesh}/share/ble.sh'";
       historyIgnore = [ "reboot" "exit" ];
+    };
+  };
+  zsh = {
+    imports = [ dotpkgs.homeManagerModules.zsh-uncruft ];
+    programs.zsh-uncruft = {
+      enable = true;
     };
   };
 

@@ -90,6 +90,7 @@ in {
 
     ### SHELL ENVIRONMENTS ###
     programs.bash
+    programs.zsh
 
     ### CLI UTILITIES ###
     programs.bat

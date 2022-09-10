@@ -24,6 +24,7 @@
     homeManagerModules = {
       idlehack = import ./idlehack/hm-module.nix self;
       randbg = import ./randbg/hm-module.nix self;
+      zsh-uncruft = import ./zsh-uncruft/hm-module.nix self;
     };
   };
 }
