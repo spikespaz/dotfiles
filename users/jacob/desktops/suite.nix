@@ -35,5 +35,6 @@
 
     # Generic Utilities
     qalculate-gtk
+    font-manager
   ];
 }
