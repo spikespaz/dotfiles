@@ -3,14 +3,13 @@ self: { config, lib, pkgs, ... }: let
     An alternative to the Home Manager ZSH module.
   '';
   cfg = config.programs.zsh-uncruft;
+  inherit (lib) types;
 in {
   imports = [
     ./znap.nix
   ];
 
-  options = let
-    inherit (lib) types;
-  in {
+  options = {
     programs.zsh-uncruft = {
       enable = lib.mkEnableOption description;
 
@@ -47,7 +46,40 @@ in {
         '';
       };
 
-      zshrc = lib.mkOption {
+      zshrc.preInit = lib.mkOption {
+        type = types.str;
+        default = "";
+        example = lib.literalExpression ''
+          "TODO"
+        '';
+        description = lib.mdDoc ''
+          TODO
+        '';
+      };
+
+      zshrc.init = lib.mkOption {
+        type = types.str;
+        default = "";
+        example = lib.literalExpression ''
+          "TODO"
+        '';
+        description = lib.mdDoc ''
+          TODO
+        '';
+      };
+
+      zshrc.postInit = lib.mkOption {
+        type = types.str;
+        default = "";
+        example = lib.literalExpression ''
+          "TODO"
+        '';
+        description = lib.mdDoc ''
+          TODO
+        '';
+      };
+
+      zshrc.main = lib.mkOption {
         type = types.str;
         default = "";
         example = lib.literalExpression ''
@@ -104,23 +136,43 @@ in {
       home.file."${config.home.homeDirectory}/.zshenv".text = lib.mkAfter ''
         source '${cfg.zdotdir}/.zshenv'
       '';
-      home.file."${cfg.zdotdir}/.zshenv".text = cfg.zshenv;
+      home.file."${cfg.zdotdir}/.zshenv".text =
+        lib.mkOrder 1000 cfg.zshenv;
     })
 
     (lib.mkIf (cfg.zprofile != "") {
-      home.file."${cfg.zdotdir}/.zprofile".text = cfg.zprofile;
+      home.file."${cfg.zdotdir}/.zprofile".text =
+        lib.mkOrder 1000 cfg.zprofile;
     })
 
-    (lib.mkIf (cfg.zshrc != "") {
-      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 1000 cfg.zshrc;
+    (lib.mkIf (cfg.zshrc.preInit != "") {
+      home.file."${cfg.zdotdir}/.zshrc".text =
+        lib.mkOrder 700 cfg.zshrc.preInit;
+    })
+
+    (lib.mkIf (cfg.zshrc.init != "") {
+      home.file."${cfg.zdotdir}/.zshrc".text =
+        lib.mkOrder 800 cfg.zshrc.init;
+    })
+
+    (lib.mkIf (cfg.zshrc.postInit != "") {
+      home.file."${cfg.zdotdir}/.zshrc".text =
+        lib.mkOrder 900 cfg.zshrc.postInit;
+    })
+
+    (lib.mkIf (cfg.zshrc.main != "") {
+      home.file."${cfg.zdotdir}/.zshrc".text =
+        lib.mkOrder 1000 cfg.zshrc.main;
     })
 
     (lib.mkIf (cfg.zlogin != "") {
-      home.file."${cfg.zdotdir}/.zlogin".text = cfg.zlogin;
+      home.file."${cfg.zdotdir}/.zlogin".text =
+        lib.mkOrder 1000 cfg.zlogin;
     })
 
     (lib.mkIf (cfg.zlogout != "") {
-      home.file."${cfg.zdotdir}/.zlogout".text = cfg.zlogout;
+      home.file."${cfg.zdotdir}/.zlogout".text =
+        lib.mkOrder 1000 cfg.zlogout;
     })
   ]);
 }

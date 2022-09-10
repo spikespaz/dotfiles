@@ -4,10 +4,10 @@
     <https://github.com/marlonrichert/zsh-snap>
   '';
   cfg = config.programs.zsh-uncruft;
+  znap = cfg.znap;
+  inherit (lib) types;
 in {
-  options = let
-    inherit (lib) types;
-  in {
+  options = {
     programs.zsh-uncruft.znap = {
       enable = lib.mkEnableOption description;
 
@@ -67,37 +67,45 @@ in {
     };
   };
 
-  config = with cfg.znap; lib.mkIf enable (
-    let
+  # While these sections are technically part of the init stage,
+  # they are order 700+-50 to ensure that the user-defined
+  # init stage ends up right in the middle.
+  config = lib.mkIf znap.enable (lib.mkMerge [
+    # The plugin manager needs to be available during init,
+    # but right after preInit, so it has an order of 750.
+    (let
       gitUrl = "https://github.com/marlonrichert/zsh-snap";
-      scriptPath = "${cfg.znap.pluginsDir}/zsh-snap/znap.zsh";
-      lastUpdateFile = "${pluginsDir}/.last_update";
+      scriptPath = "${znap.pluginsDir}/zsh-snap/znap.zsh";
     in {
-      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 900 ''
-        [[ ! -d '${pluginsDir}' ]] &&
-          mkdir -p '${pluginsDir}'
-
-        ${lib.optionalString autoUpdate ''
-          [[ ! -f '${lastUpdateFile}' ]] &&
-            echo 0 >'${lastUpdateFile}'
-        ''}
+      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 750 ''
+        [[ ! -d '${znap.pluginsDir}' ]] &&
+          mkdir -p '${znap.pluginsDir}'
 
         [[ ! -f '${scriptPath}' ]] &&
           git clone '${gitUrl}' '${dirOf scriptPath}'
 
         source '${scriptPath}'
-
-        ${lib.optionalString autoUpdate ''
-          local time_last_update="$(cat '${lastUpdateFile}')"
-          local time_now="$(date '+%s')"
-          local time_next_update="$((last_update + ${toString autoUpdateInterval}))"
-
-          if [[ "$time_now" -ge "$time_next_update" ]]; then
-            znap pull
-            echo "$time_now" >'${lastUpdateFile}'
-          fi
-        ''}
       '';
-    }
-  );
+    })
+    # We don't want to update plugins before the user has
+    # ran their initialization, that would be annoying if they try to
+    # initialize an instant prompt. Order 850.
+    (lib.mkIf znap.autoUpdate (let
+      lastUpdateFile = "${znap.pluginsDir}/.last_update";
+    in {
+      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 850 ''
+        [[ ! -f '${lastUpdateFile}' ]] &&
+          echo 0 >'${lastUpdateFile}'
+
+        local time_last_update="$(cat '${lastUpdateFile}')"
+        local time_now="$(date '+%s')"
+        local time_next_update="$((last_update + ${toString znap.autoUpdateInterval}))"
+
+        if [[ "$time_now" -ge "$time_next_update" ]]; then
+          znap pull
+          echo "$time_now" >'${lastUpdateFile}'
+        fi
+      '';
+    }))
+  ]);
 }
