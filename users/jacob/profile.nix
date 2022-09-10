@@ -2,7 +2,7 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-args @ { config, pkgs, nixpkgs, inputs, ... }: let
+args @ { config, lib, pkgs, nixpkgs, inputs, ... }: let
   programs = import ./programs args;
   services = import ./services.nix args;
 in {
@@ -49,6 +49,11 @@ in {
   home.sessionVariables = {
     BROWSER = "firefox";
     TERMINAL = "alacritty";
+  };
+
+  programs.alacritty.settings.shell = {
+    program = "${lib.getExe pkgs.zsh}";
+    args = [ "--login" ];
   };
 
   imports = [
