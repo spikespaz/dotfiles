@@ -122,6 +122,8 @@
     imports = [ dotpkgs.homeManagerModules.zsh-uncruft ];
     programs.zsh-uncruft = {
       enable = true;
+      znap.enable = true;
+      znap.autoUpdate = true;
     };
   };
 
