@@ -26,6 +26,7 @@ in {
   character = {
     success_symbol = "[](${gruvbox.aqua})";
     error_symbol = "[](${gruvbox.orange})";
+    vicmd_symbol = "[](${gruvbox.purple})";
   };
 
   continuation_prompt = "[﬌](${gruvbox.gray}) ";
@@ -33,6 +34,7 @@ in {
   status = {
     disabled = false;
     format = "[$status]($style) ";
+    style = "bold ${gruvbox.red}";
     recognize_signal_code = false;
   };
 
