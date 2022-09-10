@@ -4,12 +4,12 @@ set -e
 here="$(dirname $0)"
 
 fail () {
-  printf
+  printf ''
   printf 'Incorrect arguments, did you make a typo?\n'
-  printf
+  printf ''
   printf "Usage: $(basename $0) [[-]s|[--]system] [[-]u|[--]user [<name>]] [-l|--lock]\n"
-  printf "The `--lock` option deletes '$(here)/flake.lock', take care!\n"
-  printf
+  printf "The '--lock' option renames '$here/flake.lock', take care!\n"
+  printf ''
   exit 1
 }
 
