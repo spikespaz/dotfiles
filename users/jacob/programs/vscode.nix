@@ -25,7 +25,7 @@
     ## Appearances ##
 
     # the most important setting
-    "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
+    "editor.fontFamily" = "JetBrainsMono Nerd Font";
     "editor.fontSize" = 14;
 
     # scale the ui down
