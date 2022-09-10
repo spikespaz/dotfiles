@@ -40,7 +40,7 @@ in {
   scrolling.history = 100000;
 
   font = {
-    normal.family = "JetBrainsMono Nerd Font Mono";
+    normal.family = "JetBrainsMono Nerd Font";
     size = 9;
   };
 
