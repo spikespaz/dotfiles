@@ -30,6 +30,12 @@ in {
 
   continuation_prompt = "[﬌](${gruvbox.gray}) ";
 
+  status = {
+    disabled = false;
+    format = "[$status]($style) ";
+    recognize_signal_code = false;
+  };
+
   format = lib.concatStrings [
     "($directory${sep.right})"
     "($git_branch${sep.right})"
@@ -40,6 +46,7 @@ in {
     "(${sep.left}$battery)"
     "(${sep.left}$memory_usage)"
     "$line_break"
+    "($status)"
     "$character"
   ];
 
