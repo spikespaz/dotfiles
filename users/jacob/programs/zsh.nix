@@ -1,5 +1,14 @@
-{ config, lib, pkgs, dotpkgs, ... }: {
+args @ { config, lib, pkgs, dotpkgs, ... }: {
   imports = [ dotpkgs.homeManagerModules.zsh-uncruft ];
+
+  programs.starship = {
+    enable = true;
+    settings = import ./starship.nix args;
+    enableBashIntegration = lib.mkDefault false;
+    enableFishIntegration = lib.mkDefault false;
+    enableIonIntegration = lib.mkDefault false;
+    enableZshIntegration = lib.mkDefault false;
+  };
 
   programs.zsh-uncruft = {
     znap.enable = true;
@@ -13,13 +22,5 @@
       znap source zsh-users/zsh-autosuggestions
       znap source zsh-users/zsh-syntax-highlighting
     '';
-  };
-
-  programs.starship = {
-    enable = true;
-    settings = {
-      scan_timeout = 100;
-      command_timeout = 1000;
-    };
   };
 }
