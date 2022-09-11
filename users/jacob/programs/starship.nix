@@ -137,51 +137,47 @@ in {
 
   battery = {
     format = " [$symbol $percentage](bold $style)";
-    full_symbol = "";
-    charging_symbol = "⚡";
-    discharging_symbol = "";
     unknown_symbol = " ";  # when docked
-    empty_symbol = "";
-    display =  [
+    display = [
       {
         threshold = 10; style = "${colors.red}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 20; style = "${colors.red}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 30; style = "${colors.orange}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 40; style = "${colors.orange}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 50; style = "${colors.yellow}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 60; style = "${colors.yellow}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 70; style = "${colors.yellow}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 80; style = "${colors.green}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 90; style = "${colors.green}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
       {
         threshold = 100; style = "${colors.green}";
-        charging_symbol = "⚡"; discharging_symbol = "";
+        charging_symbol = ""; discharging_symbol = "";
       }
     ];
   };
