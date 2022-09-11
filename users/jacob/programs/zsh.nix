@@ -29,29 +29,38 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
       znap eval starship '${lib.getExe pkgs.starship} init zsh --print-full-init'
       znap prompt
 
-      HISTSIZE=1000000
-      SAVEHIST=$HISTSIZE
+      ### COMPLETION ###
 
-      # completion
       setopt AUTO_CD
       setopt ALWAYS_TO_END
-      # globbing
+      
+      ### GLOBBING ###
+
       setopt BAD_PATTERN
       setopt EXTENDED_GLOB
       setopt GLOB_DOTS
       setopt GLOB_STAR_SHORT
       setopt NULL_GLOB
-      # history
+      
+      ### HISTORY ###
+
+      HISTSIZE=1000000
+      SAVEHIST=$HISTSIZE
+
       setopt EXTENDED_HISTORY
       setopt HIST_FCNTL_LOCK
       setopt HIST_IGNORE_ALL_DUPS
       setopt HIST_REDUCE_BLANKS
       setopt HIST_SAVE_NO_DUPS
       setopt SHARE_HISTORY
-      # interaction
+
+      ### INTERACTION ###
+      
       setopt INTERACTIVE_COMMENTS
       setopt RM_STAR_SILENT
-      # line editor
+      
+      ### LINE EDITOR ###
+
       setopt VI
     '';
 
