@@ -16,8 +16,8 @@
     fg2 = "#bdae93";
   };
   sep = {
-    left = " [](${gruvbox.fg2})";
-    right = "[](${gruvbox.fg2}) ";
+    left = " [](${gruvbox.fg3})";
+    right = "[](${gruvbox.fg3}) ";
   };
 in {
   scan_timeout = 100;
@@ -103,7 +103,7 @@ in {
 
   fill = {
     symbol = "·";
-    style = "${gruvbox.bg2}";
+    style = "${gruvbox.bg3}";
   };
 
   battery = {
@@ -160,7 +160,7 @@ in {
   memory_usage = {
     disabled = false;
     threshold = 0;
-    format = " [ $ram]($style)";
+    style = "bold ${gruvbox.fg2}";
   };
 
   cmd_duration = {
@@ -168,15 +168,15 @@ in {
     show_notifications = true;
     min_time_to_notify = 2 * 60 * 1000;
     notification_timeout = 5 * 60 * 1000;
-    format = "[  $duration]($style)";
+    format = " [ $duration]($style)";
   };
 
   git_state = {
     format = lib.concatStrings [
       " "
-      "[\\[](bold ${gruvbox.fg2})"
+      "[\\[](bold ${gruvbox.fg3})"
       "[$state( $progress_current/$progress_total)]($style)"
-      "[\\]](bold ${gruvbox.fg2})"
+      "[\\]](bold ${gruvbox.fg3})"
     ];
     style = "underline bold ${gruvbox.orange}";
     rebase = "REBASE";
