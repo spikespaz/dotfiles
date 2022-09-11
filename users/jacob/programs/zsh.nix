@@ -21,6 +21,8 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
     '';
     
     zshrc.init = ''
+      ZLE_RPROMPT_INDENT=0
+
       znap eval starship '${lib.getExe pkgs.starship} init zsh --print-full-init'
       znap prompt
 
