@@ -175,5 +175,21 @@ in {
       home.file."${cfg.zdotdir}/.zlogout".text =
         lib.mkOrder 1000 cfg.zlogout;
     })
+
+    {
+      programs.zsh-uncruft.zshrc.preInit = lib.mkBefore ''
+        typeset -U path cdpath fpath manpath
+
+        for profile in ''${(z)NIX_PROFILES}; do
+          fpath+=(
+            "$profile/share/zsh/site-functions"
+            "$profile/share/zsh/$ZSH_VERSION/functions"
+            "$profile/share/zsh/vendor-completions"
+          )
+        done
+
+        HELPDIR="${pkgs.zsh}/share/zsh/$ZSH_VERSION/help"
+      '';
+    }
   ]);
 }
