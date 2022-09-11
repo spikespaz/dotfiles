@@ -70,7 +70,7 @@ in {
   # While these sections are technically part of the init stage,
   # they are order 700+-50 to ensure that the user-defined
   # init stage ends up right in the middle.
-  config = lib.mkIf znap.enable (lib.mkMerge [
+  config = lib.mkIf (cfg.enable && znap.enable) (lib.mkMerge [
     # The plugin manager needs to be available during init,
     # but right after preInit, so it has an order of 750.
     (let
