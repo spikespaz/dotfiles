@@ -87,7 +87,7 @@ in {
   ];
 
   directory = {
-    format = "([$read_only ]($read_only_style))[$path]($style) ";
+    format = "([$read_only]($read_only_style) )[$path]($style) ";
     read_only = "";
     read_only_style = "${colors.orange}";
   };
@@ -107,26 +107,27 @@ in {
 
   git_status = {
     format = lib.concatStrings [
-      "([$stashed](bold ${colors.yellow}) )"
-      "([$renamed](bold ${colors.purple}) )"
-      "([$deleted](bold ${colors.red}) )"
-      "([$modified](bold ${colors.purple}) )"
-      "([$conflicted](bold ${colors.red}) )"
-      "([$ahead](bold ${colors.green}) )"
-      "([$behind](bold ${colors.orange}) )"
-      "([$staged](bold ${colors.aqua}) )"
-      "([$untracked](bold ${colors.orange}) )"
-    ];  
-    conflicted =	" $count";
-    ahead = " $count";
-    behind = " $count";
-    up_to_date = "";
-    untracked = " $count";
-    stashed = " $count";
-    modified = " $count";
-    staged = " $count";
-    renamed = " $count";
-    deleted = " $count";
+      "$ahead_behind"
+      "$stashed"
+      "$conflicted"
+      "$modified"
+      "$renamed"
+      "$deleted"
+      "$staged"
+      "$untracked"
+    ];
+    style = "bold";
+    conflicted =	"[ $count ](bold ${colors.red})";
+    ahead = "[ $count ](bold ${colors.green})";
+    behind = "[ $count ](bold ${colors.orange})";
+    diverged = "[ ](bold ${colors.purple})";
+    up_to_date = "[ ](bold ${colors.aqua})";
+    untracked = "[ $count ](bold ${colors.orange})";
+    stashed = "[ $count ](bold ${colors.yellow})";
+    modified = "[ $count ](bold ${colors.purple})";
+    staged = "[ $count ](bold ${colors.green})";
+    renamed = "[ $count ](bold ${colors.blue})";
+    deleted = "[ $count ](bold ${colors.red})";
     ignore_submodules = false;
   };
 
