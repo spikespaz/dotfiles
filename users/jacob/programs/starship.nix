@@ -121,7 +121,7 @@ in {
     ahead = "[ $count ](bold ${colors.green})";
     behind = "[ $count ](bold ${colors.orange})";
     diverged = "[ ](bold ${colors.purple})";
-    up_to_date = "[ ](bold ${colors.aqua})";
+    up_to_date = "[  ](bold ${colors.aqua})";
     untracked = "[ $count ](bold ${colors.orange})";
     stashed = "[ $count ](bold ${colors.yellow})";
     modified = "[ $count ](bold ${colors.purple})";
