@@ -189,6 +189,9 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     ];
   };
 
+  # enable completions for system packages
+  environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
+
   users.users = {
     jacob = {
       description = "Jacob Birkett";
