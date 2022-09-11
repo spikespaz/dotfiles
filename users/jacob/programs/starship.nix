@@ -1,40 +1,69 @@
 { lib, ... }: let
+  toStringRecur = x:
+    if builtins.isAttrs x
+    then builtins.mapAttrs (_: toStringRecur) x
+    else toString x;
+
   gruvbox = {
-    red = "#fb4934";
-    green = "#b8bb26";
-    yellow = "#fabd2f";
-    blue = "#83a598";
-    purple = "#d3869b";
-    aqua = "#8ec07c";
-    orange = "#fe8019";
-    gray = "#a89984";
-    bg0_s = "#32302f";
-    bg0 = "#282828";
-    bg1 = "#3c3836";
-    bg2 = "#504945";
-    fg4 = "#a89984";
-    fg2 = "#bdae93";
+    normal = {
+      orange = 166;
+      red = 124;
+      green = 106;
+      yellow = 172;
+      blue = 66;
+      purple = 132;
+      aqua = 72;
+      gray = 246;
+    };
+    bright = {
+      orange = 208;
+      red = 167;
+      green = 142;
+      yellow = 214;
+      blue = 109;
+      purple = 175;
+      aqua = 108;
+      gray = 245;
+    };
+    bg = gruvbox.bg0;
+    bg0 = 235;
+    bg0_h = 234;
+    bg0_s = 236;
+    bg1 = 237;
+    bg2 = 239;
+    bg3 = 241;
+    bg4 = 143;
+    fg = gruvbox.fg1;
+    fg0 = 229;
+    fg1 = 223;
+    fg2 = 250;
+    fg3 = 248;
+    fg4 = 246;
+    inherit (gruvbox.bright) orange red green yellow blue purple aqua gray;
   };
+
+  colors = toStringRecur gruvbox;
+
   sep = {
-    left = " [](${gruvbox.fg3})";
-    right = "[](${gruvbox.fg3}) ";
+    left = " [](${colors.fg3})";
+    right = "[](${colors.fg3}) ";
   };
 in {
   scan_timeout = 100;
   command_timeout = 1000;
 
   character = {
-    success_symbol = "[](${gruvbox.aqua})";
-    error_symbol = "[](${gruvbox.orange})";
-    vicmd_symbol = "[](${gruvbox.purple})";
+    success_symbol = "[](${colors.aqua})";
+    error_symbol = "[](${colors.orange})";
+    vicmd_symbol = "[](${colors.purple})";
   };
 
-  continuation_prompt = "[﬌](${gruvbox.gray}) ";
+  continuation_prompt = "[﬌](${colors.gray}) ";
 
   status = {
     disabled = false;
     format = "[$status]($style) ";
-    style = "bold ${gruvbox.red}";
+    style = "bold ${colors.red}";
     recognize_signal_code = false;
   };
 
@@ -60,14 +89,14 @@ in {
   directory = {
     format = "([$read_only ]($read_only_style))[$path]($style) ";
     read_only = "";
-    read_only_style = "${gruvbox.orange}";
+    read_only_style = "${colors.orange}";
   };
 
   git_commit = {
     format = lib.concatStrings [
       "on "
-      "[ $hash ](bold ${gruvbox.aqua})"
-      "([ $tag ](bold ${gruvbox.yellow}))"
+      "[ $hash ](bold ${colors.aqua})"
+      "([ $tag ](bold ${colors.yellow}))"
     ];
     tag_symbol = "";
   };
@@ -78,15 +107,15 @@ in {
 
   git_status = {
     format = lib.concatStrings [
-      "([$stashed](bold ${gruvbox.yellow}) )"
-      "([$renamed](bold ${gruvbox.purple}) )"
-      "([$deleted](bold ${gruvbox.red}) )"
-      "([$modified](bold ${gruvbox.purple}) )"
-      "([$conflicted](bold ${gruvbox.red}) )"
-      "([$ahead](bold ${gruvbox.green}) )"
-      "([$behind](bold ${gruvbox.orange}) )"
-      "([$staged](bold ${gruvbox.aqua}) )"
-      "([$untracked](bold ${gruvbox.orange}) )"
+      "([$stashed](bold ${colors.yellow}) )"
+      "([$renamed](bold ${colors.purple}) )"
+      "([$deleted](bold ${colors.red}) )"
+      "([$modified](bold ${colors.purple}) )"
+      "([$conflicted](bold ${colors.red}) )"
+      "([$ahead](bold ${colors.green}) )"
+      "([$behind](bold ${colors.orange}) )"
+      "([$staged](bold ${colors.aqua}) )"
+      "([$untracked](bold ${colors.orange}) )"
     ];  
     conflicted =	" $count";
     ahead = " $count";
@@ -103,7 +132,7 @@ in {
 
   fill = {
     symbol = "·";
-    style = "${gruvbox.bg3}";
+    style = "${colors.bg3}";
   };
 
   battery = {
@@ -111,47 +140,47 @@ in {
     full_symbol = "";
     charging_symbol = "⚡";
     discharging_symbol = "";
-    unknown_symbol = "";  # when docked
+    unknown_symbol = " ";  # when docked
     empty_symbol = "";
     display =  [
       {
-        threshold = 100; style = "${gruvbox.green}";
+        threshold = 100; style = "${colors.green}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 90; style = "${gruvbox.green}";
+        threshold = 90; style = "${colors.green}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 80; style = "${gruvbox.green}";
+        threshold = 80; style = "${colors.green}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 70; style = "${gruvbox.yellow}";
+        threshold = 70; style = "${colors.yellow}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 60; style = "${gruvbox.yellow}";
+        threshold = 60; style = "${colors.yellow}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 50; style = "${gruvbox.yellow}";
+        threshold = 50; style = "${colors.yellow}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 40; style = "${gruvbox.orange}";
+        threshold = 40; style = "${colors.orange}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 30; style = "${gruvbox.orange}";
+        threshold = 30; style = "${colors.orange}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 20; style = "${gruvbox.red}";
+        threshold = 20; style = "${colors.red}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
       {
-        threshold = 10; style = "${gruvbox.red}";
+        threshold = 10; style = "${colors.red}";
         charging_symbol = "⚡"; discharging_symbol = "";
       }
     ];
@@ -160,7 +189,7 @@ in {
   memory_usage = {
     disabled = false;
     threshold = 0;
-    style = "bold ${gruvbox.fg2}";
+    style = "bold ${colors.fg2}";
   };
 
   cmd_duration = {
@@ -174,11 +203,11 @@ in {
   git_state = {
     format = lib.concatStrings [
       " "
-      "[\\[](bold ${gruvbox.fg3})"
+      "[\\[](bold ${colors.fg3})"
       "[$state( $progress_current/$progress_total)]($style)"
-      "[\\]](bold ${gruvbox.fg3})"
+      "[\\]](bold ${colors.fg3})"
     ];
-    style = "underline bold ${gruvbox.orange}";
+    style = "underline bold ${colors.orange}";
     rebase = "REBASE";
     merge = "MERGE";
     revert = "REVERT";
