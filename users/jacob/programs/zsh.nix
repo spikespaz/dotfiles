@@ -16,6 +16,9 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
     znap.autoUpdate = true;
     znap.autoUpdateInterval = 2 * 7 * 24 * 60 * 60;
 
+    # allow other home manager modules to integrate
+    enableIntegrations = true;
+
     zshrc.preInit = ''
       bindkey '^[[3~' delete-char
     '';
@@ -52,13 +55,6 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
       setopt VI
     '';
 
-    zshrc.postInit = ''
-      ${lib.optionalString true ''
-        source ${pkgs.fzf}/share/fzf/completion.zsh
-        source ${pkgs.fzf}/share/fzf/key-bindings.zsh
-      ''}
-    '';
-    
     zshrc.main = ''
       ### AUTOCOMPLETE ###
 
