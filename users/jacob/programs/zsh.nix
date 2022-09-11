@@ -1,6 +1,8 @@
 args @ { config, lib, pkgs, dotpkgs, ... }: {
   imports = [ dotpkgs.homeManagerModules.zsh-uncruft ];
 
+  home.packages = [ pkgs.most ];
+
   programs.starship = {
     enable = true;
     settings = import ./starship.nix args;
@@ -76,11 +78,19 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
 
       zstyle ':completion:*:paths' path-completion yes
 
-      ### MISCELLANEOUS ###
+      ### AUTOSUGGEST ###
 
       ZSH_AUTOSUGGEST_STRATEGY=(history completion)
       znap source zsh-users/zsh-autosuggestions
+
+      ### SYNTAX HIGHLIGHTING ###
+
       znap source zdharma-continuum/fast-syntax-highlighting
+      
+      PAGER='${lib.getExe pkgs.most}'
+
+      ### MISCELLANEOUS ###
+
       znap source hlissner/zsh-autopair
     '';
   };
