@@ -65,8 +65,9 @@ in {
 
   git_commit = {
     format = lib.concatStrings [
+      "on "
       "[ $hash ](bold ${gruvbox.aqua})"
-      "[ $tag ](bold ${gruvbox.yellow})"
+      "([ $tag ](bold ${gruvbox.yellow}))"
     ];
     tag_symbol = "";
   };
