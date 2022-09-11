@@ -80,7 +80,7 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
 
       ZSH_AUTOSUGGEST_STRATEGY=(history completion)
       znap source zsh-users/zsh-autosuggestions
-      znap source zsh-users/zsh-syntax-highlighting
+      znap source zdharma-continuum/fast-syntax-highlighting
       znap source hlissner/zsh-autopair
     '';
   };
