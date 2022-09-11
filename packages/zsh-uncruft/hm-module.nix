@@ -25,7 +25,7 @@ in {
       };
 
       zshenv = lib.mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
         example = lib.literalExpression ''
           "TODO"
@@ -36,7 +36,7 @@ in {
       };
 
       zprofile = lib.mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
         example = lib.literalExpression ''
           "TODO"
@@ -47,7 +47,7 @@ in {
       };
 
       zshrc.preInit = lib.mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
         example = lib.literalExpression ''
           "TODO"
@@ -58,7 +58,7 @@ in {
       };
 
       zshrc.init = lib.mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
         example = lib.literalExpression ''
           "TODO"
@@ -69,7 +69,7 @@ in {
       };
 
       zshrc.postInit = lib.mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
         example = lib.literalExpression ''
           "TODO"
@@ -80,7 +80,7 @@ in {
       };
 
       zshrc.main = lib.mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
         example = lib.literalExpression ''
           "TODO"
@@ -91,7 +91,7 @@ in {
       };
 
       zlogin = lib.mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
         example = lib.literalExpression ''
           "TODO"
@@ -102,7 +102,7 @@ in {
       };
 
       zlogout = lib.mkOption {
-        type = types.str;
+        type = types.lines;
         default = "";
         example = lib.literalExpression ''
           "TODO"
