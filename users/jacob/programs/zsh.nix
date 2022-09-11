@@ -1,5 +1,5 @@
 args @ { config, lib, pkgs, dotpkgs, ... }: {
-  imports = [ dotpkgs.homeManagerModules.zsh-uncruft ];
+  imports = [ dotpkgs.hmModules.zsh-uncruft ];
 
   home.packages = [ pkgs.most ];
 

@@ -27,20 +27,31 @@
     nixpkgs,
     nixos-hardware,
     home-manager,
-    hyprland,
     ...
-  }: let
+  }: let    
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    dotpkgs_flake = (import ./packages/flake.nix).outputs inputs;
-    dotpkgs = {
-      pkgs = self.packages.${system};
-      inherit (self) homeManagerModules;
-    };
+
+    # manually import the packages subflake to avoid locking issues
+    # this flake must have the same inputs that dotpkgs expects
+    dotpkgs = (import ./packages/flake.nix).outputs inputs;
+    
+    # function to make using input flakes more ergonomic
+    flatFlake = flake:
+      (
+        if builtins.hasAttr "packages" flake
+        then { pkgs = flake.packages.${system}; }
+        else {}
+      ) // (
+        if builtins.hasAttr "homeManagerModules" flake
+        then { hmModules = flake.homeManagerModules; }
+        else {}
+      ) // (
+        flake
+      );
   in {
-    # dotpkgs is not used as a subflake because there
-    # are locking issues with subflakes, and this works fine
-    inherit (dotpkgs_flake) packages homeManagerModules;
+    # merge the packages flake into this one
+    inherit (dotpkgs) packages homeManagerModules;
 
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {
@@ -55,11 +66,11 @@
         ];
 
         specialArgs = {
-          inherit inputs;
-          inherit dotpkgs;
+          dotpkgs = flatFlake self;
         };
       };
     };
+
     homeConfigurations = {
       jacob = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
@@ -73,8 +84,10 @@
         ];
 
         extraSpecialArgs = {
-          inherit inputs;
-          inherit dotpkgs;
+          dotpkgs = flatFlake self;
+          hyprland = flatFlake inputs.hyprland;
+          nil = flatFlake inputs.nil;
+          webcord = flatFlake inputs.webcord;
         };
       };
     };

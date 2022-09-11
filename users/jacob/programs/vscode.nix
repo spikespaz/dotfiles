@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, nil, ... }: {
   home.packages = with pkgs; [
     ### FONTS ###
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
@@ -7,7 +7,7 @@
     # Perl Language Server
     perlPackages.PLS
     # Nix Language Server
-    inputs.nil.packages.${pkgs.system}.default
+    nil.pkgs.default
   ];
 
   programs.vscode.extensions = with pkgs.vscode-extensions; [
@@ -65,7 +65,7 @@
     "perl.pls" = "${pkgs.perlPackages.PLS}/bin/pls";
 
     "nix.enableLanguageServer" = true;
-    "nix.serverPath" = "${inputs.nil.packages.${pkgs.system}.default}/bin/nil";
+    "nix.serverPath" = "${nil.pkgs.default}/bin/nil";
   
     ## Miscellaneous ##
 

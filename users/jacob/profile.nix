@@ -2,7 +2,7 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-args @ { config, lib, pkgs, nixpkgs, inputs, ... }: let
+args @ { config, lib, pkgs, nixpkgs, ... }: let
   programs = import ./programs args;
   services = import ./services.nix args;
 in {
