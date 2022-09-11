@@ -52,6 +52,14 @@
     home.packages = [ pkgs.slurp ];
   };
 
+  #########################
+  ### MEDIA CONSUMPTION ###
+  #########################
+
+  spotify = {
+    home.packages = [ pkgs.spotify ];
+  };
+
   #################################
   ### OFFICE & WRITING SOFTWARE ###
   #################################

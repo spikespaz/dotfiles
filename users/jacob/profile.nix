@@ -78,6 +78,9 @@ in {
     ### MEDIA CREATION ###
     programs.obs-studio
 
+    ### MEDIA CONSUMPTION ###
+    programs.spotify
+
     ### OFFICE & WRITING SOFTWARE ###
     programs.onlyoffice
     programs.apostrophe
