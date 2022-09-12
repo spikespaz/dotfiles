@@ -67,17 +67,16 @@ in {
     };
   };
 
-  # While these sections are technically part of the init stage,
-  # they are order 700+-50 to ensure that the user-defined
-  # init stage ends up right in the middle.
   config = lib.mkIf (cfg.enable && znap.enable) (lib.mkMerge [
-    # The plugin manager needs to be available during init,
-    # but right after preInit, so it has an order of 750.
+    # this is mkBefore in the init stage, so the user will not have znap
+    # available in preInit
     (let
       gitUrl = "https://github.com/marlonrichert/zsh-snap";
       scriptPath = "${znap.pluginsDir}/zsh-snap/znap.zsh";
     in {
-      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 750 ''
+      programs.zsh-uncruft.zshrc.init = lib.mkBefore ''
+        ### DOWNLOAD AND SOURCE ZNAP ###
+
         [[ ! -d '${znap.pluginsDir}' ]] &&
           mkdir -p '${znap.pluginsDir}'
 
@@ -85,15 +84,17 @@ in {
           git clone '${gitUrl}' '${dirOf scriptPath}'
 
         source '${scriptPath}'
+
+        ### END ###
       '';
     })
-    # We don't want to update plugins before the user has
-    # ran their initialization, that would be annoying if they try to
-    # initialize an instant prompt. Order 850.
+    # automatic updates go at the end of init, so mkAfter
     (lib.mkIf znap.autoUpdate (let
       lastUpdateFile = "${znap.pluginsDir}/.last_update";
     in {
-      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 850 ''
+      programs.zsh-uncruft.zshrc.init = lib.mkAfter ''
+        ### AUTOMATIC UPDATE ZNAP PLUGINS ###
+
         [[ ! -f '${lastUpdateFile}' ]] &&
           echo 0 >'${lastUpdateFile}'
 
@@ -105,6 +106,8 @@ in {
           znap pull
           echo "$time_now" >'${lastUpdateFile}'
         fi
+
+        ### END ###
       '';
     }))
   ]);
