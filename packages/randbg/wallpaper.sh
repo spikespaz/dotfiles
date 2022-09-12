@@ -5,15 +5,15 @@ interval="$1"
 chance="$2"
 img_dir="$3"
 
-if test "$interval" -ne "$interval"; then
+if [ "$interval" -ne "$interval" ]; then
   echo 'Error: argument $1 was not a number!'
   exit 10
 fi
-if test "$chance" -ne "$chance"; then
+if [ "$chance" -ne "$chance" ]; then
   echo 'Error: argument $1 was not a number!'
   exit 11
 fi
-if test ! -d "$img_dir"; then
+if [ ! -d "$img_dir" ]; then
   echo 'Error: argument $3 was not a directory!'
   exit 12
 fi
@@ -25,7 +25,7 @@ echo "User = $USER"
 
 set_img() {
   old_pids="$(pgrep -U "$USER" -x 'swaybg' || :)"
-  if test -z "$old_pids"; then
+  if [ -z "$old_pids" ]; then
     echo "Found old swaybg PIDs: $old_pids"
   fi
 
@@ -36,20 +36,20 @@ set_img() {
       -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' \
     | shuf -n1
   )"
-  if test ! -f "$new_img"; then
+  if [ ! -f "$new_img" ]; then
     echo 'Error: could not find the next image!'
     exit 20
   fi
   echo "Selected new image: $new_img"
-  
-  if test "$new_img" = "$old_img"; then
+
+  if [ "$new_img" = "$old_img" ]; then
     echo 'Duplicate, re-rolling...'
     set_img
   else
     echo 'Setting the selected image...'
-    swaybg -i "$new_img" -m fill &  
+    swaybg -i "$new_img" -m fill &
 
-    if test ! -z "$old_pids"; then
+    if [ ! -z "$old_pids" ]; then
       sleep 10  # this is huge because of huge images
       echo 'Killing old swaybg PIDs...'
       # shellcheck disable=SC2086
@@ -62,10 +62,10 @@ set_img() {
 
 echo 'Setting the first image!'
 set_img
-if test ! -z "$NOTIFY_SOCKET"; then
+if [ ! -z "$NOTIFY_SOCKET" ]; then
   systemd-notify --ready
   ## systemd-notify always returns nonzero, but the message is sent anyway
-  # if test "$(systemd-notify --ready)"; then
+  # if [ "$(systemd-notify --ready)" ]; then
   #   echo "Notified systemd that this unit is ready."
   # else
   #   echo 'Error: failed to notify systemd that we are ready!'
@@ -76,7 +76,7 @@ sleep "$interval"
 
 while true; do
   echo 'Deciding if the wallpaper should be changed...'
-  if test "$(shuf -i0-100 -n1)" -le "$chance"; then
+  if [ "$(shuf -i0-100 -n1)" -le "$chance" ]; then
     echo 'Lucky roll, resetting!'
     set_img
   else
