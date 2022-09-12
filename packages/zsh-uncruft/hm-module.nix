@@ -149,52 +149,79 @@ in {
       home.file."${config.home.homeDirectory}/.zshenv".text = lib.mkAfter ''
         source '${cfg.zdotdir}/.zshenv'
       '';
-      home.file."${cfg.zdotdir}/.zshenv".text =
-        lib.mkOrder 1000 cfg.zshenv;
+      home.file."${cfg.zdotdir}/.zshenv".text = lib.mkOrder 1000
+        cfg.zshenv;
     })
 
     (lib.mkIf (cfg.zprofile != "") {
-      home.file."${cfg.zdotdir}/.zprofile".text =
-        lib.mkOrder 1000 cfg.zprofile;
+      home.file."${cfg.zdotdir}/.zprofile".text = lib.mkOrder 1000
+        cfg.zprofile;
     })
 
     (lib.mkIf (cfg.zshrc.preInit != "") {
-      home.file."${cfg.zdotdir}/.zshrc".text =
-        lib.mkOrder 700 cfg.zshrc.preInit;
+      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 700 ''
+        #######################
+        ### STAGE: PRE-INIT ###
+        #######################
+
+        ${cfg.zshrc.preInit}
+        '';
     })
 
     (lib.mkIf (cfg.zshrc.init != "") {
-      home.file."${cfg.zdotdir}/.zshrc".text =
-        lib.mkOrder 800 cfg.zshrc.init;
+      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 800 ''
+        #########################
+        ### STAGE: INITIALIZE ###
+        #########################
+
+        ${cfg.zshrc.init}
+      '';
     })
 
     (lib.mkIf (cfg.zshrc.postInit != "") {
-      home.file."${cfg.zdotdir}/.zshrc".text =
-        lib.mkOrder 900 cfg.zshrc.postInit;
+      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 900 ''
+        ########################
+        ### STAGE: POST-INIT ###
+        ########################
+
+        ${cfg.zshrc.postInit}
+      '';
     })
 
     (lib.mkIf (cfg.zshrc.main != "") {
-      home.file."${cfg.zdotdir}/.zshrc".text =
-        lib.mkOrder 1000 cfg.zshrc.main;
+      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 1000 ''
+        ###################
+        ### STAGE: MAIN ###
+        ###################
+
+        ${cfg.zshrc.main}
+      '';
     })
 
     (lib.mkIf (cfg.zshrc.bottom != "") {
-      home.file."${cfg.zdotdir}/.zshrc".text =
-        lib.mkOrder 1300 cfg.zshrc.bottom;
+      home.file."${cfg.zdotdir}/.zshrc".text = lib.mkOrder 1300 ''
+        #####################
+        ### STAGE: BOTTOM ###
+        #####################
+
+        ${cfg.zshrc.bottom}
+      '';
     })
 
     (lib.mkIf (cfg.zlogin != "") {
-      home.file."${cfg.zdotdir}/.zlogin".text =
-        lib.mkOrder 1000 cfg.zlogin;
+      home.file."${cfg.zdotdir}/.zlogin".text = lib.mkOrder 1000
+        cfg.zlogin;
     })
 
     (lib.mkIf (cfg.zlogout != "") {
-      home.file."${cfg.zdotdir}/.zlogout".text =
-        lib.mkOrder 1000 cfg.zlogout;
+      home.file."${cfg.zdotdir}/.zlogout".text = lib.mkOrder 1000
+        cfg.zlogout;
     })
 
     {
       programs.zsh-uncruft.zshrc.preInit = lib.mkBefore ''
+        ### DEFAULT INITIALIZATION ###
+
         typeset -U path cdpath fpath manpath
 
         for profile in ''${(z)NIX_PROFILES}; do
@@ -206,6 +233,8 @@ in {
         done
 
         HELPDIR="${pkgs.zsh}/share/zsh/$ZSH_VERSION/help"
+
+        ### END ###
       '';
     }
 
