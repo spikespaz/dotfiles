@@ -21,10 +21,6 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
     # allow other home manager modules to integrate
     enableIntegrations = true;
 
-    zshrc.preInit = ''
-      bindkey '^[[3~' delete-char
-    '';
-
     zshrc.init = ''
       if ! tty | grep '/dev/tty[0-9]\?'; then
         znap eval starship '${lib.getExe pkgs.starship} init zsh --print-full-init'
@@ -63,10 +59,6 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
 
       setopt INTERACTIVE_COMMENTS
       setopt RM_STAR_SILENT
-
-      ### LINE EDITOR ###
-
-      setopt VI
     '';
 
     zshrc.main = ''
@@ -89,12 +81,16 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
       ### SYNTAX HIGHLIGHTING ###
 
       znap source zdharma-continuum/fast-syntax-highlighting
-      
+
       PAGER='${lib.getExe pkgs.most}'
 
       ### MISCELLANEOUS ###
 
       znap source hlissner/zsh-autopair
+
+      ### KEYBINDINGS ###
+
+      znap source marlonrichert/zsh-edit
     '';
   };
 }
