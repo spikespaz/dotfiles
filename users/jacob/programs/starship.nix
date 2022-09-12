@@ -186,6 +186,7 @@ in {
   memory_usage = {
     disabled = false;
     threshold = 0;
+    format = " [ $ram_pct]($style)";
     style = "bold ${colors.fg2}";
   };
 
