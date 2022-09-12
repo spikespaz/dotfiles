@@ -61,20 +61,20 @@ stdenv.mkDerivation rec {
     ++ lib.optional enableOpenCLModule opencl-headers
     ++ lib.optional enableX11 libX11;
 
-  LD_LIBRARY_PATH = lib.makeLibraryPath runtimeDependencies;
-  
   cmakeFlags = [
-    "-DCMAKE_INSTALL_SYSCONFDIR=${builtins.placeholder "out"}/etc"
+    "-DCMAKE_INSTALL_SYSCONFDIR=${placeholder "out"}/etc"
   ];
 
+  ldLibraryPath = lib.makeLibraryPath runtimeDependencies;
+
   postInstall = ''
-    wrapProgram $out/bin/fastfetch --prefix LD_LIBRARY_PATH : "${LD_LIBRARY_PATH}"
-    wrapProgram $out/bin/flashfetch --prefix LD_LIBRARY_PATH : "${LD_LIBRARY_PATH}"
+    wrapProgram $out/bin/fastfetch --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
+    wrapProgram $out/bin/flashfetch --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
   '';
 
   meta = with lib; {
     description = "Like neofetch, but much faster";
-    homepage = "https://github.com/LinusDierheimer/fastfetch";
+    inherit (src.meta) homepage;
     license = licenses.mit;
     platforms = platforms.linux;
     maintainers = with import ../maintainers.nix; [ spikespaz ];
