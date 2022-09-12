@@ -27,8 +27,10 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
 
     zshrc.init = ''
       if [[ ! $(tty | grep '/dev/tty[0-9]\?') ]]; then
-        ZLE_RPROMPT_INDENT=0
         znap eval starship '${lib.getExe pkgs.starship} init zsh --print-full-init'
+        # <https://github.com/starship/starship/issues/4358>
+        PROMPT="''${PROMPT//\$COLUMNS/\$((COLUMNS+2))}"
+        ZLE_RPROMPT_INDENT=0
         znap prompt
       fi
 
