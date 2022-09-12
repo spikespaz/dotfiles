@@ -58,6 +58,8 @@
     "editor.formatOnSaveMode" = "modificationsIfAvailable";
     # insert a newline at the end of a file when saved
     "files.insertFinalNewline" = true;
+    # trim whitespace trailing at the ends of lines on save
+    "files.trimTrailingWhitespace" = true;
     
     ## VCS Behavior ##
 
