@@ -103,6 +103,7 @@ in {
         local time_next_update="$((last_update + ${toString znap.autoUpdateInterval}))"
 
         if [[ "$time_now" -ge "$time_next_update" ]]; then
+          znap uninstall
           znap pull
           echo "$time_now" >'${lastUpdateFile}'
         fi
