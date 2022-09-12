@@ -47,6 +47,17 @@
     "terminal.integrated.cursorStyle" = "line";
     # fix fuzzy text in integrated terminal
     "terminal.integrated.gpuAcceleration" = "on";
+
+    ## Saving and Formatting ##
+
+    # auto-save when the active editor loses focus
+    "files.autoSave" = "onFocusChange";
+    # format pasted code if the formatter supports a range
+    "editor.formatOnPaste" = true;
+    # if the plugin supports range formatting always use that
+    "editor.formatOnSaveMode" = "modificationsIfAvailable";
+    # insert a newline at the end of a file when saved
+    "files.insertFinalNewline" = true;
     
     ## VCS Behavior ##
 
@@ -108,4 +119,38 @@
     "rust-analyzer.inlayHints.lifetimeElisionHints.enable" = "always";  # or 'skip_trivial'
     # "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames" = true;
   };
+
+  programs.vscode.keybindings = let
+    formatDocumentOnManualSaveOnlyCondition = lib.concatStringsSep " " [
+      # manually saving should only format when auto-saving is enabled
+      # in some form, and when the file doesn't already
+      # get formatted on every save
+      "config.editor.autoSave != off"
+      "&& !config.editor.formatOnSave"
+      # any other clauses match the default
+      # ctrl+k ctrl+f manual format command
+      "&& editorHasDocumentFormattingProvider"
+      "&& editorTextFocus"
+      "&& !editorReadonly"
+      "&& !inCompositeEditor"
+    ];
+  in [
+    ### FORMAT DOCUMENT ON MANUAL SAVE ONLY ###
+    {  # remove the default action for saving document
+        "key" = "ctrl+s";
+        "command" = "-workbench.action.files.save";
+        "when" = formatDocumentOnManualSaveOnlyCondition;
+    }
+    {  # formatting behavior identical to the default ctrl+k ctrl+f
+        "key" = "ctrl+s";
+        "command" = "editor.action.formatDocument";
+        "when" = formatDocumentOnManualSaveOnlyCondition;
+    }
+    {  # re-introduce default save action, but in new order after format
+        "key" = "ctrl+s";
+        "command" = "workbench.action.files.save";
+        "when" = formatDocumentOnManualSaveOnlyCondition;
+    }
+    ### END ###
+  ];
 }
