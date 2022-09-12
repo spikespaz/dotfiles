@@ -12,6 +12,18 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
     enableZshIntegration = lib.mkDefault false;
   };
 
+  programs.fzf = {
+    enable = true;
+    enableBashIntegration = lib.mkDefault false;
+    enableFishIntegration = lib.mkDefault false;
+    enableZshIntegration = true;
+  };
+
+  programs.lsd = {
+    enable = true;
+    enableAliases = true;
+  };
+
   programs.zsh-uncruft = {
     znap.enable = true;
     # automatically update every two weeks
@@ -20,6 +32,7 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
 
     # allow other home manager modules to integrate
     enableIntegrations = true;
+    enableAliases = true;
 
     zshrc.init = ''
       if ! tty | grep '/dev/tty[0-9]\?'; then
