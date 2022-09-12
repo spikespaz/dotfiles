@@ -1,4 +1,4 @@
-{ pkgs, nil, ... }: {
+{ lib, pkgs, nil, ... }: {
   home.packages = with pkgs; [
     ### FONTS ###
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
@@ -82,6 +82,8 @@
 
     # don't re-open everything on start
     "window.restoreWindows" = "none";
+    # unsaved files will be "untitled"
+    "workbench.editor.untitled.labelFormat" = "name";
     # default hard and soft rulers
     "editor.rulers" = [ 80 120 ];
     # fancy features with the integrated terminal
