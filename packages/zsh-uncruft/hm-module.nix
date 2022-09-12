@@ -91,6 +91,17 @@ in {
         '';
       };
 
+      zshrc.bottom = lib.mkOption {
+        type = types.lines;
+        default = "";
+        example = lib.literalExpression ''
+          "TODO"
+        '';
+        description = lib.mdDoc ''
+          TODO
+        '';
+      };
+
       zlogin = lib.mkOption {
         type = types.lines;
         default = "";
@@ -116,6 +127,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
+
     { home.packages = [ pkgs.zsh ]; }
 
     {
@@ -166,6 +178,11 @@ in {
         lib.mkOrder 1000 cfg.zshrc.main;
     })
 
+    (lib.mkIf (cfg.zshrc.bottom != "") {
+      home.file."${cfg.zdotdir}/.zshrc".text =
+        lib.mkOrder 1300 cfg.zshrc.bottom;
+    })
+
     (lib.mkIf (cfg.zlogin != "") {
       home.file."${cfg.zdotdir}/.zlogin".text =
         lib.mkOrder 1000 cfg.zlogin;
@@ -191,5 +208,6 @@ in {
         HELPDIR="${pkgs.zsh}/share/zsh/$ZSH_VERSION/help"
       '';
     }
+
   ]);
 }
