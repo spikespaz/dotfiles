@@ -24,9 +24,9 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
     zshrc.preInit = ''
       bindkey '^[[3~' delete-char
     '';
-    
+
     zshrc.init = ''
-      if [[ ! $(tty | grep '/dev/tty[0-9]') ]]; then
+      if [[ ! $(tty | grep '/dev/tty[0-9]\?') ]]; then
         ZLE_RPROMPT_INDENT=0
         znap eval starship '${lib.getExe pkgs.starship} init zsh --print-full-init'
         znap prompt
