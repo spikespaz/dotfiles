@@ -26,7 +26,7 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
     '';
 
     zshrc.init = ''
-      if [[ ! $(tty | grep '/dev/tty[0-9]\?') ]]; then
+      if ! tty | grep '/dev/tty[0-9]\?'; then
         znap eval starship '${lib.getExe pkgs.starship} init zsh --print-full-init'
         # <https://github.com/starship/starship/issues/4358>
         PROMPT="''${PROMPT//\$COLUMNS/\$((COLUMNS+2))}"
@@ -38,7 +38,7 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
 
       setopt AUTO_CD
       setopt ALWAYS_TO_END
-      
+
       ### GLOBBING ###
 
       setopt BAD_PATTERN
@@ -46,7 +46,7 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
       setopt GLOB_DOTS
       setopt GLOB_STAR_SHORT
       setopt NULL_GLOB
-      
+
       ### HISTORY ###
 
       HISTSIZE=1000000
@@ -60,10 +60,10 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
       setopt SHARE_HISTORY
 
       ### INTERACTION ###
-      
+
       setopt INTERACTIVE_COMMENTS
       setopt RM_STAR_SILENT
-      
+
       ### LINE EDITOR ###
 
       setopt VI
