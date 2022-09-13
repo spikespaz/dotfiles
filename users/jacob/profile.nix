@@ -2,7 +2,7 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-args @ { config, lib, pkgs, nixpkgs, ... }: let
+args @ { config, lib, pkgs, nixpkgs, dotpkgs, ... }: let
   programs = import ./programs args;
   services = import ./services.nix args;
 in {
@@ -57,6 +57,8 @@ in {
   };
 
   imports = [
+    # theming module
+    dotpkgs.hmModules.uniform-theme
     # set the default programs
     ./mimeapps.nix
 
@@ -120,4 +122,36 @@ in {
     ### DEVICE MANAGEMENT ###
     # services.udiskie
   ];
+
+  home.uniformTheme = {
+    enable = true;
+    dark = true;
+    cursor = {
+      package = pkgs.quintom-cursor-theme;
+      name = "Quintom_Ink";
+      size = 24;
+    };
+    icons = {
+      package = pkgs.papirus-icon-theme;
+      name = "Papirus-Dark";
+    };
+    gtk = {
+      package = pkgs.materia-theme;
+      name = "Materia-dark-compact";
+    };
+    kvantum = {
+      package = pkgs.materia-kde-theme;
+      name = "MateriaDark";
+    };
+    fonts = {
+      default = {
+        package = pkgs.ubuntu_font_family;
+        name = "Ubuntu";
+      };
+      monospace = {
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Sans Mono";
+      };
+    };
+  };
 }

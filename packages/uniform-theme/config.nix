@@ -1,81 +1,53 @@
-# Consistent theming between Qt and GTK on Wayland with a custom compositor
-# is really not an easy feat. This module contains setup to handle that.
-{ pkgs, ... }: let
-  theme = with pkgs; {
-    dark = true;
-    cursor = {
-      package = quintom-cursor-theme;
-      name = "Quintom_Ink";
-      size = 24;
-    };
-    icons = {
-      package = papirus-icon-theme;
-      name = "Papirus-Dark";
-    };
-    gtk = {
-      package = materia-theme;
-      name = "Materia-dark-compact";
-    };
-    kde = {
-      package = materia-kde-theme;
-      # name = "MateriaDark";
-    };
-    fonts = {
-      default = {
-        package = ubuntu_font_family;
-        name = "Ubuntu";
-      };
-      monospace = {
-        package = dejavu_fonts;
-        name = "DejaVu Sans Mono";
-      };
-    };
-  };
-in {
+cfg: { pkgs, ... }: {
   # specify packages that are required for some stuff below
   home.packages = [
     # lxqt.lxqt-qtplugin
     pkgs.libsForQt5.qt5ct
     pkgs.libsForQt5.qtstyleplugin-kvantum
-    theme.kde.package
-    theme.fonts.monospace.package
+    cfg.kvantum.package
+    cfg.fonts.monospace.package
   ];
 
   # use qt5ct in tandem with kvantum
-  home.sessionVariables.QT_QPA_PLATFORMTHEME = "qt5ct";
+  home.sessionVariables = {
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+  };
 
   # specify packages to use for gtk theming
   gtk = {
     enable = true;
 
-    iconTheme.package = theme.icons.package;
-    iconTheme.name = theme.icons.name;
+    iconTheme.package = cfg.icons.package;
+    iconTheme.name = cfg.icons.name;
 
-    theme.package = theme.gtk.package;
-    theme.name = theme.gtk.name;
+    theme.package = cfg.gtk.package;
+    theme.name = cfg.gtk.name;
 
-    font.package = theme.fonts.default.package;
-    font.name = theme.fonts.default.name;
+    font.package = cfg.fonts.default.package;
+    font.name = cfg.fonts.default.name;
   };
 
   # libadwaita doesn't respect any precedent
   dconf.settings."org/gnome/desktop/interface" = {
-    monospace-font-name = theme.fonts.monospace.name;
-    color-scheme = if theme.dark then "prefer-dark" else "prefer-light";
+    monospace-font-name = cfg.fonts.monospace.name;
+    # required for libadwaita
+    color-scheme = if cfg.dark then "prefer-dark" else "prefer-light";
     # don't know if this is needed
     # cursor-size = 24;
   };
 
   home.pointerCursor = {
-    package = theme.cursor.package;
-    name = theme.cursor.name;
-    size = theme.cursor.size;
+    package = cfg.cursor.package;
+    name = cfg.cursor.name;
+    size = cfg.cursor.size;
     gtk.enable = true;
     x11.enable = true;
   };
 
   # should cover any other bases
-  home.sessionVariables.XCURSOR_SIZE = "${toString theme.cursor.size}";
+  home.sessionVariables = {
+    CURSOR_SIZE = "${toString cfg.cursor.size}";
+  };
 
   # set the kvantum theme, still needs qt5ct to be manually configured
   # expects pkgs.materia-kde-theme

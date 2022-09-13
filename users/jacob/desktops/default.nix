@@ -1,7 +1,6 @@
 {
   hyprland = {
     imports = [
-      ./theming.nix
       ./wayland
       ./hyprland
     ];
