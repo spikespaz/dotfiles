@@ -50,7 +50,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     # make the boot quiet
     consoleLogLevel = 3;
     initrd.verbose = false;
-    
+
     kernelParams = [
       "amdgpu"
       "fbcon=nodefer"
@@ -90,7 +90,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
 
     networkmanager.enable = true;
   };
-  
+
   hardware = {
     # enable proprietary firmware that is still redistributable
     # required for some hardware, drivers contain proprietary blobs
@@ -184,6 +184,10 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     fonts = with pkgs; [
       corefonts
       noto-fonts
+      noto-fonts-extra
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-emoji
       open-sans
       ubuntu_font_family
     ];
