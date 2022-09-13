@@ -58,6 +58,7 @@ args @ { config, lib, pkgs, dotpkgs, ... }: {
 
       ### HISTORY ###
 
+      HISTFILE=$ZDOTDIR/.zsh_history
       HISTSIZE=1000000
       SAVEHIST=$HISTSIZE
 
