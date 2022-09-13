@@ -51,7 +51,7 @@
       );
   in {
     # merge the packages flake into this one
-    inherit (dotpkgs) packages homeManagerModules;
+    inherit (dotpkgs) packages nixosModules homeManagerModules;
 
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {

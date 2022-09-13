@@ -21,6 +21,10 @@
       plymouth-themes = pkgs.callPackage ./plymouth-themes {};
     });
 
+    nixosModules = {
+      auto-cpufreq = import ./auto-cpufreq/module.nix;
+    };
+
     homeManagerModules = {
       uniform-theme = import ./uniform-theme/hm-module.nix;
       idlehack = import ./idlehack/hm-module.nix self;
