@@ -138,7 +138,7 @@ in {
 
   battery = {
     format = " [$symbol $percentage](bold $style)";
-    unknown_symbol = " ";  # when docked
+    unknown_symbol = "";
     display = [
       {
         threshold = 10; style = "${colors.red}";
@@ -195,7 +195,7 @@ in {
     show_notifications = true;
     min_time_to_notify = 2 * 60 * 1000;
     notification_timeout = 5 * 60 * 1000;
-    format = " [ $duration]($style)";
+    format = "took [ $duration]($style)";
   };
 
   git_state = {
