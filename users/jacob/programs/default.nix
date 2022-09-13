@@ -70,17 +70,14 @@
   apostrophe = {
     home.packages = [ pkgs.apostrophe ];
   };
-  
+
   ##########################
   ### TERMINAL EMULATORS ###
   ##########################
-  
+
   alacritty = {
     programs.alacritty.enable = true;
-    programs.alacritty.settings = import ./alacritty.nix;
-    home.packages = [
-      (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-    ];
+    imports = [ ./alacritty.nix ];
   };
 
   ####################

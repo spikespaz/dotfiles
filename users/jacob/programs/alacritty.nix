@@ -1,4 +1,4 @@
-let
+{ pkgs, ... }: let
   gruvbox_dark = {
     primary = {
       background = "0x282828";
@@ -30,33 +30,39 @@ let
     normal.black = "0x5c5c5c";
   };
 in {
-  window = {
-    opacity = 0.7;
-    padding.x = 4;
-    padding.y = 0;
-    dynamic_padding = true;
+  home.packages = [
+    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+
+  programs.alacritty.settings = {
+    window = {
+      opacity = 0.7;
+      padding.x = 4;
+      padding.y = 0;
+      dynamic_padding = true;
+    };
+
+    scrolling.history = 100000;
+
+    font = {
+      normal.family = "JetBrainsMono Nerd Font";
+      size = 9;
+    };
+
+    colors = gruvbox_dark_custom;
+
+    bell = {
+      animation = "EaseOutQuart";
+      duration = 100;
+      color = "0x404040";
+    };
+
+    cursor = {
+      style.shape = "Beam";
+      style.blinking = "Always";
+      vi_mode_style = "Block";
+    };
+
+    # mouse.hide_when_typing = true;
   };
-
-  scrolling.history = 100000;
-
-  font = {
-    normal.family = "JetBrainsMono Nerd Font";
-    size = 9;
-  };
-
-  colors = gruvbox_dark_custom;
-
-  bell = {
-    animation = "EaseOutQuart";
-    duration = 100;
-    color = "0x404040";
-  };
-
-  cursor = {
-    style.shape = "Beam";
-    style.blinking = "Always";
-    vi_mode_style = "Block";
-  };
-
-  # mouse.hide_when_typing = true;
 }
