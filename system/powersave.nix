@@ -2,10 +2,30 @@
 # - <https://www.kernel.org/doc/Documentation/power/states.txt>
 # - `man sleep.conf.d`
 # - `man logind.conf`
-let
+{ lib, dotpkgs, ... }: let
   idle_after = 5 * 60;
   hibernate_delay = 30 * 60;
 in {
+  imports = [ dotpkgs.nixosModules.auto-cpufreq ];
+
+  services.auto-cpufreq = {
+    enable = true;
+    settings = {
+      charger = {
+        governor = "performance";
+        scaling_min_freq = 1700000;
+        scaling_max_freq = 1700000;
+        turbo = "auto";
+      };
+      battery = {
+        governor = "powersave";
+        scaling_min_freq = 1400000;
+        scaling_max_freq = 1600000;
+        turbo = "never";
+      };
+    };
+  };
+
   services.logind = {
     lidSwitch = "suspend-then-hibernate";
     killUserProcesses = true;
@@ -55,7 +75,7 @@ in {
 
       ## Delay in seconds before clight restarts working
       ## after system is resumed from suspend/hibernation.
-      ## This may be needed because on some laptops on resume 
+      ## This may be needed because on some laptops on resume
       ## screen temp is not correctly applied, with warning in logs: "Failed to set gamma temperature."
       ## Clight is in fact too quick to act on resume, and it is resuming before X is fully resumed;
       ## thus failing to apply screen temperature.
@@ -71,18 +91,18 @@ in {
       inhibit = {
         ## Uncomment to disable
         disabled = false;
-        
+
         ## Uncomment to let Clight manage "Docked" laptop state
         ## as an inhibition (pausing DPMS and dimmer).
         ## Note that "Docked" state is only checked when
         ## laptop lid is closed or opened.
         inhibit_docked = true;
-        
+
         ## Uncomment to let Clight manage inhibition requests
         ## suppressing org.freedesktop.PowerManagement too
         ## (ie: preventing your laptop to suspend/hibernate)
         inhibit_pm = true;
-        
+
         ## Uncomment to let Clight pause backlight module
         ## while any inhibition is active;
         ## this is useful eg: to pause backlight calibration
@@ -96,7 +116,7 @@ in {
       backlight = {
         ## Uncomment to disable
         disabled = false;
-        
+
         ## Uncomment to restore screen backlight on exit
         restore_on_exit = true;
 
@@ -108,7 +128,7 @@ in {
 
         ## Transition timeout in ms
         trans_timeout = 30;
-        
+
         ## When > 0, use a fixed transition duration (in ms),
         ## overriding trans_timeout and trans_step configs.
         trans_fixed = 0;
@@ -136,7 +156,7 @@ in {
         ## Mostly useful when laptop gets docked and thus internal webcam
         ## would not be able to correctly capture ambient brightness.
         pause_on_lid_closed = true;
-        
+
         ## Uncomment to let BACKLIGHT module fire an automatic calibration when laptop lid gets opened.
         capture_on_lid_opened = true;
       };
@@ -185,7 +205,7 @@ in {
       ## busctl call org.clightd.clightd /org/clightd/clightd/Backlight org.clightd.clightd.Backlight GetAll "s" ""
       ##
       ## You might ask why using a backlight-to-backlight mapping for specific monitors, instead of using
-      ## multiple ambient_brightness-to-backlight mapping curves; fact is that this way Clight is also able to 
+      ## multiple ambient_brightness-to-backlight mapping curves; fact is that this way Clight is also able to
       ## set correct backlight for each monitor even when just asked to set the backlight, ie:
       ## when the request comes from eg: dbus API asking for a certain backlight level (IncBl, DecBl dbus methods).
       ## In this case, we wouldn't have an "ambient brightess" to be used to compute correct backlight level on each monitor;
@@ -210,18 +230,18 @@ in {
         ## Uncomment to disable keyboard automatic calibration.
         ## It is automatically disabled anyway where not available.
         disabled = false;
-        
+
         ## Timeouts on AC/on BATT for keyboard auto dimming.
         ## Set any of these to <= 0 to disable kbd backlight
         ## in the corresponding AC state.
         timeouts = [ 60 10 ];
-        
+
         ## Curves used to match screen backlight to keyboard backlight level for each AC state.
         ## X axis: default screen backlight level (from 0 to 10)
         ## Y axis: desired keyboard backlight level for corresponding screen backlight.
-        ## Note: the array can be expanded up to 50 points for finer granularity.  
+        ## Note: the array can be expanded up to 50 points for finer granularity.
         ## Note also that most keyboard offers only 3 backlight levels (off, mid, high).
-        ## Default curves are same as default backlight curves but upside down 
+        ## Default curves are same as default backlight curves but upside down
         ## (ie: the lower the screen backlight, the higher the keyboard backlight).
         ac_regression_points = [ 1.0 0.97 0.93 0.88 0.81 0.74 0.61 0.45 0.29 0.15 0.0 ];
         batt_regression_points = [ 0.80 0.78 0.75 0.71 0.65 0.59 0.52 0.36 0.23 0.15 0.0 ];
@@ -233,7 +253,7 @@ in {
       gamma = {
         ## Uncomment to disable gamma tool
         disabled = true;
-        
+
         ## Uncomment to restore screen temperature on exit
         restore_on_exit = true;
 
@@ -247,7 +267,7 @@ in {
         trans_timeout = 300;
 
         ## Enable to let GAMMA smooth transitions last (2 * event_duration),
-        ## in a redshift-like way. 
+        ## in a redshift-like way.
         ## When enabling this, transition steps and timeouts are automatically computed
         ## given DAY-NIGHT temperature difference and (2 * event_duration) duration.
         ##
@@ -259,11 +279,11 @@ in {
         ## Let screen temperature match monitor backlight, using following algorithm:
         ## ```pseudocode
         ## diff = abs(temp[DAY] - temp[NIGHT])
-        ## min_temp = min(temp[NIGHT], temp[DAY]) 
+        ## min_temp = min(temp[NIGHT], temp[DAY])
         ## new_temp = (diff * screen_bl) + min_temp;
         ## ```
         ## Ie: the higher the screen backlight, the colder the temp.
-        ## 
+        ##
         ## When enabled, screen temperature won't be changed time-based.
         ## Note also that LOCATION is still needed to let BACKLIGHT module know current time of day.
         ## Finally, it requires BACKLIGHT module to be enabled, otherwise it gets disabled.
@@ -292,13 +312,13 @@ in {
         ## Duration of an "event". Clight will enter "event" mode (more frequent screen recalibrations)
         ## from event_duration seconds before a sunrise/sunset, until event_duration seconds after.
         event_duration = 1800;
-        
+
         ## Set an offset in seconds from sunrise;
         ## eg: a value of 600 would force Clight to manage sunrise event
         ## 10 minutes after the real event.
         ## You can use negative values too.
         sunrise_offset = 0;
-        
+
         ## Set an offset in seconds from sunset;
         ## eg: a value of 600 would force Clight to manage sunset event
         ## 10 minutes after the real event.
@@ -316,7 +336,7 @@ in {
         ## Uncomment to disable dimmer tool
         disabled = false;
 
-        ## Uncomment to disable smooth transitions 
+        ## Uncomment to disable smooth transitions
         ## when entering/leaving dimmed state
         no_smooth_transition = [ false false ];
 
@@ -336,12 +356,12 @@ in {
           (formula 2000 dimmed_pct (builtins.elemAt trans_steps 0))
           (formula 250 dimmed_pct (builtins.elemAt trans_steps 1))
         ];
-        
-        ## When > 0, use a fixed transition duration (in ms), 
+
+        ## When > 0, use a fixed transition duration (in ms),
         ## for enter or leave, overriding trans_timeouts and trans_steps configs.
         trans_fixed = [ 0 0 ];
 
-        ## Timeouts on AC/on BATT. 
+        ## Timeouts on AC/on BATT.
         ## Set any of these to <= 0 to disable dimmer
         ## in the corresponding AC state.
         timeouts = [
@@ -404,7 +424,7 @@ in {
         ## As above algorithm outlines, it is used to build the ambient brightness window.
         ## Set it to 0.0 to disable screen-content based backlight compensation.
         contrib = 0.2;
-        
+
         ## Screen timeouts on AC/on BATT.
         ## Set any of these to <= 0 to disable screen-content based backlight compensation
         ## in the corresponding AC state.
