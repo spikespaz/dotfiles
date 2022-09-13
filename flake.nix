@@ -28,14 +28,14 @@
     nixos-hardware,
     home-manager,
     ...
-  }: let    
+  }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
 
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
     dotpkgs = (import ./packages/flake.nix).outputs inputs;
-    
+
     # function to make using input flakes more ergonomic
     flatFlake = flake:
       (
@@ -62,6 +62,7 @@
           ./system/filesystems.nix
           ./system/configuration.nix
           ./system/powersave.nix
+          ./system/touchpad.nix
           ./system/greeter.nix
         ];
 
