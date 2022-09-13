@@ -121,7 +121,7 @@ in {
     services.onedrive
 
     ### DEVICE MANAGEMENT ###
-    # services.udiskie
+    services.udiskie
   ];
 
   home.uniformTheme = {
