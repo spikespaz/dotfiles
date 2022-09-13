@@ -60,7 +60,7 @@
     "files.insertFinalNewline" = true;
     # trim whitespace trailing at the ends of lines on save
     "files.trimTrailingWhitespace" = true;
-    
+
     ## VCS Behavior ##
 
     # prevent pollute history with whitespace changes
@@ -71,7 +71,7 @@
     # scrolling in tab bar switches
     "workbench.editor.scrollToSwitchTabs" = true;
     # name of current scope sticks to top of editor pane
-    "editor.experimental.stickyScroll.enabled" = true;
+    "editor.stickyScroll.enabled" = true;
 
     ## Language Servers ##
 
@@ -79,7 +79,7 @@
 
     "nix.enableLanguageServer" = true;
     "nix.serverPath" = "${nil.pkgs.default}/bin/nil";
-  
+
     ## Miscellaneous ##
 
     # don't re-open everything on start
