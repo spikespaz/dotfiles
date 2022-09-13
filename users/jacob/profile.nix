@@ -49,6 +49,7 @@ in {
   home.sessionVariables = {
     BROWSER = "firefox";
     TERMINAL = "alacritty";
+    EDITOR = "nvim";
   };
 
   programs.alacritty.settings.shell = {
