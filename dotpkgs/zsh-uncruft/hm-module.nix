@@ -1,4 +1,6 @@
-self: { config, lib, pkgs, ... }: let
+{ ... }:
+{ config, lib, pkgs, ... }:
+let
   description = ''
     An alternative to the Home Manager ZSH module.
   '';

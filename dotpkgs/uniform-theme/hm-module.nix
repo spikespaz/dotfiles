@@ -1,4 +1,6 @@
-args @ { config, lib, pkgs, ... }: let
+{ ... }:
+args @ { config, lib, pkgs, ... }:
+let
   description = ''
     Consistent theming between Qt and GTK on Wayland with a custom compositor
     is really not an easy feat. This module contains setup to handle that.

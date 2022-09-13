@@ -1,4 +1,6 @@
-self: { config, lib, pkgs, ... }: let
+{ ... }:
+{ config, lib, pkgs, ... }:
+let
   description = "Customizable wallpaper randomization service";
   cfg = config.services.randbg;
 in {
@@ -18,7 +20,7 @@ in {
           valid extensions are `*.png`, `*.jpg`, and `*.jpeg`.
         '';
       };
-      
+
       interval = lib.mkOption {
         type = lib.types.ints.positive;
         default = 30 * 60;

@@ -34,7 +34,7 @@
 
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
-    dotpkgs = (import ./packages/flake.nix).outputs inputs;
+    dotpkgs = (import ./dotpkgs/flake.nix).outputs inputs;
 
     # function to make using input flakes more ergonomic
     flatFlake = flake:

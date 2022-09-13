@@ -1,4 +1,6 @@
-{ config, lib, ... }: let
+{ ... }:
+{ config, lib, ... }:
+let
   inherit (lib) types generators;
   cfg = config.services.auto-cpufreq;
 in {
