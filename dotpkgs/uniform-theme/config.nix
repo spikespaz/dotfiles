@@ -46,7 +46,7 @@ cfg: { pkgs, ... }: {
 
   # should cover any other bases
   home.sessionVariables = {
-    CURSOR_SIZE = "${toString cfg.cursor.size}";
+    XCURSOR_SIZE = "${toString cfg.cursor.size}";
   };
 
   # set the kvantum theme, still needs qt5ct to be manually configured
