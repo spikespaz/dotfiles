@@ -141,8 +141,8 @@ in {
       name = "Materia-dark-compact";
     };
     kvantum = {
-      package = pkgs.materia-kde-theme;
-      name = "MateriaDark";
+      themePackage = pkgs.materia-kde-theme;
+      theme = "MateriaDark";
     };
     fonts = {
       default = {
