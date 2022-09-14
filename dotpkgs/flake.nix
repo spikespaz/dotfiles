@@ -13,27 +13,26 @@
     genSystems = lib.genAttrs [
       "x86_64-linux"
     ];
-    importsWith = inputs: builtins.mapAttrs (_: v: import v inputs);
-  in {
+  in with (import ./lib.nix lib); {
     packages = genSystems (system: let
       pkgs = nixpkgs.legacyPackages.${system};
-    in builtins.mapAttrs (_: v: pkgs.callPackage v {}) {
-      fastfetch = ./fastfetch/package.nix;
-      idlehack = ./idlehack/package.nix;
-      prtsc = ./prtsc/package.nix;
-      plymouth-themes = ./plymouth-themes/package.nix;
-    });
+    in mkPackages pkgs [
+      "fastfetch"
+      "idlehack"
+      "prtsc"
+      "plymouth-themes"
+    ]);
 
-    nixosModules = importsWith inputs {
-      auto-cpufreq = ./auto-cpufreq/module.nix;
-    };
+    nixosModules = mkNixosModules inputs [
+      "auto-cpufreq"
+    ];
 
-    homeManagerModules = importsWith inputs {
-      kvantum = ./kvantum/hm-module.nix;
-      uniform-theme = ./uniform-theme/hm-module.nix;
-      idlehack = ./idlehack/hm-module.nix;
-      randbg = ./randbg/hm-module.nix;
-      zsh-uncruft = ./zsh-uncruft/hm-module.nix;
-    };
+    homeManagerModules = mkHmModules inputs [
+      "kvantum"
+      "uniform-theme"
+      "idlehack"
+      "randbg"
+      "zsh-uncruft"
+    ];
   };
 }
