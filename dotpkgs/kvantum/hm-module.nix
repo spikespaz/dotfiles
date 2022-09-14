@@ -1,10 +1,14 @@
+{ ... }:
 { config, lib, pkgs, ... }:
 let
+  description = "Home Manager module for the Kvantum Theme Engine";
   inherit (lib) types generators;
-  cfg = config.home.uniformTheme;
+  cfg = config.programs.kvantum;
 in {
   options = {
-    home.uniformTheme.kvantum = {
+    programs.kvantum = {
+      enable = lib.mkEnableOption description;
+
       package = lib.mkOption {
         type = types.package;
         default = pkgs.libsForQt5.qtstyleplugin-kvantum;
@@ -16,7 +20,7 @@ in {
         '';
       };
 
-      themePackage = lib.mkOption {
+      theme.package = lib.mkOption {
         type = types.package;
         default = pkgs.adwaita-qt;
         example = lib.literalExpression ''
@@ -27,7 +31,7 @@ in {
         '';
       };
 
-      theme = lib.mkOption {
+      theme.name = lib.mkOption {
         type = types.str;
         default = null;
         example = lib.literalExpression ''
@@ -39,7 +43,7 @@ in {
         '';
       };
 
-      themeOverrides = lib.mkOption {
+      theme.overrides = lib.mkOption {
         type = types.attrs;
         apply = x: lib.mapAttrs' (name: value:
           if name == "General"
@@ -75,36 +79,36 @@ in {
 
   config = let
     oldThemePath = lib.concatStringsSep "/" [
-      cfg.kvantum.themePackage
+      cfg.theme.package
       "/share/Kvantum/"
-      cfg.kvantum.theme
-      "${cfg.kvantum.theme}.kvconfig"
+      cfg.theme.name
+      "${cfg.theme.name}.kvconfig"
     ];
-    newThemePath = "${cfg.kvantum.theme}#/${cfg.kvantum.theme}#.kvconfig";
+    newThemePath = "${cfg.theme.name}#/${cfg.theme.name}#.kvconfig";
     oldTheme = lib.pipe (
       pkgs.runCommand
-        "convert-kvantum-${cfg.kvantum.theme}-to-json"
+        "convert-kvantum-${cfg.theme.name}-to-json"
         { nativeBuildInputs = [ pkgs.jc ]; }
         ''
           mkdir $out
           cat '${oldThemePath}' \
             | "${lib.getExe pkgs.jc}" --ini \
-            > "$out/${cfg.kvantum.theme}.json"
+            > "$out/${cfg.theme.name}.json"
         ''
     ) [
-      (drv: "${drv}/${cfg.kvantum.theme}.json")
+      (drv: "${drv}/${cfg.theme.name}.json")
       builtins.readFile
       builtins.fromJSON
     ];
-    newTheme = lib.recursiveUpdate oldTheme cfg.kvantum.themeOverrides;
+    newTheme = lib.recursiveUpdate oldTheme cfg.theme.overrides;
   in lib.mkIf cfg.enable {
     home.packages = [
-      cfg.kvantum.package
-      cfg.kvantum.themePackage
+      cfg.package
+      cfg.theme.package
     ];
 
     xdg.configFile."Kvantum/kvantum.kvconfig".text = generators.toINI {} {
-      General.theme = "${cfg.kvantum.theme}#";
+      General.theme = "${cfg.theme.name}#";
     };
 
     # todo: fix incorrect casing on some keys,

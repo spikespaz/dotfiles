@@ -60,6 +60,7 @@ in {
   imports = [
     # theming module
     dotpkgs.hmModules.uniform-theme
+    dotpkgs.hmModules.kvantum
     # set the default programs
     ./mimeapps.nix
 
@@ -140,27 +141,6 @@ in {
       package = pkgs.materia-theme;
       name = "Materia-dark-compact";
     };
-    kvantum = {
-      themePackage = pkgs.materia-kde-theme;
-      theme = "MateriaDark";
-      themeOverrides = {
-        General = {
-          no_inactiveness = true;
-          translucent_windows = true;
-          reduce_window_opacity = 13;
-          reduce_menu_opacity = 13;
-          drag_from_buttons = false;
-          shadowless_popup = true;
-          popup_blurring = true;
-          menu_blur_radius = 5;
-          tooltip_blur_radius = 5;
-        };
-        Hacks = {
-          transparent_dolphin_view = true;
-          style_vertical_toolbars = true;
-        };
-      };
-    };
     fonts = {
       default = {
         package = pkgs.ubuntu_font_family;
@@ -169,6 +149,29 @@ in {
       monospace = {
         package = pkgs.dejavu_fonts;
         name = "DejaVu Sans Mono";
+      };
+    };
+  };
+
+  programs.kvantum = {
+    enable = true;
+    theme.package = pkgs.materia-kde-theme;
+    theme.name = "MateriaDark";
+    theme.overrides = {
+      General = {
+        no_inactiveness = true;
+        translucent_windows = true;
+        reduce_window_opacity = 13;
+        reduce_menu_opacity = 13;
+        drag_from_buttons = false;
+        shadowless_popup = true;
+        popup_blurring = true;
+        menu_blur_radius = 5;
+        tooltip_blur_radius = 5;
+      };
+      Hacks = {
+        transparent_dolphin_view = true;
+        style_vertical_toolbars = true;
       };
     };
   };

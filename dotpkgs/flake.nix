@@ -29,6 +29,7 @@
     };
 
     homeManagerModules = importsWith inputs {
+      kvantum = ./kvantum/hm-module.nix;
       uniform-theme = ./uniform-theme/hm-module.nix;
       idlehack = ./idlehack/hm-module.nix;
       randbg = ./randbg/hm-module.nix;
