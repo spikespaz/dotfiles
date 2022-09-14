@@ -3,6 +3,9 @@
   ### ESSENTIALS ###
   ##################
 
+  ### APPIMAGE ###
+  appimage-run
+
   ### CLI UTILITIES ###
   dotpkgs.pkgs.fastfetch # neofetch but made in c
   btop  # system process monitor
@@ -17,7 +20,7 @@
 
   ### CODE EDITORS ###
   neovim
-  
+
   ################
   ### HARDWARE ###
   ################
