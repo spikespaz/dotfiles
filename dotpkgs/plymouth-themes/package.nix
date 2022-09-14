@@ -1,4 +1,5 @@
 {
+  maintainers,
   lib,
   stdenv,
   fetchFromGitHub,
@@ -33,6 +34,6 @@
     inherit (src.meta) homepage;
     license = licenses.gpl3;
     platforms = platforms.linux;
-    maintainers = with import ../maintainers.nix; [ spikespaz ];
+    maintainers = with maintainers; [ spikespaz ];
   };
 }

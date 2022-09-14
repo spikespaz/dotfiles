@@ -7,10 +7,10 @@ lib: rec {
       }))
       builtins.listToAttrs
     ];
-  mkPackages = pkgs: names:
+  mkPackages = pkgs: args: names:
     lib.pipe names [
       (mkSuffixedAttrsPaths "package.nix")
-      (builtins.mapAttrs (_: p: pkgs.callPackage p {}))
+      (builtins.mapAttrs (_: p: lib.callPackageWith pkgs p args))
     ];
   mkModules = suffix: inputs: names:
     lib.pipe names [

@@ -1,4 +1,5 @@
 {
+  maintainers,
   lib,
   stdenv,
   makeWrapper,
@@ -33,6 +34,6 @@
     description = "Simple screenshot utility for Wayland";
     license = licenses.mit;
     platforms = platforms.linux;
-    maintainers = with import ../maintainers.nix; [ spikespaz ];
+    maintainers = with maintainers; [ spikespaz ];
   };
 }

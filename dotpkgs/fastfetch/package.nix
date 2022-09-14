@@ -1,4 +1,5 @@
 {
+  maintainers,
   lib,
   stdenv,
   cmake,
@@ -68,8 +69,10 @@ stdenv.mkDerivation rec {
   ldLibraryPath = lib.makeLibraryPath runtimeDependencies;
 
   postInstall = ''
-    wrapProgram $out/bin/fastfetch --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
-    wrapProgram $out/bin/flashfetch --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
+    wrapProgram $out/bin/fastfetch \
+      --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
+    wrapProgram $out/bin/flashfetch \
+      --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
   '';
 
   meta = with lib; {
@@ -77,6 +80,6 @@ stdenv.mkDerivation rec {
     inherit (src.meta) homepage;
     license = licenses.mit;
     platforms = platforms.linux;
-    maintainers = with import ../maintainers.nix; [ spikespaz ];
+    maintainers = with maintainers; [ spikespaz ];
   };
 }

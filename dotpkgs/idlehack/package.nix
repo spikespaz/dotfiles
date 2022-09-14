@@ -1,4 +1,5 @@
 {
+  maintainers,
   lib,
   stdenv,
   fetchFromGitHub,
@@ -7,7 +8,7 @@
   bash,
   dbus,
   systemd,
-  libX11,
+  xorg,
   ...
 }: stdenv.mkDerivation rec {
   pname = "idlehack";
@@ -22,7 +23,8 @@
 
   strictDeps = true;
   nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ bash dbus libX11 ] ++ lib.optionals systemdSupport [ systemd ];
+  buildInputs = [ bash dbus xorg.libX11 ]
+    ++ lib.optionals systemdSupport [ systemd ];
 
   installPhase = ''
     runHook preInstall
@@ -44,6 +46,6 @@
     inherit (src.meta) homepage;
     license = licenses.isc;
     platforms = platforms.linux;
-    maintainers = with import ../maintainers.nix; [ spikespaz ];
+    maintainers = with maintainers; [ spikespaz ];
   };
 }

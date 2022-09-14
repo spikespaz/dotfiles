@@ -5,7 +5,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = inputs @ { self, nixpkgs, ... }: let
@@ -16,7 +15,10 @@
   in with (import ./lib.nix lib); {
     packages = genSystems (system: let
       pkgs = nixpkgs.legacyPackages.${system};
-    in mkPackages pkgs [
+      this = self.packages.${system};
+    in mkPackages (pkgs // this) {
+      maintainers = import ../maintainers.nix;
+    } [
       "fastfetch"
       "idlehack"
       "prtsc"
