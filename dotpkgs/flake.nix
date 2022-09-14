@@ -19,6 +19,7 @@
     in mkPackages (pkgs // this) {
       maintainers = import ../maintainers.nix;
     } [
+      "lapce"
       "fastfetch"
       "idlehack"
       "prtsc"

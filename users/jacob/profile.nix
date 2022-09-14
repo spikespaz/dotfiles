@@ -96,6 +96,7 @@ in {
     programs.vscode
     programs.neovim
     programs.helix
+    programs.lapce
 
     ### DEVELOPMENT TOOLS ###
     programs.git
