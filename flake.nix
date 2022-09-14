@@ -49,6 +49,7 @@
       ) // (
         flake
       );
+    flatFlakes = attrs: builtins.mapAttrs (_: f: flatFlake f) attrs;
   in {
     # merge the packages flake into this one
     inherit (dotpkgs) packages nixosModules homeManagerModules;
@@ -66,8 +67,8 @@
           ./system/greeter.nix
         ];
 
-        specialArgs = {
-          dotpkgs = flatFlake self;
+        specialArgs = flatFlakes {
+          dotpkgs = self;
         };
       };
     };
@@ -84,11 +85,11 @@
 	        desktops.software
         ];
 
-        extraSpecialArgs = {
-          dotpkgs = flatFlake self;
-          hyprland = flatFlake inputs.hyprland;
-          nil = flatFlake inputs.nil;
-          webcord = flatFlake inputs.webcord;
+        extraSpecialArgs = flatFlakes {
+          dotpkgs = self;
+          hyprland = inputs.hyprland;
+          nil = inputs.nil;
+          webcord = inputs.webcord;
         };
       };
     };
