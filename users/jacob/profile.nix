@@ -143,6 +143,23 @@ in {
     kvantum = {
       themePackage = pkgs.materia-kde-theme;
       theme = "MateriaDark";
+      themeOverrides = {
+        General = {
+          no_inactiveness = true;
+          translucent_windows = true;
+          reduce_window_opacity = 13;
+          reduce_menu_opacity = 13;
+          drag_from_buttons = false;
+          shadowless_popup = true;
+          popup_blurring = true;
+          menu_blur_radius = 5;
+          tooltip_blur_radius = 5;
+        };
+        Hacks = {
+          transparent_dolphin_view = true;
+          style_vertical_toolbars = true;
+        };
+      };
     };
     fonts = {
       default = {
