@@ -136,6 +136,9 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     nssmdns = true;
   };
 
+  location.provider = "geoclue2";
+  services.geoclue2.enable = true;
+
   # storage daemon required for udiskie auto-mount
   services.udisks2.enable = true;
 
