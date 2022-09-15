@@ -14,45 +14,44 @@
   enableChineseTraditionalFonts ? true,
   enableOtherFonts ? true,
 }:
-assert lib.assertMsg acceptEula ''
-  You must override this package and accept the EULA. (ttf-ms-win11)
-  <http://corefonts.sourceforge.net/eula.htm>
-'';
-assert lib.assertMsg (
-  enableBaseFonts
-  || enableJapaneseFonts
-  || enableKoreanFonts
-  || enableSeaFonts
-  || enableThaiFonts
-  || enableChineseSimplifiedFonts
-  || enableChineseTraditionalFonts
-  || enableOtherFonts
-) ''
-  You must have at least one set of fonts enabled for this package. (ttf-ms-win11)
-'';
 let
   inherit (import ./hashes.nix) fonts sha256Hashes;
 in stdenv.mkDerivation rec {
-  src = fetchurl {
-    # <https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise>
-    url = "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/22000.318.211104-1236.co_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso";
-    sha256 = "684bc16adbd792ef2f7810158a3f387f23bf95e1aee5f16270c5b7f56db753b6";
-  };
-
-  eula = fetchurl {
-    url = "http://corefonts.sourceforge.net/eula.htm";
-    sha256 = "1aqbcnl032g2hd7iy56cs022g47scb0jxxp3mm206x1yqc90vs1c";
-  };
-
   pname = "ttf-ms-win11";
   version = "1";
 
   strictDeps = true;
   doCheck = true;
 
-  nativeBuildInputs = [ p7zip ];
+  eula =
+    assert lib.assertMsg acceptEula ''
+      You must override this package and accept the EULA. (ttf-ms-win11)
+      <http://corefonts.sourceforge.net/eula.htm>
+    '';
+    fetchurl {
+      url = "http://corefonts.sourceforge.net/eula.htm";
+      sha256 = "1aqbcnl032g2hd7iy56cs022g47scb0jxxp3mm206x1yqc90vs1c";
+    };
+
+  src = fetchurl {
+    # <https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise>
+    url = "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/22000.318.211104-1236.co_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso";
+    sha256 = "684bc16adbd792ef2f7810158a3f387f23bf95e1aee5f16270c5b7f56db753b6";
+  };
 
   enabledFonts =
+    assert lib.assertMsg (
+      enableBaseFonts
+      || enableJapaneseFonts
+      || enableKoreanFonts
+      || enableSeaFonts
+      || enableThaiFonts
+      || enableChineseSimplifiedFonts
+      || enableChineseTraditionalFonts
+      || enableOtherFonts
+    ) ''
+      You must have at least one set of fonts enabled for this package. (ttf-ms-win11)
+    '';
     lib.optionals enableBaseFonts fonts.base
     ++ lib.optionals enableJapaneseFonts fonts.japanese
     ++ lib.optionals enableKoreanFonts fonts.korean
@@ -61,6 +60,8 @@ in stdenv.mkDerivation rec {
     ++ lib.optionals enableChineseSimplifiedFonts fonts.zh_cn
     ++ lib.optionals enableChineseTraditionalFonts fonts.zh_tw
     ++ lib.optionals enableOtherFonts fonts.other;
+
+  nativeBuildInputs = [ p7zip ];
 
   unpackPhase = ''
     mkdir -p ./fonts
