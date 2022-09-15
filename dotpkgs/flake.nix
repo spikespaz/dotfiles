@@ -19,6 +19,7 @@
     in mkPackages (pkgs // this) {
       maintainers = import ../maintainers.nix;
     } [
+      "ttf-ms-win11"
       "lapce"
       "fastfetch"
       "idlehack"

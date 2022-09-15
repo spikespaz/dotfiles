@@ -185,7 +185,9 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     fontconfig.enable = true;
     fontDir.enable = true;
     fonts = with pkgs; [
-      corefonts
+      (dotpkgs.pkgs.ttf-ms-win11.override {
+        acceptEula = true;
+      })
       noto-fonts
       noto-fonts-extra
       noto-fonts-cjk-sans
