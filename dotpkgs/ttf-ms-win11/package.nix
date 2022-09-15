@@ -64,6 +64,8 @@ in stdenv.mkDerivation rec {
   nativeBuildInputs = [ p7zip ];
 
   unpackPhase = ''
+    runHook preUnpack
+
     mkdir -p ./fonts
 
     echo 'Extracting 'install.wim'...'
@@ -77,17 +79,25 @@ in stdenv.mkDerivation rec {
     echo 'Extracting license file...'
     7z e ./install.wim \
       Windows/System32/Licenses/neutral/'*'/'*'/license.rtf
+
+    runHook postUnpack
   '';
 
   configurePhase = ''
+    runHook preConfigure
+
     ${lib.toShellVar "filenames" enabledFonts}
     ${lib.toShellVar "checksums" sha256Hashes}
 
     echo "Preparing to install ''${#filenames[@]} fonts."
     echo "There are ''${#checksums[@]} known hashes."
+
+    runHook postConfigure
   '';
 
   checkPhase = ''
+    runHook preCheck
+
     for filename in "''${filenames[@]}"; do
       echo "Checking '$filename'..."
       filepath="./fonts/$filename"
@@ -109,9 +119,13 @@ in stdenv.mkDerivation rec {
     done
 
     echo 'All requested files present, checksums validated.'
+
+    runHook postCheck
   '';
 
   installPhase = ''
+    runHook preInstall
+
     mkdir -p $out
 
     echo "Installing to '$out'"
@@ -124,6 +138,8 @@ in stdenv.mkDerivation rec {
 
     install -Dm644 ./license.rtf "$out/share/licenses/MicrosoftFonts"
     install -Dm644 '${eula}' "$out/share/licenses/MicrosoftFonts"
+
+    runHook postInstall
   '';
 
   meta = {

@@ -20,14 +20,20 @@
   };
 
   configurePhase = ''
+    runHook preConfigure
+
     mkdir -p $out/share/plymouth/themes
+
+    runHook postConfigure
   '';
 
   installPhase = ''
     runHook preInstall
+
     cp -r ./pack_${toString pack}/${theme} $out/share/plymouth/themes
     sed -i 's;/usr/share;${placeholder "out"}/share;g' \
       $out/share/plymouth/themes/${theme}/${theme}.plymouth
+
     runHook postInstall
   '';
 

@@ -28,9 +28,11 @@
 
   installPhase = ''
     runHook preInstall
+
     install -Dm755 ./idlehack $out/bin/idlehack
     install -Dm755 ./swayidle-inhibit $out/bin/swayidle-inhibit
     sed -i 's;#!/bin/bash;#!bin/sh;' $out/bin/swayidle-inhibit
+
     runHook postInstall
   '';
 

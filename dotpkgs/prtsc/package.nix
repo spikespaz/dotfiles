@@ -20,7 +20,9 @@
 
   installPhase = ''
     runHook preInstall
+
     install -Dm755 ./prtsc.pl $out/bin/prtsc.pl
+
     runHook postInstall
   '';
 
