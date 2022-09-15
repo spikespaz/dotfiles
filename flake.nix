@@ -8,10 +8,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
-  
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-  
+
     hyprland.url = "github:hyprwm/hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -30,26 +30,13 @@
     ...
   }: let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
 
+    inherit (nixpkgs) lib;
+    flib = import ./lib.nix lib;
+    pkgs = nixpkgs.legacyPackages.${system};
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
     dotpkgs = (import ./dotpkgs/flake.nix).outputs inputs;
-
-    # function to make using input flakes more ergonomic
-    flatFlake = flake:
-      (
-        if builtins.hasAttr "packages" flake
-        then { pkgs = flake.packages.${system}; }
-        else {}
-      ) // (
-        if builtins.hasAttr "homeManagerModules" flake
-        then { hmModules = flake.homeManagerModules; }
-        else {}
-      ) // (
-        flake
-      );
-    flatFlakes = attrs: builtins.mapAttrs (_: f: flatFlake f) attrs;
   in {
     # merge the packages flake into this one
     inherit (dotpkgs) packages nixosModules homeManagerModules;
@@ -67,7 +54,7 @@
           ./system/greeter.nix
         ];
 
-        specialArgs = flatFlakes {
+        specialArgs = flib.flatFlakes system {
           dotpkgs = self;
         };
       };
@@ -85,7 +72,7 @@
 	        desktops.software
         ];
 
-        extraSpecialArgs = flatFlakes {
+        extraSpecialArgs = flib.flatFlakes system {
           dotpkgs = self;
           hyprland = inputs.hyprland;
           nil = inputs.nil;
