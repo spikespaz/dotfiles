@@ -12,6 +12,7 @@
   tree  # directory tree listing
   wget  # simple downloader utility
   curl  # network request utility
+  p7zip  # archive and compression tool
   git  # version control
   zip  # archive utility
   bat  # cat with wings
