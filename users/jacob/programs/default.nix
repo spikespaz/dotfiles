@@ -98,6 +98,9 @@
   helix = {
     programs.helix.enable = true;
   };
+  lapce = {
+    home.packages = [ pkgs.lapce ];
+  };
 
   #########################
   ### DEVELOPMENT TOOLS ###
