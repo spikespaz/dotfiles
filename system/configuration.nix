@@ -206,7 +206,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
       description = "Jacob Birkett";
       isNormalUser = true;
       initialPassword = "password";
-      extraGroups = [ "networkmanager" "wheel" "video" ];
+      extraGroups = [ "networkmanager" "wheel" ];
     };
   };
 
