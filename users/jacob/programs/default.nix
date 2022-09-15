@@ -33,7 +33,7 @@
     ];
   };
   webcord = {
-    home.packages = [ webcord.pkgs.default ];
+    home.packages = [ webcord.packages.${pkgs.system}.default ];
   };
   neochat = {
     home.packages = [ pkgs.neochat ];

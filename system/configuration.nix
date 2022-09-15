@@ -42,7 +42,9 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     in {
       enable = true;
       themePackages = [
-        (dotpkgs.pkgs.plymouth-themes.override { inherit pack theme; })
+        (dotpkgs.packages.${pkgs.system}.plymouth-themes.override {
+          inherit pack theme;
+        })
       ];
       inherit theme;
     };
@@ -185,7 +187,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     fontconfig.enable = true;
     fontDir.enable = true;
     fonts = with pkgs; [
-      (dotpkgs.pkgs.ttf-ms-win11.override {
+      (dotpkgs.packages.${pkgs.system}.ttf-ms-win11.override {
         acceptEula = true;
       })
       noto-fonts

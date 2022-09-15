@@ -1,6 +1,6 @@
 { pkgs, dotpkgs, ... }: {
   imports = [
-    dotpkgs.hmModules.idlehack
+    dotpkgs.homeManagerModules.idlehack
   ];
 
   home.packages = [

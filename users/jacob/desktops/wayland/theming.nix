@@ -1,6 +1,6 @@
 { config, dotpkgs, ... }: {
   imports = [
-    dotpkgs.hmModules.randbg
+    dotpkgs.homeManagerModules.randbg
   ];
 
   # configure swaylock theme

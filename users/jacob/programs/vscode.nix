@@ -7,7 +7,7 @@
     # Perl Language Server
     perlPackages.PLS
     # Nix Language Server
-    nil.pkgs.default
+    nil.packages.${pkgs.system}.default
   ];
 
   programs.vscode.extensions = with pkgs.vscode-extensions; [
@@ -78,7 +78,7 @@
     "perl.pls" = "${pkgs.perlPackages.PLS}/bin/pls";
 
     "nix.enableLanguageServer" = true;
-    "nix.serverPath" = "${nil.pkgs.default}/bin/nil";
+    "nix.serverPath" = "${nil.packages.${pkgs.system}.default}/bin/nil";
 
     ## Miscellaneous ##
 

@@ -1,17 +1,16 @@
 { lib, pkgs, dotpkgs, hyprland, ... }: {
   imports = [
-    hyprland.hmModules.default
+    hyprland.homeManagerModules.default
   ];
 
   home.packages = [
     # Screen Capture
-    dotpkgs.pkgs.prtsc
+    dotpkgs.packages.${pkgs.system}.prtsc
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
     systemdIntegration = true;
-    recommendedEnvironment = true;
     xwayland = {
       enable = true;
       hidpi = true;
