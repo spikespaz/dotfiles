@@ -62,9 +62,18 @@ in {
 
   status = {
     disabled = false;
-    format = "[$status]($style) ";
-    style = "bold ${colors.red}";
-    recognize_signal_code = false;
+    format = lib.concatStrings [
+      "["
+      "($signal_name[\\(](${colors.fg3})$signal_number[\\)](${colors.fg3}) )"
+      "($common_meaning )"
+      "([$status](${colors.red}))"
+      "]($style)"
+      " "
+    ];
+    pipestatus_format = "[$pipestatus](${colors.bg3})";
+    pipestatus_separator = "| ";
+    pipestatus = true;
+    style = "bold ${colors.normal.purple}";
   };
 
   format = lib.concatStrings [
