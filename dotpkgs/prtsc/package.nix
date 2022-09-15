@@ -12,9 +12,10 @@
   pname = "prtsc";
   version = "0.0.1";
 
+  strictDeps = true;
+
   src = ./.;
 
-  strictDeps = true;
   nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''

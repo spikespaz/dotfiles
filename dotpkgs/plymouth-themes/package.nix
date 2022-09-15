@@ -10,6 +10,8 @@
   pname = "adi1090x-plymouth-themes";
   version = "1.0.0";
 
+  strictDeps = true;
+
   src = fetchFromGitHub {
     owner = "adi1090x";
     repo = "plymouth-themes";
