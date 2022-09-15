@@ -20,11 +20,12 @@ in {
   #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
   fileSystems = {
-    "/" = {
-      device = "none";
-      fsType = "tmpfs";
-      options = [ "defaults" "size=2G" "mode=0755" ];
-    };
+    # "/" = {
+    #   device = "none";
+    #   fsType = "tmpfs";
+    #   options = [ "defaults" "size=2G" "mode=0755" ];
+    # };
+    "/" = zfsAuto "ospool/root";
     "/boot" = {
       device = "/dev/disk/by-label/boot";
       fsType = "vfat";
