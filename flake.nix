@@ -33,6 +33,7 @@
 
     inherit (nixpkgs) lib;
     flib = import ./lib.nix lib;
+
     pkgs = nixpkgs.legacyPackages.${system};
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects

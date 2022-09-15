@@ -9,14 +9,16 @@
 
   outputs = inputs @ { self, nixpkgs, ... }: let
     inherit (nixpkgs) lib;
+    flib = import ./lib.nix lib;
+
     genSystems = lib.genAttrs [
       "x86_64-linux"
     ];
-  in with (import ./lib.nix lib); {
+  in {
     packages = genSystems (system: let
       pkgs = nixpkgs.legacyPackages.${system};
       this = self.packages.${system};
-    in mkPackages (pkgs // this) {
+    in flib.mkPackages (pkgs // this) {
       maintainers = import ./maintainers.nix;
     } [
       "ttf-ms-win11"
@@ -27,11 +29,11 @@
       "plymouth-themes"
     ]);
 
-    nixosModules = mkNixosModules inputs [
+    nixosModules = flib.mkNixosModules inputs [
       "auto-cpufreq"
     ];
 
-    homeManagerModules = mkHmModules inputs [
+    homeManagerModules = flib.mkHmModules inputs [
       "kvantum"
       "uniform-theme"
       "idlehack"
