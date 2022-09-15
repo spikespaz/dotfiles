@@ -34,7 +34,7 @@
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Monitor dbus and inhibit swayidle when Firefox or Chromium request it";
     longDescription = ''
       Listen for Firefox/Chromium dbus messages that request screensaver inhibit,
@@ -44,8 +44,8 @@
       disabling the screen blanking.
     '';
     inherit (src.meta) homepage;
-    license = licenses.isc;
-    platforms = platforms.linux;
+    license = lib.licenses.isc;
+    platforms = lib.platforms.linux;
     maintainers = with maintainers; [ spikespaz ];
   };
 }

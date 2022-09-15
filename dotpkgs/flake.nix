@@ -17,7 +17,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       this = self.packages.${system};
     in mkPackages (pkgs // this) {
-      maintainers = import ../maintainers.nix;
+      maintainers = import ./maintainers.nix;
     } [
       "ttf-ms-win11"
       "lapce"

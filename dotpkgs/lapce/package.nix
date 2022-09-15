@@ -1,29 +1,31 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, rustPlatform
-, cmake
-, pkg-config
-, python3
-, perl
-, freetype
-, fontconfig
-, libxkbcommon
-, xcbutil
-, libX11
-, libXcursor
-, libXrandr
-, libXi
-, vulkan-loader
-, copyDesktopItems
-, makeDesktopItem
-, openssl
-, libobjc
-, Security
-, CoreServices
-, ApplicationServices
-, Carbon
-, AppKit
+{
+  maintainers,
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  rustPlatform,
+  cmake,
+  pkg-config,
+  python3,
+  perl,
+  freetype,
+  fontconfig,
+  libxkbcommon,
+  xcbutil,
+  libX11,
+  libXcursor,
+  libXrandr,
+  libXi,
+  vulkan-loader,
+  copyDesktopItems,
+  makeDesktopItem,
+  openssl,
+  libobjc,
+  Security,
+  CoreServices,
+  ApplicationServices,
+  Carbon,
+  AppKit
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -94,9 +96,9 @@ rustPlatform.buildRustPackage rec {
     })
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Lightning-fast and Powerful Code Editor written in Rust";
-    homepage = "https://github.com/lapce/lapce";
+    inherit (src.meta) homepage;
     license = lib.licenses.asl20;
     maintainers = with maintainers; [ spikespaz ];
   };

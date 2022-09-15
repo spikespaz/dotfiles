@@ -30,10 +30,10 @@
       "${lib.makeBinPath [ wl-clipboard slurp grim ]}"
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Simple screenshot utility for Wayland";
-    license = licenses.mit;
-    platforms = platforms.linux;
+    license = lib.licenses.mit;
+    platforms = lib.platforms.linux;
     maintainers = with maintainers; [ spikespaz ];
   };
 }

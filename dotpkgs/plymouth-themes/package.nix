@@ -6,7 +6,7 @@
   pack ? 2,
   theme ? "green_blocks",
   ...
-}: stdenv.mkDerivation {
+}: stdenv.mkDerivation rec {
   pname = "adi1090x-plymouth-themes";
   version = "1.0.0";
 
@@ -29,11 +29,11 @@
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "A collection of plymouth themes ported from Android.";
     inherit (src.meta) homepage;
-    license = licenses.gpl3;
-    platforms = platforms.linux;
+    license = lib.licenses.gpl3;
+    platforms = lib.platforms.linux;
     maintainers = with maintainers; [ spikespaz ];
   };
 }

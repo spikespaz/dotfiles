@@ -27,8 +27,7 @@
   enableWayland ? true,
   wayland,
   enableX11 ? true,
-  libX11,
-  libxcb,
+  xorg,
   enableXFCE ? false,
   xfce,
 }:
@@ -54,13 +53,13 @@ stdenv.mkDerivation rec {
     ++ lib.optional enableOpenGLModule libglvnd
     ++ lib.optional enableVulkanModule vulkan-loader
     ++ lib.optional enableWayland wayland
-    ++ lib.optional enableX11 libxcb
+    ++ lib.optional enableX11 xorg.libxcb
     ++ lib.optional enableXFCE xfce.xfconf;
 
   buildInputs =
     runtimeDependencies
     ++ lib.optional enableOpenCLModule opencl-headers
-    ++ lib.optional enableX11 libX11;
+    ++ lib.optional enableX11 xorg.libX11;
 
   cmakeFlags = [
     "-DCMAKE_INSTALL_SYSCONFDIR=${placeholder "out"}/etc"
@@ -75,11 +74,11 @@ stdenv.mkDerivation rec {
       --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Like neofetch, but much faster";
     inherit (src.meta) homepage;
-    license = licenses.mit;
-    platforms = platforms.linux;
+    license = lib.licenses.mit;
+    platforms = lib.platforms.linux;
     maintainers = with maintainers; [ spikespaz ];
   };
 }

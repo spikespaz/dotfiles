@@ -125,11 +125,11 @@ in stdenv.mkDerivation rec {
     install -Dm644 '${eula}' "$out/share/licenses/MicrosoftFonts"
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Microsoft's TrueType fonts from Windows 11";
     homepage = "https://www.microsoft.com/typography/fonts/product.aspx?PID=164";
-    platforms = platforms.all;
-    license = licenses.unfreeRedistributable;
+    platforms = lib.platforms.all;
+    license = lib.licenses.unfreeRedistributable;
     maintainers = with maintainers; [ spikespaz ];
   };
 }
