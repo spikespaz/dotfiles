@@ -12,4 +12,21 @@ lib: rec {
   ];
   # same as above but with an attrset of named flake inputs
   flatFlakes = system: builtins.mapAttrs (_: f: flatFlake f system);
+  # spoof the license of every package
+  spoofAllowUnfree = maybe: flake: (
+    if maybe
+    then lib.recursiveUpdate flake {
+      # spoof the licenses for local flake packages
+      packages =
+        builtins.mapAttrs (_: system:
+          builtins.mapAttrs (_: package:
+            package.overrideAttrs (old: {
+              meta.license =
+                old.meta.license // { free = true; };
+            })
+          ) system
+        ) flake.packages;
+    }
+    else flake
+  );
 }
