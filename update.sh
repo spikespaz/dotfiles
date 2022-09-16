@@ -61,7 +61,10 @@ fi
 if [ $update_system -eq 1 ]; then
 	label "UPDATING SYSTEM"
 
-	sudo nixos-rebuild switch --flake "path:$here#" $@
+	sudo -s <<-EOF
+		nixos-rebuild switch --flake "path:$here#" $@
+		chown $USER "$here/flake.lock"
+	EOF
 fi
 
 if [ $update_user -eq 1 ]; then
