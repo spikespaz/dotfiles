@@ -8,7 +8,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
 
   # configure experimenta; support for flakes,
   nix.package = pkgs.nixFlakes;
-  nix.extraOptions = "experimental-features = nix-command flakes";
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # set up garbage collection to run weekly,
   # removing unused packages after seven days
