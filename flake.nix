@@ -39,7 +39,7 @@
       config.allowUnfree = true;
       config.allowBroken = true;
       overlays = [
-        self.overlays.${system}.allPackages
+        (flib.genPackageOverlays system inputs)
         self.overlays.${system}.allowUnfree
       ];
     };
@@ -65,7 +65,7 @@
           ./system/greeter.nix
         ];
 
-        specialArgs = flib.flatFlakes system {
+        specialArgs = {
           dotpkgs = self;
         };
       };
@@ -84,9 +84,6 @@
         ];
 
         extraSpecialArgs = {
-          nil = flib.flatFlake inputs.nil system;
-          webcord = flib.flatFlake inputs.webcord system;
-
           hmModules = flib.joinHmModules {
             dotpkgs = self;
             hyprland = inputs.hyprland;

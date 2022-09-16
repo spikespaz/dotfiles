@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, webcord, ... }: {
+{ config, lib, pkgs, nixpkgs, ... }: {
   ####################
   ### WEB BROWSERS ###
   ####################
@@ -33,7 +33,7 @@
     ];
   };
   webcord = {
-    home.packages = [ webcord.pkgs.default ];
+    home.packages = [ pkgs.webcord ];
   };
   neochat = {
     home.packages = [ pkgs.neochat ];
