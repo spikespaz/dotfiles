@@ -129,7 +129,14 @@ in {
     conflicted =	"[ $count ](bold ${colors.red})";
     ahead = "[ $count ](bold ${colors.green})";
     behind = "[ $count ](bold ${colors.orange})";
-    diverged = "[ ](bold ${colors.purple})";
+    diverged = lib.concatStrings [
+      "[](bold ${colors.purple})"
+      " "
+      "[$ahead_count](bold ${colors.green})"
+      "[/](bold ${colors.fg3})"
+      "[$behind_count](bold ${colors.orange})"
+      " "
+    ];
     up_to_date = "[  ](bold ${colors.aqua})";
     untracked = "[ $count ](bold ${colors.orange})";
     stashed = "[ $count ](bold ${colors.yellow})";
