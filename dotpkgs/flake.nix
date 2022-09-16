@@ -22,7 +22,6 @@
       maintainers = import ./maintainers.nix;
     } [
       "ttf-ms-win11"
-      "lapce"
       "fastfetch"
       "idlehack"
       "prtsc"
