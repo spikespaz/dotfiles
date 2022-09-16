@@ -1,7 +1,5 @@
 { lib, pkgs, hmModules, ... }: {
-  imports = [
-    hmModules.hyprland.default
-  ];
+  imports = [ hmModules.hyprland ];
 
   home.packages = [
     # Screen Capture

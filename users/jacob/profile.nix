@@ -51,8 +51,8 @@ in {
 
   imports = [
     # theming module
-    hmModules.dotpkgs.uniform-theme
-    hmModules.dotpkgs.kvantum
+    hmModules.uniform-theme
+    hmModules.kvantum
     # set the default programs
     ./mimeapps.nix
 

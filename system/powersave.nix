@@ -6,7 +6,7 @@
   idle_after = 5 * 60;
   hibernate_delay = 30 * 60;
 in {
-  imports = [ modules.dotpkgs.auto-cpufreq ];
+  imports = [ modules.auto-cpufreq ];
 
   services.auto-cpufreq = {
     enable = true;

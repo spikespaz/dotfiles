@@ -1,7 +1,5 @@
 { config, hmModules, ... }: {
-  imports = [
-    hmModules.dotpkgs.randbg
-  ];
+  imports = [ hmModules.randbg ];
 
   # configure swaylock theme
   programs.swaylock.settings = import ./swaylock.nix;

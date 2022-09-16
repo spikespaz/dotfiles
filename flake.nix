@@ -66,9 +66,7 @@
         ];
 
         specialArgs = {
-          modules = flib.joinNixosModules {
-            dotpkgs = self;
-          };
+          modules = flib.joinNixosModules inputs;
         };
       };
     };
@@ -86,10 +84,7 @@
         ];
 
         extraSpecialArgs = {
-          hmModules = flib.joinHmModules {
-            dotpkgs = self;
-            hyprland = inputs.hyprland;
-          };
+          hmModules = flib.joinHmModules inputs;
         };
       };
     };

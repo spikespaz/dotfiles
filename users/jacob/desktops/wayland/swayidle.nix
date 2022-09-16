@@ -1,11 +1,7 @@
 { pkgs, hmModules, ... }: {
-  imports = [
-    hmModules.dotpkgs.idlehack
-  ];
+  imports = [ hmModules.idlehack ];
 
-  home.packages = [
-    pkgs.swayidle
-  ];
+  home.packages = [ pkgs.swayidle ];
 
   # enable the idlehack deamon, it watches for inhibits
   # on dbus and sends them to swayidle/anything listening
