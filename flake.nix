@@ -30,7 +30,6 @@
     ...
   }: let
     system = "x86_64-linux";
-    allowUnfree = true;
 
     inherit (nixpkgs) lib;
     flib = import ./lib.nix lib;
@@ -39,7 +38,7 @@
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
     dotpkgs = (import ./dotpkgs/flake.nix).outputs inputs;
-  in flib.spoofAllowUnfree allowUnfree {
+  in {
     # merge the packages flake into this one
     inherit (dotpkgs) packages nixosModules homeManagerModules;
 
