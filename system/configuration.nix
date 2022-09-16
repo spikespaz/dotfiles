@@ -1,4 +1,4 @@
-args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
+args @ { config, pkgs, ... }: {
   # configure experimenta; support for flakes,
   nix.package = pkgs.nixFlakes;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -33,7 +33,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     in {
       enable = true;
       themePackages = [
-        (dotpkgs.pkgs.plymouth-themes.override { inherit pack theme; })
+        (pkgs.plymouth-themes.override { inherit pack theme; })
       ];
       inherit theme;
     };
@@ -176,9 +176,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     fontconfig.enable = true;
     fontDir.enable = true;
     fonts = with pkgs; [
-      (pkgs.ttf-ms-win11.override {
-        acceptEula = true;
-      })
+      (pkgs.ttf-ms-win11.override { acceptEula = true; })
       noto-fonts
       noto-fonts-extra
       noto-fonts-cjk-sans

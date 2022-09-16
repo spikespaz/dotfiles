@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, dotpkgs, webcord, ... }: {
+{ config, lib, pkgs, nixpkgs, webcord, ... }: {
   ####################
   ### WEB BROWSERS ###
   ####################

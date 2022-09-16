@@ -1,11 +1,11 @@
-{ lib, pkgs, dotpkgs, hyprland, ... }: {
+{ lib, pkgs, hyprland, ... }: {
   imports = [
     hyprland.hmModules.default
   ];
 
   home.packages = [
     # Screen Capture
-    dotpkgs.pkgs.prtsc
+    pkgs.prtsc
   ];
 
   wayland.windowManager.hyprland = {

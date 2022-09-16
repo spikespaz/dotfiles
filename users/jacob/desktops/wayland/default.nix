@@ -1,4 +1,4 @@
-{ config, pkgs, dotpkgs, ... }: {
+{ config, pkgs, ... }: {
   imports = [
     ./swayidle.nix
     ./theming.nix

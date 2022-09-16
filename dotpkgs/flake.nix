@@ -32,6 +32,7 @@
     overlays = genSystems (system: let
       pkgs = self.packages.${system};
     in {
+      allPackages = (_: _: self.packages.${system});
       allowUnfree = (_: _: {
         ttf-ms-win11 = pkgs.ttf-ms-win11.overrideAttrs (old:
           lib.recursiveUpdate old { meta.license.free = true; }

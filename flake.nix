@@ -39,6 +39,7 @@
       config.allowUnfree = true;
       config.allowBroken = true;
       overlays = [
+        self.overlays.${system}.allPackages
         self.overlays.${system}.allowUnfree
       ];
     };

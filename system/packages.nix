@@ -1,4 +1,4 @@
-{ pkgs, dotpkgs, ... }: with pkgs; [
+{ pkgs, ... }: with pkgs; [
   ##################
   ### ESSENTIALS ###
   ##################
@@ -7,7 +7,7 @@
   appimage-run
 
   ### CLI UTILITIES ###
-  dotpkgs.pkgs.fastfetch # neofetch but made in c
+  fastfetch # neofetch but made in c
   btop  # system process monitor
   tree  # directory tree listing
   wget  # simple downloader utility
