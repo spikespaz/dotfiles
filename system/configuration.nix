@@ -1,5 +1,7 @@
 args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
   nixpkgs.config = {
+    # allow packages that have proprietary licenses
+    allowUnfree = true;
     # packages that are marked as broken; usually just incompatible
     # with complicated setups, or with popular software
     # needed for zfs on recent linux kernel

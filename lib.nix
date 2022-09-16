@@ -16,14 +16,6 @@ lib: rec {
   spoofAllowUnfree = maybe: flake: (
     if maybe
     then lib.recursiveUpdate flake {
-      # this works for system config
-      nixpkgs.config.allowUnfree = maybe;
-      # there is a bug in nixpkgs that prevents the global
-      # "allowUnfree" from working, so instead just specify
-      # a callback that says yes every time something asks
-      # if it can install a package with a proprietary license
-      # <https://github.com/nix-community/home-manager/issues/2942>
-      nixpkgs.config.allowUnfreePredicate = _: maybe;
       # spoof the licenses for local flake packages
       packages =
         builtins.mapAttrs (_: system:
