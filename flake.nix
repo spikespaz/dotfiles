@@ -34,19 +34,28 @@
     inherit (nixpkgs) lib;
     flib = import ./lib.nix lib;
 
-    pkgs = nixpkgs.legacyPackages.${system};
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+      config.allowBroken = true;
+      overlays = [
+        self.overlays.${system}.allowUnfree
+      ];
+    };
+
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
     dotpkgs = (import ./dotpkgs/flake.nix).outputs inputs;
   in {
     # merge the packages flake into this one
-    inherit (dotpkgs) packages nixosModules homeManagerModules;
+    inherit (dotpkgs) packages overlays nixosModules homeManagerModules;
 
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {
         inherit system;
 
         modules = [
+          { nixpkgs.pkgs = pkgs; }
           nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen2
           ./system/filesystems.nix
           ./system/configuration.nix

@@ -29,6 +29,16 @@
       "plymouth-themes"
     ]);
 
+    overlays = genSystems (system: let
+      pkgs = self.packages.${system};
+    in {
+      allowUnfree = (_: _: {
+        ttf-ms-win11 = pkgs.ttf-ms-win11.overrideAttrs (old:
+          lib.recursiveUpdate old { meta.license.free = true; }
+        );
+      });
+    });
+
     nixosModules = flib.mkNixosModules inputs [
       "auto-cpufreq"
     ];

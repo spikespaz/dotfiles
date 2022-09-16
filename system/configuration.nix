@@ -1,13 +1,4 @@
 args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
-  nixpkgs.config = {
-    # allow packages that have proprietary licenses
-    allowUnfree = true;
-    # packages that are marked as broken; usually just incompatible
-    # with complicated setups, or with popular software
-    # needed for zfs on recent linux kernel
-    allowBroken = true;
-  };
-
   # configure experimenta; support for flakes,
   nix.package = pkgs.nixFlakes;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -185,7 +176,7 @@ args @ { config, pkgs, nixpkgs, dotpkgs, ... }: {
     fontconfig.enable = true;
     fontDir.enable = true;
     fonts = with pkgs; [
-      (dotpkgs.pkgs.ttf-ms-win11.override {
+      (pkgs.ttf-ms-win11.override {
         acceptEula = true;
       })
       noto-fonts
