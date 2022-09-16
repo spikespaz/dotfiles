@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-here="$(dirname $0)"
+here="$(realpath "$(dirname $0)")"
 
 fail () {
 	printf ''
