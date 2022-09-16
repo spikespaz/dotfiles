@@ -93,6 +93,13 @@
     # files can be recovered with undo
     "explorer.confirmDelete" = false;
 
+    ## Language Specific -- Shell ##
+
+    "[shellscript]" = {
+      "editor.tabSize" = 2;
+      "editor.insertSpaces" = false;
+    };
+
     ## Language Specific -- Rust ##
 
     "[rust]" = {
