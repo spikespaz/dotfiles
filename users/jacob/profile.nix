@@ -10,14 +10,6 @@ in {
   ### PREAMBLE ###
   ################
 
-  # there is a bug in nixpkgs that prevents the global
-  # "allow unfree" from working, so instead just specify
-  # a callback that says yes every time something asks
-  # if it can install a package with a proprietary license
-  # <https://github.com/nix-community/home-manager/issues/2942>
-  # nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = _: true;
-
   # fix for some display managers not using ~/.profile
   systemd.user.sessionVariables = config.home.sessionVariables;
 

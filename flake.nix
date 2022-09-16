@@ -69,6 +69,7 @@
         modules = let
           desktops = import ./users/jacob/desktops;
         in [
+          { nixpkgs.config = self.nixpkgs.config; }
           ./users/jacob/profile.nix
 	        desktops.hyprland
 	        desktops.software
