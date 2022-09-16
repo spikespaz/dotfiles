@@ -2,7 +2,7 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-args @ { config, lib, pkgs, nixpkgs, dotpkgs, ... }: let
+args @ { config, lib, pkgs, nixpkgs, hmModules, ... }: let
   programs = import ./programs args;
   services = import ./services.nix args;
 in {
@@ -51,8 +51,8 @@ in {
 
   imports = [
     # theming module
-    dotpkgs.hmModules.uniform-theme
-    dotpkgs.hmModules.kvantum
+    hmModules.dotpkgs.uniform-theme
+    hmModules.dotpkgs.kvantum
     # set the default programs
     ./mimeapps.nix
 

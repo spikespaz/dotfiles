@@ -1,6 +1,6 @@
-{ lib, pkgs, hyprland, ... }: {
+{ lib, pkgs, hmModules, ... }: {
   imports = [
-    hyprland.hmModules.default
+    hmModules.hyprland.default
   ];
 
   home.packages = [

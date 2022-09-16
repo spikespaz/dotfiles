@@ -6,10 +6,11 @@ lib: rec {
   flatFlake = flake: system: updates [
     (lib.optionalAttrs (builtins.hasAttr "packages" flake)
       { pkgs = flake.packages.${system}; })
-    (lib.optionalAttrs (builtins.hasAttr "homeManagerModules" flake)
-      { hmModules = flake.homeManagerModules; })
     flake
   ];
+
   # same as above but with an attrset of named flake inputs
   flatFlakes = system: builtins.mapAttrs (_: f: flatFlake f system);
+  # returns an attrset with modules namespaced by flake name
+  joinHmModules = builtins.mapAttrs (k: v: v.homeManagerModules);
 }

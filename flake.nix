@@ -83,11 +83,14 @@
 	        desktops.software
         ];
 
-        extraSpecialArgs = flib.flatFlakes system {
-          dotpkgs = self;
-          hyprland = inputs.hyprland;
-          nil = inputs.nil;
-          webcord = inputs.webcord;
+        extraSpecialArgs = {
+          nil = flib.flatFlake inputs.nil system;
+          webcord = flib.flatFlake inputs.webcord system;
+
+          hmModules = flib.joinHmModules {
+            dotpkgs = self;
+            hyprland = inputs.hyprland;
+          };
         };
       };
     };
