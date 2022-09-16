@@ -36,4 +36,7 @@ lib: rec {
 
   # returns an attrset with modules namespaced by flake name
   joinHmModules = builtins.mapAttrs (k: v: v.homeManagerModules);
+
+  # returns an attrset with modules namespaced by flake name
+  joinNixosModules = builtins.mapAttrs (k: v: v.nixosModules);
 }

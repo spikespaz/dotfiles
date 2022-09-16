@@ -2,11 +2,11 @@
 # - <https://www.kernel.org/doc/Documentation/power/states.txt>
 # - `man sleep.conf.d`
 # - `man logind.conf`
-{ lib, dotpkgs, ... }: let
+{ lib, modules, ... }: let
   idle_after = 5 * 60;
   hibernate_delay = 30 * 60;
 in {
-  imports = [ dotpkgs.nixosModules.auto-cpufreq ];
+  imports = [ modules.dotpkgs.auto-cpufreq ];
 
   services.auto-cpufreq = {
     enable = true;

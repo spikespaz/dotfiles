@@ -66,7 +66,9 @@
         ];
 
         specialArgs = {
-          dotpkgs = self;
+          modules = flib.joinNixosModules {
+            dotpkgs = self;
+          };
         };
       };
     };
