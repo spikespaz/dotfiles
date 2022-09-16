@@ -25,7 +25,6 @@
   outputs = inputs @ {
     self,
     nixpkgs,
-    nixos-hardware,
     home-manager,
     ...
   }: let
@@ -34,19 +33,22 @@
     inherit (nixpkgs) lib;
     flib = import ./lib.nix lib;
 
+    packageOverlays = flib.genPackageOverlays system inputs;
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
       config.allowBroken = true;
       overlays = [
-        (flib.genPackageOverlays system inputs)
+        packageOverlays
         self.overlays.${system}.allowUnfree
       ];
     };
-
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
     dotpkgs = (import ./dotpkgs/flake.nix).outputs inputs;
+
+    modules = flib.joinNixosModules inputs;
+    hmModules = flib.joinHmModules inputs;
   in {
     # merge the packages flake into this one
     inherit (dotpkgs) packages overlays nixosModules homeManagerModules;
@@ -54,38 +56,30 @@
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {
         inherit system;
-
+        specialArgs = { inherit modules; };
         modules = [
           { nixpkgs.pkgs = pkgs; }
-          nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen2
+          modules.lenovo-thinkpad-p14s-amd-gen2
           ./system/filesystems.nix
           ./system/configuration.nix
           ./system/powersave.nix
           ./system/touchpad.nix
           ./system/greeter.nix
         ];
-
-        specialArgs = {
-          modules = flib.joinNixosModules inputs;
-        };
       };
     };
 
     homeConfigurations = {
       jacob = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-
+        extraSpecialArgs = { inherit hmModules; };
         modules = let
           desktops = import ./users/jacob/desktops;
         in [
           ./users/jacob/profile.nix
-	        desktops.hyprland
-	        desktops.software
+          desktops.hyprland
+          desktops.software
         ];
-
-        extraSpecialArgs = {
-          hmModules = flib.joinHmModules inputs;
-        };
       };
     };
   };
