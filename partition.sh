@@ -38,20 +38,20 @@ sleep 1s
 
 # Create the root pool
 zpool create \
-  -o ashift=12 \
-  -o autotrim=on \
-  -O acltype=posixacl \
-  -O dnodesize=auto \
-  -O normalization=formD \
-  -O relatime=on \
-  -O xattr=sa \
-  -O compression=zstd \
-  -O canmount=off \
-  -O mountpoint=none \
-  -R /mnt \
-  -f \
-  $POOL_NAME \
-  $ROOT_PART
+	-o ashift=12 \
+	-o autotrim=on \
+	-O acltype=posixacl \
+	-O dnodesize=auto \
+	-O normalization=formD \
+	-O relatime=on \
+	-O xattr=sa \
+	-O compression=zstd \
+	-O canmount=off \
+	-O mountpoint=none \
+	-R /mnt \
+	-f \
+	$POOL_NAME \
+	$ROOT_PART
 
 # Create system datasets
 zfs create  -o canmount=on   -o moutnpoint=/      -o compression=zstd-fast                             $POOL_NAME/root
