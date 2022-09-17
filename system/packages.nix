@@ -7,17 +7,24 @@
   appimage-run
 
   ### CLI UTILITIES ###
-  fastfetch # neofetch but made in c
-  btop  # system process monitor
-  tree  # directory tree listing
-  wget  # simple downloader utility
-  curl  # network request utility
-  p7zip  # archive and compression tool
-  git  # version control
-  zip  # archive utility
-  bat  # cat with wings
-  fzf  # fuzzy finder
-  exa  # colored alternative to ls
+  fastfetch     # neofetch but made in c
+  btop          # system process monitor
+  tree          # directory tree listing
+  wget          # simple downloader utility
+  curl          # network request utility
+  p7zip         # archive and compression tool
+  git           # version control
+  zip           # archive utility
+  bat           # cat with wings
+  fzf           # fuzzy finder
+  exa           # colored alternative to ls
+  ripgrep       # grep but rust
+  procs         # process viewer
+  sd            # sed but rust
+  du-dust       # du but rust
+  bottom        # not top
+  bandwhich     # network monitor
+  # tealdear      # manpage summaries
 
   ### CODE EDITORS ###
   neovim
