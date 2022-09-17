@@ -38,6 +38,9 @@
   neochat = {
     home.packages = [ pkgs.neochat ];
   };
+  fractal = {
+    home.packages = [ pkgs.fractal ];
+  };
   hexchat = {
     programs.hexchat.enable = true;
   };
