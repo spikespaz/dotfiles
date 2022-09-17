@@ -197,9 +197,10 @@ if ($mode eq 'region') {
 }
 
 if ($clipboard) {
-    $cmd = "$cmd - | wl-copy";
+    $cmd = "$cmd - | wl-copy -t image/$filetype";
 } else {
     $cmd = "$cmd '$filepath'";
 }
 
+print "$cmd\n";
 exec $cmd;
