@@ -2,9 +2,10 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-args @ { config, lib, pkgs, nixpkgs, hmModules, ... }: let
+args @ { config, lib, ulib, pkgs, nixpkgs, hmModules, ... }: let
   programs = import ./programs args;
   services = import ./services.nix args;
+  mimeApps = ulib.importMimeApps ./mimeapps.nix;
 in {
   ################
   ### PREAMBLE ###
@@ -53,8 +54,9 @@ in {
     # theming module
     hmModules.uniform-theme
     hmModules.kvantum
+
     # set the default programs
-    ./mimeapps.nix
+    mimeApps
 
     ##############################
     ### USER-SPECIFIC SOFTWARE ###

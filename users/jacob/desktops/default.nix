@@ -1,4 +1,4 @@
-{
+ulib: {
   hyprland = {
     imports = [
       ./wayland
@@ -11,4 +11,6 @@
       ./suite.nix
     ];
   };
+
+  mimeApps = ulib.importMimeApps ./mimeapps.nix;
 }

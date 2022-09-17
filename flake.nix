@@ -72,17 +72,22 @@
     };
 
     homeConfigurations = {
-      jacob = home-manager.lib.homeManagerConfiguration {
+      jacob = home-manager.lib.homeManagerConfiguration (let
+        ulib = import ./users/lib.nix lib;
+        desktops = import ./users/jacob/desktops ulib;
+      in {
         inherit pkgs;
-        extraSpecialArgs = { inherit hmModules; };
-        modules = let
-          desktops = import ./users/jacob/desktops;
-        in [
+        extraSpecialArgs = {
+          inherit ulib;
+          inherit hmModules;
+        };
+        modules = [
           ./users/jacob/profile.nix
           desktops.hyprland
           desktops.software
+          desktops.mimeApps
         ];
-      };
+      });
     };
   };
 }
