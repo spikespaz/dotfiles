@@ -10,24 +10,16 @@ lib: rec {
   # the default attr will be renamed to ${newName}_default
   # and default will be renamed to newName
   renameDefaultAttr = newName: attrs: (
-    let
-      hasDefault = builtins.hasAttr "default" attrs;
-      hasNewName = builtins.hasAttr newName attrs;
-      default =
-        if hasDefault
-        then attrs.default
-        else null;
-      others =
-        if hasDefault
-        then removeAttrs attrs [ "default" ]
-        else null;
-    in
-      if hasDefault
-      then
-        if hasNewName
-        then { "${newName}_default" = default; } // others
-        else { ${newName} = default; } // others
-      else attrs
+    lib.mapAttrs' (name: value: {
+      name =
+        if name == "default"
+        then
+          if attrs ? ${newName}
+          then "${newName}_default"
+          else newName
+        else name;
+      inherit value;
+    }) attrs
   );
 
   # flatten and join inputs by attrPath,
@@ -38,35 +30,28 @@ lib: rec {
   # it is recommended to filter the inputs
   # beforehand to ensure that any malformed values are ignored,
   # if applicable
-  genJoinedUnits = attrPath: inputs: let
-    flatten = inputs: lib.pipe inputs [
-      (builtins.mapAttrs (_: lib.getAttrFromPath attrPath))
-      (builtins.mapAttrs renameDefaultAttr)
-      builtins.attrValues
-      updates
-    ];
-  in (flatten inputs);
+  genJoinedUnits = attrPath: inputs: lib.pipe inputs [
+    (builtins.mapAttrs (_: lib.getAttrFromPath attrPath))
+    (builtins.mapAttrs renameDefaultAttr)
+    builtins.attrValues
+    updates
+  ];
 
   # returns an attrset of all packages defined by input flakes
   # flattening them and renaming default packages
-  genPackageOverlays = system: flakes: let
-    flatten = flakes: lib.pipe flakes [
-      (lib.filterAttrs (_: builtins.hasAttr "packages"))
-      (genJoinedUnits [ "packages" system ])
-    ];
-  in (_: _: flatten flakes);
+  mkPackagesOverlay = system: flakes: lib.pipe flakes [
+    (lib.filterAttrs (_: attrs: attrs ? packages))
+    (genJoinedUnits [ "packages" system ])
+    (overrides: _: _: overrides)
+  ];
 
-  joinNixosModules = flakes: let
-    flatten = flakes: lib.pipe flakes [
-      (lib.filterAttrs (_: builtins.hasAttr "nixosModules"))
-      (genJoinedUnits [ "nixosModules" ])
-    ];
-  in (flatten flakes);
+  joinNixosModules = flakes: lib.pipe flakes [
+    (lib.filterAttrs (_: attrs: attrs ? nixosModules))
+    (genJoinedUnits [ "nixosModules" ])
+  ];
 
-  joinHmModules = flakes: let
-    flatten = flakes: lib.pipe flakes [
-      (lib.filterAttrs (_: builtins.hasAttr "homeManagerModules"))
-      (genJoinedUnits [ "homeManagerModules" ])
-    ];
-  in (flatten flakes);
+  joinHmModules = flakes: lib.pipe flakes [
+    (lib.filterAttrs (_: attrs: attrs ? homeManagerModules))
+    (genJoinedUnits [ "homeManagerModules" ])
+  ];
 }

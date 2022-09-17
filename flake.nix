@@ -33,7 +33,7 @@
     inherit (nixpkgs) lib;
     flib = import ./lib.nix lib;
 
-    packageOverlays = flib.genPackageOverlays system inputs;
+    packageOverlays = flib.mkPackagesOverlay system inputs;
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;

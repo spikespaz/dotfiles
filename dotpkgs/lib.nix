@@ -23,19 +23,18 @@ lib: rec {
   # make an overlay lambda that overrides the license of every provided package
   # to spoof free-ness
   # returns an attrset where the keys are the pnames of each derivation
-  mkUnfreeOverlay = packages: let
-    overrides = lib.pipe packages [
-      (map (value: { name = lib.getName value; inherit value; }))
-      builtins.listToAttrs
-      (builtins.mapAttrs (_: package: package.overrideAttrs (
-        old: lib.recursiveUpdate old {
-          meta.license = (
-            if builtins.isList old.meta.license
-            then map (_: { free = true; }) old.meta.license
-            else { free = true; }
-          );
-        }
-      )))
-    ];
-  in (_: _: overrides);
+  mkUnfreeOverlay = packages: lib.pipe packages [
+    (map (value: { name = lib.getName value; inherit value; }))
+    builtins.listToAttrs
+    (builtins.mapAttrs (_: package: package.overrideAttrs (
+      old: lib.recursiveUpdate old {
+        meta.license = (
+          if builtins.isList old.meta.license
+          then map (_: { free = true; }) old.meta.license
+          else { free = true; }
+        );
+      }
+    )))
+    (overrides: _: _: overrides)
+  ];
 }
