@@ -1,4 +1,10 @@
 { lib, ... }: let
+  ### FILE BROWSER ###
+  associations."org.kde.dolphin" = [
+    "inode/directory"
+    "x-directory/normal"
+  ];
+
   ### WEB BROWSER ###
   associations."firefox" = [
     "text/html"
