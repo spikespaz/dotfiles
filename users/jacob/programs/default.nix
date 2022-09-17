@@ -49,7 +49,14 @@
   obs-studio = {
     programs.obs-studio.enable = true;
     programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
-      wlrobs
+      # <https://hg.sr.ht/~scoopta/wlrobs>
+      (wlrobs.overrideAttrs (old: rec {
+        version = "unstable-2022-05-15";
+        src = old.src.overrideAttrs (old: old // {
+          rev = "3eb154e5fe639acb1b6be7041f5d5a62f7e723dc";
+          sha256 = "";
+        });
+      }))
       # <https://github.com/exeldro/obs-move-transition>
       (obs-move-transition.overrideAttrs (old: rec {
         version = "2.6.1";
