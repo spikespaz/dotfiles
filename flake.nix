@@ -37,7 +37,6 @@
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
-      config.allowBroken = true;
       overlays = [
         packageOverlays
         self.overlays.${system}.allowUnfree
@@ -56,7 +55,10 @@
     nixosConfigurations = {
       jacob-thinkpad = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit modules; };
+        specialArgs = {
+          inherit modules;
+          enableUnstableZfs = false;
+        };
         modules = [
           { nixpkgs.pkgs = pkgs; }
           modules.lenovo-thinkpad-p14s-amd-gen2

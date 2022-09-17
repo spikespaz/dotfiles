@@ -7,9 +7,7 @@
 # Further reading:
 # - <https://grahamc.com/blog/erase-your-darlings>
 # - <https://github.com/nix-community/impermanence>
-let
-  # it is okay to use "broken" zfs with a newer kernel
-  enable_unstable_zfs = true;
+{ config, lib, pkgs, enableUnstableZfs, ... }: let
   # function to easily duplicate a zfs automount scheme
   zfsAuto = device: {
     inherit device;
@@ -17,8 +15,6 @@ let
     options = [ "zfsutil" "X-mount.mkdir" ];
   };
 in {
-  #boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-
   fileSystems = {
     # "/" = {
     #   device = "none";
@@ -44,8 +40,18 @@ in {
     supportedFilesystems = [ "zfs" ];
     kernelModules = [ "zfs" ];
 
+    kernelPackages = lib.mkForce (
+      if enableUnstableZfs
+      then (pkgs.linuxPackages_latest.extend (_: prev: {
+        zfsUnstable = prev.zfsUnstable.overrideAttrs (self: {
+          meta = self.meta // { broken = false; };
+        });
+      }))
+      else config.boot.zfs.package.latestCompatibleLinuxPackages
+    );
+
     zfs = {
-      enableUnstable = enable_unstable_zfs;
+      enableUnstable = enableUnstableZfs;
       forceImportAll = false;
       forceImportRoot = false;
     };
