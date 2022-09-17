@@ -50,6 +50,14 @@
     programs.obs-studio.enable = true;
     programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
       wlrobs
+      # <https://github.com/exeldro/obs-move-transition>
+      (obs-move-transition.overrideAttrs (old: rec {
+        version = "2.6.1";
+        src = old.src.overrideAttrs (old: old // {
+          rev = version;
+          sha256 = "sha256-zzZzG9wws4iGML+qfUNgXaRN5ODOiX0T0sfq/phObQI=";
+        });
+      }))
     ];
     # needed for screen selection on wayland
     home.packages = [ pkgs.slurp ];
