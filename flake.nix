@@ -45,49 +45,23 @@
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
     dotpkgs = (import ./dotpkgs/flake.nix).outputs inputs;
-
-    modules = flib.joinNixosModules inputs;
-    hmModules = flib.joinHmModules inputs;
   in {
     # merge the packages flake into this one
     inherit (dotpkgs) packages overlays nixosModules homeManagerModules;
 
-    nixosConfigurations = {
-      jacob-thinkpad = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {
-          inherit modules;
-          enableUnstableZfs = false;
-        };
-        modules = [
-          { nixpkgs.pkgs = pkgs; }
-          modules.lenovo-thinkpad-p14s-amd-gen2
-          ./system/filesystems.nix
-          ./system/configuration.nix
-          ./system/powersave.nix
-          ./system/touchpad.nix
-          ./system/greeter.nix
-        ];
-      };
-    };
+    nixosConfigurations = flib.genSystemConfigurations {
+      inherit nixpkgs pkgs;
+      modules = flib.joinNixosModules inputs;
+    } [
+      "jacob-thinkpad"
+    ];
 
-    homeConfigurations = {
-      jacob = home-manager.lib.homeManagerConfiguration (let
-        ulib = import ./users/lib.nix lib;
-        desktops = import ./users/jacob/desktops ulib;
-      in {
-        inherit pkgs;
-        extraSpecialArgs = {
-          inherit ulib;
-          inherit hmModules;
-        };
-        modules = [
-          ./users/jacob/profile.nix
-          desktops.hyprland
-          desktops.software
-          desktops.mimeApps
-        ];
-      });
-    };
+    homeConfigurations = flib.genUserConfigurations {
+      inherit home-manager pkgs;
+      ulib = import ./users/lib.nix lib;
+      hmModules = flib.joinHomeModules inputs;
+    } [
+      "jacob"
+    ];
   };
 }

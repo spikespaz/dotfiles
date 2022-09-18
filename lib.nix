@@ -50,8 +50,23 @@ lib: rec {
     (genJoinedUnits [ "nixosModules" ])
   ];
 
-  joinHmModules = flakes: lib.pipe flakes [
+  joinHomeModules = flakes: lib.pipe flakes [
     (lib.filterAttrs (_: attrs: attrs ? homeManagerModules))
     (genJoinedUnits [ "homeManagerModules" ])
   ];
+
+  genConfigurations = args: root: names: (
+    builtins.listToAttrs (map (name: {
+      inherit name;
+      value = import (root + "/${name}") args;
+    }) names)
+  );
+
+  genSystemConfigurations = args @ { nixpkgs, pkgs, modules }: names: (
+    genConfigurations args ./systems names
+  );
+
+  genUserConfigurations = args @ { home-manager, pkgs, ulib, hmModules }: names: (
+    genConfigurations args ./users names
+  );
 }
