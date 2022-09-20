@@ -82,6 +82,8 @@
 
     ## Miscellaneous ##
 
+    # disable automatic update checking
+    "update.mode" = "none";
     # don't re-open everything on start
     "window.restoreWindows" = "none";
     # unsaved files will be "untitled"
