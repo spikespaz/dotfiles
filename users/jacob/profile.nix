@@ -74,8 +74,6 @@ in {
     programs.mailspring
     # programs.discord
     programs.webcord
-    programs.neochat
-    programs.fractal
     programs.hexchat
 
     ### MEDIA CREATION ###
