@@ -50,6 +50,10 @@ in {
     args = [ "--login" ];
   };
 
+  ##########################
+  ### PACKAGES & MODULES ###
+  ##########################
+
   imports = [
     # theming module
     hmModules.uniform-theme
@@ -120,6 +124,10 @@ in {
     ### DEVICE MANAGEMENT ###
     services.udiskie
   ];
+
+  ############################
+  ### APPEARANCE & THEMING ###
+  ############################
 
   home.uniformTheme = {
     enable = true;
