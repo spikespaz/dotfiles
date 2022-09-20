@@ -182,6 +182,14 @@ args @ { config, pkgs, ... }: {
   # allow users to mount fuse filesystems with allow_other
   programs.fuse.userAllowOther = true;
 
+  # virtualisation.spiceUSBRedirection.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    onBoot = "ignore";
+    qemu.swtpm.enable = true;
+    qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
+  };
+
   fonts = {
     fontconfig.enable = true;
     fontDir.enable = true;
@@ -205,7 +213,7 @@ args @ { config, pkgs, ... }: {
       description = "Jacob Birkett";
       isNormalUser = true;
       initialPassword = "password";
-      extraGroups = [ "networkmanager" "wheel" ];
+      extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     };
   };
 

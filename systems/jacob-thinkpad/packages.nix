@@ -44,4 +44,8 @@
 
   ### HARDWARE DIAGNOSTICS ###
   wev  # input button code utility
+
+  ### VIRTUALIZATION ###
+  virt-manager  # gui for managing libvirt
+  libguestfs  # filesystem driver for vm images
 ]
