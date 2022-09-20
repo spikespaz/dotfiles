@@ -43,9 +43,10 @@ zpool create \
 	-O acltype=posixacl \
 	-O dnodesize=auto \
 	-O normalization=formD \
+	-O atime=off \
 	-O relatime=on \
 	-O xattr=sa \
-	-O compression=zstd \
+	-O compression=zstd-3 \
 	-O canmount=off \
 	-O mountpoint=none \
 	-R /mnt \
@@ -54,13 +55,13 @@ zpool create \
 	$ROOT_PART
 
 # Create system datasets
-zfs create  -o canmount=on   -o moutnpoint=/      -o compression=zstd-fast                             $POOL_NAME/root
-zfs create  -o canmount=off  -o mountpoint=/var                                                        $POOL_NAME/var
-zfs create  -o canmount=on                                                  -o atime=off               $POOL_NAME/var/lib
-zfs create  -o canmount=on                        -o compression=zstd-fast  -o atime=off               $POOL_NAME/var/log
-zfs create  -o canmount=on                        -o compression=zstd-fast  -o atime=off               $POOL_NAME/var/cache
-zfs create  -o canmount=on   -o mountpoint=/nix   -o compression=zstd-5     -o atime=off  -o dedup=on  $POOL_NAME/nix
-zfs create  -o canmount=on   -o mountpoint=/home                                                       $POOL_NAME/home
+zfs create  -o canmount=on   -o moutnpoint=/      -o compression=zstd-fast                                $POOL_NAME/root
+zfs create  -o canmount=off  -o mountpoint=/var                             -o relatime=off               $POOL_NAME/var
+zfs create  -o canmount=on                                                                                $POOL_NAME/var/lib
+zfs create  -o canmount=on                        -o compression=zstd-fast                                $POOL_NAME/var/log
+zfs create  -o canmount=on                        -o compression=zstd-fast                                $POOL_NAME/var/cache
+zfs create  -o canmount=on   -o mountpoint=/nix   -o compression=zstd-5     -o relatime=off  -o dedup=on  $POOL_NAME/nix
+zfs create  -o canmount=on   -o mountpoint=/home                                                          $POOL_NAME/home
 
 # Format boot partition
 mkfs.vfat -F32 -n boot $BOOT_PART
