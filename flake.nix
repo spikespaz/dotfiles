@@ -33,12 +33,16 @@
     inherit (nixpkgs) lib;
     flib = import ./lib.nix lib;
 
-    packageOverlays = flib.mkPackagesOverlay system inputs;
+    inputPackageOverlays = flib.mkPackagesOverlay system (
+      removeAttrs inputs [
+        "nixpkgs"
+      ]
+    );
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
       overlays = [
-        packageOverlays
+        inputPackageOverlays
         self.overlays.${system}.allowUnfree
       ];
     };
