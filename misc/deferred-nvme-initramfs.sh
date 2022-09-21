@@ -77,12 +77,12 @@ cat <<- EOF > /mnt/target/etc/fstab
 EOF
 
 # enable hibernation to swap
-sed "s;\(GRUB_CMDLINE_LINUX_DEFAULT\)=\"\(.*\)\";\1=\"\2 resume=UUID=$swap_uuid\";" \
+sed -i "s;\(GRUB_CMDLINE_LINUX_DEFAULT\)=\"\(.*\)\";\1=\"\2 resume=UUID=$swap_uuid\";" \
 	/mnt/target/etc/default/grub
 
 # copy the zorin theme to esp so that grub can find it before nvme load
 cp -r /usr/share/grub/themes/zorin /mnt/target/boot/EFI/ubuntu
-sed -e 's|\(GRUB_THEME\)=.*|\1=/boot/EFI/ubuntu/zorin/theme.txt|' \
+sed -i 's|\(GRUB_THEME\)=.*|\1=/boot/EFI/ubuntu/zorin/theme.txt|' \
 	/mnt/target/etc/default/grub
 
 # maybe needed to reduce the size of initramfs image
