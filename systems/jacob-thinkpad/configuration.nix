@@ -1,4 +1,8 @@
 args @ { config, pkgs, ... }: {
+  #################
+  ### NIX SETUP ###
+  #################
+
   nix.package = pkgs.nixFlakes;
 
   nix.settings = {
@@ -26,6 +30,10 @@ args @ { config, pkgs, ... }: {
     font = "Lat2-Terminus16";
     earlySetup = true;
   };
+
+  ##########################
+  ### BOOT CONFIGURATION ###
+  ##########################
 
   # systemd pivots to ramfs on shutdown
   # this is so that the root fs can be unmounted safely
@@ -85,9 +93,15 @@ args @ { config, pkgs, ... }: {
     };
   };
 
+  ###########################
+  ### HARDWARE & FIRMWARE ###
+  ###########################
+
   networking = {
     hostName = "jacob-thinkpad";
-    hostId = builtins.substring 0 8 (builtins.hashString "md5" config.networking.hostName);
+    hostId = builtins.substring 0 8 (
+      builtins.hashString "md5" config.networking.hostName
+    );
 
     networkmanager.enable = true;
   };
@@ -112,6 +126,11 @@ args @ { config, pkgs, ... }: {
     trackpoint.enable = true;
     trackpoint.speed = 85;
   };
+
+
+  #######################
+  ### SYSTEM SERVICES ###
+  #######################
 
   # audio and video drivers with legacy alsa, jack, and pulse support
   services.pipewire = {
@@ -148,6 +167,10 @@ args @ { config, pkgs, ... }: {
 
   services.flatpak.enable = true;
 
+  ###########################
+  ### DESKTOP ENVIRONMENT ###
+  ###########################
+
   # cross-desktop group; they make specifications
   # for what ceratin environment variables should be
   # <https://github.com/fufexan/dotfiles/blob/785b65436f5849a8dea175d967d901159f689edd/modules/desktop.nix#L153>
@@ -182,6 +205,10 @@ args @ { config, pkgs, ... }: {
   # allow users to mount fuse filesystems with allow_other
   programs.fuse.userAllowOther = true;
 
+  ######################
+  ### VIRTUALIZATION ###
+  ######################
+
   # virtualisation.spiceUSBRedirection.enable = true;
   virtualisation.libvirtd = {
     enable = true;
@@ -189,6 +216,10 @@ args @ { config, pkgs, ... }: {
     qemu.swtpm.enable = true;
     qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
   };
+
+  #####################
+  ### DEFAULT FONTS ###
+  #####################
 
   fonts = {
     fontconfig.enable = true;
@@ -204,6 +235,10 @@ args @ { config, pkgs, ... }: {
       ubuntu_font_family
     ];
   };
+
+  #####################
+  ### USERS CONFIGS ###
+  #####################
 
   # enable completions for system packages
   environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
