@@ -36,30 +36,31 @@ dd if=$SOURCE_ROOT of=$new_root_blk bs=4M status=progress
 sgdisk -G $TARGET_DEV
 
 # make new mount points
-mkdir /mnt/{target,boot}
+mkdir /mnt/boot
+mkdir /target
 
 # mount the og boot and new root
 mount $EFI_BLOCK /mnt/boot
-mount $new_root_blk /mnt/target
+mount $new_root_blk /target
 
 # recurse copy the boot folder to efi
-rm -d /mnt/target/boot/efi
-cp -fLr /mnt/target/boot/* /mnt/boot
+rm -d /target/boot/efi
+cp -fLr /target/boot/* /mnt/boot
 # remove old boot files
-rm -rf /mnt/target/boot/*
+rm -rf /target/boot/*
 
 # unmount old efi
 umount /mnt/boot
 
 # mount in preparation for chroot
-mount         $EFI_BLOCK   /mnt/target/boot
-mount --bind  /dev         /mnt/target/dev
-mount --bind  /dev/pts     /mnt/target/dev/pts
-mount --bind  /proc        /mnt/target/proc
-mount --bind  /sys         /mnt/target/sys
+mount         $EFI_BLOCK   /target/boot
+mount --bind  /dev         /target/dev
+mount --bind  /dev/pts     /target/dev/pts
+mount --bind  /proc        /target/proc
+mount --bind  /sys         /target/sys
 
 # add modules for nvme in initramfs
-cat <<- EOF >> /mnt/target/etc/initramfs-tools/modules
+cat <<- EOF >> /target/etc/initramfs-tools/modules
 	nvme
 	vmd
 EOF
@@ -70,7 +71,7 @@ efi_uuid=$(lsblk -no UUID $EFI_BLOCK)
 swap_uuid=$(lsblk -no UUID $new_swap_blk)
 
 # write the new fstab
-cat <<- EOF > /mnt/target/etc/fstab
+cat <<- EOF > /target/etc/fstab
 	UUID=$root_uuid  /      ext4  errors=remount-ro  0 1
 	UUID=$efi_uuid   /boot  vfat  umask=0077         0 1
 	UUID=$swap_uuid  none   swap  sw                 0 0
@@ -78,22 +79,22 @@ EOF
 
 # enable hibernation to swap
 sed -i "s;\(GRUB_CMDLINE_LINUX_DEFAULT\)=\"\(.*\)\";\1=\"\2 resume=UUID=$swap_uuid\";" \
-	/mnt/target/etc/default/grub
+	/target/etc/default/grub
 
 # copy the zorin theme to esp so that grub can find it before nvme load
-cp -r /usr/share/grub/themes/zorin /mnt/target/boot/EFI/ubuntu
+cp -r /usr/share/grub/themes/zorin /target/boot/EFI/ubuntu
 sed -i 's|\(GRUB_THEME\)=.*|\1=/boot/EFI/ubuntu/zorin/theme.txt|' \
-	/mnt/target/etc/default/grub
+	/target/etc/default/grub
 
 # maybe needed to reduce the size of initramfs image
-#echo 'MODULES=dep' > /mnt/target/etc/initramfs-tools/conf.d/modules
+#echo 'MODULES=dep' > /target/etc/initramfs-tools/conf.d/modules
 
 # clear the original root partition
 # we don't want it picked up by os-prober
 sgdisk -d2 $SOURCE_DEV
 
 # chroot and reconfigure bootloader + initramfs
-chroot /mnt/target /bin/bash -x <<- EOF
+chroot /target /bin/bash -x <<- EOF
 	set -ev
 	# delete the old initramfs images
 	update-initramfs -d -k all
@@ -108,11 +109,12 @@ chroot /mnt/target /bin/bash -x <<- EOF
 EOF
 
 # clean up the chroot mounts
-umount /mnt/target/sys
-umount /mnt/target/proc
-umount /mnt/target/dev/pts
-umount /mnt/target/dev
-umount /mnt/target/boot
-umount /mnt/target
+umount /target/sys
+umount /target/proc
+umount /target/dev/pts
+umount /target/dev
+umount /target/boot
+umount /target
 
-rm -d /mnt/{target,boot}
+rm -d /mnt/boot
+rm -d /target
