@@ -42,6 +42,11 @@
   ntfs3g
   exfatprogs
 
+  ### STORAGE DEVICE TOOLS ###
+  gparted
+  gptfdisk
+  e2fsprogs
+
   ### HARDWARE DIAGNOSTICS ###
   wev  # input button code utility
 
