@@ -21,6 +21,8 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = [ cfg.package ];
+
     systemd.user.services.idlehack = {
       Unit = {
         Description = cfg.package.meta.description;
