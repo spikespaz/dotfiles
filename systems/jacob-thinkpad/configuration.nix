@@ -201,12 +201,22 @@ args @ { config, pkgs, ... }: {
     ];
   };
 
-  # <https://github.com/swaywm/swaylock/blob/master/pam/swaylock>
-  security.pam.services.swaylock.text = "auth include login";
-
   # policy kit;
   # communication between unpriviledged and proviledged processes
   security.polkit.enable = true;
+
+  # auth
+  services.gnome.gnome-keyring.enable = true;
+
+  # enable fingerprint sensor
+  services.fprintd.enable = true;
+
+  # <https://github.com/swaywm/swaylock/issues/61>
+  security.pam.services.swaylock.text = ''
+    auth sufficient pam_unix.so try_first_pass likeauth nullok
+    auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so
+    auth include login
+  '';
 
   # registry for linux, thanks to gnome
   programs.dconf.enable = true;

@@ -11,7 +11,7 @@ let
 
   ### Ring Colors ###
   # <https://materialui.co/colors/>
-  
+
   ## Normal
   # cyan_500 = "00BCD4";
   teal_500 = "009688";
@@ -39,7 +39,7 @@ let
 in {
   ### Behavior ###
 
-  ignore-empty-password = true;
+  # ignore-empty-password = true;
   # daemonize = true;
   # grace = 5;  # Specify when auto-lock
   # grace-no-mouse = true;
@@ -47,7 +47,7 @@ in {
   show-failed-attempts = true;
 
   ### Effect ###
-  
+
   fade-in = 200 / 1000;
   screenshots = true;
   effect-blur = "15x3";
@@ -56,7 +56,7 @@ in {
   effect-vignette = "0.25:0.5";
 
   ### Indicator ###
-  
+
   clock = true;
   timestr = "%-I:%M:%S %p";
   datestr = "%a, %b %-d, %Y";
@@ -66,7 +66,7 @@ in {
   indicator-thickness = 6;
 
   ### Text ###
-  
+
   font = "Ubuntu";
   font-size = 22;
   text-color = text_color;
@@ -76,7 +76,7 @@ in {
   text-wrong-color = text_color;
 
   ### Background ###
-  
+
   inside-color = inside_color + bg_opacity;
   inside-clear-color = inside_color + bg_opacity;
   inside-caps-lock-color = inside_color + bg_opacity;
