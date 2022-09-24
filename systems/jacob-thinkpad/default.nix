@@ -9,8 +9,6 @@ nixpkgs.lib.nixosSystem {
 
   modules = [
     { nixpkgs.pkgs = pkgs; }
-    # <https://github.com/NixOS/nixos-hardware/blob/master/lenovo/thinkpad/p14s/amd/gen2/default.nix>
-    modules.lenovo-thinkpad-p14s-amd-gen2
     ./filesystems.nix
     ./configuration.nix
     ./powersave.nix

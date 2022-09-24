@@ -41,7 +41,10 @@ args @ { config, pkgs, ... }: {
   # systemd.shutdownRamfs.enable = false;
 
   boot = {
-    kernelModules = [ "kvm-amd" ];
+    kernelModules = [ "kvm-amd" "acpi_call" ];
+    extraModulePackages = with config.boot.kernelPackages; [
+      acpi_call
+    ];
 
     # configure plymouth theme
     # <https://github.com/adi1090x/plymouth-themes>
@@ -61,14 +64,24 @@ args @ { config, pkgs, ... }: {
     initrd.verbose = false;
 
     kernelParams = [
+      # ensures that amdgpu is loaded over radeon
       "amdgpu"
+      # allows the backlight to be controlled via software
+      "amdgpu.backlight=0"
+      # allows systemd to set and save the backlight state
+      "acpi_backlight=none"
+      # prevent the kernel from blanking plymouth out of the fb
       "fbcon=nodefer"
+      # disable boot logo if any
       "logo.nologo"
+      # tell the kernel to not be verbose
       "quiet"
+      # disable systemd status messages
       "rd.systemd.show_status=auto"
+      # lower the udev log level to show only errors or worse
       "rd.udev.log_level=3"
+      # disable the cursor in vt to get a black screen during intermissions
       "vt.global_cursor_default=0"
-      "vt.handoff=7"
     ];
 
     initrd.kernelModules = [ "amdgpu" "nvme" ];
@@ -113,6 +126,9 @@ args @ { config, pkgs, ... }: {
 
     # update processor firmware by loading from memory at boot
     cpu.amd.updateMicrocode = true;
+
+    # wifi adapter
+    firmware = [ pkgs.rtw89-firmware ];
 
     # enable bluetooth but turn off power by default
     bluetooth.enable = true;
