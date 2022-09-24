@@ -44,6 +44,14 @@
       overlays = [
         inputPackageOverlays
         self.overlays.${system}.allowUnfree
+        (_: prev: {
+          lxqt = prev.lxqt.overrideScope' (_: prev: {
+            lxqt-policykit = (prev.lxqt-policykit.overrideAttrs (old: {
+              # this one needs to be a pull request
+              meta = old.meta // { mainProgram = "lxqt-policykit-agent"; };
+            }));
+          });
+        })
       ];
     };
     # manually import the packages subflake to avoid locking issues
