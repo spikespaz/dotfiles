@@ -11,17 +11,6 @@ in {
   options.home.uniformTheme = {
     enable = lib.mkEnableOption description;
 
-    qt5ct.package = lib.mkOption {
-      type = types.package;
-      default = pkgs.libsForQt5.qt5ct;
-      example = lib.literalExpression ''
-        pkgs.libsForQt5.qt5ct
-      '';
-      description = lib.mdDoc ''
-        The package providing the *qt5ct* style manager.
-      '';
-    };
-
     dark = lib.mkOption {
       type = types.bool;
       default = false;
@@ -162,14 +151,8 @@ in {
   config = lib.mkIf cfg.enable {
     # specify packages that are required for some stuff below
     home.packages = [
-      cfg.qt5ct.package
       cfg.fonts.monospace.package
     ];
-
-    # use qt5ct in tandem with kvantum
-    home.sessionVariables = {
-      QT_QPA_PLATFORMTHEME = "qt5ct";
-    };
 
     # specify packages to use for gtk theming
     gtk = {

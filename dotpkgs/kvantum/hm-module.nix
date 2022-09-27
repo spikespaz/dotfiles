@@ -20,6 +20,22 @@ in {
         '';
       };
 
+      qt5ct.enable = lib.mkEnableOption ''
+        Use the Qt5 Configuration Tool to supply the Qt theme, with
+        `QT_QPA_PLATFORMTHEME=qt5ct` as environment variable.
+      '';
+
+      qt5ct.package = lib.mkOption {
+        type = types.package;
+        default = pkgs.libsForQt5.qt5ct;
+        example = lib.literalExpression ''
+          pkgs.libsForQt5.qt5ct
+        '';
+        description = lib.mdDoc ''
+          The package providing the `qt5ct` binary.
+        '';
+      };
+
       theme.package = lib.mkOption {
         type = types.package;
         default = pkgs.adwaita-qt;
@@ -101,20 +117,31 @@ in {
       builtins.fromJSON
     ];
     newTheme = lib.recursiveUpdate oldTheme cfg.theme.overrides;
-  in lib.mkIf cfg.enable {
-    home.packages = [
-      cfg.package
-      cfg.theme.package
-    ];
+  in lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      home.packages = [
+        cfg.package
+        cfg.theme.package
+      ];
 
-    xdg.configFile."Kvantum/kvantum.kvconfig".text = generators.toINI {} {
-      General.theme = "${cfg.theme.name}#";
-    };
+      xdg.configFile."Kvantum/kvantum.kvconfig".text = generators.toINI {} {
+        General.theme = "${cfg.theme.name}#";
+      };
 
-    # todo: fix incorrect casing on some keys,
-    # jc does not respect this when the INI parser is used.
-    # <https://github.com/kellyjonbrazil/jc/issues/285>
-    xdg.configFile."Kvantum/${newThemePath}".text =
-      generators.toINI {} newTheme;
-  };
+      # todo: fix incorrect casing on some keys,
+      # jc does not respect this when the INI parser is used.
+      # <https://github.com/kellyjonbrazil/jc/issues/285>
+      xdg.configFile."Kvantum/${newThemePath}".text =
+        generators.toINI {} newTheme;
+    })
+    (lib.mkIf cfg.qt5ct.enable {
+      home.packages = [
+        cfg.qt5ct.package
+      ];
+
+      home.sessionVariables = {
+        QT_QPA_PLATFORMTHEME = "qt5ct";
+      };
+    })
+  ];
 }

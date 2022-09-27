@@ -157,6 +157,7 @@ in {
 
   programs.kvantum = {
     enable = true;
+    qt5ct.enable = true;
     theme.package = pkgs.materia-kde-theme;
     theme.name = "MateriaDark";
     theme.overrides = {
