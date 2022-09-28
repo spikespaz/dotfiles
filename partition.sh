@@ -55,7 +55,7 @@ zpool create \
 	$ROOT_PART
 
 # Create system datasets
-zfs create  -o canmount=on   -o moutnpoint=/      -o compression=zstd-fast                                $POOL_NAME/root
+zfs create  -o canmount=on   -o mountpoint=/      -o compression=zstd-fast                                $POOL_NAME/root
 zfs create  -o canmount=off  -o mountpoint=/var                             -o relatime=off               $POOL_NAME/var
 zfs create  -o canmount=on                                                                                $POOL_NAME/var/lib
 zfs create  -o canmount=on                        -o compression=zstd-fast                                $POOL_NAME/var/log
