@@ -3,13 +3,16 @@
   ### ESSENTIALS ###
   ##################
 
+  ### MISSING ###
+  bc
+  tree
+
   ### APPIMAGE ###
   appimage-run
 
   ### CLI UTILITIES ###
   fastfetch     # neofetch but made in c
   btop          # system process monitor
-  tree          # directory tree listing
   wget          # simple downloader utility
   curl          # network request utility
   p7zip         # archive and compression tool
