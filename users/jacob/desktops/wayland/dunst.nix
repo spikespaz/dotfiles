@@ -47,8 +47,8 @@
         # progress
         highlight = highlight;
         progress_bar_height = 20;
-        progress_bar_min_width = 9999;
-        progress_bar_max_width = 9999;
+        progress_bar_min_width = 250;
+        progress_bar_max_width = 350;
         progress_bar_frame_width = 2;
 
         # text
