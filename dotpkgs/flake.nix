@@ -26,6 +26,7 @@
       "idlehack"
       "prtsc"
       "plymouth-themes"
+      "keyboard-functions"
     ]);
 
     overlays = genSystems (system: let

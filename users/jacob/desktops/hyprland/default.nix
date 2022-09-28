@@ -25,7 +25,7 @@
       builtins.replaceStrings [
         "%FUNCTIONS%"
       ] [
-        "${lib.getExe pkgs.bash} ${./functions.sh}"
+        (lib.getExe pkgs.keyboard-functions)
       ]
       (lib.concatStringsSep "\n\n" [
         # polkit agent, raises to root access with gui
