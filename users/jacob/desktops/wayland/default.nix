@@ -2,7 +2,7 @@
   imports = [
     ./swayidle.nix
     ./theming.nix
-    ./mako.nix
+    ./dunst.nix
   ];
 
   home.packages = [
