@@ -113,6 +113,7 @@ volume_change() {
 			echo 'Volume already at maximum'
 			exit
 		fi
+
 		value=$(bc <<< "$current + $value")
 		icon="$ICONS_DIRECTORY/$OUTPUT_INCREASE_ICON"
 	elif [ $mode = 'decrease' ]
@@ -123,8 +124,15 @@ volume_change() {
 			echo 'Volume already at minimum'
 			exit
 		fi
+
 		value=$(bc <<< "$current - $value")
-		icon="$ICONS_DIRECTORY/$OUTPUT_DECREASE_ICON"
+
+		if [ "$(bc <<< "$value <= 0.0")" -eq 1 ]
+		then
+			icon="$ICONS_DIRECTORY/$OUTPUT_DISABLE_ICON"
+		else
+			icon="$ICONS_DIRECTORY/$OUTPUT_DECREASE_ICON"
+		fi
 	else
 		icon="$ICONS_DIRECTORY/$OUTPUT_INCREASE_ICON"
 	fi
