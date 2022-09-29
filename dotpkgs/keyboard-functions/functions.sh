@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -euxo pipefail
 
-here="$(realpath "$(dirname $0)")"
+here="$(realpath "$(dirname "$0")")"
 
 : "${TIMEOUT:="700"}"
 : "${URGENCY:="low"}"
@@ -22,8 +22,7 @@ here="$(realpath "$(dirname $0)")"
 : "${INPUT_ENABLE_ICON:="mic_white_36dp.svg"}"
 
 is_muted() {
-	[ -z "$(wpctl get-volume "$1" | grep '[MUTED]')" ] \
-		|| printf 0
+	wpctl get-volume "$1" | grep -q '[MUTED]'
 }
 
 get_volume() {
@@ -33,7 +32,7 @@ get_volume() {
 input_mute() {
 	wpctl set-mute "$INPUT_DEVICE" toggle
 
-	if [ $(is_muted "$INPUT_DEVICE") ]
+	if is_muted "$INPUT_DEVICE"
 	then
 		icon="$ICONS_DIRECTORY/$INPUT_DISABLE_ICON"
 		status="Disabled"
@@ -56,7 +55,7 @@ input_mute() {
 volume_mute() {
 	wpctl set-mute "$OUTPUT_DEVICE" toggle
 
-	if [ $(is_muted "$OUTPUT_DEVICE") ]
+	if is_muted "$OUTPUT_DEVICE"
 	then
 		icon="$ICONS_DIRECTORY/$OUTPUT_DISABLE_ICON"
 		status="Disabled"
@@ -103,7 +102,7 @@ volume_change() {
 
 	if [ $mode = 'increase' ]
 	then
-		if [ $(bc <<< "$current >= 1.0" ) -eq 1 ]
+		if [ "$(bc <<< "$current >= 1.0")" -eq 1 ]
 		then
 			wpctl set-volume "$OUTPUT_DEVICE" 1.0
 			echo 'Volume already at maximum'
@@ -113,7 +112,7 @@ volume_change() {
 		icon="$ICONS_DIRECTORY/$OUTPUT_INCREASE_ICON"
 	elif [ $mode = 'decrease' ]
 	then
-		if [ $(bc <<< "$current <= 0.0" ) -eq 1 ]
+		if [ "$(bc <<< "$current <= 0.0")" -eq 1 ]
 		then
 			wpctl set-volume "$OUTPUT_DEVICE" 0.0
 			echo 'Volume already at minimum'
@@ -122,13 +121,12 @@ volume_change() {
 		value=$(bc <<< "$current - $value")
 		icon="$ICONS_DIRECTORY/$OUTPUT_DECREASE_ICON"
 	else
-		title='Volume Change'
 		icon="$ICONS_DIRECTORY/$OUTPUT_INCREASE_ICON"
 	fi
 
-	wpctl set-volume "$OUTPUT_DEVICE" $value
+	wpctl set-volume "$OUTPUT_DEVICE" "$value"
 
-	if [ $(is_muted "$OUTPUT_DEVICE") ]
+	if is_muted "$OUTPUT_DEVICE"
 	then
 		icon="$ICONS_DIRECTORY/$OUTPUT_DISABLE_ICON"
 		status='Disabled'
