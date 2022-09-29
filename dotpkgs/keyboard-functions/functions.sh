@@ -1,27 +1,25 @@
 #! /bin/bash
+set -euxo pipefail
 
 here="$(realpath "$(dirname $0)")"
 
-[ -z "$TIMEOUT" ] && \
-	TIMEOUT=700
-[ -z "$URGENCY" ] && \
-	URGENCY=low
-[ -z "$ICONS" ] && \
-	ICONS='rounded-white'
-[ -z "$VOLUME_TITLE" ] && \
-	VOLUME_TITLE='Default Audio Output'
-[ -z "$MICROPHONE_TITLE" ] && \
-	MICROPHONE_TITLE='Default Audio Input'
-[ -z "$VOLUME_OUTPUT_SINK" ] && \
-	VOLUME_OUTPUT_SINK='@DEFAULT_AUDIO_SINK@'
-[ -z "$INPUT_SOURCE" ] && \
-	INPUT_SOURCE='@DEFAULT_AUDIO_SOURCE@'
-[ -z "$ICONS_DIRECTORY" ] && \
-	ICONS_DIRECTORY="$here/icons"
-[ -z "$MAIN_TEXT_SIZE" ] && \
-	MAIN_TEXT_SIZE=150%
+TIMEOUT="${TIMEOUT:="700"}"
+URGENCY="${URGENCY:="low"}"
+MAIN_TEXT_SIZE="${MAIN_TEXT_SIZE:="x-large"}"
+ICONS_DIRECTORY="${ICONS_DIRECTORY:="$here/icons/rounded-white"}"
 
-set -eux
+OUTPUT_TITLE="${OUTPUT_TITLE:="Default Audio Output"}"
+INPUT_TITLE="${INPUT_TITLE:="Default Audio Input"}"
+
+OUTPUT_DEVICE="${OUTPUT_DEVICE:="@DEFAULT_AUDIO_SINK@"}"
+INPUT_DEVICE="${INPUT_DEVICE:="@DEFAULT_AUDIO_SOURCE@"}"
+
+OUTPUT_DISABLE_ICON="${OUTPUT_DISABLE_ICON:="volume_off_white_36dp.svg"}"
+OUTPUT_ENABLE_ICON="${OUTPUT_ENABLE_ICON:="volume_up_white_36dp.svg"}"
+OUTPUT_INCREASE_ICON="${OUTPUT_INCREASE_ICON:="volume_up_white_36dp.svg"}"
+OUTPUT_DECREASE_ICON="${OUTPUT_DECREASE_ICON:="volume_down_white_36dp.svg"}"
+INPUT_DISABLE_ICON="${INPUT_DISABLE_ICON:="mic_off_white_36dp.svg"}"
+INPUT_ENABLE_ICON="${INPUT_ENABLE_ICON:="mic_white_36dp.svg"}"
 
 is_muted() {
 	[ -z "$(wpctl get-volume "$1" | grep '[MUTED]')" ] \
@@ -29,45 +27,45 @@ is_muted() {
 }
 
 get_volume() {
-	wpctl get-volume "$VOLUME_OUTPUT_SINK" | awk '{print $2}'
+	wpctl get-volume "$1" | awk '{print $2}'
 }
 
 input_mute() {
-	wpctl set-mute "$INPUT_SOURCE" toggle
+	wpctl set-mute "$INPUT_DEVICE" toggle
 
-	if [ $(is_muted "$INPUT_SOURCE") ]
+	if [ $(is_muted "$INPUT_DEVICE") ]
 	then
-		icon="$ICONS_DIRECTORY/$ICONS/mic_off_white_36dp.svg"
+		icon="$ICONS_DIRECTORY/$INPUT_DISABLE_ICON"
 		status="Disabled"
 	else
-		icon="$ICONS_DIRECTORY/$ICONS/mic_white_36dp.svg"
+		icon="$ICONS_DIRECTORY/$INPUT_ENABLE_ICON"
 		status="Enabled"
 	fi
 
 	message="<b><span size='$MAIN_TEXT_SIZE'>$status</span></b>"
 
 	notify-send \
-		"$MICROPHONE_TITLE" \
+		"$INPUT_TITLE" \
 		"$message" \
-		-u $URGENCY \
-		-t $TIMEOUT \
+		-u "$URGENCY" \
+		-t "$TIMEOUT" \
 		-i "$icon" \
 		-h string:synchronous:change-volume
 }
 
 volume_mute() {
-	wpctl set-mute "$VOLUME_OUTPUT_SINK" toggle
+	wpctl set-mute "$OUTPUT_DEVICE" toggle
 
-	if [ $(is_muted "$VOLUME_OUTPUT_SINK") ]
+	if [ $(is_muted "$OUTPUT_DEVICE") ]
 	then
-		icon="$ICONS_DIRECTORY/$ICONS/volume_off_white_36dp.svg"
+		icon="$ICONS_DIRECTORY/$OUTPUT_DISABLE_ICON"
 		status="Disabled"
 	else
-		icon="$ICONS_DIRECTORY/$ICONS/volume_up_white_36dp.svg"
+		icon="$ICONS_DIRECTORY/$OUTPUT_ENABLE_ICON"
 		status="Enabled"
 	fi
 
-	percent=$(bc <<< "$(get_volume) * 100 / 1")
+	percent=$(bc <<< "$(get_volume "$OUTPUT_DEVICE") * 100 / 1")
 	message="$(
 		cat <<- EOF
 			<b><span size='$MAIN_TEXT_SIZE'>$status</span></b>
@@ -76,63 +74,63 @@ volume_mute() {
 	)"
 
 	notify-send \
-		"$VOLUME_TITLE" \
+		"$OUTPUT_TITLE" \
 		"$message" \
-		-u $URGENCY \
-		-t $TIMEOUT \
+		-u "$URGENCY" \
+		-t "$TIMEOUT" \
 		-i "$icon" \
-		-h string:synchronous:change-volume
+		-h 'string:synchronous:change-volume'
 }
 
 volume_change() {
 	value="$1"
-	current=$(get_volume)
+	current=$(get_volume "$OUTPUT_DEVICE")
 
 	if [[ "$value" =~ ^\+([01]\.[0-9]{1,2})$ ]]
 	then
-		mode=increase
+		mode='increase'
 	elif [[ "$value" =~ ^\-([01]\.[0-9]{1,2})$ ]]
 	then
-		mode=decrease
+		mode='decrease'
 	elif [[ "$value" =~ ^([01]\.[0-9]{1,2})$ ]]
 	then
-		mode=set
+		mode='set'
 	else
 		echo "'$value' is not a valid decimal number (0.00-1.00)"
 	fi
 
 	value=${BASH_REMATCH[1]}
 
-	if [ $mode = increase ]
+	if [ $mode = 'increase' ]
 	then
 		if [ $(bc <<< "$current >= 1.0" ) -eq 1 ]
 		then
-			wpctl set-volume "$VOLUME_OUTPUT_SINK" 1.0
+			wpctl set-volume "$OUTPUT_DEVICE" 1.0
 			echo 'Volume already at maximum'
 			exit
 		fi
 		value=$(bc <<< "$current + $value")
-		icon="$ICONS_DIRECTORY/$ICONS/volume_up_white_36dp.svg"
-	elif [ $mode = decrease ]
+		icon="$ICONS_DIRECTORY/$OUTPUT_INCREASE_ICON"
+	elif [ $mode = 'decrease' ]
 	then
 		if [ $(bc <<< "$current <= 0.0" ) -eq 1 ]
 		then
-			wpctl set-volume "$VOLUME_OUTPUT_SINK" 0.0
+			wpctl set-volume "$OUTPUT_DEVICE" 0.0
 			echo 'Volume already at minimum'
 			exit
 		fi
 		value=$(bc <<< "$current - $value")
-		icon="$ICONS_DIRECTORY/$ICONS/volume_down_white_36dp.svg"
+		icon="$ICONS_DIRECTORY/$OUTPUT_DECREASE_ICON"
 	else
 		title='Volume Change'
-		icon="$ICONS_DIRECTORY/$ICONS/volume_up_white_36dp.svg"
+		icon="$ICONS_DIRECTORY/$OUTPUT_INCREASE_ICON"
 	fi
 
-	wpctl set-volume "$VOLUME_OUTPUT_SINK" $value
+	wpctl set-volume "$OUTPUT_DEVICE" $value
 
-	if [ $(is_muted "$VOLUME_OUTPUT_SINK") ]
+	if [ $(is_muted "$OUTPUT_DEVICE") ]
 	then
-		icon="$ICONS_DIRECTORY/$ICONS/volume_off_white_36dp.svg"
+		icon="$ICONS_DIRECTORY/$OUTPUT_DISABLE_ICON"
 		status='Disabled'
 	else
 		status='Enabled'
@@ -147,28 +145,28 @@ volume_change() {
 	)"
 
 	notify-send \
-		"$VOLUME_TITLE" \
+		"$OUTPUT_TITLE" \
 		"$message" \
-		-u $URGENCY \
-		-t $TIMEOUT \
+		-u "$URGENCY" \
+		-t "$TIMEOUT" \
 		-i "$icon" \
-		-h int:value:$percent \
-		-h string:synchronous:change-volume
+		-h "int:value:$percent" \
+		-h 'string:synchronous:change-volume'
 }
 
-if [ $1 = volume ]
+if [ "$1" = 'output' ]
 then
-	if [ $2 = mute ]
+	if [ "$2" = 'mute' ]
 	then
 		volume_mute
 		exit
 	else
-		volume_change $2
+		volume_change "$2"
 		exit
 	fi
-elif [ $1 = input ]
+elif [ "$1" = 'input' ]
 then
-	if [ $2 = mute ]
+	if [ "$2" = 'mute' ]
 	then
 		input_mute
 		exit

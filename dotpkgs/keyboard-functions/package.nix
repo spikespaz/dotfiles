@@ -44,7 +44,7 @@
           wireplumber
         ]}' \
       --set ICONS_DIRECTORY \
-        $out/share/icons
+        $out/share/icons/rounded-white
   '';
 
   meta = {
