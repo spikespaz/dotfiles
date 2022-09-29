@@ -4,9 +4,9 @@
   ];
 
   programs.vscode.extensions = with pkgs.vscode-extensions; [
-    # Theme
+    ## Appearances ##
     jdinhlife.gruvbox
-    # pkief.material-icon-theme
+    pkief.material-icon-theme
   ];
 
   programs.vscode.userSettings = {

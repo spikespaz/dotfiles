@@ -55,11 +55,11 @@ in {
   ##########################
 
   imports = [
-    # theming module
+    ### THEMING MODULES ###
     hmModules.uniform-theme
     hmModules.kvantum
 
-    # set the default programs
+    ### DEFAULT PROGRAMS ###
     mimeApps
 
     ##############################
@@ -92,7 +92,6 @@ in {
     ### CODE EDITORS ###
     programs.vscode.settings
     programs.vscode.languages.all
-
     programs.neovim
     programs.helix
     programs.lapce
