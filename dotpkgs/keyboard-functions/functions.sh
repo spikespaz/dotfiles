@@ -1,25 +1,25 @@
-#! /bin/bash
+#! /usr/bin/env bash
 set -euxo pipefail
 
 here="$(realpath "$(dirname $0)")"
 
-TIMEOUT="${TIMEOUT:="700"}"
-URGENCY="${URGENCY:="low"}"
-MAIN_TEXT_SIZE="${MAIN_TEXT_SIZE:="x-large"}"
-ICONS_DIRECTORY="${ICONS_DIRECTORY:="$here/icons/rounded-white"}"
+: "${TIMEOUT:="700"}"
+: "${URGENCY:="low"}"
+: "${MAIN_TEXT_SIZE:="x-large"}"
+: "${ICONS_DIRECTORY:="$here/icons/rounded-white"}"
 
-OUTPUT_TITLE="${OUTPUT_TITLE:="Default Audio Output"}"
-INPUT_TITLE="${INPUT_TITLE:="Default Audio Input"}"
+: "${OUTPUT_TITLE:="Default Audio Output"}"
+: "${INPUT_TITLE:="Default Audio Input"}"
 
-OUTPUT_DEVICE="${OUTPUT_DEVICE:="@DEFAULT_AUDIO_SINK@"}"
-INPUT_DEVICE="${INPUT_DEVICE:="@DEFAULT_AUDIO_SOURCE@"}"
+: "${OUTPUT_DEVICE:="@DEFAULT_AUDIO_SINK@"}"
+: "${INPUT_DEVICE:="@DEFAULT_AUDIO_SOURCE@"}"
 
-OUTPUT_DISABLE_ICON="${OUTPUT_DISABLE_ICON:="volume_off_white_36dp.svg"}"
-OUTPUT_ENABLE_ICON="${OUTPUT_ENABLE_ICON:="volume_up_white_36dp.svg"}"
-OUTPUT_INCREASE_ICON="${OUTPUT_INCREASE_ICON:="volume_up_white_36dp.svg"}"
-OUTPUT_DECREASE_ICON="${OUTPUT_DECREASE_ICON:="volume_down_white_36dp.svg"}"
-INPUT_DISABLE_ICON="${INPUT_DISABLE_ICON:="mic_off_white_36dp.svg"}"
-INPUT_ENABLE_ICON="${INPUT_ENABLE_ICON:="mic_white_36dp.svg"}"
+: "${OUTPUT_DISABLE_ICON:="volume_off_white_36dp.svg"}"
+: "${OUTPUT_ENABLE_ICON:="volume_up_white_36dp.svg"}"
+: "${OUTPUT_INCREASE_ICON:="volume_up_white_36dp.svg"}"
+: "${OUTPUT_DECREASE_ICON:="volume_down_white_36dp.svg"}"
+: "${INPUT_DISABLE_ICON:="mic_off_white_36dp.svg"}"
+: "${INPUT_ENABLE_ICON:="mic_white_36dp.svg"}"
 
 is_muted() {
 	[ -z "$(wpctl get-volume "$1" | grep '[MUTED]')" ] \
