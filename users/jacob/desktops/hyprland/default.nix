@@ -25,7 +25,13 @@
       builtins.replaceStrings [
         "%FUNCTIONS%"
       ] [
-        (lib.getExe pkgs.keyboard-functions)
+        (lib.getExe (pkgs.keyboard-functions.override {
+          scriptOptions = {
+            outputMaximum = 1.25;
+            colors.normalHighlight = "#458588e6";
+            colors.warningHighlight = "#cc241de6";
+          };
+        }))
       ]
       (lib.concatStringsSep "\n\n" [
         # polkit agent, raises to root access with gui

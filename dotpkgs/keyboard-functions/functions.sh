@@ -14,6 +14,11 @@ here="$(realpath "$(dirname "$0")")"
 : "${OUTPUT_DEVICE:="@DEFAULT_AUDIO_SINK@"}"
 : "${INPUT_DEVICE:="@DEFAULT_AUDIO_SOURCE@"}"
 
+: "${OUTPUT_MAXIMUM:="1.0"}"
+
+: "${NORMAL_HIGHLIGHT_COLOR:="#00ff00"}"
+: "${WARNING_HIGHLIGHT_COLOR:="#ff0000"}"
+
 : "${OUTPUT_DISABLE_ICON:="volume_off_white_36dp.svg"}"
 : "${OUTPUT_ENABLE_ICON:="volume_up_white_36dp.svg"}"
 : "${OUTPUT_INCREASE_ICON:="volume_up_white_36dp.svg"}"
@@ -102,9 +107,9 @@ volume_change() {
 
 	if [ $mode = 'increase' ]
 	then
-		if [ "$(bc <<< "$current >= 1.0")" -eq 1 ]
+		if [ "$(bc <<< "$current >= $OUTPUT_MAXIMUM")" -eq 1 ]
 		then
-			wpctl set-volume "$OUTPUT_DEVICE" 1.0
+			wpctl set-volume "$OUTPUT_DEVICE" "$OUTPUT_MAXIMUM"
 			echo 'Volume already at maximum'
 			exit
 		fi
@@ -141,6 +146,14 @@ volume_change() {
 			$status
 		EOF
 	)"
+	progress=$(bc <<< "$value * (100 / $OUTPUT_MAXIMUM) / 1")
+
+	if [ "$(bc <<< "$value > 1.0")" -eq 1 ]
+	then
+		highlight_color="$WARNING_HIGHLIGHT_COLOR"
+	else
+		highlight_color="$NORMAL_HIGHLIGHT_COLOR"
+	fi
 
 	notify-send \
 		"$OUTPUT_TITLE" \
@@ -148,7 +161,8 @@ volume_change() {
 		-u "$URGENCY" \
 		-t "$TIMEOUT" \
 		-i "$icon" \
-		-h "int:value:$percent" \
+		-h "string:hlcolor:$highlight_color" \
+		-h "int:value:$progress" \
 		-h 'string:synchronous:change-volume'
 }
 

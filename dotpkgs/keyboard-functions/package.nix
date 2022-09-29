@@ -24,6 +24,11 @@
         inputTitle = "Default Audio Input";
         outputDevice = "@DEFAULT_AUDIO_SINK@";
         inputDevice = "@DEFAULT_AUDIO_SOURCE@";
+        outputMaximum = 1.0;
+        colors = {
+          normalHighlight = "#00ff00";
+          warningHighlight = "#ff0000";
+        };
         icons = {
           outputDisable = "volume_off_white_36dp.svg";
           outputEnable = "volume_up_white_36dp.svg";
@@ -74,6 +79,12 @@
         '${scriptOptions'.outputDevice}' \
       --set INPUT_DEVICE \
         '${scriptOptions'.inputDevice}' \
+      --set OUTPUT_MAXIMUM \
+        '${toString scriptOptions'.outputMaximum}' \
+      --set NORMAL_HIGHLIGHT_COLOR \
+        '${toString scriptOptions'.colors.normalHighlight}' \
+      --set WARNING_HIGHLIGHT_COLOR \
+        '${toString scriptOptions'.colors.warningHighlight}' \
       --set OUTPUT_DISABLE_ICON \
         '${scriptOptions'.icons.outputDisable}' \
       --set OUTPUT_ENABLE_ICON \
