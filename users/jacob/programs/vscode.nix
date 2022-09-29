@@ -82,10 +82,10 @@
 
     ## Language Servers ##
 
-    "perl.pls" = "${pkgs.perlPackages.PLS}/bin/pls";
+    "pls.cmd" = lib.getExe pkgs.perlPackages.PLS;
 
     "nix.enableLanguageServer" = true;
-    "nix.serverPath" = "${pkgs.nil}/bin/nil";
+    "nix.serverPath" = lib.getExe pkgs.nil;
 
     ## Miscellaneous ##
 
