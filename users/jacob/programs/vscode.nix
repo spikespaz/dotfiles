@@ -1,4 +1,11 @@
-{ lib, pkgs, ... }: {
+{ lib, pkgs, ... }: let
+  features = {
+    lang.rust = {};
+    lang.nix = {};
+    lang.perl = {};
+    lang.bash = {};
+  };
+in {
   home.packages = with pkgs; [
     ### FONTS ###
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
@@ -7,7 +14,9 @@
     # Perl Language Server
     perlPackages.PLS
     # Nix Language Server
-    pkgs.nil
+    nil
+    # Bash Linter
+    shellcheck
   ];
 
   programs.vscode.extensions = with pkgs.vscode-extensions; [
@@ -18,6 +27,8 @@
     # Language Clients
     jnoortheen.nix-ide  # Nix
     rust-lang.rust-analyzer # Rust
+    mads-hartmann.bash-ide-vscode  # Bash
+    timonwong.shellcheck  # Bash
   ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
     {  # Perl
       name = "pls";
@@ -86,6 +97,8 @@
 
     "nix.enableLanguageServer" = true;
     "nix.serverPath" = lib.getExe pkgs.nil;
+
+    "shellcheck.executablePath" = lib.getExe pkgs.shellcheck;
 
     ## Miscellaneous ##
 
