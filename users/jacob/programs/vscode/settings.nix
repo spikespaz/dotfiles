@@ -1,41 +1,12 @@
-{ lib, pkgs, ... }: let
-  features = {
-    lang.rust = {};
-    lang.nix = {};
-    lang.perl = {};
-    lang.bash = {};
-  };
-in {
+{ lib, pkgs, ... }: {
   home.packages = with pkgs; [
-    ### FONTS ###
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-
-    ### LANGUAGE SERVERS ###
-    # Perl Language Server
-    perlPackages.PLS
-    # Nix Language Server
-    nil
-    # Bash Linter
-    shellcheck
   ];
 
   programs.vscode.extensions = with pkgs.vscode-extensions; [
     # Theme
     jdinhlife.gruvbox
     # pkief.material-icon-theme
-
-    # Language Clients
-    jnoortheen.nix-ide  # Nix
-    rust-lang.rust-analyzer # Rust
-    mads-hartmann.bash-ide-vscode  # Bash
-    timonwong.shellcheck  # Bash
-  ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-    {  # Perl
-      name = "pls";
-      publisher = "fractalboy";
-      version = "0.0.15";
-      sha256 = "sha256-qMXaCxlvGUz7BXl6reFOXtLXV2JMzccxQO4VlvvZOQk=";
-    }
   ];
 
   programs.vscode.userSettings = {
@@ -91,15 +62,6 @@ in {
     # name of current scope sticks to top of editor pane
     "editor.stickyScroll.enabled" = true;
 
-    ## Language Servers ##
-
-    "pls.cmd" = lib.getExe pkgs.perlPackages.PLS;
-
-    "nix.enableLanguageServer" = true;
-    "nix.serverPath" = lib.getExe pkgs.nil;
-
-    "shellcheck.executablePath" = lib.getExe pkgs.shellcheck;
-
     ## Miscellaneous ##
 
     # disable automatic update checking
@@ -114,43 +76,6 @@ in {
     "terminal.integrated.shellIntegration.enabled" = true;
     # files can be recovered with undo
     "explorer.confirmDelete" = false;
-
-    ## Language Specific -- Shell ##
-
-    "[shellscript]" = {
-      "editor.tabSize" = 2;
-      "editor.insertSpaces" = false;
-    };
-
-    ## Language Specific -- Rust ##
-
-    "[rust]" = {
-      "editor.fontLigatures" = true;
-
-      "editor.formatOnSave" = true;
-    };
-
-    # use clippy over cargo check
-    "rust-analyzer.checkOnSave.command" = "clippy";
-
-    # use nightly range formatting, should be faster
-    "rust-analyzer.rustfmt.rangeFormatting.enable" = true;
-
-    # show references for everything
-    "rust-analyzer.hover.actions.references.enable" = true;
-    "rust-analyzer.lens.references.adt.enable" = true;
-    "rust-analyzer.lens.references.enumVariant.enable" = true;
-    "rust-analyzer.lens.references.method.enable" = true;
-    "rust-analyzer.lens.references.trait.enable" = true;
-
-    # enforce consistent imports everywhere
-    "rust-analyzer.imports.granularity.enforce" = true;
-    "rust-analyzer.imports.granularity.group" = "module";
-    "rust-analyzer.imports.prefix" = "self";
-
-    # show hints for elided lifetimes
-    "rust-analyzer.inlayHints.lifetimeElisionHints.enable" = "always";  # or 'skip_trivial'
-    # "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames" = true;
   };
 
   programs.vscode.keybindings = let

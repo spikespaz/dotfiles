@@ -90,7 +90,9 @@ in {
     programs.alacritty
 
     ### CODE EDITORS ###
-    programs.vscode
+    programs.vscode.settings
+    programs.vscode.languages.all
+
     programs.neovim
     programs.helix
     programs.lapce

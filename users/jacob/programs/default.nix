@@ -47,7 +47,7 @@
     programs.obs-studio.enable = true;
     programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
       # <https://hg.sr.ht/~scoopta/wlrobs>
-      (wlrobs.overrideAttrs (old: rec {
+      (wlrobs.overrideAttrs (old: {
         version = "unstable-2022-05-15";
         src = old.src.overrideAttrs (old: old // {
           rev = "3eb154e5fe639acb1b6be7041f5d5a62f7e723dc";
@@ -99,10 +99,7 @@
   ### CODE EDITORS ###
   ####################
 
-  vscode = {
-    programs.vscode.enable = true;
-    imports = [ ./vscode.nix ];
-  };
+  vscode = import ./vscode;
   neovim = {
     programs.neovim.enable = true;
     home.packages = [ pkgs.neovide ];
