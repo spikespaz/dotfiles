@@ -41,6 +41,7 @@
     # scroll with an animation
     "editor.smoothScrolling" = true;
     "workbench.list.smoothScrolling" = true;
+    "terminal.integrated.smoothScrolling" = true;
     # blink the cursor in terminal
     "terminal.integrated.cursorBlinking" = true;
     # line style cursor in terminal
