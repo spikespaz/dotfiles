@@ -20,7 +20,7 @@
       highlight = "#458588" + fg_opacity;
       urgency_low = "#d79921" + fg_opacity;
       urgency_normal = foreground;
-      urgency_critical = "#cc241d" + fg_opacity;
+      urgency_critical = "#b16286" + fg_opacity;
     in {
       global = {
         # position
