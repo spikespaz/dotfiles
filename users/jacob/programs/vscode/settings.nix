@@ -7,6 +7,13 @@
     ## Appearances ##
     jdinhlife.gruvbox
     pkief.material-icon-theme
+  ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+    {  # For keybind macros
+      name = "multi-command";
+      publisher = "ryuta46";
+      version = "1.6.0";
+      sha256 = "sha256-AnHN1wvyVrZRlnOgxBK7xKLcL7SlAEKDcw6lEf+2J2E=";
+    }
   ];
 
   programs.vscode.userSettings = {
@@ -79,7 +86,7 @@
   };
 
   programs.vscode.keybindings = let
-    formatDocumentOnManualSaveOnlyCondition = lib.concatStringsSep " " [
+    formatOnManualSaveOnlyCondition = lib.concatStringsSep " " [
       # manually saving should only format when auto-saving is enabled
       # in some form, and when the file doesn't already
       # get formatted on every save
@@ -94,20 +101,24 @@
     ];
   in [
     ### FORMAT DOCUMENT ON MANUAL SAVE ONLY ###
-    {  # remove the default action for saving document
-        "key" = "ctrl+s";
-        "command" = "-workbench.action.files.save";
-        "when" = formatDocumentOnManualSaveOnlyCondition;
+    # remove the default action for saving document
+    {
+      key = "ctrl+s";
+      command = "-workbench.action.files.save";
+      when = formatOnManualSaveOnlyCondition;
     }
-    {  # formatting behavior identical to the default ctrl+k ctrl+f
-        "key" = "ctrl+s";
-        "command" = "editor.action.formatDocument";
-        "when" = formatDocumentOnManualSaveOnlyCondition;
-    }
-    {  # re-introduce default save action, but in new order after format
-        "key" = "ctrl+s";
-        "command" = "workbench.action.files.save";
-        "when" = formatDocumentOnManualSaveOnlyCondition;
+    # formatting behavior identical to the default ctrl+k ctrl+f
+    # and the save as normal
+    {
+      key = "ctrl+s";
+      command = "extension.multiCommand.execute";
+      args = {
+        sequence = [
+          "editor.action.formatDocument"
+          "workbench.action.files.save"
+        ];
+      };
+      when = formatOnManualSaveOnlyCondition;
     }
     ### END ###
   ];
