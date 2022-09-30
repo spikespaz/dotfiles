@@ -134,14 +134,14 @@ in stdenv.mkDerivation rec {
     for filename in "''${filenames[@]}"
     do
       echo "Installing '$filename'..."
-      install -Dm644 "./fonts/$filename" \
+      install -Dm444 "./fonts/$filename" \
         -t "$out/share/fonts/truetype/WindowsFonts"
     done
 
     echo "Installing license files..."
-    install -Dm644 ./license.rtf \
+    install -Dm444 ./license.rtf \
       -t "$out/share/licenses/WindowsFonts"
-    install -Dm644 '${eula}' \
+    install -Dm444 '${eula}' \
       -t "$out/share/licenses/WindowsFonts"
 
     runHook postInstall
