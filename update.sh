@@ -63,7 +63,7 @@ if [ $update_system -eq 1 ]; then
 
 	sudo -s <<-EOF
 		# shellcheck disable=SC2068
-		nixos-rebuild switch --flake "path:$here#" $@
+		nixos-rebuild switch --flake "path:$here" $@
 		chown $USER "$here/flake.lock"
 	EOF
 fi
