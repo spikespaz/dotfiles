@@ -18,18 +18,13 @@
     home.packages = [ pkgs.mailspring ];
   };
   discord = {
-    home.packages = [ pkgs.discord ];
-    nixpkgs.overlays = let
-      discordOverlay = self: super: {
-        discord = super.discord.override {
-          # <https://github.com/GooseMod/OpenAsar>
-          withOpenASAR = true;
-          # fix for not respecting system browser
-          nss = pkgs.nss_latest;
-        };
-      };
-    in [
-      discordOverlay
+    home.packages = [
+      (pkgs.discord.override {
+        # <https://github.com/GooseMod/OpenAsar>
+        withOpenASAR = true;
+        # fix for not respecting system browser
+        nss = pkgs.nss_latest;
+      })
     ];
   };
   webcord = {
@@ -95,25 +90,6 @@
   };
   lapce = {
     home.packages = [ pkgs.lapce ];
-    # home.packages = [
-    #   (pkgs.lapce.overrideAttrs (old: rec {
-    #     version = "0.2.0";
-    #     src = pkgs.fetchFromGitHub {
-    #       owner = "lapce";
-    #       repo = "lapce";
-    #       rev = "v${version}";
-    #       sha256 = "sha256-cCcI5V6CMLkJM0miLv/o7LAJedrgb+z2CtWmF5/dmvY=";
-    #     };
-    #     # cannot set cargoSha256 because the output is transformed before
-    #     # it is overrideable, this is the way since
-    #     # rustPlatform.fetchCargoTarball is lib.mkOverrideable
-    #     cargoDeps = old.cargoDeps.overrideAttrs (_: {
-    #       inherit src;
-    #       name = "${old.pname}-${version}-vendor.tar.gz";
-    #       outputHash = "sha256-H8vPBXJ0tom07wjzi18oIYNUhZXraD74DF7+xn8hfrQ=";
-    #     });
-    #   }))
-    # ];
   };
 
   #########################
