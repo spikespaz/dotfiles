@@ -7,6 +7,9 @@
     ## Appearances ##
     jdinhlife.gruvbox
     pkief.material-icon-theme
+
+    ## Behaviors ##
+    christian-kohler.path-intellisense
   ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
     {  # For keybind macros
       name = "multi-command";
