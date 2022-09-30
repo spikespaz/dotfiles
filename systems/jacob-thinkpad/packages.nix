@@ -3,6 +3,9 @@
   ### ESSENTIALS ###
   ##################
 
+  ### SHELLS ###
+  nushell
+
   ### MISSING ###
   bc
   tree
