@@ -1,0 +1,23 @@
+--- a/CMakeLists.txt	2022-09-29 22:01:51.965593201 -0700
++++ b/CMakeLists.txt	2022-09-29 21:59:20.012244990 -0700
+@@ -6,9 +6,20 @@
+   cmake_minimum_required(VERSION 3.18)
+ endif()
+
++if (POLICY CMP0048)
++  cmake_policy(SET CMP0048 NEW)
++endif (POLICY CMP0048)
++
+ project(move-transition VERSION 2.6.3)
+ set(PROJECT_FULL_NAME "Move Transition")
+
++include(FindLibobs.cmake)
++find_package(LibObs REQUIRED)
++
++include_directories(
++	"${LIBOBS_INCLUDE_DIR}/../plugins/obs-transitions"
++	"${LIBOBS_INCLUDE_DIR}/../UI/obs-frontend-api")
++
+ # Set new UUIDs when you start to create a new plugin.
+ set(MACOS_PACKAGE_UUID "207061E8-795D-4FC8-9BB6-30DF9291E34F")
+ set(MACOS_INSTALLER_UUID "A4BEF905-CFE5-45F7-B29F-561FD3838103")

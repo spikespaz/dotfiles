@@ -36,6 +36,7 @@
       allowUnfree = flib.mkUnfreeOverlay [
         pkgs.ttf-ms-win11
       ];
+      nixpkgsFixes = import ./overlays lib;
     });
 
     nixosModules = flib.mkNixosModules inputs [
