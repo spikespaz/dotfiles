@@ -1,20 +1,20 @@
-#!/bin/sh
-set -e
+#! /bin/sh
+set -eu
 
 interval="$1"
 chance="$2"
 img_dir="$3"
 
 if [ "$interval" -ne "$interval" ]; then
-  echo 'Error: argument $1 was not a number!'
+  echo 'Error: argument 1 was not a number!'
   exit 10
 fi
 if [ "$chance" -ne "$chance" ]; then
-  echo 'Error: argument $1 was not a number!'
+  echo 'Error: argument 2 was not a number!'
   exit 11
 fi
 if [ ! -d "$img_dir" ]; then
-  echo 'Error: argument $3 was not a directory!'
+  echo 'Error: argument 3 was not a directory!'
   exit 12
 fi
 
@@ -34,7 +34,7 @@ set_img() {
     find "$img_dir" \
       -type f \
       -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' \
-    | shuf -n1
+      | shuf -n1
   )"
   if [ ! -f "$new_img" ]; then
     echo 'Error: could not find the next image!'
@@ -49,8 +49,8 @@ set_img() {
     echo 'Setting the selected image...'
     swaybg -i "$new_img" -m fill &
 
-    if [ ! -z "$old_pids" ]; then
-      sleep 10  # this is huge because of huge images
+    if [ -n "$old_pids" ]; then
+      sleep 10 # this is huge because of huge images
       echo 'Killing old swaybg PIDs...'
       # shellcheck disable=SC2086
       kill -s 9 $old_pids
@@ -62,7 +62,7 @@ set_img() {
 
 echo 'Setting the first image!'
 set_img
-if [ ! -z "$NOTIFY_SOCKET" ]; then
+if [ -n "$NOTIFY_SOCKET" ]; then
   systemd-notify --ready
   ## systemd-notify always returns nonzero, but the message is sent anyway
   # if [ "$(systemd-notify --ready)" ]; then

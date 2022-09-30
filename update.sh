@@ -1,21 +1,21 @@
-#!/bin/sh
-set -e
+#! /bin/sh
+set -eu
 
-here="$(realpath "$(dirname $0)")"
+here="$(realpath "$(dirname "$0")")"
 
 fail () {
-	printf ''
-	printf 'Incorrect arguments, did you make a typo?\n'
-	printf ''
-	printf "Usage: $(basename $0) [[-]s|[--]system] [[-]u|[--]user [<name>]] [-l|--lock]\n"
-	printf "The '--lock' option renames '$here/flake.lock', take care!\n"
-	printf ''
+	echo
+	echo 'Incorrect arguments, did you make a typo?'
+	echo
+	echo "Usage: $(basename "$0") [[-]s|[--]system] [[-]u|[--]user [<name>]] [-l|--lock]"
+	echo "The '--lock' option renames '$here/flake.lock', take care!"
+	echo
 	exit 1
 }
 
 label () {
-	border="####$(sed 's/./#/g' <<< $1)####"
-	printf "\n$border\n### $1 ###\n$border\n\n"
+	border="####$(echo "$1" | sed 's/./#/g')####"
+	printf "\n%s\n### $1 ###\n%s\n\n" "$border" "$border"
 	unset border
 }
 
@@ -32,7 +32,7 @@ while [ $# -gt 0 ]; do
 			;;
 		-u|u|--user|user)
 			update_user=1
-			if [ ! -z $2 ] && [ -d "$here/users/$2" ]; then
+			if [ -n "$2" ] && [ -d "$here/users/$2" ]; then
 				user=$2
 				shift
 			fi
@@ -62,6 +62,7 @@ if [ $update_system -eq 1 ]; then
 	label "UPDATING SYSTEM"
 
 	sudo -s <<-EOF
+		# shellcheck disable=SC2068
 		nixos-rebuild switch --flake "path:$here#" $@
 		chown $USER "$here/flake.lock"
 	EOF
@@ -76,6 +77,7 @@ if [ $update_user -eq 1 ]; then
 
 	module="path:$here#homeConfigurations.$user.activationPackage"
 
-	nix build --no-link $module $@
-	"$(nix path-info $module)/activate"
+	# shellcheck disable=SC2068
+	nix build --no-link "$module" $@
+	"$(nix path-info "$module")/activate"
 fi

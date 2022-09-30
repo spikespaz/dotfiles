@@ -1,13 +1,15 @@
-#!/bin/bash
-set -eux
+#! /bin/bash
+# shellcheck disable=SC2086
+set -euxo pipefail
+
 
 # Calculate preferred swap partition size for hibernation
 TOTAL_MEM=$(awk '{if ($1 == "MemTotal:") print $2}' /proc/meminfo)
-EXTRA_SWAP=$(expr 2 \* 1024 \* 1024)
-TOTAL_SWAP="$(expr $TOTAL_MEM + $EXTRA_SWAP)K"  # KiB
+EXTRA_SWAP=$((2 * 1024 * 1024))
+TOTAL_SWAP="$((TOTAL_MEM + EXTRA_SWAP))K"  # KiB
 
-SOURCE_DEV=/dev/sda
-TARGET_DEV=/dev/nvme0n1
+SOURCE_DEV='/dev/sda'
+TARGET_DEV='/dev/nvme0n1'
 EFI_BLOCK="${SOURCE_DEV}1"
 SOURCE_ROOT="${SOURCE_DEV}2"
 
@@ -18,7 +20,7 @@ sgdisk -n1:1M:+$TOTAL_SWAP -t1:8200 $TARGET_DEV
 # create root
 sgdisk -n2:0:0 -t2:8304 $TARGET_DEV
 
-new_blocks=($(lsblk -no PATH $TARGET_DEV))
+mapfile -t new_blocks < <(lsblk -no PATH $TARGET_DEV)
 new_swap_blk="${new_blocks[1]}"
 new_root_blk="${new_blocks[2]}"
 

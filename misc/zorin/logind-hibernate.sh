@@ -1,3 +1,4 @@
+#! /bin/sh
 # enable logind hibernation
 cat <<- EOF > /etc/polkit-1/localauthority/50-local.d/com.ubuntu.enable-hibernate.pkla
 	[Enable hibernate]

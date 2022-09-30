@@ -37,8 +37,7 @@ get_volume() {
 input_mute() {
 	wpctl set-mute "$INPUT_DEVICE" toggle
 
-	if is_muted "$INPUT_DEVICE"
-	then
+	if is_muted "$INPUT_DEVICE"; then
 		icon="$ICONS_DIRECTORY/$INPUT_DISABLE_ICON"
 		status="Disabled"
 	else
@@ -60,8 +59,7 @@ input_mute() {
 volume_mute() {
 	wpctl set-mute "$OUTPUT_DEVICE" toggle
 
-	if is_muted "$OUTPUT_DEVICE"
-	then
+	if is_muted "$OUTPUT_DEVICE"; then
 		icon="$ICONS_DIRECTORY/$OUTPUT_DISABLE_ICON"
 		status="Disabled"
 	else
@@ -90,14 +88,11 @@ volume_change() {
 	value="$1"
 	current=$(get_volume "$OUTPUT_DEVICE")
 
-	if [[ "$value" =~ ^\+([01]\.[0-9]{1,2})$ ]]
-	then
+	if [[ "$value" =~ ^\+([01]\.[0-9]{1,2})$ ]]; then
 		mode='increase'
-	elif [[ "$value" =~ ^\-([01]\.[0-9]{1,2})$ ]]
-	then
+	elif [[ "$value" =~ ^\-([01]\.[0-9]{1,2})$ ]]; then
 		mode='decrease'
-	elif [[ "$value" =~ ^([01]\.[0-9]{1,2})$ ]]
-	then
+	elif [[ "$value" =~ ^([01]\.[0-9]{1,2})$ ]]; then
 		mode='set'
 	else
 		echo "'$value' is not a valid decimal number (0.00-1.00)"
@@ -105,10 +100,8 @@ volume_change() {
 
 	value=${BASH_REMATCH[1]}
 
-	if [ $mode = 'increase' ]
-	then
-		if [ "$(bc <<< "$current >= $OUTPUT_MAXIMUM")" -eq 1 ]
-		then
+	if [ $mode = 'increase' ]; then
+		if [ "$(bc <<< "$current >= $OUTPUT_MAXIMUM")" -eq 1 ]; then
 			wpctl set-volume "$OUTPUT_DEVICE" "$OUTPUT_MAXIMUM"
 			echo 'Volume already at maximum'
 			exit
@@ -116,10 +109,8 @@ volume_change() {
 
 		value=$(bc <<< "$current + $value")
 		icon="$ICONS_DIRECTORY/$OUTPUT_INCREASE_ICON"
-	elif [ $mode = 'decrease' ]
-	then
-		if [ "$(bc <<< "$current <= 0.0")" -eq 1 ]
-		then
+	elif [ $mode = 'decrease' ]; then
+		if [ "$(bc <<<"$current <= 0.0")" -eq 1 ]; then
 			wpctl set-volume "$OUTPUT_DEVICE" 0.0
 			echo 'Volume already at minimum'
 			exit
@@ -127,8 +118,7 @@ volume_change() {
 
 		value=$(bc <<< "$current - $value")
 
-		if [ "$(bc <<< "$value <= 0.0")" -eq 1 ]
-		then
+		if [ "$(bc <<< "$value <= 0.0")" -eq 1 ]; then
 			icon="$ICONS_DIRECTORY/$OUTPUT_DISABLE_ICON"
 		else
 			icon="$ICONS_DIRECTORY/$OUTPUT_DECREASE_ICON"
@@ -139,8 +129,7 @@ volume_change() {
 
 	wpctl set-volume "$OUTPUT_DEVICE" "$value"
 
-	if is_muted "$OUTPUT_DEVICE"
-	then
+	if is_muted "$OUTPUT_DEVICE"; then
 		icon="$ICONS_DIRECTORY/$OUTPUT_DISABLE_ICON"
 		status='Disabled'
 	else
@@ -156,8 +145,7 @@ volume_change() {
 	)"
 	progress=$(bc <<< "$value * (100 / $OUTPUT_MAXIMUM) / 1")
 
-	if [ "$(bc <<< "$value > 1.0")" -eq 1 ]
-	then
+	if [ "$(bc <<< "$value > 1.0")" -eq 1 ]; then
 		highlight_color="$WARNING_HIGHLIGHT_COLOR"
 	else
 		highlight_color="$NORMAL_HIGHLIGHT_COLOR"
@@ -174,20 +162,16 @@ volume_change() {
 		-h 'string:synchronous:change-volume'
 }
 
-if [ "$1" = 'output' ]
-then
-	if [ "$2" = 'mute' ]
-	then
+if [ "$1" = 'output' ]; then
+	if [ "$2" = 'mute' ]; then
 		volume_mute
 		exit
 	else
 		volume_change "$2"
 		exit
 	fi
-elif [ "$1" = 'input' ]
-then
-	if [ "$2" = 'mute' ]
-	then
+elif [ "$1" = 'input' ]; then
+	if [ "$2" = 'mute' ]; then
 		input_mute
 		exit
 	fi

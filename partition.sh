@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 set -eu
 
 # Adapted from <https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/index.html#root-on-zfs>
@@ -14,8 +14,9 @@ POOL_NAME='ospool'
 
 # Calculate preferred swap partition size for hibernation
 TOTAL_MEM=$(awk '{if ($1 == "MemTotal:") print $2}' /proc/meminfo)
-EXTRA_SWAP=$(expr 2 \* 1024 \* 1024) # Some forgiveness if memory was full when hibernating
-TOTAL_SWAP="$(expr $TOTAL_MEM + $EXTRA_SWAP)K" # KiB
+# Some forgiveness if memory was full when hibernating
+EXTRA_SWAP=$((2 * 1024 * 1024))
+TOTAL_SWAP="$((TOTAL_MEM + EXTRA_SWAP))K" # KiB
 
 ##### PARTITIONING #####
 
@@ -24,6 +25,7 @@ sgdisk -Z $TARGET_DISK
 # Create boot partition (ef00 = EFI system partition)
 sgdisk  -n1:1M:+512M        -t1:ef00  $TARGET_DISK
 # Create swap partition (8200 = Linux swap)
+# shellcheck disable=SC2086
 sgdisk  -n2:0:+$TOTAL_SWAP  -t2:8200  $TARGET_DISK
 # Create primary partition (bf00 = Solaris root)
 sgdisk  -n3:0:0             -t3:bf00  $TARGET_DISK

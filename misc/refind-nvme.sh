@@ -1,10 +1,7 @@
 #! /bin/bash
 set -eux
 
-OS_TARGET=/dev/nvme0n1
 OS_ROOT=/dev/nvme0n1p3
-# OS_TARGET=/dev/vda
-# OS_ROOT=/dev/vda2
 EFI_TARGET=/dev/sda
 EFI_PART=/dev/sda1
 
@@ -40,16 +37,14 @@ chroot /target /bin/bash -x <<- EOF
 
 	REFIND_VER='0.13.3.1'
 
-	if [ ! -f refind-bin.zip ]
-	then
+	if [ ! -f refind-bin.zip ]; then
 		wget \
 			-O refind-bin.zip \
 			"https://cfhcable.dl.sourceforge.net/project/refind/$REFIND_VER/refind-bin-$REFIND_VER.zip"
 		7z x ./refind-bin.zip
 	fi
 
-	if [ ! -f NvmExpressDxe.efi ]
-	then
+	if [ ! -f NvmExpressDxe.efi ]; then
 		wget \
 			-O clover.zip \
 			'https://github.com/CloverHackyColor/CloverBootloader/releases/download/5149/CloverV2-5149.zip'
