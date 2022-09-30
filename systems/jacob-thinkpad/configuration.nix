@@ -3,8 +3,6 @@ args @ { config, pkgs, ... }: {
   ### NIX SETUP ###
   #################
 
-  nix.package = pkgs.nixFlakes;
-
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
 
