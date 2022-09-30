@@ -27,6 +27,8 @@
       ] [
         (lib.getExe (pkgs.keyboard-functions.override {
           scriptOptions = {
+            # to get it to the top of the list
+            urgency = "critical";
             outputMaximum = 1.25;
             colors.normalHighlight = "#458588e6";
             colors.warningHighlight = "#cc241de6";
