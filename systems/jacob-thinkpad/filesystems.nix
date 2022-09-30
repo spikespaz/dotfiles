@@ -15,6 +15,10 @@
     options = [ "zfsutil" "X-mount.mkdir" ];
   };
 in {
+  # we never want to allow nix to create hard-links
+  # because the filesystem takes care of that
+  nix.settings.auto-optimise-store = false;
+
   fileSystems = {
     # "/" = {
     #   device = "none";
