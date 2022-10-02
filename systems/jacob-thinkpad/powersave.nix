@@ -8,20 +8,22 @@
 in {
   imports = [ modules.auto-cpufreq ];
 
-  services.auto-cpufreq = {
+  services.auto-cpufreq = let
+    MHz = x: x * 1000;
+  in {
     enable = true;
     settings = {
-      charger = {
-        governor = "performance";
-        scaling_min_freq = 1700000;
-        scaling_max_freq = 1700000;
-        turbo = "auto";
-      };
       battery = {
         governor = "powersave";
-        scaling_min_freq = 1400000;
-        scaling_max_freq = 1600000;
+        scaling_min_freq = MHz 1400;
+        scaling_max_freq = MHz 1600;
         turbo = "never";
+      };
+      charger = {
+        governor = "performance";
+        scaling_min_freq = MHz 1600;
+        scaling_max_freq = MHz 1700;
+        turbo = "auto";
       };
     };
   };
