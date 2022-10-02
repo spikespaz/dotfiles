@@ -42,14 +42,14 @@ set_img() {
   fi
   echo "Selected new image: $new_img"
 
-  if [ "$new_img" = "$old_img" ]; then
+  if [ "$new_img" = "${old_img-}" ]; then
     echo 'Duplicate, re-rolling...'
     set_img
   else
     echo 'Setting the selected image...'
     swaybg -i "$new_img" -m fill &
 
-    if [ -n "$old_pids" ]; then
+    if [ -n "${old_pids-}" ]; then
       sleep 10 # this is huge because of huge images
       echo 'Killing old swaybg PIDs...'
       # shellcheck disable=SC2086
@@ -62,7 +62,7 @@ set_img() {
 
 echo 'Setting the first image!'
 set_img
-if [ -n "$NOTIFY_SOCKET" ]; then
+if [ -n "${NOTIFY_SOCKET-}" ]; then
   systemd-notify --ready
   ## systemd-notify always returns nonzero, but the message is sent anyway
   # if [ "$(systemd-notify --ready)" ]; then

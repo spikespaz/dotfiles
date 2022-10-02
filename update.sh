@@ -32,7 +32,7 @@ while [ $# -gt 0 ]; do
 			;;
 		-u|u|--user|user)
 			update_user=1
-			if [ -n "$2" ] && [ -d "$here/users/$2" ]; then
+			if [ -n "${2-}" ] && [ -d "$here/users/$2" ]; then
 				user=$2
 				shift
 			fi
