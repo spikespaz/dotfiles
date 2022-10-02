@@ -4,14 +4,33 @@ args @ { config, pkgs, ... }: {
   #################
 
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-
-    substituters = [
-      "https://cache.nixos.org/"
-      "https://nix-community.cachix.org"
+    # allow the flake settings
+    # accept-flake-config = true;
+    # use four cores for enableParallelBuilding
+    cores = 4;
+    # allow sudo users to mark the following values as trusted
+    trusted-users = [ "root" "@wheel" ];
+    # only allow sudo users to manage the nix store
+    allowed-users = [ "@wheel" ];
+    # enable new nix command and flakes
+    extra-experimental-features = [
+      "flakes"
+      "nix-command"
     ];
-    trusted-public-keys = [
+
+    # TODO: Make this Flake nixConfig
+    # continue building derivations if one fails
+    keep-going = true;
+    # show more log lines for failed builds
+    log-lines = 20;
+    # instances of cachix for package derivations
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+      "https://fog.cachix.org"
+    ];
+    extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "fog.cachix.org-1:FAxiA6qMLoXEUdEq+HaT24g1MjnxdfygrbrLDBp6U/s="
     ];
   };
 
