@@ -5,6 +5,45 @@
 
   firefox = {
     programs.firefox.enable = true;
+
+    programs.firefox.extensions = let
+      rycee = pkgs.nur.repos.rycee.firefox-addons;
+      bandithedoge = pkgs.nur.repos.bandithedoge.firefoxAddons;
+    in [
+      ### BASICS ###
+      rycee.darkreader
+      rycee.tree-style-tab
+
+      ### PERFORMANCE ###
+      rycee.h264ify
+      rycee.localcdn
+      rycee.auto-tab-discard
+
+      ### BLOCKING ###
+      rycee.ublock-origin
+      rycee.i-dont-care-about-cookies
+
+      ### GITHUB ###
+      bandithedoge.gitako
+    ];
+
+    programs.firefox.profiles = let
+      prefab = {
+        settings = {
+          "trailhead.firstrun.didSeeAboutWelcome" = true;
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          "browser.uidensity" = 1;
+          "ui.prefersReducedMotion" = 1;
+        };
+        userChrome = builtins.readFile ./userChrome.css;
+      };
+    in {
+      "jacob.default" = lib.recursiveUpdate prefab {
+        id = 0;
+        isDefault = true;
+        name = "Jacob Default";
+      };
+    };
   };
   chromium = {
     programs.chromium.enable = true;

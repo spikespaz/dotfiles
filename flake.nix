@@ -10,6 +10,8 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    nur.url = "github:nix-community/NUR";
+
     hyprland.url = "github:hyprwm/hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -24,6 +26,7 @@
     self,
     nixpkgs,
     home-manager,
+    nur,
     ...
   }: let
     system = "x86_64-linux";
@@ -34,6 +37,7 @@
     inputPackageOverlays = flib.mkPackagesOverlay system (
       removeAttrs inputs [
         "nixpkgs"
+        "nur"
       ]
     );
     pkgs = import nixpkgs {
@@ -41,6 +45,7 @@
       config.allowUnfree = true;
       overlays = [
         inputPackageOverlays
+        nur.overlay
         self.overlays.${system}.allowUnfree
         self.overlays.${system}.nixpkgsFixes
       ];
