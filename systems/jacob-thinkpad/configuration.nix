@@ -55,7 +55,7 @@ args @ { config, pkgs, ... }: {
   # systemd pivots to ramfs on shutdown
   # this is so that the root fs can be unmounted safely
   # it is not worth my time, I live on the edge
-  # systemd.shutdownRamfs.enable = false;
+  systemd.shutdownRamfs.enable = false;
 
   boot = {
     kernelModules = [ "kvm-amd" "acpi_call" ];
