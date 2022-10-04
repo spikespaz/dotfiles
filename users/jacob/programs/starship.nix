@@ -154,7 +154,11 @@ in {
 
   battery = {
     format = " [$symbol $percentage](bold $style)";
+    full_symbol = "";
+    # charging_symbol
+    # discharging_symbol
     unknown_symbol = "";
+    empty_symbol = "";
     display = [
       {
         threshold = 10; style = "${colors.red}";
