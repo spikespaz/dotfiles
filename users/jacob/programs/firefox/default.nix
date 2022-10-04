@@ -45,11 +45,9 @@ in {
 
     ### PERFORMANCE ###
     rycee.h264ify
-    rycee.localcdn
     rycee.auto-tab-discard
 
     ### BLOCKING ###
-    rycee.ublock-origin
     # Enable "Annoyances" lists in uBO instead
     # rycee.i-dont-care-about-cookies
 
