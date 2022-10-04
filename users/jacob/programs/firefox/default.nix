@@ -27,6 +27,10 @@ in {
         id = 0;
         isDefault = true;
         name = "jacob-default";
+        settings = {
+          "devtools.chrome.enabled" = true;
+          "devtools.debugger.remote-enabled" = true;
+        };
       }
     ];
   };
