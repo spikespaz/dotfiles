@@ -6,6 +6,7 @@
 */
 
 @-moz-document url(chrome://browser/content/browser.xhtml){
+
 :root[uidensity="compact"] {
     --bookmark-block-padding: 2px !important;
 }
@@ -29,6 +30,11 @@
 
 #TabsToolbar {
     height: var(--tab-min-height) !important;
+}
+
+/* I don't know if this is the right element */
+#TabsToolbar-customization-target {
+    background: -moz-dialog !important;
 }
 
 .tabbrowser-tab {
@@ -83,4 +89,5 @@
     height: var(--urlbar-height) !important;
     padding: var(--urlbar-container-padding) !important;
 }
+
 }
