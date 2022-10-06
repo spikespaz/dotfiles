@@ -3,6 +3,7 @@
   lib,
   stdenv,
   makeWrapper,
+  coreutils,
   perl,
   wl-clipboard,
   slurp,
@@ -31,7 +32,7 @@ stdenv.mkDerivation {
     makeWrapper ${lib.getExe perl} $out/bin/prtsc \
       --add-flags "$out/bin/prtsc.pl" \
       --set PATH \
-      "${lib.makeBinPath [wl-clipboard slurp grim]}"
+      "${lib.makeBinPath [coreutils wl-clipboard slurp grim]}"
   '';
 
   meta = {
