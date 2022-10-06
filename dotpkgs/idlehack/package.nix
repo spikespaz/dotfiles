@@ -10,7 +10,8 @@
   systemd,
   xorg,
   ...
-}: stdenv.mkDerivation rec {
+}:
+stdenv.mkDerivation rec {
   pname = "idlehack";
   version = "unstable-2021-12-05";
 
@@ -22,9 +23,10 @@
   };
 
   strictDeps = true;
-  nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ bash dbus xorg.libX11 ]
-    ++ lib.optionals systemdSupport [ systemd ];
+  nativeBuildInputs = [pkg-config];
+  buildInputs =
+    [bash dbus xorg.libX11]
+    ++ lib.optionals systemdSupport [systemd];
 
   installPhase = ''
     runHook preInstall
@@ -48,6 +50,6 @@
     inherit (src.meta) homepage;
     license = lib.licenses.isc;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [ spikespaz ];
+    maintainers = with maintainers; [spikespaz];
   };
 }

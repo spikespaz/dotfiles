@@ -7,12 +7,18 @@
 # Further reading:
 # - <https://grahamc.com/blog/erase-your-darlings>
 # - <https://github.com/nix-community/impermanence>
-{ config, lib, pkgs, enableUnstableZfs, ... }: let
+{
+  config,
+  lib,
+  pkgs,
+  enableUnstableZfs,
+  ...
+}: let
   # function to easily duplicate a zfs automount scheme
   zfsAuto = device: {
     inherit device;
     fsType = "zfs";
-    options = [ "zfsutil" "X-mount.mkdir" ];
+    options = ["zfsutil" "X-mount.mkdir"];
   };
 in {
   # we never want to allow nix to create hard-links
@@ -37,20 +43,21 @@ in {
     "/home" = zfsAuto "ospool/home";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
+  swapDevices = [{device = "/dev/disk/by-label/swap";}];
 
   # Only configure the necessary prerequisite boot parameters.
   boot = {
-    supportedFilesystems = [ "zfs" ];
-    kernelModules = [ "zfs" ];
+    supportedFilesystems = ["zfs"];
+    kernelModules = ["zfs"];
 
     kernelPackages = lib.mkForce (
       if enableUnstableZfs
-      then (pkgs.linuxPackages_latest.extend (_: prev: {
-        zfsUnstable = prev.zfsUnstable.overrideAttrs (self: {
-          meta = self.meta // { broken = false; };
-        });
-      }))
+      then
+        (pkgs.linuxPackages_latest.extend (_: prev: {
+          zfsUnstable = prev.zfsUnstable.overrideAttrs (self: {
+            meta = self.meta // {broken = false;};
+          });
+        }))
       else config.boot.zfs.package.latestCompatibleLinuxPackages
     );
 
@@ -68,7 +75,7 @@ in {
     trim.interval = "weekly";
 
     autoScrub.enable = true;
-    autoScrub.pools = [ "ospool" ];
+    autoScrub.pools = ["ospool"];
     autoScrub.interval = "weekly";
   };
 }

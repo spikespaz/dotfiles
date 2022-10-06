@@ -57,19 +57,21 @@
     # merge the packages flake into this one
     inherit (dotpkgs) packages overlays nixosModules homeManagerModules;
 
-    nixosConfigurations = flib.genSystemConfigurations {
-      inherit nixpkgs pkgs;
-      modules = flib.joinNixosModules inputs;
-    } [
-      "jacob-thinkpad"
-    ];
+    nixosConfigurations =
+      flib.genSystemConfigurations {
+        inherit nixpkgs pkgs;
+        modules = flib.joinNixosModules inputs;
+      } [
+        "jacob-thinkpad"
+      ];
 
-    homeConfigurations = flib.genUserConfigurations {
-      inherit home-manager pkgs;
-      ulib = import ./users/lib.nix lib;
-      hmModules = flib.joinHomeModules inputs;
-    } [
-      "jacob"
-    ];
+    homeConfigurations =
+      flib.genUserConfigurations {
+        inherit home-manager pkgs;
+        ulib = import ./users/lib.nix lib;
+        hmModules = flib.joinHomeModules inputs;
+      } [
+        "jacob"
+      ];
   };
 }

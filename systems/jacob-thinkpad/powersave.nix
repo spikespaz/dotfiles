@@ -2,11 +2,15 @@
 # - <https://www.kernel.org/doc/Documentation/power/states.txt>
 # - `man sleep.conf.d`
 # - `man logind.conf`
-{ lib, modules, ... }: let
+{
+  lib,
+  modules,
+  ...
+}: let
   idle_after = 5 * 60;
   hibernate_delay = 30 * 60;
 in {
-  imports = [ modules.auto-cpufreq ];
+  imports = [modules.auto-cpufreq];
 
   services.auto-cpufreq = let
     MHz = x: x * 1000;
@@ -64,5 +68,4 @@ in {
       printf $(systemctl --user cat clight.service | grep ExecStart | sed -E 's/.+--conf-file //')
     '';
   };
-
 }

@@ -1,9 +1,8 @@
 let
   ### Indicator Colors ###
-
-  bg_opacity = "7f";  # 50%
+  bg_opacity = "7f"; # 50%
   # fg_opacity = "bf";  # 75%
-  fg_opacity = "b2";  # 70%
+  fg_opacity = "b2"; # 70%
 
   inside_color = "0f0f0f";
   text_color = "dedede";

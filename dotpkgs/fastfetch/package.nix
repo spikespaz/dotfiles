@@ -31,7 +31,6 @@
   enableXFCE ? false,
   xfce,
 }:
-
 stdenv.mkDerivation rec {
   pname = "fastfetch";
   version = "1.7.0";
@@ -43,10 +42,10 @@ stdenv.mkDerivation rec {
     hash = "sha256-sPCWsnBlAdEy8p/82myrPPUjkLqhybLppSJj3pxfLhQ=";
   };
 
-  nativeBuildInputs = [ cmake makeWrapper pkg-config ];
+  nativeBuildInputs = [cmake makeWrapper pkg-config];
 
   runtimeDependencies =
-    [ dbus dconf glib pciutils zlib ]
+    [dbus dconf glib pciutils zlib]
     ++ lib.optional enableChafa chafa
     ++ lib.optional enableImageMagick imagemagick_light
     ++ lib.optional enableOpenCLModule ocl-icd
@@ -79,6 +78,6 @@ stdenv.mkDerivation rec {
     inherit (src.meta) homepage;
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [ spikespaz ];
+    maintainers = with maintainers; [spikespaz];
   };
 }

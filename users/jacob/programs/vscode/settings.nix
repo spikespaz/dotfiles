@@ -1,23 +1,30 @@
-{ lib, pkgs, ... }: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    (nerdfonts.override {fonts = ["JetBrainsMono"];})
   ];
 
-  programs.vscode.extensions = with pkgs.vscode-extensions; [
-    ## Appearances ##
-    jdinhlife.gruvbox
-    pkief.material-icon-theme
+  programs.vscode.extensions = with pkgs.vscode-extensions;
+    [
+      ## Appearances ##
+      jdinhlife.gruvbox
+      pkief.material-icon-theme
 
-    ## Behaviors ##
-    christian-kohler.path-intellisense
-  ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-    {  # For keybind macros
-      name = "multi-command";
-      publisher = "ryuta46";
-      version = "1.6.0";
-      sha256 = "sha256-AnHN1wvyVrZRlnOgxBK7xKLcL7SlAEKDcw6lEf+2J2E=";
-    }
-  ];
+      ## Behaviors ##
+      christian-kohler.path-intellisense
+    ]
+    ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        # For keybind macros
+        name = "multi-command";
+        publisher = "ryuta46";
+        version = "1.6.0";
+        sha256 = "sha256-AnHN1wvyVrZRlnOgxBK7xKLcL7SlAEKDcw6lEf+2J2E=";
+      }
+    ];
 
   programs.vscode.userSettings = {
     ## Appearances ##
@@ -81,7 +88,7 @@
     # unsaved files will be "untitled"
     "workbench.editor.untitled.labelFormat" = "name";
     # default hard and soft rulers
-    "editor.rulers" = [ 80 120 ];
+    "editor.rulers" = [80 120];
     # fancy features with the integrated terminal
     "terminal.integrated.shellIntegration.enabled" = true;
     # files can be recovered with undo

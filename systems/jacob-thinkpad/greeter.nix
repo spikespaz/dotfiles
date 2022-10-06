@@ -1,4 +1,10 @@
-{ configs, lib, pkgs, nixpkgs, ... }: {
+{
+  configs,
+  lib,
+  pkgs,
+  nixpkgs,
+  ...
+}: {
   environment.systemPackages = [
     pkgs.greetd.tuigreet
   ];

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = [
     pkgs.libnotify
   ];
@@ -13,8 +18,8 @@
     iconTheme.size = "32x32";
 
     settings = let
-      bg_opacity = "b2";  # 70%
-      fg_opacity = "e6";  # 90%
+      bg_opacity = "b2"; # 70%
+      fg_opacity = "e6"; # 90%
       background = "#282828" + bg_opacity;
       foreground = "#bdae93" + fg_opacity;
       highlight = "#458588" + fg_opacity;

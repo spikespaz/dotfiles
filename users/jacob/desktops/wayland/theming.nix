@@ -1,5 +1,9 @@
-{ config, hmModules, ... }: {
-  imports = [ hmModules.randbg ];
+{
+  config,
+  hmModules,
+  ...
+}: {
+  imports = [hmModules.randbg];
 
   # configure swaylock theme
   programs.swaylock.settings = import ./swaylock.nix;

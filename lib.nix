@@ -19,7 +19,8 @@ lib: rec {
           else newName
         else name;
       inherit value;
-    }) attrs
+    })
+    attrs
   );
 
   # flatten and join inputs by attrPath,
@@ -30,43 +31,57 @@ lib: rec {
   # it is recommended to filter the inputs
   # beforehand to ensure that any malformed values are ignored,
   # if applicable
-  genJoinedUnits = attrPath: inputs: lib.pipe inputs [
-    (builtins.mapAttrs (_: lib.getAttrFromPath attrPath))
-    (builtins.mapAttrs renameDefaultAttr)
-    builtins.attrValues
-    updates
-  ];
+  genJoinedUnits = attrPath: inputs:
+    lib.pipe inputs [
+      (builtins.mapAttrs (_: lib.getAttrFromPath attrPath))
+      (builtins.mapAttrs renameDefaultAttr)
+      builtins.attrValues
+      updates
+    ];
 
   # returns an attrset of all packages defined by input flakes
   # flattening them and renaming default packages
-  mkPackagesOverlay = system: flakes: lib.pipe flakes [
-    (lib.filterAttrs (_: attrs: attrs ? packages))
-    (genJoinedUnits [ "packages" system ])
-    (overrides: _: _: overrides)
-  ];
+  mkPackagesOverlay = system: flakes:
+    lib.pipe flakes [
+      (lib.filterAttrs (_: attrs: attrs ? packages))
+      (genJoinedUnits ["packages" system])
+      (overrides: _: _: overrides)
+    ];
 
-  joinNixosModules = flakes: lib.pipe flakes [
-    (lib.filterAttrs (_: attrs: attrs ? nixosModules))
-    (genJoinedUnits [ "nixosModules" ])
-  ];
+  joinNixosModules = flakes:
+    lib.pipe flakes [
+      (lib.filterAttrs (_: attrs: attrs ? nixosModules))
+      (genJoinedUnits ["nixosModules"])
+    ];
 
-  joinHomeModules = flakes: lib.pipe flakes [
-    (lib.filterAttrs (_: attrs: attrs ? homeManagerModules))
-    (genJoinedUnits [ "homeManagerModules" ])
-  ];
+  joinHomeModules = flakes:
+    lib.pipe flakes [
+      (lib.filterAttrs (_: attrs: attrs ? homeManagerModules))
+      (genJoinedUnits ["homeManagerModules"])
+    ];
 
   genConfigurations = args: root: names: (
     builtins.listToAttrs (map (name: {
-      inherit name;
-      value = import (root + "/${name}") args;
-    }) names)
+        inherit name;
+        value = import (root + "/${name}") args;
+      })
+      names)
   );
 
-  genSystemConfigurations = args @ { nixpkgs, pkgs, modules }: names: (
+  genSystemConfigurations = args @ {
+    nixpkgs,
+    pkgs,
+    modules,
+  }: names: (
     genConfigurations args ./systems names
   );
 
-  genUserConfigurations = args @ { home-manager, pkgs, ulib, hmModules }: names: (
+  genUserConfigurations = args @ {
+    home-manager,
+    pkgs,
+    ulib,
+    hmModules,
+  }: names: (
     genConfigurations args ./users names
   );
 }

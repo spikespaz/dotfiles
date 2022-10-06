@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = [
     # Notification API
     pkgs.libnotify
@@ -40,8 +45,8 @@
     Unit = {
       Description = "Lightweight Wayland notification daemon";
       Documentation = "man:mako(1)";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
+      PartOf = ["graphical-session.target"];
+      After = ["graphical-session.target"];
     };
     Service = {
       Type = "dbus";
@@ -53,7 +58,7 @@
       RestartSec = 5;
     };
     Install = {
-      WantedBy = [ "graphical-session.target" ];
+      WantedBy = ["graphical-session.target"];
     };
   };
 }

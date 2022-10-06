@@ -1,4 +1,8 @@
-args @ { config, pkgs, ... }: {
+args @ {
+  config,
+  pkgs,
+  ...
+}: {
   #################
   ### NIX SETUP ###
   #################
@@ -9,9 +13,9 @@ args @ { config, pkgs, ... }: {
     # use four cores for enableParallelBuilding
     cores = 4;
     # allow sudo users to mark the following values as trusted
-    trusted-users = [ "root" "@wheel" ];
+    trusted-users = ["root" "@wheel"];
     # only allow sudo users to manage the nix store
-    allowed-users = [ "@wheel" ];
+    allowed-users = ["@wheel"];
     # enable new nix command and flakes
     extra-experimental-features = [
       "flakes"
@@ -58,7 +62,7 @@ args @ { config, pkgs, ... }: {
   systemd.shutdownRamfs.enable = false;
 
   boot = {
-    kernelModules = [ "kvm-amd" "acpi_call" ];
+    kernelModules = ["kvm-amd" "acpi_call"];
     extraModulePackages = with config.boot.kernelPackages; [
       acpi_call
     ];
@@ -71,7 +75,7 @@ args @ { config, pkgs, ... }: {
     in {
       enable = true;
       themePackages = [
-        (pkgs.plymouth-themes.override { inherit pack theme; })
+        (pkgs.plymouth-themes.override {inherit pack theme;})
       ];
       inherit theme;
     };
@@ -101,10 +105,14 @@ args @ { config, pkgs, ... }: {
       "vt.global_cursor_default=0"
     ];
 
-    initrd.kernelModules = [ "amdgpu" "nvme" ];
+    initrd.kernelModules = ["amdgpu" "nvme"];
     initrd.availableKernelModules = [
-      "ehci_pci" "xhci_pci" "usb_storage"
-      "usbhid" "sd_mod" "rtsx_pci_sdmmc"
+      "ehci_pci"
+      "xhci_pci"
+      "usb_storage"
+      "usbhid"
+      "sd_mod"
+      "rtsx_pci_sdmmc"
     ];
 
     initrd.systemd.strip = false;
@@ -145,7 +153,7 @@ args @ { config, pkgs, ... }: {
     cpu.amd.updateMicrocode = true;
 
     # wifi adapter
-    firmware = [ pkgs.rtw89-firmware ];
+    firmware = [pkgs.rtw89-firmware];
 
     # enable bluetooth but turn off power by default
     bluetooth.enable = true;
@@ -159,7 +167,6 @@ args @ { config, pkgs, ... }: {
     trackpoint.enable = true;
     trackpoint.speed = 85;
   };
-
 
   #######################
   ### SYSTEM SERVICES ###
@@ -257,7 +264,7 @@ args @ { config, pkgs, ... }: {
     enable = true;
     onBoot = "ignore";
     qemu.swtpm.enable = true;
-    qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
+    qemu.ovmf.packages = [pkgs.OVMFFull.fd];
   };
 
   #####################
@@ -268,7 +275,7 @@ args @ { config, pkgs, ... }: {
     fontconfig.enable = true;
     fontDir.enable = true;
     fonts = with pkgs; [
-      (pkgs.ttf-ms-win11.override { acceptEula = true; })
+      (pkgs.ttf-ms-win11.override {acceptEula = true;})
       noto-fonts
       noto-fonts-extra
       noto-fonts-cjk-sans
@@ -284,14 +291,14 @@ args @ { config, pkgs, ... }: {
   #####################
 
   # enable completions for system packages
-  environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
+  environment.pathsToLink = ["/share/zsh" "/share/bash-completion"];
 
   users.users = {
     jacob = {
       description = "Jacob Birkett";
       isNormalUser = true;
       initialPassword = "password";
-      extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+      extraGroups = ["networkmanager" "wheel" "libvirtd"];
     };
   };
 

@@ -1,4 +1,9 @@
-{ home-manager, pkgs, ulib, hmModules }:
+{
+  home-manager,
+  pkgs,
+  ulib,
+  hmModules,
+}:
 home-manager.lib.homeManagerConfiguration {
   inherit pkgs;
 

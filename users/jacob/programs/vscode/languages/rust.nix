@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
     # empty
   ];
@@ -33,7 +37,7 @@
     "rust-analyzer.imports.prefix" = "self";
 
     # show hints for elided lifetimes
-    "rust-analyzer.inlayHints.lifetimeElisionHints.enable" = "always";  # or 'skip_trivial'
+    "rust-analyzer.inlayHints.lifetimeElisionHints.enable" = "always"; # or 'skip_trivial'
     # "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames" = true;
   };
 }

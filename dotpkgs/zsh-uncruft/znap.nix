@@ -1,4 +1,8 @@
-{ config, lib, ... }: let
+{
+  config,
+  lib,
+  ...
+}: let
   description = ''
     A lightweight plugin manager for ZSH.
     <https://github.com/marlonrichert/zsh-snap>

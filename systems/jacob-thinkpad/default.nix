@@ -1,4 +1,8 @@
-{ nixpkgs, pkgs, modules }:
+{
+  nixpkgs,
+  pkgs,
+  modules,
+}:
 nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
 
@@ -8,7 +12,7 @@ nixpkgs.lib.nixosSystem {
   };
 
   modules = [
-    { nixpkgs.pkgs = pkgs; }
+    {nixpkgs.pkgs = pkgs;}
     ./filesystems.nix
     ./configuration.nix
     ./powersave.nix

@@ -1,6 +1,9 @@
-{ ... }:
-{ config, lib, pkgs, ... }:
-let
+{...}: {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   description = "Customizable wallpaper randomization service";
   cfg = config.services.randbg;
 in {
@@ -42,7 +45,7 @@ in {
 
       wantedBy = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = [ "hyprland-session.target" ];
+        default = ["hyprland-session.target"];
         defaultText = lib.literalExpression ''
           [ "hyprland-session.target" ]
         '';
@@ -63,11 +66,16 @@ in {
       };
       Service = {
         Type = "notify";
-        NotifyAccess = "all";  # because of a bug?
+        NotifyAccess = "all"; # because of a bug?
         Environment = ''
-          PATH=${with pkgs; lib.makeBinPath [
-            systemd coreutils procps findutils swaybg
-          ]}
+          PATH=${with pkgs;
+            lib.makeBinPath [
+              systemd
+              coreutils
+              procps
+              findutils
+              swaybg
+            ]}
         '';
         ExecStart = ''
           ${./wallpaper.sh} \

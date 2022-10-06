@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }: let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   # things to do for every user
   prefab = {
     settings = {

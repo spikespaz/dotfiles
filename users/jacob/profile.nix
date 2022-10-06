@@ -2,7 +2,15 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-args @ { config, lib, ulib, pkgs, nixpkgs, hmModules, ... }: let
+args @ {
+  config,
+  lib,
+  ulib,
+  pkgs,
+  nixpkgs,
+  hmModules,
+  ...
+}: let
   programs = import ./programs args;
   services = import ./services.nix args;
   mimeApps = ulib.importMimeApps ./mimeapps.nix;
@@ -47,7 +55,7 @@ in {
 
   programs.alacritty.settings.shell = {
     program = "${lib.getExe pkgs.zsh}";
-    args = [ "--login" ];
+    args = ["--login"];
   };
 
   ##########################

@@ -1,5 +1,10 @@
-{ lib, pkgs, hmModules, ... }: {
-  imports = [ hmModules.idlehack ];
+{
+  lib,
+  pkgs,
+  hmModules,
+  ...
+}: {
+  imports = [hmModules.idlehack];
 
   # enable the idlehack deamon, it watches for inhibits
   # on dbus and sends them to swayidle/anything listening

@@ -1,7 +1,13 @@
-args @ { config, lib, pkgs, hmModules, ... }: {
-  imports = [ hmModules.zsh-uncruft ];
+args @ {
+  config,
+  lib,
+  pkgs,
+  hmModules,
+  ...
+}: {
+  imports = [hmModules.zsh-uncruft];
 
-  home.packages = [ pkgs.most ];
+  home.packages = [pkgs.most];
 
   programs.starship = {
     enable = true;

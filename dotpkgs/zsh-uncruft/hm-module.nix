@@ -1,6 +1,9 @@
-{ ... }:
-{ config, lib, pkgs, ... }:
-let
+{...}: {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   description = ''
     An alternative to the Home Manager ZSH module.
   '';
@@ -129,8 +132,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
-
-    { home.packages = [ pkgs.zsh ]; }
+    {home.packages = [pkgs.zsh];}
 
     {
       # there is still one file that must exist in the user's home,
@@ -151,12 +153,14 @@ in {
       home.file."${config.home.homeDirectory}/.zshenv".text = lib.mkAfter ''
         source '${cfg.zdotdir}/.zshenv'
       '';
-      home.file."${cfg.zdotdir}/.zshenv".text = lib.mkOrder 1000
+      home.file."${cfg.zdotdir}/.zshenv".text =
+        lib.mkOrder 1000
         cfg.zshenv;
     })
 
     (lib.mkIf (cfg.zprofile != "") {
-      home.file."${cfg.zdotdir}/.zprofile".text = lib.mkOrder 1000
+      home.file."${cfg.zdotdir}/.zprofile".text =
+        lib.mkOrder 1000
         cfg.zprofile;
     })
 
@@ -167,7 +171,7 @@ in {
         #######################
 
         ${cfg.zshrc.preInit}
-        '';
+      '';
     })
 
     (lib.mkIf (cfg.zshrc.init != "") {
@@ -211,12 +215,14 @@ in {
     })
 
     (lib.mkIf (cfg.zlogin != "") {
-      home.file."${cfg.zdotdir}/.zlogin".text = lib.mkOrder 1000
+      home.file."${cfg.zdotdir}/.zlogin".text =
+        lib.mkOrder 1000
         cfg.zlogin;
     })
 
     (lib.mkIf (cfg.zlogout != "") {
-      home.file."${cfg.zdotdir}/.zlogout".text = lib.mkOrder 1000
+      home.file."${cfg.zdotdir}/.zlogout".text =
+        lib.mkOrder 1000
         cfg.zlogout;
     })
 
@@ -239,6 +245,5 @@ in {
         ### END ###
       '';
     }
-
   ]);
 }

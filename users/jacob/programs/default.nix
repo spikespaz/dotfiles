@@ -1,4 +1,10 @@
-{ config, lib, pkgs, nixpkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs,
+  ...
+}: {
   ####################
   ### WEB BROWSERS ###
   ####################
@@ -6,7 +12,7 @@
   firefox = {
     programs.firefox.enable = true;
     # programs.firefox.package = pkgs.firefox-devedition-bin;
-    imports = [ ./firefox ];
+    imports = [./firefox];
   };
   chromium = {
     programs.chromium.enable = true;
@@ -17,7 +23,7 @@
   #################################
 
   mailspring = {
-    home.packages = [ pkgs.mailspring ];
+    home.packages = [pkgs.mailspring];
   };
   discord = {
     home.packages = [
@@ -30,7 +36,7 @@
     ];
   };
   webcord = {
-    home.packages = [ pkgs.webcord ];
+    home.packages = [pkgs.webcord];
   };
   hexchat = {
     programs.hexchat.enable = true;
@@ -47,7 +53,7 @@
       obs-move-transition
     ];
     # needed for screen selection on wayland
-    home.packages = [ pkgs.slurp ];
+    home.packages = [pkgs.slurp];
   };
 
   #########################
@@ -55,7 +61,7 @@
   #########################
 
   spotify = {
-    home.packages = [ pkgs.spotify ];
+    home.packages = [pkgs.spotify];
   };
 
   #################################
@@ -63,10 +69,10 @@
   #################################
 
   onlyoffice = {
-    home.packages = [ pkgs.onlyoffice-bin ];
+    home.packages = [pkgs.onlyoffice-bin];
   };
   apostrophe = {
-    home.packages = [ pkgs.apostrophe ];
+    home.packages = [pkgs.apostrophe];
   };
 
   ##########################
@@ -75,7 +81,7 @@
 
   alacritty = {
     programs.alacritty.enable = true;
-    imports = [ ./alacritty.nix ];
+    imports = [./alacritty.nix];
   };
 
   ####################
@@ -85,13 +91,13 @@
   vscode = import ./vscode;
   neovim = {
     programs.neovim.enable = true;
-    home.packages = [ pkgs.neovide ];
+    home.packages = [pkgs.neovide];
   };
   helix = {
     programs.helix.enable = true;
   };
   lapce = {
-    home.packages = [ pkgs.lapce ];
+    home.packages = [pkgs.lapce];
   };
 
   #########################
@@ -114,15 +120,15 @@
   ##########################
 
   bash = {
-    home.packages = [ pkgs.blesh pkgs.wl-clipboard ];
+    home.packages = [pkgs.blesh pkgs.wl-clipboard];
     programs.bash = {
       enable = true;
       bashrcExtra = "source '${pkgs.blesh}/share/ble.sh'";
-      historyIgnore = [ "reboot" "exit" ];
+      historyIgnore = ["reboot" "exit"];
     };
   };
   zsh = {
-    imports = [ ./zsh.nix ];
+    imports = [./zsh.nix];
     programs.zsh-uncruft.enable = true;
   };
 
@@ -141,7 +147,7 @@
     programs.fzf.enable = true;
   };
   gallery-dl = {
-    home.packages = [ pkgs.gallery-dl ];
+    home.packages = [pkgs.gallery-dl];
   };
 
   ###########################################
@@ -149,10 +155,10 @@
   ###########################################
 
   neofetch = {
-    home.packages = [ pkgs.neofetch ];
+    home.packages = [pkgs.neofetch];
   };
   wev = {
-    home.packages = [ pkgs.wev ];
+    home.packages = [pkgs.wev];
   };
   nix-index = {
     programs.nix-index.enable = true;

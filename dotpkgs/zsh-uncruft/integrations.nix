@@ -1,4 +1,8 @@
-{ config, lib, ... }: let
+{
+  config,
+  lib,
+  ...
+}: let
   cfg = config.programs.zsh-uncruft;
 in {
   options = {
@@ -14,7 +18,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
-
     (lib.mkIf cfg.enableIntegrations {
       programs.zsh-uncruft.zshrc.postInit = ''
         ### HOME MANAGER EXTRA INITIALIZATION ###
@@ -26,7 +29,8 @@ in {
     })
 
     (lib.mkIf cfg.enableAliases {
-      programs.zsh-uncruft.zshrc.main = lib.mkAfter
+      programs.zsh-uncruft.zshrc.main =
+        lib.mkAfter
         (lib.concatStringsSep "\n" (builtins.concatLists [
           (lib.singleton "### HOME MANAGER ALIASES ###\n")
           (lib.mapAttrsToList
@@ -38,6 +42,5 @@ in {
           (lib.singleton "\n### END ###")
         ]));
     })
-
   ]);
 }

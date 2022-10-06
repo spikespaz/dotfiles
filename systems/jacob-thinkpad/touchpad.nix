@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   # workaround for broken libinput gestures and two-finger scrolling.
   # <https://askubuntu.com/a/828920>
   # note that ${lib.getBin pkgs.kmod} does not return a path ending with /bin

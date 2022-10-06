@@ -1,6 +1,9 @@
-{ self, ... }:
-{ config, lib, pkgs, ... }:
-let
+{self, ...}: {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) types;
   cfg = config.services.idlehack;
 in {
@@ -21,23 +24,23 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ cfg.package ];
+    home.packages = [cfg.package];
 
     systemd.user.services.idlehack = {
       Unit = {
         Description = cfg.package.meta.description;
-        After = [ "syslog.target" ];
+        After = ["syslog.target"];
       };
       Service = {
         Type = "simple";
         KillMode = "process";
-        Environment = "PATH=${lib.makeBinPath [ pkgs.systemd cfg.package ]}";
+        Environment = "PATH=${lib.makeBinPath [pkgs.systemd cfg.package]}";
         ExecStart = lib.getExe cfg.package;
         Restart = "on-failure";
         RestartSec = 5;
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = ["graphical-session.target"];
       };
     };
   };
