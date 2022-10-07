@@ -35,9 +35,22 @@
       })
     ];
   };
-  webcord = {
-    home.packages = [pkgs.webcord];
+  webcord = let
+    catppuccin = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "discord";
+      rev = "159aac939d8c18da2e184c6581f5e13896e11697";
+      sha256 = "sha256-cWpog52Ft4hqGh8sMWhiLUQp/XXipOPnSTG6LwUAGGA=";
+    };
+    theme = "${catppuccin}/themes/macchiato.theme.css";
+  in {
+    home.packages = [
+      (pkgs.webcord.override {
+        flags = "--add-css-theme=${theme}";
+      })
+    ];
   };
+
   hexchat = {
     programs.hexchat.enable = true;
   };
@@ -54,6 +67,10 @@
     ];
     # needed for screen selection on wayland
     home.packages = [pkgs.slurp];
+  };
+
+  tools.encoding = {
+    home.packages = [pkgs.handbrake];
   };
 
   #########################
