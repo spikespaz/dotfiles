@@ -12,6 +12,10 @@
     visibility: collapse;
 }
 
+[inFullscreen=true] #TabsToolbar {
+    visibility: visible !important;
+}
+
 :root[uidensity="compact"] {
     --bookmark-block-padding: 2px !important;
 }
