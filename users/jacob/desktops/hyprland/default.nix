@@ -47,6 +47,7 @@
         "exec-once=${lib.getExe pkgs.xorg.xhost} +local:"
         # hyprland config, split up
         (builtins.readFile ./hyprland.conf)
+        (builtins.readFile ./animations.conf)
         (builtins.readFile ./displays.conf)
         (builtins.readFile ./keybinds.conf)
         (builtins.readFile ./windowrules.conf)
