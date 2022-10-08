@@ -12,7 +12,7 @@ args @ {
   ...
 }: let
   programs = import ./programs args;
-  services = import ./services.nix args;
+  services = import ./services args;
   mimeApps = ulib.importMimeApps ./mimeapps.nix;
 in {
   ################

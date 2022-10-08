@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+args @ { config, pkgs, ... }: {
   onedrive = {
     home.packages = [
       pkgs.onedrive # TODO: figure out how to start this with secrets
@@ -20,4 +16,5 @@
       # settings = {}
     };
   };
+
 }
