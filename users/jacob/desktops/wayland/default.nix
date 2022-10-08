@@ -30,6 +30,44 @@
     yoffset = 6;
     # configPath = config.xdg.configHome + "rofi/theme.rasi";
     theme = let
+      gruvbox = {
+        normal = {
+          orange = "#d65d0e";
+          red = "#cc241d";
+          green = "#98971a";
+          yellow = "#d79921";
+          blue = "#458588";
+          purple = "#b16286";
+          aqua = "#689d6a";
+          gray = "#a89984";
+        };
+        bright = {
+          red = "#fb4934";
+          green = "#b8bb26";
+          yellow = "#fabd2f";
+          blue = "#83a598";
+          purple = "#d3869b";
+          aqua = "#8ec07c";
+          orange = "#fe8019";
+          gray = "#928374";
+        };
+        bg = gruvbox.bg0;
+        bg0 = "#282828";
+        bg0_h = "#1d2021";
+        bg0_s = "#32302f";
+        bg1 = "#3c3836";
+        bg2 = "#504945";
+        bg3 = "#665c54";
+        bg4 = "#7c6f64";
+        fg = gruvbox.fg1;
+        fg0 = "#fbf1c7";
+        fg1 = "#ebdbb2";
+        fg2 = "#d5c4a1";
+        fg3 = "#bdae93";
+        fg4 = "#a89984";
+        inherit (gruvbox.bright) orange red green yellow blue purple aqua gray;
+      };
+
       # Use `mkLiteral` for string-like values that should show without
       # quotes, e.g.:
       # {
@@ -37,6 +75,16 @@
       #   bar = mkLiteral "abc"; => bar: abc;
       # };
       inherit (config.lib.formats.rasi) mkLiteral;
+
+      bg0 = mkLiteral gruvbox.bg0_h;
+      bg1 = mkLiteral gruvbox.bg0_s;
+      bg2 = mkLiteral gruvbox.normal.orange;
+
+      fg0 = mkLiteral gruvbox.fg1;
+      fg1 = mkLiteral gruvbox.fg2;
+      fg2 = mkLiteral gruvbox.fg3;
+
+      font = "Ubuntu Regular";
     in {
       /*
        ******************************************************************************
@@ -47,97 +95,89 @@
       */
 
       "*" = {
-        "font" = "Montserrat 12";
+        font = "${font} 12";
 
-        "bg0" = mkLiteral "#242424E6";
-        "bg1" = mkLiteral "#7E7E7E80";
-        "bg2" = mkLiteral "#0860f2E6";
+        background-color = mkLiteral "transparent";
+        text-color = fg0;
 
-        "fg0" = mkLiteral "#DEDEDE";
-        "fg1" = mkLiteral "#FFFFFF";
-        "fg2" = mkLiteral "#DEDEDE80";
-
-        "background-color" = mkLiteral "transparent";
-        "text-color" = mkLiteral "@fg0";
-
-        "margin" = mkLiteral "0";
-        "padding" = mkLiteral "0";
-        "spacing" = mkLiteral "0";
+        margin = mkLiteral "0";
+        padding = mkLiteral "0";
+        spacing = mkLiteral "0";
       };
 
-      "window" = {
-        "background-color" = mkLiteral "@bg0";
+      window = {
+        background-color = bg0;
 
-        "location" = mkLiteral "center";
-        "width" = mkLiteral "640";
-        "y-offset" = mkLiteral "-200";
-        "border-radius" = mkLiteral "8";
+        location = mkLiteral "center";
+        width = mkLiteral "640";
+        y-offset = mkLiteral "-200";
+        border-radius = mkLiteral "8";
       };
 
-      "inputbar" = {
-        "font" = "Montserrat 20";
-        "padding" = mkLiteral "12px";
-        "spacing" = mkLiteral "12px";
-        "children" = mkLiteral "[ icon-search, entry ]";
+      inputbar = {
+        font = "${font} 20";
+        padding = mkLiteral "12px";
+        spacing = mkLiteral "12px";
+        children = mkLiteral "[ icon-search, entry ]";
       };
 
-      "icon-search" = {
-        "expand" = mkLiteral "false";
-        "filename" = "search";
-        "size" = mkLiteral "28px";
+      icon-search = {
+        expand = mkLiteral "false";
+        filename = "search";
+        size = mkLiteral "28px";
       };
 
       "icon-search, entry, element-icon, element-text" = {
-        "vertical-align" = mkLiteral "0.5";
+        vertical-align = mkLiteral "0.5";
       };
 
-      "entry" = {
-        "font" = mkLiteral "inherit";
+      entry = {
+        font = mkLiteral "inherit";
 
-        "placeholder" = "Search";
-        "placeholder-color" = mkLiteral "@fg2";
+        placeholder = "Search";
+        placeholder-color = fg2;
       };
 
-      "message" = {
-        "border" = mkLiteral "2px 0 0";
-        "border-color" = mkLiteral "@bg1";
-        "background-color" = mkLiteral "@bg1";
+      message = {
+        border = mkLiteral "2px 0 0";
+        border-color = bg1;
+        background-color = bg1;
       };
 
-      "textbox" = {
-        "padding" = mkLiteral "8px 24px";
+      textbox = {
+        padding = mkLiteral "8px 24px";
       };
 
-      "listview" = {
-        "lines" = mkLiteral "10";
-        "columns" = mkLiteral "1";
+      listview = {
+        lines = mkLiteral "10";
+        columns = mkLiteral "1";
 
-        "fixed-height" = mkLiteral "false";
-        "border" = mkLiteral "1px 0 0";
-        "border-color" = mkLiteral "@bg1";
+        fixed-height = mkLiteral "false";
+        border = mkLiteral "1px 0 0";
+        border-color = bg1;
       };
 
-      "element" = {
-        "padding" = mkLiteral "8px 16px";
-        "spacing" = mkLiteral "16px";
-        "background-color" = mkLiteral "transparent";
+      element = {
+        padding = mkLiteral "8px 16px";
+        spacing = mkLiteral "16px";
+        background-color = mkLiteral "transparent";
       };
 
       "element normal active" = {
-        "text-color" = mkLiteral "@bg2";
+        text-color = bg2;
       };
 
       "element selected normal, element selected active" = {
-        "background-color" = mkLiteral "@bg2";
-        "text-color" = mkLiteral "@fg1";
+        background-color = bg2;
+        text-color = bg0;
       };
 
-      "element-icon" = {
-        "size" = mkLiteral "1em";
+      element-icon = {
+        size = mkLiteral "1em";
       };
 
-      "element-text" = {
-        "text-color" = mkLiteral "inherit";
+      element-text = {
+        text-color = mkLiteral "inherit";
       };
 
       #   /*
