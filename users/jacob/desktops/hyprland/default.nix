@@ -42,9 +42,9 @@
       ]
       (lib.concatStringsSep "\n\n" [
         # polkit agent, raises to root access with gui
-        "exec-once=${lib.getExe pkgs.lxqt.lxqt-policykit}"
+        "exec-once = ${lib.getExe pkgs.lxqt.lxqt-policykit}"
         # allow apps with risen perms after agent to connect to local xwayland
-        "exec-once=${lib.getExe pkgs.xorg.xhost} +local:"
+        "exec-once = ${lib.getExe pkgs.xorg.xhost} +local:"
         # hyprland config, split up
         (builtins.readFile ./hyprland.conf)
         (builtins.readFile ./animations.conf)
