@@ -31,10 +31,12 @@ args @ {
     extra-substituters = [
       "https://nix-community.cachix.org"
       "https://fog.cachix.org"
+      "https://webcord.cachix.org"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "fog.cachix.org-1:FAxiA6qMLoXEUdEq+HaT24g1MjnxdfygrbrLDBp6U/s="
+      "webcord.cachix.org-1:l555jqOZGHd2C9+vS8ccdh8FhqnGe8L78QrHNn+EFEs="
     ];
   };
 
@@ -201,6 +203,9 @@ args @ {
 
   # storage daemon required for udiskie auto-mount
   services.udisks2.enable = true;
+
+  # bluetooth
+  services.blueman.enable = true;
 
   # firmware updater for machine hardware
   services.fwupd.enable = true;
