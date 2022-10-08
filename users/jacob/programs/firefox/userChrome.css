@@ -3,9 +3,14 @@
   browser.compactmode.show = true
   browser.uidensity = 1
   ui.prefersReducedMotion = 1
+  layout.css.has-selector.enabled = true
 */
 
 @-moz-document url(chrome://browser/content/browser.xhtml){
+
+:root:has(#sidebar-box[checked="true"]) #TabsToolbar {
+    visibility: collapse;
+}
 
 :root[uidensity="compact"] {
     --bookmark-block-padding: 2px !important;
