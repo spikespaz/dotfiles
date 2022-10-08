@@ -33,6 +33,7 @@
     "editor.fontFamily" = "JetBrainsMono Nerd Font";
     "editor.fontSize" = 14;
     "editor.cursorSmoothCaretAnimation" = true;
+    "editor.cursorStyle" = "block";
 
     # scale the ui down
     "window.zoomLevel" = -1;
