@@ -125,6 +125,9 @@ in {
     ### USER-SPECIFIC SERVICES ###
     ##############################
 
+    ### MEDIA ###
+    services.spotify
+
     ### FILE SYNCHRONIZATION ###
     services.onedrive
 
