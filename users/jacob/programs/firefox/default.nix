@@ -15,6 +15,7 @@
       "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       "browser.uidensity" = 1;
       "ui.prefersReducedMotion" = 1;
+      "layout.css.has-selector.enabled" = true;
     };
     userChrome = builtins.readFile ./userChrome.css;
   };
