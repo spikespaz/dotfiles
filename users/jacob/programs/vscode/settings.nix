@@ -32,6 +32,7 @@
     # the most important setting
     "editor.fontFamily" = "JetBrainsMono Nerd Font";
     "editor.fontSize" = 14;
+    "editor.cursorSmoothCaretAnimation" = true;
 
     # scale the ui down
     "window.zoomLevel" = -1;
