@@ -12,10 +12,11 @@ in
   withAllModule {
     settings = module ./settings.nix;
 
-    languages = withAllModule {
-      bash = module ./languages/bash.nix;
-      nix = module ./languages/nix.nix;
-      perl = module ./languages/perl.nix;
-      rust = module ./languages/rust.nix;
-    };
-  }
+  languages = withAllModule {
+    bash = module ./languages/bash.nix;
+    nix = module ./languages/nix.nix;
+    perl = module ./languages/perl.nix;
+    rust = module ./languages/rust.nix;
+    web = module ./languages/web.nix;
+  };
+}
