@@ -11,7 +11,7 @@
   };
 
   services.spotifyd = {
-    enable = true;
+    # enable = true;
     package = pkgs.spotifyd.override {
       withKeyring = true;
       withMpris = true;
@@ -28,10 +28,15 @@
     };
   };
 
-  # files.configHome."spotifyd".text = tomlFormat config.services.spotifyd.setting;
-
   home.packages = with pkgs; [
-    spotify-tui
+    config.services.spotifyd.package
+    # spotify-tui
     spotify-qt
   ];
+
+  xdg.configFile."spotifyd/spotifyd.conf".source = (
+    (pkgs.formats.toml {}).generate
+    "spotifyd.conf"
+    config.services.spotifyd.settings
+  );
 }
