@@ -64,16 +64,16 @@
     inherit (dotpkgs) packages overlays nixosModules homeManagerModules;
 
     nixosConfigurations =
-      flib.genSystemConfigurations {
-        inherit nixpkgs pkgs;
+      flib.genConfigurations ./systems {
+        inherit self nixpkgs pkgs;
         modules = flib.joinNixosModules inputs;
       } [
         "jacob-thinkpad"
       ];
 
     homeConfigurations =
-      flib.genUserConfigurations {
-        inherit home-manager pkgs;
+      flib.genConfigurations ./users {
+        inherit self home-manager pkgs;
         ulib = import ./users/lib.nix lib;
         hmModules = flib.joinHomeModules inputs;
       } [

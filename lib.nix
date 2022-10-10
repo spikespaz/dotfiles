@@ -60,28 +60,11 @@ lib: rec {
       (genJoinedUnits ["homeManagerModules"])
     ];
 
-  genConfigurations = args: root: names: (
+  genConfigurations = root: args: names: (
     builtins.listToAttrs (map (name: {
         inherit name;
         value = import (root + "/${name}") args;
       })
       names)
-  );
-
-  genSystemConfigurations = args @ {
-    nixpkgs,
-    pkgs,
-    modules,
-  }: names: (
-    genConfigurations args ./systems names
-  );
-
-  genUserConfigurations = args @ {
-    home-manager,
-    pkgs,
-    ulib,
-    hmModules,
-  }: names: (
-    genConfigurations args ./users names
   );
 }

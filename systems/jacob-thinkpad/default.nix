@@ -1,4 +1,5 @@
 {
+  self,
   nixpkgs,
   pkgs,
   modules,
@@ -7,7 +8,7 @@ nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
 
   specialArgs = {
-    inherit modules;
+    inherit self modules;
     enableUnstableZfs = false;
   };
 

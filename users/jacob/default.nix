@@ -1,4 +1,5 @@
 {
+  self,
   home-manager,
   pkgs,
   ulib,
@@ -8,8 +9,7 @@ home-manager.lib.homeManagerConfiguration {
   inherit pkgs;
 
   extraSpecialArgs = {
-    inherit ulib;
-    inherit hmModules;
+    inherit self ulib hmModules;
   };
 
   modules = let
