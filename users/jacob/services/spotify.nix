@@ -1,11 +1,15 @@
 {
+  self,
   config,
   pkgs,
   lib,
+  hmModules,
   ...
-}: let
-  # tomlFormat = pkgs.formats.toml { };
-in {
+}: {
+  homeage.file."jacob.spotifyd.age" = {
+    source = "${self}/secrets/jacob.spotifyd.age";
+  };
+
   services.spotifyd = {
     enable = true;
     package = pkgs.spotifyd.override {
@@ -18,6 +22,8 @@ in {
         backend = "pulseaudio";
         bitrate = 320;
         use_mpris = true;
+        username = "spikespaz@outlook.com";
+        password_cmd = "cat '${config.homeage.mount}/jacob.spotifyd.age'";
       };
     };
   };
