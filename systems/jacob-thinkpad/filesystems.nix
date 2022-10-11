@@ -43,10 +43,14 @@ in {
     "/home" = zfsAuto "ospool/home";
   };
 
-  swapDevices = [{device = "/dev/disk/by-label/swap";}];
+  swapDevices = [{label = "swap";}];
 
   # Only configure the necessary prerequisite boot parameters.
   boot = {
+    # for some reason not set automatically
+    # docs say this should be set auto when ""
+    resumeDevice = "/dev/disk/by-label/swap";
+
     supportedFilesystems = ["zfs"];
     kernelModules = ["zfs"];
 
