@@ -58,5 +58,7 @@ in {
 
     ### GITHUB ###
     bandithedoge.gitako
+    ### FIXES ###
+    rycee.return-youtube-dislikes
   ];
 }
