@@ -69,8 +69,11 @@
     home.packages = [pkgs.slurp];
   };
 
-  tools.encoding = {
-    home.packages = [pkgs.handbrake];
+  tools.video-editing = {
+    home.packages = with pkgs; [
+      libsForQt5.kdenlive
+      handbrake
+    ];
   };
 
   #########################

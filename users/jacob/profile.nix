@@ -95,6 +95,7 @@ in {
 
     ### MEDIA CREATION ###
     programs.obs-studio
+    programs.tools.video-editing
 
     ### MEDIA CONSUMPTION ###
     programs.spotify
