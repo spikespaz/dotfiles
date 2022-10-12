@@ -13,6 +13,9 @@
     cycle = true;
     location = "top";
     yoffset = 6;
+    extraConfig = {
+      icon-theme = config.gtk.iconTheme.name;
+    };
     # theme = ./gruvbox-dark-hard.rasi;
     plugins = with pkgs; [
       rofi-calc
