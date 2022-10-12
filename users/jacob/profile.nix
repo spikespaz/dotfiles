@@ -42,6 +42,13 @@ in {
 
   programs.home-manager.enable = true;
 
+  # homeage.pkg = pkgs.ragenix;
+  homeage.mount = "${config.home.homeDirectory}/.secrets";
+  homeage.identityPaths = [
+    "~/.ssh/id_ed25519"
+  ];
+  # homeage.installationType = "activation";
+
   # should already be enabled at system level
   # fontconfig required to make user-fonts by name
   # todo: figure out how to make ~/.local/share/fonts
@@ -63,6 +70,8 @@ in {
   ##########################
 
   imports = [
+    hmModules.homeage
+
     ### THEMING MODULES ###
     hmModules.uniform-theme
     hmModules.kvantum
