@@ -4,11 +4,6 @@
   lib,
   ...
 }: {
-  home.packages = with pkgs; [
-    wl-clipboard
-    wtype
-  ];
-
   # application launcher
   programs.rofi = {
     enable = true;
@@ -19,6 +14,27 @@
     location = "top";
     yoffset = 6;
     # theme = ./gruvbox-dark-hard.rasi;
+    plugins = with pkgs; [
+      rofi-calc
+      (rofi-emoji.overrideAttrs (old: rec {
+        version = "3.1.0";
+        postFixup = ''
+          chmod +x $out/share/rofi-emoji/clipboard-adapter.sh
+          wrapProgram $out/share/rofi-emoji/clipboard-adapter.sh \
+            --prefix PATH ':' \
+              ${lib.makeBinPath (with pkgs; [libnotify wl-clipboard wtype])}
+        '';
+        src = fetchFromGitHub {
+          owner = "Mange";
+          repo = old.pname;
+          rev = "v${version}";
+          sha256 = "sha256-YMQG0XO6zVei6GfBdgI7jtB7px12e+xvOMxZ1QHf5kQ=";
+        };
+      }))
+    ];
+    extraConfig = {
+      modi = "run,drun,calc,emoji";
+    };
     theme = let
       gruvbox = {
         normal = {
