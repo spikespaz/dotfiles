@@ -55,6 +55,7 @@ in {
     ### BLOCKING ###
     # Enable "Annoyances" lists in uBO instead
     # rycee.i-dont-care-about-cookies
+    rycee.user-agent-string-switcher
 
     ### GITHUB ###
     bandithedoge.gitako
