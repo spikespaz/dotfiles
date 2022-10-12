@@ -32,7 +32,7 @@
     bg1 = 237;
     bg2 = 239;
     bg3 = 241;
-    bg4 = 143;
+    bg4 = 243;
     fg = gruvbox.fg1;
     fg0 = 229;
     fg1 = 223;
@@ -231,10 +231,10 @@ in {
   };
 
   cmd_duration = {
+    show_notifications = false;
     min_time = 5;
-    show_notifications = true;
     min_time_to_notify = 2 * 60 * 1000;
-    # notification_timeout = 5 * 60 * 1000;
+    notification_timeout = 5 * 60 * 1000;
     format = "took [ $duration]($style)";
   };
 
