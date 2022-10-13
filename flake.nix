@@ -24,7 +24,7 @@
     webcord.url = "github:fufexan/webcord-flake";
     webcord.inputs.nixpkgs.follows = "nixpkgs";
 
-    homeage.url = "github:spikespaz/homeage?ref=fix-bin-paths";
+    homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
   };
 

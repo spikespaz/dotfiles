@@ -1,3 +1,6 @@
 [submodule "inputs/webcord"]
 	path = inputs/webcord
 	url = https://github.com/spikespaz/webcord-flake
+[submodule "inputs/homeage"]
+	path = inputs/homeage
+	url = https://github.com/spikespaz/homeage
