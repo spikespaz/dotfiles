@@ -67,7 +67,7 @@ if [ $use_overrides -eq 1 ]; then
 	label "OVERRIDE INPUTS"
 
 	for dir in "$here"/inputs/*; do
-		nix flake lock --override-input "$(basename "$dir")" "$(readlink "$dir")"
+		nix flake lock --override-input "$(basename "$dir")" "$dir"
 	done
 fi
 
