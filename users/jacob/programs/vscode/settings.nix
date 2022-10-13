@@ -95,6 +95,8 @@
     "terminal.integrated.shellIntegration.enabled" = true;
     # files can be recovered with undo
     "explorer.confirmDelete" = false;
+    # set the integrated terminal to use zsh
+    "terminal.integrated.defaultProfile.linux" = "zsh";
   };
 
   programs.vscode.keybindings = let
