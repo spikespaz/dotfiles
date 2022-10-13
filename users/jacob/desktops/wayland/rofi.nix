@@ -20,8 +20,7 @@
     # theme = ./gruvbox-dark-hard.rasi;
     plugins = with pkgs; [
       rofi-calc
-      (rofi-emoji.overrideAttrs (old: rec {
-        version = "3.1.0";
+      (rofi-emoji.overrideAttrs (old: {
         postFixup = ''
           chmod +x $out/share/rofi-emoji/clipboard-adapter.sh
           wrapProgram $out/share/rofi-emoji/clipboard-adapter.sh \
