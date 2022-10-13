@@ -131,6 +131,9 @@ in {
     programs.neofetch
     programs.nix-index
 
+    ### AUTHENTICATION ###
+    programs.keepassxc
+
     ##############################
     ### USER-SPECIFIC SERVICES ###
     ##############################

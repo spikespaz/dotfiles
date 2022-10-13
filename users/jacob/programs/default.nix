@@ -186,4 +186,12 @@
   nix-index = {
     programs.nix-index.enable = true;
   };
+
+  ######################
+  ### AUTHENTICATION ###
+  ######################
+
+  keepassxc = {
+    home.packages = [pkgs.keepassxc];
+  };
 }
