@@ -14,6 +14,7 @@
     location = "top";
     yoffset = 6;
     extraConfig = {
+      modes = "run,drun,calc,emoji";
       icon-theme = config.gtk.iconTheme.name;
     };
     # theme = ./gruvbox-dark-hard.rasi;
@@ -27,17 +28,8 @@
             --prefix PATH ':' \
               ${lib.makeBinPath (with pkgs; [libnotify wl-clipboard wtype])}
         '';
-        src = fetchFromGitHub {
-          owner = "Mange";
-          repo = old.pname;
-          rev = "v${version}";
-          sha256 = "sha256-YMQG0XO6zVei6GfBdgI7jtB7px12e+xvOMxZ1QHf5kQ=";
-        };
       }))
     ];
-    extraConfig = {
-      modi = "run,drun,calc,emoji";
-    };
     theme = let
       gruvbox = {
         normal = {
