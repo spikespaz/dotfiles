@@ -35,20 +35,23 @@
       })
     ];
   };
-  webcord = let
-    catppuccin = pkgs.fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "discord";
-      rev = "159aac939d8c18da2e184c6581f5e13896e11697";
-      sha256 = "sha256-cWpog52Ft4hqGh8sMWhiLUQp/XXipOPnSTG6LwUAGGA=";
+  webcord = {
+    imports = [hmModules.webcord];
+
+    programs.webcord = {
+      enable = true;
+      themes = let
+        repo = pkgs.fetchFromGitHub {
+          owner = "mwittrien";
+          repo = "BetterDiscordAddons";
+          rev = "8627bb7f71c296d9e05d82538d3af8f739f131dc";
+          sha256 = "sha256-Dn6igqL0GvaOcTFZOtQOxuk0ikrWxyDZ41tNsJXJAxc=";
+        };
+      in {
+        DiscordRecolor = "${repo}/Themes/DiscordRecolor/DiscordRecolor.theme.css";
+        SettingsModal = "${repo}/Themes/SettingsModal/SettingsModal.theme.css";
+      };
     };
-    theme = "${catppuccin}/themes/macchiato.theme.css";
-  in {
-    home.packages = [
-      (pkgs.webcord.override {
-        flags = "--add-css-theme=${theme}";
-      })
-    ];
   };
 
   hexchat = {
