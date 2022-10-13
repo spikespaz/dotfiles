@@ -56,10 +56,34 @@ in {
     # Enable "Annoyances" lists in uBO instead
     # rycee.i-dont-care-about-cookies
     rycee.user-agent-string-switcher
+    # rycee.gaoptout
+    # rycee.clearurls
+    # rycee.disconnect
 
     ### GITHUB ###
     bandithedoge.gitako
-    ### FIXES ###
+    # rycee.enhanced-github
+    # rycee.refined-github
+    # rycee.lovely-forks
+    # rycee.octolinker
+    # rycee.octotree
+
+    ### YOUTUBE ###
+    rycee.sponsorblock
     rycee.return-youtube-dislikes
+    # rycee.enhancer-for-youtube
+
+    ### NEW INTERNET ###
+    # rycee.ipfs-companion
+
+    ### FIXES ###
+    rycee.open-in-browser
+    # rycee.no-pdf-download
+    # rycee.don-t-fuck-with-paste
+
+    ### UTILITIES ###
+    # rycee.export-tabs-urls-and-titles
+    # rycee.markdownload
+    # rycee.flagfox
   ];
 }
