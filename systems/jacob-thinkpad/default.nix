@@ -6,6 +6,7 @@
 }:
 nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
+  inherit pkgs;
 
   specialArgs = {
     inherit self modules;
@@ -13,7 +14,6 @@ nixpkgs.lib.nixosSystem {
   };
 
   modules = [
-    {nixpkgs.pkgs = pkgs;}
     ./filesystems.nix
     ./configuration.nix
     ./powersave.nix
