@@ -22,6 +22,7 @@ label () {
 update_system=0
 update_user=0
 new_lockfile=0
+use_overrides=0
 user=''
 
 while [ $# -gt 0 ]; do
@@ -42,6 +43,10 @@ while [ $# -gt 0 ]; do
 			new_lockfile=1
 			shift
 			;;
+		-o)
+			use_overrides=1
+			shift
+			;;
 		--)
 			shift
 			break
@@ -56,6 +61,14 @@ if [ $update_system -ne 1 ] && [ $update_user -ne 1 ]; then
 	fail
 elif [ $new_lockfile -eq 1 ] && [ -f "$here/flake.lock" ]; then
 	mv -f "$here/flake.lock" "$here/flake.lock.$(date +%s)"
+fi
+
+if [ $use_overrides -eq 1 ]; then
+	label "OVERRIDE INPUTS"
+
+	for dir in "$here"/inputs/*; do
+		nix flake lock --override-input "$(basename "$dir")" "$(readlink "$dir")"
+	done
 fi
 
 if [ $update_system -eq 1 ]; then
