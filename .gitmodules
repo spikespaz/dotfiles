@@ -4,3 +4,6 @@
 [submodule "inputs/homeage"]
 	path = inputs/homeage
 	url = https://github.com/spikespaz/homeage
+[submodule "inputs/spicetify"]
+	path = inputs/spicetify
+	url = https://github.com/spikespaz/spicetify-nix
