@@ -85,7 +85,7 @@
   #########################
 
   spotify = {
-    home.packages = [pkgs.spotify];
+    imports = [./spotify.nix];
   };
 
   #################################

@@ -24,6 +24,9 @@
     webcord.url = "github:fufexan/webcord-flake";
     webcord.inputs.nixpkgs.follows = "nixpkgs";
 
+    spicetify.url = "github:the-argus/spicetify-nix";
+    spicetify.inputs.nixpkgs.follows = "nixpkgs";
+
     homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
   };
