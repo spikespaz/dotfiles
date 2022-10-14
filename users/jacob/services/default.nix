@@ -19,5 +19,7 @@ args @ {
     };
   };
 
-  spotify = import ./spotify.nix args;
+  spotify = {
+    imports = [./spotify.nix];
+  };
 }
