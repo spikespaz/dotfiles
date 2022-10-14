@@ -128,11 +128,27 @@
   ### DEVELOPMENT TOOLS ###
   #########################
 
-  git = {
-    programs.git.enable = true;
+  git = let
+    package =
+      (pkgs.gitMinimal.override {
+        withLibsecret = true;
+      })
+      .overrideAttrs (old: {
+        # not sure why this is failing
+        # <https://github.com/NixOS/nixpkgs/issues/195891>
+        doInstallCheck = false;
+      });
+  in {
     programs.git = {
+      enable = true;
+      package = package;
+
       userName = "Jacob Birkett";
       userEmail = "jacob@birkett.dev";
+
+      extraConfig = {
+        credential.helper = "${package}/bin/git-credential-libsecret";
+      };
 
       # better looking diffs
       delta.enable = true;
