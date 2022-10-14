@@ -40,7 +40,7 @@ in {
     window = {
       opacity = 0.7;
       padding.x = 4;
-      padding.y = 0;
+      padding.y = 2;
       dynamic_padding = true;
     };
 
