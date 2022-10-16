@@ -115,6 +115,7 @@
     ];
   in [
     ### FORMAT DOCUMENT ON MANUAL SAVE ONLY ###
+
     # remove the default action for saving document
     {
       key = "ctrl+s";
@@ -135,5 +136,15 @@
       when = formatOnManualSaveOnlyCondition;
     }
     ### END ###
+
+    ### CTRL-D ###
+
+    {
+      key = "ctrl+d";
+      command = "editor.action.deleteLines";
+      when = "textInputFocus && !editorReadonly";
+    }
+
+    ## END ##
   ];
 }
