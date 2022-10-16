@@ -111,6 +111,15 @@ args @ {
       ### KEYBINDINGS ###
 
       znap source marlonrichert/zsh-edit
+
+      ### NOTIFICATIONS ###
+
+      AUTO_NOTIFY_THRESHOLD=300
+      AUTO_NOTIFY_TITLE='Command "<tt>%command</tt>" has completed!'
+      AUTO_NOTIFY_BODY='With exit code %exit_code after %elapsed seconds.'
+      AUTO_NOTIFY_EXPIRE_TIME=15000
+
+      znap source michaelaquilina/zsh-auto-notify
     '';
   };
 }
