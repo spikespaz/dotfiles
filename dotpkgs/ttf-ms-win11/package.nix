@@ -34,8 +34,9 @@ in
 
     src = fetchurl {
       # <https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise>
-      url = "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/22000.318.211104-1236.co_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso";
-      sha256 = "684bc16adbd792ef2f7810158a3f387f23bf95e1aee5f16270c5b7f56db753b6";
+      # <https://www.microsoft.com/en-us/evalcenter/download-windows-10-enterprise>
+      url = "https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66751/22621.525.220925-0207.ni_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso";
+      sha256 = "sha256-67x5EGcV9E9QIPd72QchsXxah3y8FaNTW5kVVJOhuz8=";
     };
 
     enabledFonts = assert lib.assertMsg (
