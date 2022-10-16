@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   # home.packages = with pkgs; [
   #   perlPackages.PLS
   # ];
@@ -8,8 +12,8 @@
       {
         name = "live-server";
         publisher = "ms-vscode";
-        version = "0.5.2022091501";
-        sha256 = "sha256-J0ckcfcCDXifp3UCBefnqT5ImTg95+1EGbWyExcIw0k=Fir";
+        version = "0.5.2022101301";
+        sha256 = "sha256-FQ1UKHO6zr7H+1OjfzZblgLcCQf9436S87A2/73iF7k=";
       }
     ]
   );
