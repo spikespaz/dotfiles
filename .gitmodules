@@ -7,3 +7,6 @@
 [submodule "inputs/spicetify"]
 	path = inputs/spicetify
 	url = https://github.com/spikespaz/spicetify-nix
+[submodule "inputs/hyprland"]
+	path = inputs/hyprland
+	url = https://github.com/hyprwm/Hyprland
