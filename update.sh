@@ -92,5 +92,10 @@ if [ $update_user -eq 1 ]; then
 
 	# shellcheck disable=SC2068
 	nix build --no-link "$module" $@
+
+	# seems that the file isn't immediately guaranteed or immediately available?
+	# sleep 0.5
+	# no, that doesn't work.
+
 	"$(nix path-info "$module")/activate"
 fi
