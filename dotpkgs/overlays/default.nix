@@ -54,20 +54,4 @@ lib: (_: prev: {
   #     outputHash = "sha256-H8vPBXJ0tom07wjzi18oIYNUhZXraD74DF7+xn8hfrQ=";
   #   });
   # }));
-
-  nushell = prev.nushell.overrideAttrs (old: rec {
-    version = "0.69.1";
-    src = prev.fetchFromGitHub {
-      owner = old.pname;
-      repo = old.pname;
-      rev = version;
-      sha256 = "sha256-aEEuzl3HRWNk2zJq+Vh5ZLyT26Qk7oI3bQKUr4SlDr8=";
-    };
-    cargoDeps = old.cargoDeps.overrideAttrs (_: {
-      inherit src;
-      name = "${old.pname}-${version}-vendor.tar.gz";
-      outputHash = "sha256-qaBiTZUe4RSYdXAEWPVv0ATWDN/+aOYiEpq+oztwNEc=";
-    });
-    doCheck = false;
-  });
 })
