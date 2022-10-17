@@ -175,10 +175,8 @@
     # <https://wiki.hyprland.org/Configuring/Dwindle-Layout/>
     config.dwindle = {
       # pseudotile = false;
-      # group_border_color = 0x66777700;
-      # group_border_color = 0x66777700;
-      # group_border_active_color = 0x66FFFF00;
-      # group_border_active_color = 0x66FFFF00;
+      group_border_color = "0xFF665c54"; # bg3
+      group_border_active_color = "0xFF8ec07c"; # aqua
       force_split = 2; # 0
       preserve_split = true; # false
       # special_scale_factor = 0.8;
