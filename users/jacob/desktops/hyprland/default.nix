@@ -36,8 +36,8 @@
       # sensitivity = 1.0;
       border_size = 2;
       # no_border_on_floating = false;
-      gaps_inside = 6;
-      gaps_outside = 12;
+      gaps_inside = 5;
+      gaps_outside = 10;
       active_border_color = "0xFFBDAE93";
       inactive_border_color = "0xFF665C54";
       cursor_inactive_timeout = 10;
