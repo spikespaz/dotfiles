@@ -17,6 +17,7 @@ nixpkgs.lib.nixosSystem {
     ./filesystems.nix
     ./configuration.nix
     ./powersave.nix
+    ./undervolt.nix
     ./touchpad.nix
     ./greeter.nix
   ];
