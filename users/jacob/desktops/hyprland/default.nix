@@ -159,9 +159,13 @@
       # always_follow_on_dnd = true;
       # layers_hog_keyboard_focus = true;
       # animate_manual_resizes = false;
-      disable_autoreload = true; # false # nix takes care of that;
+      disable_autoreload = true; # false # nix takes care of that
       enable_swallow = true; # false
-      swallow_regex = "^(Alacritty|dolphin|Steam)$"; # [EMPTY]
+      swallow_regex = [
+        "Alacritty"
+        "dolphin"
+        "Steam"
+      ]; # [EMPTY]
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#binds>
@@ -193,6 +197,85 @@
       # disable_time = false;
     };
 
+    # <https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2>
+    config.windowRules.rules = let
+      patterns = {
+        ### SYSTEM CONTROL ###
+
+        printerConfig = {class = ["system-config-printer"];};
+        audioControl = {class = ["pavucontrol-qt"];};
+        bluetoothControl = {
+          class = [".*blueman-manager"];
+          title = ["Bluetooth Devices"];
+        };
+        kvantumConfig = {class = ["kvantummanager"];};
+
+        ### SYSTEM MODALS ###
+
+        filePickerPortal = {class = ["xdg-desktop-portal-gtk"];};
+        polkitAgent = {class = ["lxqt-policykit-agent"];};
+        mountDialog = {class = ["udiskie"];};
+
+        ### DESKTOP APPLICATIONS ###
+
+        firefoxExtension = {title = ["Extension.+Firefox.*"];};
+        vscode = {title = [".+Visual Studio Code"];};
+        discord = {class = ["discord"];};
+        webcord = {class = ["WebCord"];};
+        calculator = {class = ["qalculate-gtk"];};
+        obsStudio = {
+          class = ["com.obsproject.Studio"];
+          title = ["OBS\s[\d\.]+.*"];
+        };
+        steam = {
+          class = ["Steam"];
+          title = ["Steam"];
+        };
+      };
+      rule = window: rule: window // {rules = [rule];};
+      ruleGroup = rules: (
+        map ({
+          class ? null,
+          title ? null,
+        }: {inherit class title rules;})
+      );
+    in
+      lib.concatLists (with patterns; [
+        (ruleGroup ["float"] [
+          printerConfig
+          audioControl
+          bluetoothControl
+          kvantumConfig
+          filePickerPortal
+          polkitAgent
+          mountDialog
+          firefoxExtension
+          calculator
+          obsStudio
+          steam
+        ])
+        (ruleGroup ["opacity 0.97 0.97"] [
+          webcord
+          discord
+        ])
+        (ruleGroup ["opacity 0.92 0.92"] [
+          printerConfig
+          audioControl
+          bluetoothControl
+          filePickerPortal
+          vscode
+          steam
+        ])
+        (ruleGroup ["opacity 0.87 0.87"] [
+          calculator
+        ])
+        [
+          (rule filePickerPortal "size 740 460")
+          (rule kvantumConfig "size 950 700")
+          (rule obsStudio "size 1200 800")
+        ]
+      ]);
+
     # prepend the config with more exec lines,
     # for starting swayidle
     extraConfig = (
@@ -213,7 +296,6 @@
         # hyprland config, split up
         (builtins.readFile ./displays.conf)
         (builtins.readFile ./keybinds.conf)
-        (builtins.readFile ./windowrules.conf)
       ])
     );
   };
