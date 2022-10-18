@@ -1,4 +1,4 @@
-args: {
+{
   wayland.windowManager.hyprland.config = {
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     general = {
@@ -32,8 +32,8 @@ args: {
       shadow_range = 10;
       shadow_render_power = 2;
       # shadow_ignore_window = true;
-      shadow_color = "0xE60F0F0F";
-      shadow_inactive_color = "0x990F0F0F";
+      active_shadow_color = "0xE60F0F0F";
+      inactive_shadow_color = "0x990F0F0F";
       # shadow_offset = 0 0;
       # dim_inactive = false;
       # dim_strength = 0.5;
@@ -149,8 +149,8 @@ args: {
     # <https://wiki.hyprland.org/Configuring/Dwindle-Layout/>
     dwindle = {
       # pseudotile = false;
-      group_border_color = "0xFF665c54"; # bg3
-      group_border_active_color = "0xFF8ec07c"; # aqua
+      active_group_border_color = "0xFF8ec07c"; # aqua
+      inactive_group_border_color = "0xFF665c54"; # bg3
       force_split = 2; # 0
       preserve_split = true; # false
       # special_scale_factor = 0.8;
