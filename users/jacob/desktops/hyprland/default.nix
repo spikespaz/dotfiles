@@ -10,7 +10,7 @@
     # Screen Capture
     pkgs.prtsc
 
-    # xwayland perm for pxexec
+    # xwayland perm for pkexec
     pkgs.xorg.xhost
   ];
 
@@ -19,10 +19,8 @@
     systemdIntegration = true;
     recommendedEnvironment = true;
 
-    xwayland = {
-      enable = true;
-      hidpi = false;
-    };
+    xwayland.enable = true;
+    xwayland.hidpi = false;
 
     extraInitConfig = ''
       # polkit agent, raises to root access with gui
@@ -198,31 +196,33 @@
     };
 
     # <https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2>
-    config.windowRules.rules = let
+    config.windowRules = let
+      opacity = lib.mapAttrs (_: x: toString (1 - x)) {
+        low = 0.13;
+        mid = 0.7;
+        high = 0.04;
+      };
+
       patterns = {
         ### SYSTEM CONTROL ###
-
-        printerConfig = {class = ["system-config-printer"];};
-        audioControl = {class = ["pavucontrol-qt"];};
+        printerConfig.class = ["system-config-printer"];
+        audioControl.class = ["pavucontrol-qt"];
         bluetoothControl = {
           class = [".*blueman-manager"];
           title = ["Bluetooth Devices"];
         };
-        kvantumConfig = {class = ["kvantummanager"];};
+        kvantumConfig.class = ["kvantummanager"];
 
         ### SYSTEM MODALS ###
-
-        filePickerPortal = {class = ["xdg-desktop-portal-gtk"];};
-        polkitAgent = {class = ["lxqt-policykit-agent"];};
-        mountDialog = {class = ["udiskie"];};
+        filePickerPortal.class = ["xdg-desktop-portal-gtk"];
+        polkitAgent.class = ["lxqt-policykit-agent"];
+        mountDialog.class = ["udiskie"];
 
         ### DESKTOP APPLICATIONS ###
-
-        firefoxExtension = {title = ["Extension.+Firefox.*"];};
-        vscode = {title = [".+Visual Studio Code"];};
-        discord = {class = ["discord"];};
-        webcord = {class = ["WebCord"];};
-        calculator = {class = ["qalculate-gtk"];};
+        firefoxExtension.title = ["Extension.+Firefox.*"];
+        vscode.title = [".+Visual Studio Code"];
+        discord.class = ["discord" "webcord"];
+        calculator.class = ["qalculate-gtk"];
         obsStudio = {
           class = ["com.obsproject.Studio"];
           title = ["OBS\s[\d\.]+.*"];
@@ -232,49 +232,49 @@
           title = ["Steam"];
         };
       };
-      rule = window: rule: window // {rules = [rule];};
-      ruleGroup = rules: (
-        map ({
+    in {
+      rules = let
+        rule = rules: {
           class ? null,
           title ? null,
-        }: {inherit class title rules;})
-      );
-    in
-      lib.concatLists (with patterns; [
-        (ruleGroup ["float"] [
-          printerConfig
-          audioControl
-          bluetoothControl
-          kvantumConfig
-          filePickerPortal
-          polkitAgent
-          mountDialog
-          firefoxExtension
-          calculator
-          obsStudio
-          steam
-        ])
-        (ruleGroup ["opacity 0.97 0.97"] [
-          webcord
-          discord
-        ])
-        (ruleGroup ["opacity 0.92 0.92"] [
-          printerConfig
-          audioControl
-          bluetoothControl
-          filePickerPortal
-          vscode
-          steam
-        ])
-        (ruleGroup ["opacity 0.87 0.87"] [
-          calculator
-        ])
-        [
-          (rule filePickerPortal "size 740 460")
-          (rule kvantumConfig "size 950 700")
-          (rule obsStudio "size 1200 800")
-        ]
-      ]);
+        }: {inherit class title rules;};
+      in
+        with patterns;
+          lib.concatLists [
+            [
+              (rule ["size 740 460"] filePickerPortal)
+              (rule ["size 950 700"] kvantumConfig)
+              (rule ["size 1200 800"] obsStudio)
+            ]
+            (map (rule ["float"]) [
+              printerConfig
+              audioControl
+              bluetoothControl
+              kvantumConfig
+              filePickerPortal
+              polkitAgent
+              mountDialog
+              firefoxExtension
+              calculator
+              obsStudio
+              steam
+            ])
+            (map (rule ["opacity ${opacity.high} ${opacity.high}"]) [
+              discord
+            ])
+            (map (rule ["opacity ${opacity.mid} ${opacity.mid}"]) [
+              printerConfig
+              audioControl
+              bluetoothControl
+              filePickerPortal
+              vscode
+              steam
+            ])
+            (map (rule ["opacity ${opacity.low} ${opacity.low}"]) [
+              calculator
+            ])
+          ];
+    };
 
     # prepend the config with more exec lines,
     # for starting swayidle
