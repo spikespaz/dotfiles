@@ -31,6 +31,7 @@
         "idlehack"
         "prtsc"
         "plymouth-themes"
+        "rofi-themes"
         "keyboard-functions"
       ]);
 
