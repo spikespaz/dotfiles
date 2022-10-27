@@ -21,8 +21,11 @@ label () {
 
 update_system=0
 update_user=0
+iso=0
+host=$(hostname)
 new_lockfile=0
 use_overrides=0
+action='switch'
 user=''
 
 while [ $# -gt 0 ]; do
@@ -43,6 +46,10 @@ while [ $# -gt 0 ]; do
 			new_lockfile=1
 			shift
 			;;
+		--on-boot)
+			action='build'
+			shift
+			;;
 		-o)
 			use_overrides=1
 			shift
@@ -57,9 +64,9 @@ while [ $# -gt 0 ]; do
 	esac
 done
 
-if [ $update_system -ne 1 ] && [ $update_user -ne 1 ]; then
-	fail
-elif [ $new_lockfile -eq 1 ] && [ -f "$here/flake.lock" ]; then
+# if [ $update_system -ne 1 ] && [ $update_user -ne 1 ]; then
+# 	fail
+if [ $new_lockfile -eq 1 ] && [ -f "$here/flake.lock" ]; then
 	mv -f "$here/flake.lock" "$here/flake.lock.$(date +%s)"
 fi
 
@@ -76,7 +83,7 @@ if [ $update_system -eq 1 ]; then
 
 	sudo -s <<-EOF
 		# shellcheck disable=SC2068
-		nixos-rebuild switch --flake "path:$here" $@
+		nixos-rebuild ${action} --flake "path:$here" $@
 		chown $USER "$here/flake.lock"
 	EOF
 fi
@@ -88,14 +95,16 @@ if [ $update_user -eq 1 ]; then
 
 	label "UPDATING USER: $user"
 
-	module="path:$here#homeConfigurations.$user.activationPackage"
+	module="homeConfigurations.$user.activationPackage"
 
 	# shellcheck disable=SC2068
-	nix build --no-link "$module" $@
+	nix build --no-link "path:$here#$module" $@
 
 	# seems that the file isn't immediately guaranteed or immediately available?
 	# sleep 0.5
 	# no, that doesn't work.
 
-	"$(nix path-info "$module")/activate"
+	if [ "$action" == 'switch' ]; then
+		"$(nix path-info "$module")/activate"
+	fi
 fi
