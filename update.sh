@@ -17,6 +17,11 @@ label () {
 	border="####$(echo "$1" | sed 's/./#/g')####"
 	printf "\n%s\n### $1 ###\n%s\n\n" "$border" "$border"
 	unset border
+nix () {
+	/run/current-system/sw/bin/nix \
+		--extra-experimental-features nix-command \
+		--extra-experimental-features flakes \
+		$@
 }
 
 update_system=0
