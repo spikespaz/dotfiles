@@ -1,8 +1,6 @@
 #! /bin/sh
 set -eu
 
-here="$(realpath "$(dirname "$0")")"
-
 fail () {
 	echo
 	echo 'Incorrect arguments, did you make a typo?'
@@ -24,6 +22,7 @@ nix () {
 		$@
 }
 
+flake_path=''
 update_system=0
 update_user=0
 iso=0
@@ -35,13 +34,17 @@ user=''
 
 while [ $# -gt 0 ]; do
 	case $1 in
+		--flake)
+			flake_path="$2"
+			shift 2
+			;;
 		-s|s|--system|system)
 			update_system=1
 			shift
 			;;
 		-u|u|--user|user)
 			update_user=1
-			if [ -n "${2-}" ] && [ -d "$here/users/$2" ]; then
+			if [ -n "${2-}" ] && [ -d "$flake_path/users/$2" ]; then
 				user=$2
 				shift
 			fi
@@ -69,16 +72,21 @@ while [ $# -gt 0 ]; do
 	esac
 done
 
+if [ -z "$flake_path" ]; then
+	here="$(realpath "$(dirname "$0")")"
+	flake_path="$(git -C "$here" rev-parse --show-toplevel)"
+fi
+
 # if [ $update_system -ne 1 ] && [ $update_user -ne 1 ]; then
 # 	fail
-if [ $new_lockfile -eq 1 ] && [ -f "$here/flake.lock" ]; then
-	mv -f "$here/flake.lock" "$here/flake.lock.$(date +%s)"
+if [ $new_lockfile -eq 1 ] && [ -f "$flake_path/flake.lock" ]; then
+	mv -f "$flake_path/flake.lock" "$flake_path/flake.lock.$(date +%s)"
 fi
 
 if [ $use_overrides -eq 1 ]; then
 	label "OVERRIDE INPUTS"
 
-	for dir in "$here"/inputs/*; do
+	for dir in "$flake_path"/inputs/*; do
 		nix flake lock --override-input "$(basename "$dir")" "$dir"
 	done
 fi
@@ -86,10 +94,10 @@ fi
 if [ $update_system -eq 1 ]; then
 	label "UPDATING SYSTEM"
 
-	sudo -s <<-EOF
+	sudo -s <<- EOF
 		# shellcheck disable=SC2068
-		nixos-rebuild ${action} --flake "path:$here" $@
-		chown $USER "$here/flake.lock"
+		nixos-rebuild ${action} --flake 'path:$flake_path' $@
+		chown $USER '$flake_path/flake.lock'
 	EOF
 fi
 
@@ -103,7 +111,7 @@ if [ $update_user -eq 1 ]; then
 	module="homeConfigurations.$user.activationPackage"
 
 	# shellcheck disable=SC2068
-	nix build --no-link "path:$here#$module" $@
+	nix build --no-link "path:$flake_path#$module" $@
 
 	# seems that the file isn't immediately guaranteed or immediately available?
 	# sleep 0.5
