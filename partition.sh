@@ -78,8 +78,8 @@ create_datasets() {
 		options=$2
 		shift 2
 
-		display="$(echo $options | sed 's/\s\+/, /g')"
-		options="$(echo "$2" | sed 's/^\|\s\+/ -o /g')"
+		display="$(echo "$options" | sed 's/\s\+/, /g')"
+		options="$(echo "$options" | sed 's/^\|\s\+/ -o /g')"
 
 		echo "creating $dataset with options $display"
 
