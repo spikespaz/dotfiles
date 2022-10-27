@@ -11,6 +11,7 @@ BOOT_PART="${TARGET_DISK}-part1"
 SWAP_PART="${TARGET_DISK}-part2"
 ROOT_PART="${TARGET_DISK}-part3"
 POOL_NAME='ospool'
+BOOT_LABEL='BOOT'
 
 # Calculate preferred swap partition size for hibernation
 TOTAL_MEM=$(awk '{if ($1 == "MemTotal:") print $2}' /proc/meminfo)
@@ -21,7 +22,14 @@ TOTAL_SWAP="$((TOTAL_MEM + EXTRA_SWAP))K" # KiB
 ##### PARTITIONING #####
 
 # Wipe the partition table
-sgdisk -Z $TARGET_DISK
+# sgdisk -Z $TARGET_DISK
+
+# Because nothing behaves the way you expect
+wipefs -a -q $TARGET_DISK
+
+# New random UUID
+sgdisk -UR
+
 # Create boot partition (ef00 = EFI system partition)
 sgdisk  -n1:1M:+512M        -t1:ef00  $TARGET_DISK
 # Create swap partition (8200 = Linux swap)
@@ -32,8 +40,6 @@ sgdisk  -n3:0:0             -t3:bf00  $TARGET_DISK
 
 # Notify the kernel
 partprobe $TARGET_DISK
-
-# Pause to allow device changes
 sleep 1s
 
 ##### FORMATTING #####
@@ -51,29 +57,56 @@ zpool create \
 	-O compression=zstd-3 \
 	-O canmount=off \
 	-O mountpoint=none \
-	-R /mnt \
 	-f \
 	$POOL_NAME \
 	$ROOT_PART
 
+# Declare the layout
+datasets=(
+	"$POOL_NAME/root"       "canmount=on   mountpoint=/           compression=zstd-fast   relatime=off"
+	"$POOL_NAME/var"        "canmount=off  mountpoint=none                                relatime=off"
+	"$POOL_NAME/var/lib"    "canmount=on   mountpoint=/var/lib"
+	"$POOL_NAME/var/log"    "canmount=on   mountpoint=/var/log    compression=zstd-fast"
+	"$POOL_NAME/var/cache"  "canmount=on   mountpoint=/var/cache  compression=zstd-fast"
+	"$POOL_NAME/nix"        "canmount=on   mountpoint=/var/nix    compression=zstd-5      relatime=off  dedup=on"
+	"$POOL_NAME/home"       "canmount=on   mountpoint=/home"
+)
+
+create_datasets() {
+	while [ "$#" -gt 0 ]; do
+		dataset=$1
+		options=$2
+		shift 2
+
+		display="$(echo $options | sed 's/\s\+/, /g')"
+		options="$(echo "$2" | sed 's/^\|\s\+/ -o /g')"
+
+		echo "creating $dataset with options $display"
+
+		zfs create $options $dataset
+	done
+}
+
 # Create system datasets
-zfs create  -o canmount=on   -o mountpoint=/      -o compression=zstd-fast                                $POOL_NAME/root
-zfs create  -o canmount=off  -o mountpoint=/var                             -o relatime=off               $POOL_NAME/var
-zfs create  -o canmount=on                                                                                $POOL_NAME/var/lib
-zfs create  -o canmount=on                        -o compression=zstd-fast                                $POOL_NAME/var/log
-zfs create  -o canmount=on                        -o compression=zstd-fast                                $POOL_NAME/var/cache
-zfs create  -o canmount=on   -o mountpoint=/nix   -o compression=zstd-5     -o relatime=off  -o dedup=on  $POOL_NAME/nix
-zfs create  -o canmount=on   -o mountpoint=/home                                                          $POOL_NAME/home
+create_datasets "${datasets[@]}"
+
+# Export the pool so that the script can be run repeatedly
+zpool export ospool
 
 # Format boot partition
-mkfs.vfat -F32 -n boot $BOOT_PART
+mkfs.vfat -F32 -n $BOOT_LABEL $BOOT_PART
 
 # Format the swap partition
 mkswap -L swap $SWAP_PART
 
-# Pause to allow device changes
-sleep 1s
+##### POST-SCRIPT #####
 
-# Mount the boot partition
-mkdir /mnt/boot
-mount -t vfat /dev/disk/by-label/boot /mnt/boot
+cat <<- EOF
+	Partitions created and formatted successfully!
+
+	Suggested commands:
+
+	zpool import -R /mnt ospool
+	mkdir /mnt/boot
+	mount -t vfat /dev/disk/by-label/BOOT /mnt/boot
+EOF

@@ -14,6 +14,9 @@
   enableUnstableZfs,
   ...
 }: let
+  rootPool = "ospool";
+  bootLabel = "BOOT";
+
   # function to easily duplicate a zfs automount scheme
   zfsAuto = device: {
     inherit device;
@@ -26,21 +29,17 @@ in {
   nix.settings.auto-optimise-store = false;
 
   fileSystems = {
-    # "/" = {
-    #   device = "none";
-    #   fsType = "tmpfs";
-    #   options = [ "defaults" "size=2G" "mode=0755" ];
-    # };
-    "/" = zfsAuto "ospool/root";
+    "/" = zfsAuto "${rootPool}/root";
+    "/var/lib" = zfsAuto "${rootPool}/var/lib";
+    "/var/log" = zfsAuto "${rootPool}/var/log";
+    "/var/cache" = zfsAuto "${rootPool}/var/cache";
+    "/nix" = zfsAuto "${rootPool}/nix";
+    "/home" = zfsAuto "${rootPool}/home";
+
     "/boot" = {
-      device = "/dev/disk/by-label/boot";
+      device = "/dev/disk/by-label/BOOT";
       fsType = "vfat";
     };
-    "/var/lib" = zfsAuto "ospool/var/lib";
-    "/var/log" = zfsAuto "ospool/var/log";
-    "/var/cache" = zfsAuto "ospool/var/cache";
-    "/nix" = zfsAuto "ospool/nix";
-    "/home" = zfsAuto "ospool/home";
   };
 
   swapDevices = [{label = "swap";}];
