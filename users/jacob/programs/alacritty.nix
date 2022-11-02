@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{lib, pkgs, ...}: let
   gruvbox_dark = {
     primary = {
       background = "0x282828";
@@ -35,6 +35,11 @@ in {
   home.packages = [
     (pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];})
   ];
+
+  programs.alacritty.settings.shell = {
+    program = "${lib.getExe pkgs.zsh}";
+    args = ["--login"];
+  };
 
   programs.alacritty.settings = {
     window = {
