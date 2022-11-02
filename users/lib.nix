@@ -1,5 +1,5 @@
 lib: rec {
-  genMimeApps = associations: {
+  mkMimeApps = associations: {
     xdg.mimeApps = let
       flipAssoc = n: v: map (x: {"${x}" = "${n}.desktop";}) v;
       associations' = lib.pipe associations [
@@ -13,6 +13,4 @@ lib: rec {
       defaultApplications = associations';
     };
   };
-
-  importMimeApps = path: genMimeApps (import path).associations;
 }

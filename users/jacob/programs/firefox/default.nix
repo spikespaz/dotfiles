@@ -20,6 +20,8 @@
     userChrome = builtins.readFile ./userChrome.css;
   };
 in {
+  programs.firefox.enable = true;
+
   imports = [
     ./hosts.nix
   ];

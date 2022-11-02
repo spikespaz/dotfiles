@@ -1,6 +1,6 @@
-{
+{ulib, ...}: ulib.mkMimeApps {
   ### DOCUMENT VIEWER ###
-  associations."org.kde.okular" = [
+  "org.kde.okular" = [
     "application/pdf"
     "application/epub"
     "application/djvu"
@@ -19,7 +19,7 @@
   ];
 
   ### MEDIA PLAYER ###
-  associations."haruna" = [
+  "haruna" = [
     "application/ogg"
     "application/x-ogg"
     "application/mxf"
@@ -143,7 +143,7 @@
   ];
 
   ### IMAGE VIEWER ###
-  associations."lximage-qt" = [
+  "lximage-qt" = [
     "image/bmp"
     "image/gif"
     "image/jpeg"

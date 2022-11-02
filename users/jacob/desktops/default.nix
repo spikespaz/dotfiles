@@ -1,16 +1,2 @@
-ulib: {
-  hyprland = {
-    imports = [
-      ./wayland
-      ./hyprland
-    ];
-  };
-
-  software = {
-    imports = [
-      ./suite.nix
-    ];
-  };
-
-  mimeApps = ulib.importMimeApps ./mimeapps.nix;
-}
+args @ {mkModuleIndex, ...}:
+mkModuleIndex {path = ./.;} args

@@ -3,6 +3,8 @@
   pkgs,
   ...
 }: {
+  programs.vscode.enable = true;
+
   home.packages = with pkgs; [
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
   ];

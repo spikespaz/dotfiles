@@ -3,6 +3,7 @@
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
 args @ {
+  flake,
   config,
   lib,
   ulib,
@@ -11,9 +12,8 @@ args @ {
   hmModules,
   ...
 }: let
-  programs = import ./programs args;
-  services = import ./services args;
-  mimeApps = ulib.importMimeApps ./mimeapps.nix;
+  username = "jacob";
+  user = flake.users.${username};
 in {
   ################
   ### PREAMBLE ###
@@ -28,7 +28,7 @@ in {
   ### BASIC USER ENVIRONMENT SETUP ###
   ####################################
 
-  home.username = "jacob";
+  home.username = username;
   home.homeDirectory = "/home/${config.home.username}";
 
   xdg.enable = true;
@@ -69,7 +69,13 @@ in {
   ### PACKAGES & MODULES ###
   ##########################
 
-  imports = [
+  imports = let
+    inherit (user) services programs;
+  in [
+    ###############################
+    ### MODULES & MISCELLANEOUS ###
+    ###############################
+
     hmModules.homeage
 
     ### THEMING MODULES ###
@@ -77,10 +83,10 @@ in {
     hmModules.kvantum
 
     ### DEFAULT PROGRAMS ###
-    mimeApps
+    user.mimeapps
 
     ##############################
-    ### USER-SPECIFIC SOFTWARE ###
+    ### USER-SPECIFIC PROGRAMS ###
     ##############################
 
     ### WEB BROWSERS ###
@@ -102,14 +108,21 @@ in {
 
     ### OFFICE & WRITING SOFTWARE ###
     programs.onlyoffice
-    programs.apostrophe
+    # TODO doesn't work
+    #     programs.apostrophe
 
     ### TERMINAL EMULATORS ###
     programs.alacritty
 
     ### CODE EDITORS ###
     programs.vscode.settings
-    programs.vscode.languages.all
+    programs.vscode.languages.bash
+    programs.vscode.languages.nix
+    programs.vscode.languages.perl
+    programs.vscode.languages.rust
+    programs.vscode.languages.web
+    # TODO broken idk why
+    # programs.vscode.languages.all
     programs.neovim
     programs.helix
     programs.lapce
@@ -132,7 +145,7 @@ in {
     programs.nix-index
 
     ### AUTHENTICATION ###
-    programs.keepassxc
+    #     programs.keepassxc
 
     ##############################
     ### USER-SPECIFIC SERVICES ###

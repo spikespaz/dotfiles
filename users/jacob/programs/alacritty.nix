@@ -32,6 +32,8 @@
       normal.black = "0x5c5c5c";
     };
 in {
+  programs.alacritty.enable = true;
+
   home.packages = [
     (pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];})
   ];

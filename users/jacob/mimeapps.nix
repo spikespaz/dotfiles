@@ -1,12 +1,12 @@
-{
+{ulib, ...}: ulib.mkMimeApps {
   ### FILE BROWSER ###
-  associations."org.kde.dolphin" = [
+  "org.kde.dolphin" = [
     "inode/directory"
     "x-directory/normal"
   ];
 
   ### WEB BROWSER ###
-  associations."firefox" = [
+  "firefox" = [
     "text/html"
     "x-scheme-handler/http"
     "x-scheme-handler/https"
@@ -20,7 +20,7 @@
   ];
 
   ### DISCORD ###
-  associations."webcord" = [
+  "webcord" = [
     "x-scheme-handler/discord"
   ];
 }

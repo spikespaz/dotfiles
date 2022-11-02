@@ -41,7 +41,14 @@
     system = "x86_64-linux";
 
     inherit (nixpkgs) lib;
-    flib = import ./lib.nix lib;
+    flib = import ./lib.nix {inherit lib pkgs;};
+
+    # get directory structure as nested attrsets of modules
+    flake = flib.evalIndices {
+      expr = ./.;
+      isRoot = true;
+      pass = {inherit lib;};
+    };
 
     inputPackageOverlays = flib.mkPackagesOverlay system (
       removeAttrs inputs [
@@ -62,25 +69,56 @@
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
     dotpkgs = (import ./dotpkgs/flake.nix).outputs inputs;
+
+    nixosModules = flib.joinNixosModules inputs;
+    homeModules = flib.joinHomeModules inputs;
   in {
     # merge the packages flake into this one
     inherit (dotpkgs) packages overlays nixosModules homeManagerModules;
 
-    nixosConfigurations =
-      flib.genConfigurations ./systems {
-        inherit self nixpkgs pkgs;
-        modules = flib.joinNixosModules inputs;
-      } [
-        "jacob-thinkpad"
-      ];
+    nixosConfigurations = {
+      jacob-thinkpad = lib.nixosSystem {
+        system = "x86_64-linux";
+        inherit pkgs;
 
-    homeConfigurations =
-      flib.genConfigurations ./users {
-        inherit self home-manager pkgs;
-        ulib = import ./users/lib.nix lib;
-        hmModules = flib.joinHomeModules inputs;
-      } [
-        "jacob"
-      ];
+        specialArgs = {
+          inherit self flake;
+          modules = nixosModules;
+          enableUnstableZfs = false;
+        };
+
+        modules = with flake.systems.jacob-thinkpad; [
+          bootloader
+          filesystems
+          # plymouth
+          configuration
+          powersave
+          undervolt
+          touchpad
+          greeter
+        ];
+      };
+    };
+
+    homeConfigurations = {
+      jacob = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+
+        extraSpecialArgs = {
+          inherit self flake;
+          hmModules = homeModules;
+          ulib = flake.users.lib lib;
+        };
+
+        modules = with flake.users.jacob; [
+          profile
+          mimeapps
+          desktops.wayland
+          desktops.hyprland
+          desktops.suite
+          desktops.mimeapps
+        ];
+      };
+    };
   };
 }

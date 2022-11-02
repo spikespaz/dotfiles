@@ -1,25 +1,5 @@
-args @ {
-  config,
-  pkgs,
-  ...
-}: {
-  onedrive = {
-    imports = [./onedrive.nix];
-  };
-
-  udiskie = {
-    # service that auto-mounts storage devices with udisks2
-    services.udiskie = {
-      enable = true;
-      automount = true;
-      notify = true;
-      tray = "auto";
-      # <https://github.com/coldfix/udiskie/blob/master/doc/udiskie.8.txt#configuration>
-      # settings = {}
-    };
-  };
-
-  spotify = {
-    imports = [./spotify.nix];
-  };
-}
+args @ {mkModuleIndex, ...}: mkModuleIndex {
+  path = ./.;
+  ignore = ["toplevel.nix"];
+  include = import ./toplevel.nix;
+} args
