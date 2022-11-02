@@ -15,6 +15,8 @@ label () {
 	border="####$(echo "$1" | sed 's/./#/g')####"
 	printf "\n%s\n### $1 ###\n%s\n\n" "$border" "$border"
 	unset border
+}
+
 nix () {
 	/run/current-system/sw/bin/nix \
 		--extra-experimental-features nix-command \
@@ -118,6 +120,6 @@ if [ $update_user -eq 1 ]; then
 	# no, that doesn't work.
 
 	if [ "$action" == 'switch' ]; then
-		"$(nix path-info "$module")/activate"
+		"$(nix path-info "path:$flake_path#$module")/activate"
 	fi
 fi
