@@ -8,9 +8,9 @@ pool='ospool'
 help_message="$(
 cat <<- EOF
 	Synopsis:
-	  Use this script after partitioning to
-	  recursively unmount the target, invalidate zpool cache, and export the pool
-	  to ensure that the pool can be imported without forcing after reboot.
+	  Use this script after partitioning to recursively unmount the target,
+		invalidate zpool cache, and export the pool to ensure that the pool
+		can be imported without forcing after a reboot.
 
 	Usage:
 	  $(basename "$0") [-y][-h][-t][-p]
@@ -27,21 +27,6 @@ cat <<- EOF
 	    Specify the ZFS pool to export.
 EOF
 )"
-
-cleanup () {
-	set -x
-
-	mkdir -p "$target/etc/zfs/"
-	rm -f "$target/etc/zfs/zpool.cache"
-	touch "$target/etc/zfs/zpool.cache"
-	chmod a-w "$target/etc/zfs/zpool.cache"
-	chattr +i "$target/etc/zfs/zpool.cache"
-
-	umount -Rl "$target"
-	zpool export "$pool"
-
-	set +x
-}
 
 while [ $# -ne 0 ]; do
 	case "$1" in
@@ -81,12 +66,11 @@ if [ $confirm -eq 1 ]; then
 
     case $approve in
         [Yy]*)
-					cleanup
-					exit 0
+					break
 					;;
         [Nn]*)
 					echo 'No changes have been written to the filesystem.'
-					exit 2
+					exit 50
 					;;
         *)
 					echo 'Please answer Y to continue or N to abort.'
@@ -94,3 +78,28 @@ if [ $confirm -eq 1 ]; then
     esac
 	done
 fi
+
+check_su () {
+	if [ "$EUID" -ne 0 ]; then
+		echo "Please run this script as superuser."
+		exit 100
+	fi
+}
+
+cleanup () {
+	set -x
+
+	mkdir -p "$target/etc/zfs/"
+	rm -f "$target/etc/zfs/zpool.cache"
+	touch "$target/etc/zfs/zpool.cache"
+	chmod a-w "$target/etc/zfs/zpool.cache"
+	chattr +i "$target/etc/zfs/zpool.cache"
+
+	umount -Rl "$target"
+	zpool export "$pool"
+
+	set +x
+}
+
+check_su
+cleanup
