@@ -212,6 +212,8 @@ lib.mkMerge [
     fonts = {
       fontconfig.enable = true;
       fontDir.enable = true;
+      # handled by filesystem
+      fontDir.decompressFonts = true;
       fonts = with pkgs; [
         (pkgs.ttf-ms-win11.override {acceptEula = true;})
         noto-fonts
