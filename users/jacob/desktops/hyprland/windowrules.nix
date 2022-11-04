@@ -1,22 +1,12 @@
 # <https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2>
 {lib, ...}: let
+  # I recommend using this factory function for creating window rules.
   rule = rules: {
     class ? null,
     title ? null,
   }: {inherit class title rules;};
 
-  opacity = lib.mapAttrs (_: x: toString (1 - x)) {
-    low = 0.13;
-    mid = 0.7;
-    high = 0.04;
-  };
-  opacityRule =
-    lib.mapAttrs' (name: x: {
-      inherit name;
-      value = "opacity ${x} ${x}";
-    })
-    opacity;
-
+  # a bunch of pairs of regex strings for the class and titles to look for
   patterns = {
     ### SYSTEM CONTROL ###
     printerConfig.class = ["system-config-printer"];
@@ -65,25 +55,30 @@ in {
         (rule ["size 1200 800"] obsStudio)
       ]
       (map (rule ["float"]) [
-        printerConfig
-        audioControl
-        bluetoothControl
-        kvantumConfig
+        polkitAgent
+        mountDialog
         firefoxExtension
-        discordPopup
+        obsStudio
       ])
-      (map (rule [opacityRule.high]) [
+      (map (rule ["opacity 0.97 0.97"]) [
         discord
       ])
-      (map (rule [opacityRule.mid]) [
+      (map (rule ["opacity 0.97 0.97" "float"]) [
         printerConfig
         audioControl
         bluetoothControl
         filePickerPortal
+        discordPopup
+      ])
+      (map (rule ["opacity 0.92 0.92"]) [
         vscode
         steam
       ])
-      (map (rule [opacityRule.low]) [
+      (map (rule ["opacity 0.92 0.92" "float"]) [
+        steam
+      ])
+      (map (rule ["opacity 0.87 0.87"]) [])
+      (map (rule ["opacity 0.87 0.87" "float"]) [
         calculator
       ])
     ];
