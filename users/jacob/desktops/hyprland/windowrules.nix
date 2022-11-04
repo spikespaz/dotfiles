@@ -34,7 +34,10 @@
 
     ### DESKTOP APPLICATIONS ###
     firefoxExtension.title = ["Extension.+Firefox.*"];
-    vscode.title = [".+Visual Studio Code"];
+    vscode = {
+      title = [".*Visual Studio Code"];
+      # class = ["code-url-handler"];
+    };
     discord = {
       class = ["Electron"];
       title = ["(\\[\\d+\\] )?WebCord.*"];
