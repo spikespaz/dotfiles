@@ -55,9 +55,9 @@ in {
         (rule ["size 1200 800"] obsStudio)
       ]
       (map (rule ["float"]) [
-        polkitAgent
-        mountDialog
+        kvantumConfig
         firefoxExtension
+        discordPopup
         obsStudio
       ])
       (map (rule ["opacity 0.97 0.97"]) [
@@ -67,14 +67,14 @@ in {
         printerConfig
         audioControl
         bluetoothControl
-        filePickerPortal
-        discordPopup
+        polkitAgent
+        mountDialog
       ])
       (map (rule ["opacity 0.92 0.92"]) [
         vscode
-        steam
       ])
       (map (rule ["opacity 0.92 0.92" "float"]) [
+        filePickerPortal
         steam
       ])
       (map (rule ["opacity 0.87 0.87"]) [])
