@@ -133,7 +133,7 @@
       enable_swallow = true; # false
       swallow_regex = [
         "Alacritty"
-        "dolphin"
+        "org\\.kde\\.dolphin"
         "Steam"
       ]; # [EMPTY]
     };
