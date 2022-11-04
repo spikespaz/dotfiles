@@ -35,7 +35,14 @@
     ### DESKTOP APPLICATIONS ###
     firefoxExtension.title = ["Extension.+Firefox.*"];
     vscode.title = [".+Visual Studio Code"];
-    discord.class = ["discord" "webcord"];
+    discord = {
+      class = ["Electron"];
+      title = ["(\\[\\d+\\] )?WebCord.*"];
+    };
+    discordPopup = {
+      class = ["Electron"];
+      title = ["WebCord.+Settings"];
+    };
     calculator.class = ["qalculate-gtk"];
     obsStudio = {
       class = ["com.obsproject.Studio"];
@@ -59,13 +66,8 @@ in {
         audioControl
         bluetoothControl
         kvantumConfig
-        filePickerPortal
-        polkitAgent
-        mountDialog
         firefoxExtension
-        calculator
-        obsStudio
-        steam
+        discordPopup
       ])
       (map (rule [opacityRule.high]) [
         discord
