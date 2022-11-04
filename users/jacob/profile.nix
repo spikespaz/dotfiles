@@ -145,7 +145,7 @@ in {
     programs.nix-index
 
     ### AUTHENTICATION ###
-    #     programs.keepassxc
+    programs.keepassxc
 
     ##############################
     ### USER-SPECIFIC SERVICES ###

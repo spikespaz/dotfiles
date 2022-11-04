@@ -192,7 +192,7 @@
   ### AUTHENTICATION ###
   ######################
 
-  keepassxc = _: {pkgs, ...}: {
+  keepassxc = {pkgs, ...}: {
     home.packages = [pkgs.keepassxc];
   };
 }
