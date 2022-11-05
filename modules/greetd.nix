@@ -40,7 +40,7 @@ in {
             [Desktop Entry]
             Name=${name}
             ${lib.optionalString (comment != null) "Comment=${comment}"}
-            Exec=${pkgs.writeShellScriptBin "${fName}-wrapped.sh" script}
+            Exec=${pkgs.writeShellScript "${fName}-wrapped.sh" script}
             Type=Application
             EOF
           '')
