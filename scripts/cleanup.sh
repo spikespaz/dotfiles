@@ -4,6 +4,8 @@ set -eu
 confirm=1
 target='/mnt'
 pool='ospool'
+unmount=0
+disable_cache=0
 
 help_message="$(
 cat <<- EOF
@@ -13,7 +15,7 @@ cat <<- EOF
 		can be imported without forcing after a reboot.
 
 	Usage:
-	  $(basename "$0") [-y][-h][-t][-p]
+	  $(basename "$0") [-y][-h][-t <p>][-p <l>][-u][-c]
 
 	Options:
 	  -y | --no-confirm
@@ -25,6 +27,15 @@ cat <<- EOF
 	    for example '/mnt' or '/target'.
 	  -p <label> | --pool <label>
 	    Specify the ZFS pool to export.
+		-u | --unmount
+			Unmount the root filesystem, export the pool,
+			and do nothing else (unless specified).
+		-c | --disable-cache
+			Disable/invalidate the cache and do nothing else (unless specified).
+
+	Notes:
+		- If neither '-u' or '-c' are specified, the default is to perform
+		  both actions.
 EOF
 )"
 
@@ -46,6 +57,14 @@ while [ $# -ne 0 ]; do
 			pool="$2"
 			shift
 			;;
+		-u|--unmount)
+			unmount=1
+			shift
+			;;
+		-c|--disable-cache)
+			disable_cache=1
+			shift
+			;;
 		*)
 			echo "Unknown option: $1"
 			exit 1
@@ -53,28 +72,41 @@ while [ $# -ne 0 ]; do
 	esac
 done
 
-if [ $confirm -eq 1 ]; then
-	cat <<- EOF
-		You are about to modify the permissions of '$target/etc/zfs/zpool.cache',
-		recursively unmount '$target", and export zpool '$pool'.
+# if neither flag has been specified, the default is to perform both
+if [ $disable_cache -eq 0 ] && [ $unmount -eq 0 ]; then
+	disable_cache=1
+	unmount=1
+fi
 
-		Do you want to continue? [Y/n]
-	EOF
+if [ $confirm -eq 1 ]; then
+	echo 'You are about to:'
+
+	if [ $disable_cache -eq 1 ]; then
+		echo "- modify the permissions of '$target/etc/zfs/zpool.cache'"
+	fi
+
+	if [ $unmount -eq 1 ]; then
+		echo "- recursively unmount '$target'"
+		echo "- export zpool '$pool'"
+	fi
+
+	echo
+	echo 'Do you want to continue? [Y/n]'
 
 	while true; do
     read -r -p "> " approve
 
     case $approve in
-        [Yy]*)
-					break
-					;;
-        [Nn]*)
-					echo 'No changes have been written to the filesystem.'
-					exit 50
-					;;
-        *)
-					echo 'Please answer Y to continue or N to abort.'
-					;;
+			[Yy]*)
+				break
+				;;
+			[Nn]*)
+				echo 'No changes have been written to the filesystem.'
+				exit 50
+				;;
+			*)
+				echo 'Please answer Y to continue or N to abort.'
+				;;
     esac
 	done
 fi
@@ -86,8 +118,8 @@ check_su () {
 	fi
 }
 
-cleanup () {
-	set -x
+disable_cache () {
+	set -x +e
 
 	mkdir -p "$target/etc/zfs/"
 	rm -f "$target/etc/zfs/zpool.cache"
@@ -95,11 +127,15 @@ cleanup () {
 	chmod a-w "$target/etc/zfs/zpool.cache"
 	chattr +i "$target/etc/zfs/zpool.cache"
 
+	set +x -e
+}
+
+unmount () {
 	umount -Rl "$target"
 	zpool export "$pool"
-
-	set +x
 }
 
 check_su
-cleanup
+
+[ $disable_cache -eq 1 ] && disable_cache
+[ $unmount -eq 1 ] && unmount
