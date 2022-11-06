@@ -29,12 +29,12 @@
       # class = ["code-url-handler"];
     };
     discord = {
-      class = ["Electron"];
-      title = ["(\\[\\d+\\] )?WebCord.*"];
+      class = ["WebCord" "discord"];
+      title = ["(\\[\\d+\\] )?WebCord.*" ".+Discord"];
     };
     discordPopup = {
-      class = ["Electron"];
-      title = ["WebCord.+Settings"];
+      class = ["WebCord"];
+      title = ["WebCord . Settings"];
     };
     calculator.class = ["qalculate-gtk"];
     obsStudio = {
