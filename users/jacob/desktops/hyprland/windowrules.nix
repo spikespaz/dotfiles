@@ -39,7 +39,7 @@
     calculator.class = ["qalculate-gtk"];
     obsStudio = {
       class = ["com.obsproject.Studio"];
-      title = ["OBS\s[\d\.]+.*"];
+      title = ["OBS\\s[\\d\\.]+.*"];
     };
     steam = {
       class = ["Steam"];
