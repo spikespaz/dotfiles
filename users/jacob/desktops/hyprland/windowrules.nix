@@ -45,6 +45,10 @@
       class = ["Steam"];
       title = ["Steam"];
     };
+    minecraft = {
+      class = ["Minecraft.+"];
+      title = ["Minecraft.+"];
+    };
   };
 in {
   wayland.windowManager.hyprland.config.windowRules.rules = with patterns;
@@ -54,6 +58,9 @@ in {
         (rule ["size 950 700"] kvantumConfig)
         (rule ["size 1200 800"] obsStudio)
       ]
+      (map (rule ["idleinhibit focus"]) [
+        minecraft
+      ])
       (map (rule ["float"]) [
         kvantumConfig
         firefoxExtension
