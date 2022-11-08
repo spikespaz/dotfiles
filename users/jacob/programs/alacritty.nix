@@ -1,4 +1,8 @@
-{lib, pkgs, ...}: let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   gruvbox_dark = {
     primary = {
       background = "0x282828";

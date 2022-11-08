@@ -1,4 +1,5 @@
-{ulib, ...}: ulib.mkMimeApps {
+{ulib, ...}:
+ulib.mkMimeApps {
   ### DOCUMENT VIEWER ###
   "org.kde.okular" = [
     "application/pdf"

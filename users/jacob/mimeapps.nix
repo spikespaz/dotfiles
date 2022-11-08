@@ -1,4 +1,5 @@
-{ulib, ...}: ulib.mkMimeApps {
+{ulib, ...}:
+ulib.mkMimeApps {
   ### FILE BROWSER ###
   "org.kde.dolphin" = [
     "inode/directory"
