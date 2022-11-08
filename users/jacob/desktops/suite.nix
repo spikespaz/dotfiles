@@ -1,14 +1,11 @@
+# desktop environment default programs
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    ###########################
-    ### DESKTOP ENVIRONMENT ###
-    ###########################
+    # Utilities
+    wl-clipboard
 
+    # Diagnostics
     xdg-utils
-
-    # Qt-Wayland Compatibility
-    # qt6.qtwayland
-    # libsForQt5.qt5.qtwayland
 
     # Device Configuration
     lxqt.pavucontrol-qt # Pulse Audio Volume Control
