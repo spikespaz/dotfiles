@@ -140,7 +140,7 @@ in {
     programs.nix-index
 
     ### VIDEO GAMES ###
-    programs.minecraft
+    programs.minecraft.prism-launcher
 
     ### AUTHENTICATION ###
     programs.keepassxc

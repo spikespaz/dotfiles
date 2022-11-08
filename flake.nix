@@ -27,8 +27,11 @@
     spicetify.url = "github:the-argus/spicetify-nix";
     spicetify.inputs.nixpkgs.follows = "nixpkgs";
 
-    polymc.url = "github:PolyMC/PolyMC";
-    polymc.inputs.nixpkgs.follows = "nixpkgs";
+    # polymc.url = "github:PolyMC/PolyMC";
+    # polymc.inputs.nixpkgs.follows = "nixpkgs";
+
+    prismlauncher.url = "github:PrismLauncher/PrismLauncher";
+    prismlauncher.inputs.nixpkgs.follows = "nixpkgs";
 
     homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
