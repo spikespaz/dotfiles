@@ -234,12 +234,19 @@ lib.mkMerge [
     # enable completions for system packages
     environment.pathsToLink = ["/share/zsh" "/share/bash-completion"];
 
-    users.users = {
+    # users.mutableUsers = false;
+
+    users.users = let
+      initialPassword = "password";
+    in {
+      root = {
+        inherit initialPassword;
+      };
       jacob = {
         description = "Jacob Birkett";
         isNormalUser = true;
-        initialPassword = "password";
         extraGroups = ["networkmanager" "wheel" "libvirtd"];
+        inherit initialPassword;
       };
     };
   }
