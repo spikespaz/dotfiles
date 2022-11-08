@@ -137,9 +137,10 @@
       };
       when = formatOnManualSaveOnlyCondition;
     }
+
     ### END ###
 
-    ### CTRL-D ###
+    ### DELETE CURRENT LINE ###
 
     {
       key = "ctrl+d";
@@ -147,6 +148,17 @@
       when = "textInputFocus && !editorReadonly";
     }
 
-    ## END ##
+    ### END ###
+
+    ### INSERT TAB CHARACTER ###
+
+    {
+      key = "ctrl+k tab";
+      command = "type";
+      args = {text = "	";};
+      when = "editorTextFocus && !editorReadonly";
+    }
+
+    ### END ###
   ];
 }
