@@ -144,6 +144,9 @@ in {
     programs.neofetch
     programs.nix-index
 
+    ### VIDEO GAMES ###
+    programs.minecraft
+
     ### AUTHENTICATION ###
     programs.keepassxc
 
