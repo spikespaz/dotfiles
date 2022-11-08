@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /usr/bin/env bash
 set -eu
 
 # Adapted from <https://openzfs.github.io/openzfs-docs/Getting%20Started/NixOS/index.html#root-on-zfs>
@@ -28,7 +28,7 @@ TOTAL_SWAP="$((TOTAL_MEM + EXTRA_SWAP))K" # KiB
 wipefs -a -q $TARGET_DISK
 
 # New random UUID
-sgdisk -UR
+sgdisk -UR $TARGET_DISK
 
 # Create boot partition (ef00 = EFI system partition)
 sgdisk  -n1:1M:+512M        -t1:ef00  $TARGET_DISK
@@ -57,6 +57,7 @@ zpool create \
 	-O compression=zstd-3 \
 	-O canmount=off \
 	-O mountpoint=none \
+	-R /mnt \
 	-f \
 	$POOL_NAME \
 	$ROOT_PART
@@ -68,7 +69,7 @@ datasets=(
 	"$POOL_NAME/var/lib"    "canmount=on   mountpoint=/var/lib"
 	"$POOL_NAME/var/log"    "canmount=on   mountpoint=/var/log    compression=zstd-fast"
 	"$POOL_NAME/var/cache"  "canmount=on   mountpoint=/var/cache  compression=zstd-fast"
-	"$POOL_NAME/nix"        "canmount=on   mountpoint=/var/nix    compression=zstd-5      relatime=off  dedup=on"
+	"$POOL_NAME/nix"        "canmount=on   mountpoint=/nix        compression=zstd-5      relatime=off  dedup=on"
 	"$POOL_NAME/home"       "canmount=on   mountpoint=/home"
 )
 
@@ -106,7 +107,9 @@ cat <<- EOF
 
 	Suggested commands:
 
-	zpool import -R /mnt ospool
-	mkdir /mnt/boot
-	mount -t vfat /dev/disk/by-label/BOOT /mnt/boot
+	sudo -s <<- END
+		zpool import -R /mnt ospool
+		mkdir /mnt/boot
+		mount -t vfat /dev/disk/by-label/BOOT /mnt/boot
+	END
 EOF
