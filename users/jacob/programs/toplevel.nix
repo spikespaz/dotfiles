@@ -1,9 +1,9 @@
-{
+{pkgs, ...}: {
   ####################
   ### WEB BROWSERS ###
   ####################
 
-  chromium = _: {
+  chromium = {
     programs.chromium.enable = true;
   };
 
@@ -11,11 +11,11 @@
   ### COMMUNICATION & MESSAGING ###
   #################################
 
-  mailspring = {pkgs, ...}: {
+  mailspring = {
     home.packages = [pkgs.mailspring];
   };
 
-  hexchat = _: {
+  hexchat = {
     programs.hexchat.enable = true;
   };
 
@@ -23,7 +23,7 @@
   ### MEDIA CREATION ###
   ######################
 
-  obs-studio = {pkgs, ...}: {
+  obs-studio = {
     programs.obs-studio.enable = true;
     programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
       wlrobs
@@ -33,7 +33,7 @@
     home.packages = [pkgs.slurp];
   };
 
-  tools.video-editing = {pkgs, ...}: {
+  tools.video-editing = {
     home.packages = with pkgs; [
       libsForQt5.kdenlive
       handbrake
@@ -48,10 +48,10 @@
   ### OFFICE & WRITING SOFTWARE ###
   #################################
 
-  onlyoffice = {pkgs, ...}: {
+  onlyoffice = {
     home.packages = [pkgs.onlyoffice-bin];
   };
-  apostrophe = {pkgs, ...}: {
+  apostrophe = {
     home.packages = [pkgs.apostrophe];
   };
 
@@ -63,14 +63,14 @@
   ### CODE EDITORS ###
   ####################
 
-  neovim = {pkgs, ...}: {
+  neovim = {
     programs.neovim.enable = true;
     home.packages = [pkgs.neovide];
   };
-  helix = _: {
+  helix = {
     programs.helix.enable = true;
   };
-  lapce = {pkgs, ...}: {
+  lapce = {
     home.packages = [pkgs.lapce];
   };
 
@@ -78,7 +78,7 @@
   ### DEVELOPMENT TOOLS ###
   #########################
 
-  git = {pkgs, ...}: let
+  git = let
     package =
       (pkgs.git.override {
         withLibsecret = true;
@@ -110,7 +110,7 @@
   ### SHELL ENVIRONMENTS ###
   ##########################
 
-  bash = {pkgs, ...}: {
+  bash = {
     home.packages = [pkgs.blesh];
     programs.bash = {
       enable = true;
@@ -119,7 +119,7 @@
     };
     programs.starship.enableBashIntegration = true;
   };
-  zsh = _: {
+  zsh = {
     imports = [./zsh.nix];
     programs.zsh-uncruft.enable = true;
   };
@@ -128,17 +128,17 @@
   ### CLI UTILITIES ###
   #####################
 
-  bat = _: {
+  bat = {
     programs.bat.enable = true;
     programs.bat.config.theme = "gruvbox-dark";
   };
-  lsd = _: {
+  lsd = {
     programs.lsd.enable = true;
   };
-  fzf = _: {
+  fzf = {
     programs.fzf.enable = true;
   };
-  gallery-dl = {pkgs, ...}: {
+  gallery-dl = {
     home.packages = [pkgs.gallery-dl];
   };
 
@@ -146,13 +146,13 @@
   ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
   ###########################################
 
-  neofetch = {pkgs, ...}: {
+  neofetch = {
     home.packages = [pkgs.neofetch];
   };
-  wev = {pkgs, ...}: {
+  wev = {
     home.packages = [pkgs.wev];
   };
-  nix-index = _: {
+  nix-index = {
     programs.nix-index.enable = true;
   };
 
@@ -164,7 +164,7 @@
   ### AUTHENTICATION ###
   ######################
 
-  keepassxc = {pkgs, ...}: {
+  keepassxc = {
     home.packages = [pkgs.keepassxc];
   };
 }

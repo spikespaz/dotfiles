@@ -50,7 +50,7 @@
     flake = flib.evalIndices {
       expr = ./.;
       isRoot = true;
-      pass = {inherit lib;};
+      pass = {inherit lib pkgs;};
     };
 
     inputPackageOverlays = flib.mkPackagesOverlay system (
@@ -110,7 +110,7 @@
         extraSpecialArgs = {
           inherit self flake;
           hmModules = homeModules;
-          ulib = flake.users.lib lib;
+          ulib = flake.users.lib;
         };
 
         modules = with flake.users.jacob; [

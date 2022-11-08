@@ -1,4 +1,4 @@
-lib: rec {
+{lib, ...}: rec {
   mkMimeApps = associations: {
     xdg.mimeApps = let
       flipAssoc = n: v: map (x: {"${x}" = "${n}.desktop";}) v;

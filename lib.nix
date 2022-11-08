@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  ...
 }: let
   _traceMsgVal = msg: val: "${msg}\n${lib.generators.toPretty {multiline = true;} val}";
 
@@ -228,22 +229,42 @@
   evalIndices = {
     pass ? {},
     expr,
-    isRoot ? false
-  }:
+    isRoot ? false,
+  }: let
+    # provide a default mkModuleIndex
+    pass' = {inherit mkModuleIndex;} // pass;
+  in
     # a basic attrset (the last recursion)
     if lib.isAttrs expr
-    then lib.mapAttrsRecursive
-      (_: expr: evalIndices {inherit pass expr;}) expr
+    then
+      lib.mapAttrsRecursive
+      (_: expr:
+        evalIndices {
+          inherit expr;
+          pass = pass';
+        })
+      expr
     # is a path literal or string, import and recurse
     else if
       builtins.isPath expr
       && (isRoot || _isImportable expr)
-    then evalIndices {inherit pass; expr = import expr;}
-    # is a function that takes mkModuleIndex
+    then
+      evalIndices {
+        pass = pass';
+        expr = import expr;
+      }
+    # is a function whose arguments match pass
+    # eval if it can be, otherwise defer to the module system
     else if
       lib.isFunction expr
-      && ((builtins.functionArgs expr) ? mkModuleIndex)
-    then expr ({inherit mkModuleIndex;} // pass)
+      && (
+        let
+          args = builtins.attrNames (builtins.functionArgs expr);
+        in
+          (args != [])
+          && builtins.all (x: pass' ? ${x}) args
+      )
+    then expr pass'
     else expr;
 
   mkModuleIndex = {
