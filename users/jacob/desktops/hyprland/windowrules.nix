@@ -23,7 +23,10 @@
     mountDialog.class = ["udiskie"];
 
     ### DESKTOP APPLICATIONS ###
-    firefoxExtension.title = ["Extension.+Firefox.*"];
+    firefoxExtension = {
+      class = ["firefox"];
+      title = ["Extension.+Mozilla Firefox.*"];
+    };
     vscode = {
       title = [".*Visual Studio Code"];
       # class = ["code-url-handler"];
