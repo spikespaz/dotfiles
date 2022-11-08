@@ -149,9 +149,6 @@
   neofetch = {
     home.packages = [pkgs.neofetch];
   };
-  wev = {
-    home.packages = [pkgs.wev];
-  };
   nix-index = {
     programs.nix-index.enable = true;
   };

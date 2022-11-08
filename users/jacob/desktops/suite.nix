@@ -3,9 +3,10 @@
   home.packages = with pkgs; [
     # Utilities
     wl-clipboard
+    xdg-utils
 
     # Diagnostics
-    xdg-utils
+    wev
 
     # Device Configuration
     lxqt.pavucontrol-qt # Pulse Audio Volume Control
