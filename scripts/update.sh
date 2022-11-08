@@ -1,27 +1,11 @@
-#! /bin/sh
+#! /usr/bin/env bash
 set -eu
-
-fail () {
-	echo
-	echo 'Incorrect arguments, did you make a typo?'
-	echo
-	echo "Usage: $(basename "$0") [[-]s|[--]system] [[-]u|[--]user [<name>]] [-l|--lock]"
-	echo "The '--lock' option renames '$here/flake.lock', take care!"
-	echo
-	exit 1
-}
-
-label () {
-	border="####$(echo "$1" | sed 's/./#/g')####"
-	printf "\n%s\n### $1 ###\n%s\n\n" "$border" "$border"
-	unset border
-}
 
 nix () {
 	/run/current-system/sw/bin/nix \
 		--extra-experimental-features nix-command \
 		--extra-experimental-features flakes \
-		$@
+		"$@"
 }
 
 flake_path=''
@@ -34,7 +18,35 @@ use_overrides=0
 action='switch'
 user=''
 
-while [ $# -gt 0 ]; do
+fail () {
+	cat <<- EOF
+		Incorrect arguments, did you make a typo?
+
+		Usage:
+			$(basename "$0")
+			[--flake <path>]
+			[[-]s|[--]system]
+			[[-]u|[--]user [<name>]]
+			[-l|--lock]
+			[--on-boot]
+			[-o|--override-inputs]
+			[-- <passthru>]
+
+		'--flake <path>' specifies the path of the flake to build
+		'-l' or '--lock' declares that a new lockfile should be created, renaming the old suffixed with a timestamp
+		'--on-boot' sets the build action to 'boot' instead of 'switch'
+		'-o' or '--override-inputs' will update the lockfile to use inputs from a directory named inputs in the root of the flake
+	EOF
+	exit 1
+}
+
+label () {
+	border="####$(echo "$1" | sed 's/./#/g')####"
+	printf "\n%s\n### $1 ###\n%s\n\n" "$border" "$border"
+	unset border
+}
+
+while [ "$#" -gt 0 ]; do
 	case $1 in
 		--flake)
 			flake_path="$2"
