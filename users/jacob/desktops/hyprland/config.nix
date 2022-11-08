@@ -98,7 +98,7 @@
       # kb_rules = null;
       # kb_file = null;
       follow_mouse = "loose";
-      float_switch_override_focus = "float_to_float";
+      float_switch_override_focus = "disabled"; # float_to_float
       # repeat_rate = 25;
       # repeat_delay = 600;
       # natural_scroll = false;
