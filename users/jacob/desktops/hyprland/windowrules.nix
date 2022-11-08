@@ -49,6 +49,10 @@
       class = ["Minecraft.+"];
       title = ["Minecraft.+"];
     };
+    virtManagerConsole = {
+      class = ["virt-manager"];
+      title = [".+on.+"];
+    };
   };
 in {
   wayland.windowManager.hyprland.config.windowRules.rules = with patterns;
@@ -60,6 +64,7 @@ in {
       ]
       (map (rule ["idleinhibit focus"]) [
         minecraft
+        virtManagerConsole
       ])
       (map (rule ["float"]) [
         kvantumConfig
