@@ -105,6 +105,16 @@ lib.mkMerge [
   ### SERVICES ###
   ################
   {
+    ### SERVICES: SSH ###
+
+    # I do not want ssh to be easily sniffable
+    # <https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/networking/ssh/sshd.nix>
+    services.openssh.enable = true;
+    services.openssh.ports = [1948];
+    # TODO understand what exactly this is
+    services.openssh.startWhenNeeded = true;
+    # TODO perhaps set After and X-Restart-Triggers to []?
+
     ### SERVICES: AUTO MOUNT ###
 
     # storage daemon required for udiskie auto-mount
