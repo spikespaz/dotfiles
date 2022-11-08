@@ -248,6 +248,11 @@ lib.mkMerge [
         extraGroups = ["networkmanager" "wheel" "libvirtd"];
         inherit initialPassword;
       };
+      guest = {
+        description = "Guest User";
+        isNormalUser = true;
+        inherit initialPassword;
+      };
     };
   }
 
