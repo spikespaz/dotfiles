@@ -1,6 +1,8 @@
-{lib, pkgs}: let
-  _traceMsgVal = msg: val:
-    "${msg}\n${lib.generators.toPretty {multiline = true;} val}";
+{
+  lib,
+  pkgs,
+}: let
+  _traceMsgVal = msg: val: "${msg}\n${lib.generators.toPretty {multiline = true;} val}";
 
   traceM = m: v: builtins.trace (_traceMsgVal m v);
   traceValM = m: v: builtins.trace (_traceMsgVal m v) v;
@@ -73,11 +75,11 @@
       recurse = attrPath:
         lib.zipAttrsWith (n: values: (
           if lib.tail values == []
-            then lib.head values
+          then lib.head values
           else if lib.all lib.isList values
-            then lib.unique (lib.concatLists values)
+          then lib.unique (lib.concatLists values)
           else if lib.all lib.isAttrs values
-            then recurse (attrPath ++ [n]) values
+          then recurse (attrPath ++ [n]) values
           else lib.last values
         ));
     in
@@ -90,54 +92,68 @@
   imply = c: v: implyDefault c null v;
   implyDefault = c: d: v:
     if
-      c == null
+      (c == null)
       || c == false
       || c == {}
       || c == []
       || c == ""
       || c == 0
-    then
-      d else v;
+    then d
+    else v;
 
   # find indices of item needle in list haystack
-  indicesOf = _wrapSplitFn (needle: haystack: lib.pipe haystack [
-    (lib.imap0 (i: v: {inherit i v;}))
-    (builtins.filter (c: c.v == needle))
-    (map (x: x.i))
-  ]);
+  indicesOf = _wrapSplitFn (
+    needle: haystack:
+      lib.pipe haystack [
+        (lib.imap0 (i: v: {inherit i v;}))
+        (builtins.filter (c: c.v == needle))
+        (map (x: x.i))
+      ]
+  );
 
   # wraps *split functions
   # to accept other types with a list reperesentation
   # currently only string
   _wrapSplitFn = fn: n: h:
     if lib.isString h
-    then
-      let
-        v = fn n (lib.stringToCharacters h);
-      in
-        if lib.isAttrs v
-        then builtins.mapAttrs (_: lib.concatStrings) v
-        else map lib.concatStrings v
+    then let
+      v = fn n (lib.stringToCharacters h);
+    in
+      if lib.isAttrs v
+      then builtins.mapAttrs (_: lib.concatStrings) v
+      else map lib.concatStrings v
     else fn n h;
 
   # split a list-compatible haystack
   # at every occurrence and return
   # a list of slices between occurrences
-  split = _wrapSplitFn (needle: haystack:
-    let
+  split = _wrapSplitFn (
+    needle: haystack: let
       idxs = indicesOf needle haystack;
       idxs0 = [0] ++ map (x: x + 1) idxs;
       idxs1 = idxs ++ [(builtins.length haystack)];
-      pairs = map ({fst, snd}: {i = fst; l = snd - fst;}) (lib.zipLists idxs0 idxs1);
+      pairs = map ({
+        fst,
+        snd,
+      }: {
+        i = fst;
+        l = snd - fst;
+      }) (lib.zipLists idxs0 idxs1);
     in
-      map ({i, l}: lib.sublist i l haystack) pairs);
+      map ({
+        i,
+        l,
+      }:
+        lib.sublist i l haystack)
+      pairs
+  );
 
   # split a list-compatible haystack
   # at the leftmost occurrence of needle
   # returns attrs l and r, each being the respective
   # left or right side of the occurrence of needle
-  lsplit = _wrapSplitFn (needle: haystack:
-    let
+  lsplit = _wrapSplitFn (
+    needle: haystack: let
       idxs = indicesOf needle haystack;
       idx = imply idxs ((builtins.head idxs) + 1);
       len = builtins.length haystack;
@@ -145,45 +161,45 @@
       imply len {
         l = lib.sublist 0 (idx - 1) haystack;
         r = lib.sublist idx (len - 1) haystack;
-      });
+      }
+  );
 
   # split a list-compatible haystack
   # at the rightmost occurrence of needle
   # returns attrs l and r, each being the respective
   # left or right side of the occurrence of needle
-  rsplit = _wrapSplitFn (needle: haystack:
-    let
-      idxs = indicesOf needle haystack;
-      idx = imply idxs ((lib.last idxs) + 1);
-      len = builtins.length haystack;
-    in
-      imply len {
-        l = lib.sublist 0 (idx - 1) haystack;
-        r = lib.sublist idx (len - 1) haystack;
-      });
+  rsplit = _wrapSplitFn (needle: haystack: let
+    idxs = indicesOf needle haystack;
+    idx = imply idxs ((lib.last idxs) + 1);
+    len = builtins.length haystack;
+  in
+    imply len {
+      l = lib.sublist 0 (idx - 1) haystack;
+      r = lib.sublist idx (len - 1) haystack;
+    });
 
   # alternates to lib fns that don't trigger unauthorized
   # assumes path exists
   _pathType = path: _pathType' (dirOf path) (baseNameOf path);
-  _pathType' = d: n:
-    let ls = (builtins.readDir d);
-    in imply (ls ? ${n}) ls.${n};
+  _pathType' = d: n: let
+    ls = builtins.readDir d;
+  in
+    imply (ls ? ${n}) ls.${n};
 
   # do not use on flake root,
   # not allowed because pathIs* uses readDir ..
-  _isImportable = path:
-    let
-      # file or directory?
-      isDir = (_pathType path) == "directory";
-      isFile = !isDir && (_pathType path) == "regular";
-      # is a *.nix file?
-      isNix = isFile && lib.hasSuffix ".nix" path;
-      # is file named default.nix?
-      isDefault = isFile && lib.hasSuffix "default.nix" path;
-      # is dir with file named default.nix?
-      hasDefault = isDir && ((_pathType "${path}/default.nix") == "regular");
-    in
-      (isDir && hasDefault) || (isNix && !isDefault);
+  _isImportable = path: let
+    # file or directory?
+    isDir = (_pathType path) == "directory";
+    isFile = !isDir && (_pathType path) == "regular";
+    # is a *.nix file?
+    isNix = isFile && lib.hasSuffix ".nix" path;
+    # is file named default.nix?
+    isDefault = isFile && lib.hasSuffix "default.nix" path;
+    # is dir with file named default.nix?
+    hasDefault = isDir && ((_pathType "${path}/default.nix") == "regular");
+  in
+    (isDir && hasDefault) || (isNix && !isDefault);
 
   _getIndexAttrName = path: fName: type: let
     # file or directory?
@@ -195,18 +211,18 @@
     isDefault = isFile && fName == "default.nix";
     # is dir with file named default.nix?
 
-#     hasDefault = isDir && (lib.pathIsRegularFile "${path}/${fName}/default.nix");
+    # hasDefault = isDir && (lib.pathIsRegularFile "${path}/${fName}/default.nix");
     hasDefault = isDir && (_pathType' "${path}/${fName}" "default.nix") == "regular";
 
     # is a valid candidate for being a module
     isValid = (isNix && !isDefault) || hasDefault;
   in
     imply isValid (
-      if hasDefault then fName
-      else if isNix then (rsplit "." fName).l
-      else
-        assert (lib.assertMsg false "unreachable code");
-        null
+      if hasDefault
+      then fName
+      else if isNix
+      then (rsplit "." fName).l
+      else assert (lib.assertMsg false "unreachable code"); null
     );
 
   evalIndices = {
@@ -233,35 +249,39 @@
   mkModuleIndex = {
     path,
     ignore ? [],
-    include ? {}
+    include ? {},
   }: pass:
     lib.pipe (builtins.readDir path) [
       # remove file names from ignore list
       (ls: removeAttrs ls ignore)
-#       (traceValM "IGNORES REMOVED\n${path}")
+      # (traceValM "IGNORES REMOVED\n${path}")
       # map name and type to canonical name and path
-      (lib.mapAttrsToList (fName: fType:
-        let name = _getIndexAttrName path fName fType;
-        in imply name {
+      (lib.mapAttrsToList (fName: fType: let
+        name = _getIndexAttrName path fName fType;
+      in
+        imply name {
           inherit name;
           fPath = "${path}/${fName}";
         }))
       # remove nulls if entries failed name check
       (builtins.filter (x: x != null))
-#       (traceValM "CANONICAL NAMES\n${path}")
-      (map ({name, fPath}: {
+      # (traceValM "CANONICAL NAMES\n${path}")
+      (map ({
+        name,
+        fPath,
+      }: {
         inherit name;
         value = import fPath;
       }))
       # convert back to attrs from list of n v
       (builtins.listToAttrs)
-#       (traceValM "BACK TO ATTRS\n${path}")
+      # (traceValM "BACK TO ATTRS\n${path}")
       # merge any provided includes
       (index: mergeAttrs [index include])
-#       (traceValM "MERGED INCLUDES\n${path}")
+      # (traceValM "MERGED INCLUDES\n${path}")
       # evaluate recursively
       (expr: evalIndices {inherit pass expr;})
-#       (traceValM "EVALUATED\n${path}")
+      # (traceValM "EVALUATED\n${path}")
     ];
 in {
   inherit
@@ -279,9 +299,9 @@ in {
     lsplit
     rsplit
     evalIndices
-    mkModuleIndex;
+    mkModuleIndex
+    ;
 }
-
 # TODO broken because of IFD
 # <https://discord.com/channels/568306982717751326/741347063077535874/1036275439297122435>
 # TODO missing builtin
@@ -327,3 +347,4 @@ in {
 #       isDefault = isNix && lib.hasSuffix "default.nix" path;
 #     in
 #       isDirWithDefault || (isNix && !isDefault);
+
