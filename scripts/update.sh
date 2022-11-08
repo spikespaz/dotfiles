@@ -60,7 +60,7 @@ while [ $# -gt 0 ]; do
 			action='build'
 			shift
 			;;
-		-o)
+		-o|--override-inputs)
 			use_overrides=1
 			shift
 			;;
