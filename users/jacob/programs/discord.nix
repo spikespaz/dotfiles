@@ -1,4 +1,10 @@
 {pkgs, ...}: let
+  bdAddons = pkgs.fetchFromGitHub {
+    owner = "mwittrien";
+    repo = "BetterDiscordAddons";
+    rev = "8627bb7f71c296d9e05d82538d3af8f739f131dc";
+    sha256 = "sha256-Dn6igqL0GvaOcTFZOtQOxuk0ikrWxyDZ41tNsJXJAxc=";
+  };
   discordPackage =
     (pkgs.discord-canary.override {
       # <https://github.com/GooseMod/OpenAsar>
@@ -9,23 +15,18 @@
     .overrideAttrs (old: let
       binaryName = "DiscordCanary";
     in {
+      # why is this missing?
+      # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/networking/instant-messengers/discord/linux.nix#L99>
       postFixup = ''
         wrapProgram $out/opt/${binaryName}/${binaryName} \
           --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--enable-features=UseOzonePlatform --ozone-platform=wayland}}" \
       '';
     });
 in {
-  home.packages = [discordPackage];
+  canary = _: {
+    home.packages = [discordPackage];
 
-  xdg.configFile."discordcanary/settings.json".text = let
-    bdAddons = pkgs.fetchFromGitHub {
-      owner = "mwittrien";
-      repo = "BetterDiscordAddons";
-      rev = "8627bb7f71c296d9e05d82538d3af8f739f131dc";
-      sha256 = "sha256-Dn6igqL0GvaOcTFZOtQOxuk0ikrWxyDZ41tNsJXJAxc=";
-    };
-  in
-    builtins.toJSON {
+    xdg.configFile."discordcanary/settings.json".text = builtins.toJSON {
       openasar = {
         setup = true;
         cmdPreset = "balanced";
@@ -37,4 +38,16 @@ in {
       IS_MINIMIZED = false;
       trayBalloonShown = false;
     };
+  };
+  webcord = {hmModules, ...}: {
+    imports = [hmModules.webcord];
+
+    programs.webcord = {
+      enable = true;
+      themes = {
+        DiscordRecolor = "${bdAddons}/Themes/DiscordRecolor/DiscordRecolor.theme.css";
+        # SettingsModal = "${bdAddons}/Themes/SettingsModal/SettingsModal.theme.css";
+      };
+    };
+  };
 }
