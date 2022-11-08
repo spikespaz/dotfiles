@@ -16,15 +16,23 @@
   };
   discord = {pkgs, ...}: {
     home.packages = [
-      (pkgs.discord.override {
-        # <https://github.com/GooseMod/OpenAsar>
-        withOpenASAR = true;
-        # fix for not respecting system browser
-        nss = pkgs.nss_latest;
-      })
+      ((pkgs.discord-canary.override {
+          # <https://github.com/GooseMod/OpenAsar>
+          withOpenASAR = true;
+          # fix for not respecting system browser
+          nss = pkgs.nss_latest;
+        })
+        .overrideAttrs (old: let
+          binaryName = "DiscordCanary";
+        in {
+          postFixup = ''
+            wrapProgram $out/opt/${binaryName}/${binaryName} \
+              --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--enable-features=UseOzonePlatform --ozone-platform=wayland}}" \
+          '';
+        }))
     ];
 
-    xdg.configFile."discord/settings.json".text = let
+    xdg.configFile."discordcanary/settings.json".text = let
       bdAddons = pkgs.fetchFromGitHub {
         owner = "mwittrien";
         repo = "BetterDiscordAddons";
