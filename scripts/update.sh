@@ -120,6 +120,7 @@ if [ $update_user -eq 1 ]; then
 	# no, that doesn't work.
 
 	if [ "$action" == 'switch' ]; then
-		"$(nix path-info "path:$flake_path#$module")/activate"
+		result="$(nix path-info "path:$flake_path#$module")"
+		"$result/activate"
 	fi
 fi
