@@ -16,7 +16,6 @@ with pkgs; [
 
   ### CLI UTILITIES ###
   fastfetch # neofetch but made in c
-  btop # system process monitor
   wget # simple downloader utility
   curl # network request utility
   p7zip # archive and compression tool
@@ -26,11 +25,7 @@ with pkgs; [
   fzf # fuzzy finder
   exa # colored alternative to ls
   ripgrep # grep but rust
-  procs # process viewer
   sd # sed but rust
-  du-dust # du but rust
-  bottom # not top
-  bandwhich # network monitor
   # tealdear      # manpage summaries
 
   ### CODE EDITORS ###
@@ -53,6 +48,14 @@ with pkgs; [
   gparted
   gptfdisk
   e2fsprogs
+
+  ### HARDWARE DIAGNOSTICS ###
+  cpu-x # cpu-z for linux
+  btop # system process monitor
+  procs # process viewer
+  du-dust # du but rust
+  bottom # not top
+  bandwhich # network monitor
 
   ### VIRTUALIZATION ###
   virt-manager # gui for managing libvirt
