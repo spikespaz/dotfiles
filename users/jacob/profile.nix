@@ -60,11 +60,6 @@ in {
     EDITOR = "nvim";
   };
 
-  programs.alacritty.settings.shell = {
-    program = "${lib.getExe pkgs.zsh}";
-    args = ["--login"];
-  };
-
   ##########################
   ### PACKAGES & MODULES ###
   ##########################
