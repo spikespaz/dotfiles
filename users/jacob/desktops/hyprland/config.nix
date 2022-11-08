@@ -1,4 +1,17 @@
 {
+  ## NOTE: My config should be consistent with the options presented on the wiki.
+  ##   Use the wiki links, so that you can see the differences in the "API".
+  ##   Some options are renamed, but it should be obvious. Their renamed
+  ##   configuration equivalent will be documented in the module.
+  ##   See the module documentation for the module here:
+  ##   - TODO
+  ##   - https://github.com/spikespaz/hyprland-window-manager/tree/nix-hm-module/nix/hm-module>
+  ##
+  ##   Hyprland changes frequently, so some options may be missing. If you need,
+  ##   use `wayland.windowManager.hyprland.extraConfig`.
+  ##
+  ##  Options that are commented out are (probably) their default value.
+  ##
   wayland.windowManager.hyprland.config = {
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     general = {
@@ -10,7 +23,6 @@
       active_border_color = "0xFFBDAE93";
       inactive_border_color = "0xFF665C54";
       cursor_inactive_timeout = 10;
-      # damage_tracking = "full";
       # layout = "dwindle";
       no_cursor_warps = true;
       # apply_sens_to_raw = false;
@@ -165,6 +177,7 @@
       # damage_blink = false;
       # disable_logs = false;
       # disable_time = false;
+      # damage_tracking = "full";
     };
   };
 }
