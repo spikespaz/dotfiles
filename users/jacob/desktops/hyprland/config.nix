@@ -128,6 +128,8 @@
         invert = false;
         min_speed_to_force = 20;
         cancel_ratio = 0.65;
+        create_new = false;
+        # forever = false;
       };
     };
 
