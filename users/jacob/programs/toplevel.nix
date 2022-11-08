@@ -164,4 +164,12 @@
   keepassxc = {
     home.packages = [pkgs.keepassxc];
   };
+
+  ####################
+  ### FILE SHARING ###
+  ####################
+
+  transmission = {
+    home.packages = [pkgs.transmission-qt];
+  };
 }

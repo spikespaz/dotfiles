@@ -145,6 +145,8 @@ in {
     ### AUTHENTICATION ###
     programs.keepassxc
 
+    ### FILE SHARING ###
+    programs.transmission
     ##############################
     ### USER-SPECIFIC SERVICES ###
     ##############################
