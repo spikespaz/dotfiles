@@ -30,7 +30,7 @@
     };
     discord = {
       class = ["WebCord" "discord"];
-      title = ["(\\[\\d+\\] )?WebCord.*" ".+Discord"];
+      title = ["(\\[\\d+\\] )?WebCord.*" ".*Discord"];
     };
     discordPopup = {
       class = ["WebCord"];
