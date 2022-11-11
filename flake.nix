@@ -112,7 +112,7 @@
         inherit pkgs;
 
         extraSpecialArgs = {
-          inherit self flake;
+          inherit self flake nixpkgs;
           hmModules = homeModules;
           ulib = flake.users.lib;
         };
