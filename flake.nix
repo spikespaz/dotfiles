@@ -102,6 +102,7 @@
           undervolt
           touchpad
           greeter
+          gamemode
         ];
       };
     };
