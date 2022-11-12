@@ -100,9 +100,13 @@ fi
 if [ $use_overrides -eq 1 ]; then
 	label "OVERRIDE INPUTS"
 
+	args=()
+
 	for dir in "$flake_path"/inputs/*; do
-		nix flake lock --override-input "$(basename "$dir")" "$dir"
+		args+=(--override-input "$(basename "$dir")" "$dir")
 	done
+
+	nix flake lock "${args[@]}"
 fi
 
 if [ $update_system -eq 1 ]; then
