@@ -93,17 +93,18 @@
           enableUnstableZfs = false;
         };
 
-        modules = with flake.systems.jacob-thinkpad; [
+        modules = lib.trace flake.wayland (with flake.systems.jacob-thinkpad; [
           bootloader
           filesystems
-          # plymouth
+          plymouth
           configuration
           powersave
           undervolt
           touchpad
           greeter
           gamemode
-        ];
+          flake.wayland.scripts.disable_kb
+        ]);
       };
     };
 
