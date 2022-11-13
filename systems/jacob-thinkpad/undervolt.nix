@@ -61,9 +61,9 @@ in {
       p2_vid=$(${lib.getExe amdctl} -p2 -u${toString undervolt.p2} \
         | sed "$sed_script")
 
-      ${lib.getExe amdctl} -p1 -v$p0_vid
+      ${lib.getExe amdctl} -p0 -v$p0_vid
       ${lib.getExe amdctl} -p1 -v$p1_vid
-      ${lib.getExe amdctl} -p1 -v$p2_vid
+      ${lib.getExe amdctl} -p2 -v$p2_vid
 
       echo "NOTIFY_SOCKET=''${NOTIFY_SOCKET-}"
       if [ -n "''${NOTIFY_SOCKET-}" ]; then
