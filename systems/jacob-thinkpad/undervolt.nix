@@ -3,8 +3,9 @@
   pkgs,
   ...
 }: let
-  amdctl = pkgs.stdenv.mkDerivation {
+  amdctl = pkgs.stdenv.mkDerivation rec {
     name = "amdctl";
+    version = "v0.11";
     nativeBuildInputs = [pkgs.gnumake];
     installPhase = ''
       runHook preInstall
@@ -17,7 +18,7 @@
     src = pkgs.fetchFromGitHub {
       owner = "kevinlekiller";
       repo = "amdctl";
-      rev = "f302b80910b3a88e25ceb62be31fd6d0708dc3d7";
+      rev = version;
       sha256 = "sha256-5cIJVAZXBnQDchZNhGFxCUww9JCRjTHsn7Ze5dD6JOo=";
     };
   };
