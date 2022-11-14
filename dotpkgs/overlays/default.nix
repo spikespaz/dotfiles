@@ -1,6 +1,16 @@
 # This file contains overlays that fix issues with nixpkgs.
 # TODO: When I have the time, I need to turn these into pull requests.
 lib: (_: prev: {
+  corectrl = prev.corectrl.overrideAttrs (old: rec {
+    version = "1.3.1";
+    src = prev.fetchFromGitLab {
+      owner = old.pname;
+      repo = old.pname;
+      rev = "v${version}";
+      sha256 = "sha256-mVMyXpNhwljxsAvrKeHPxUSfdF/mfxG157T13Kb8PnE=";
+    };
+  });
+
   lxqt = prev.lxqt.overrideScope' (_: prev: {
     lxqt-policykit = prev.lxqt-policykit.overrideAttrs (old: {
       meta = old.meta // {mainProgram = "lxqt-policykit-agent";};
