@@ -37,29 +37,25 @@ in {
       p1 = 950;
       p2 = 912;
     };
-    undervolt = {
-      p0 = default.p0 - 50;
-      p1 = default.p1 - 50;
-      p2 = default.p2 - 100;
+    offset = {
+      p0 = -100;
+      p1 = -100;
+      p2 = -100;
     };
   in {
     serviceConfig.Type = "notify";
     description = "control undervolt with amdctl";
     documentation = ["https://github.com/kevinlekiller/amdctl"];
-    # wants = [];
     after = ["multi-user.target"];
-    # before = [];
-    # partOf = [];
-    # requires = [];
     wantedBy = ["multi-user.target"];
     script = ''
       sed_script='s/[A-z ]\+\([[:digit:]]\+\)[A-z ]\+\([[:digit:]]\+\)mV.*/\1/'
 
-      p0_vid=$(${lib.getExe amdctl} -p0 -u${toString undervolt.p0} \
+      p0_vid=$(${lib.getExe amdctl} -p0 -u${toString (default.p0 + offset.p0)} \
         | sed "$sed_script")
-      p1_vid=$(${lib.getExe amdctl} -p1 -u${toString undervolt.p1} \
+      p1_vid=$(${lib.getExe amdctl} -p1 -u${toString (default.p1 + offset.p1)} \
         | sed "$sed_script")
-      p2_vid=$(${lib.getExe amdctl} -p2 -u${toString undervolt.p2} \
+      p2_vid=$(${lib.getExe amdctl} -p2 -u${toString (default.p2 + offset.p2)} \
         | sed "$sed_script")
 
       ${lib.getExe amdctl} -p0 -v$p0_vid
