@@ -87,6 +87,7 @@ in {
     ### WEB BROWSERS ###
     programs.firefox
     programs.chromium
+    programs.microsoft-edge
 
     ### COMMUNICATION & MESSAGING ###
     programs.mailspring

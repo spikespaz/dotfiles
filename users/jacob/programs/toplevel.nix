@@ -7,6 +7,10 @@
     programs.chromium.enable = true;
   };
 
+  microsoft-edge = {
+    home.packages = [pkgs.microsoft-edge];
+  };
+
   #################################
   ### COMMUNICATION & MESSAGING ###
   #################################
