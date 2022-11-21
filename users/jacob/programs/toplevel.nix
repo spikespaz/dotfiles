@@ -40,6 +40,12 @@
     ];
   };
 
+  tools.image-editing = {
+    home.packages = with pkgs; [
+      pinta
+    ];
+  };
+
   #########################
   ### MEDIA CONSUMPTION ###
   #########################

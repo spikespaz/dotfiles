@@ -2,7 +2,7 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-args @ {
+{
   flake,
   config,
   lib,
@@ -97,6 +97,7 @@ in {
     ### MEDIA CREATION ###
     programs.obs-studio
     programs.tools.video-editing
+    programs.tools.image-editing
 
     ### MEDIA CONSUMPTION ###
     programs.spotify
@@ -104,7 +105,7 @@ in {
     ### OFFICE & WRITING SOFTWARE ###
     programs.onlyoffice
     # TODO doesn't work
-    #     programs.apostrophe
+    # programs.apostrophe
 
     ### TERMINAL EMULATORS ###
     programs.alacritty
