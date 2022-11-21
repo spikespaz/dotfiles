@@ -122,18 +122,18 @@ in {
 
     DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE = "bluetooth wifi wwan";
 
-    DEVICES_TO_DISABLE_ON_LAN_CONNECT = "wifi wwan";
-    DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "wwan";
+    DEVICES_TO_DISABLE_ON_LAN_CONNECT = "wwan";
+    DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "";
     DEVICES_TO_DISABLE_ON_WWAN_CONNECT = "wifi";
 
-    DEVICES_TO_ENABLE_ON_LAN_DISCONNECT = "wifi wwan";
-    DEVICES_TO_ENABLE_ON_WIFI_DISCONNECT = "wwan";
-    DEVICES_TO_ENABLE_ON_WWAN_DISCONNECT = "wifi";
+    DEVICES_TO_ENABLE_ON_LAN_DISCONNECT = "wifi";
+    DEVICES_TO_ENABLE_ON_WIFI_DISCONNECT = "";
+    DEVICES_TO_ENABLE_ON_WWAN_DISCONNECT = "";
 
     DEVICES_TO_ENABLE_ON_DOCK = "wifi bluetooth";
     # DEVICES_TO_DISABLE_ON_DOCK = "";
 
-    DEVICES_TO_ENABLE_ON_UNDOCK = "wifi";
+    DEVICES_TO_ENABLE_ON_UNDOCK = "";
     DEVICES_TO_DISABLE_ON_UNDOCK = "bluetooth";
 
     # RUNTIME_PM_ON_AC = "on";
@@ -191,8 +191,8 @@ in {
         | sed 's/^ *//g'
     '';
     # command for all users to get the path used by their clight daemon
-    clight-config = ''
-      printf $(systemctl --user cat clight.service | grep ExecStart | sed -E 's/.+--conf-file //')
-    '';
+    # clight-config = ''
+    #   printf $(systemctl --user cat clight.service | grep ExecStart | sed -E 's/.+--conf-file //')
+    # '';
   };
 }
