@@ -16,6 +16,7 @@
       "browser.uidensity" = 1;
       "ui.prefersReducedMotion" = 1;
       "layout.css.has-selector.enabled" = true;
+      "signon.rememberSignons" = false;
     };
     userChrome = builtins.readFile ./userChrome.css;
   };
@@ -61,6 +62,7 @@ in {
     # rycee.gaoptout
     # rycee.clearurls
     # rycee.disconnect
+    # rycee.libredirect
 
     ### GITHUB ###
     bandithedoge.gitako
@@ -87,5 +89,6 @@ in {
     # rycee.export-tabs-urls-and-titles
     # rycee.markdownload
     # rycee.flagfox
+    rycee.keepassxc-browser
   ];
 }
