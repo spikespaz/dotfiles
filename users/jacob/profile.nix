@@ -94,6 +94,7 @@ in {
     # programs.discord.canary
     programs.discord.webcord
     programs.hexchat
+    programs.telegram
 
     ### MEDIA CREATION ###
     programs.obs-studio

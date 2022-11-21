@@ -23,6 +23,10 @@
     programs.hexchat.enable = true;
   };
 
+  telegram = {
+    home.packages = [pkgs.tdesktop];
+  };
+
   ######################
   ### MEDIA CREATION ###
   ######################
