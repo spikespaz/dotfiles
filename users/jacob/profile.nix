@@ -90,8 +90,8 @@ in {
 
     ### COMMUNICATION & MESSAGING ###
     programs.mailspring
-    programs.discord.canary
-    # programs.discord.webcord
+    # programs.discord.canary
+    programs.discord.webcord
     programs.hexchat
 
     ### MEDIA CREATION ###
