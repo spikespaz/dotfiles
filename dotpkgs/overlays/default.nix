@@ -21,16 +21,6 @@ lib: (_: prev: {
     with prev.obs-studio-plugins;
       prev.obs-studio-plugins
       // {
-        # <https://hg.sr.ht/~scoopta/wlrobs>
-        wlrobs = wlrobs.overrideAttrs (old: {
-          version = "unstable-2022-05-15";
-          src = prev.fetchhg {
-            url = "https://hg.sr.ht/~scoopta/wlrobs";
-            rev = "3eb154e5fe639acb1b6be7041f5d5a62f7e723dc";
-            sha256 = "sha256-5b8fU31UjBQ2bEIKWfwRRZc/sMOxxmwrbWDOvO3ubQE=";
-          };
-        });
-
         # # <https://github.com/exeldro/obs-move-transition>
         # obs-move-transition = obs-move-transition.overrideAttrs (old: rec {
         #   version = "2.6.3";
