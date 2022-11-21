@@ -9,6 +9,7 @@
   # a bunch of pairs of regex strings for the class and titles to look for
   patterns = {
     ### SYSTEM CONTROL ###
+
     printerConfig.class = ["system-config-printer"];
     audioControl.class = ["pavucontrol-qt"];
     bluetoothControl = {
@@ -18,15 +19,13 @@
     kvantumConfig.class = ["kvantummanager"];
 
     ### SYSTEM MODALS ###
+
     filePickerPortal.class = ["xdg-desktop-portal-gtk"];
     polkitAgent.class = ["lxqt-policykit-agent"];
     mountDialog.class = ["udiskie"];
 
     ### DESKTOP APPLICATIONS ###
-    firefoxExtension = {
-      class = ["firefox"];
-      title = ["Extension.+Mozilla Firefox.*"];
-    };
+
     vscode = {
       title = [".*Visual Studio Code"];
       # class = ["code-url-handler"];
@@ -56,6 +55,13 @@
       class = ["virt-manager"];
       title = [".+on.+"];
     };
+
+    ### DESKTOP APPLICATION MODALS ###
+
+    firefoxModal = {
+      class = ["firefox"];
+      title = ["Extension.+Mozilla Firefox.*"];
+    };
   };
 in {
   wayland.windowManager.hyprland.config.windowRules.rules = with patterns;
@@ -71,7 +77,7 @@ in {
       ])
       (map (rule ["float"]) [
         kvantumConfig
-        firefoxExtension
+        firefoxModal
         discordPopup
         obsStudio
       ])
