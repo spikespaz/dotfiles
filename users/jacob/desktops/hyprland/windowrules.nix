@@ -58,6 +58,11 @@
 
     ### DESKTOP APPLICATION MODALS ###
 
+    keePassModal = {
+      class = ["org\.keepassxc\.KeePassXC"];
+      title = ["Unlock Database.+KeePassXC" "Generate Password"];
+    };
+
     firefoxModal = {
       class = ["firefox"];
       title = ["Extension.+Mozilla Firefox.*"];
@@ -77,6 +82,7 @@ in {
       ])
       (map (rule ["float"]) [
         kvantumConfig
+        keePassModal
         firefoxModal
         discordPopup
         obsStudio
