@@ -16,7 +16,7 @@
       "browser.uidensity" = 1;
       "ui.prefersReducedMotion" = 1;
       "layout.css.has-selector.enabled" = true;
-      "signon.rememberSignons" = false;
+      "tabMinWidth" = 130;
     };
     userChrome = builtins.readFile ./userChrome.css;
   };
@@ -38,6 +38,7 @@ in {
         settings = {
           "devtools.chrome.enabled" = true;
           "devtools.debugger.remote-enabled" = true;
+          "signon.rememberSignons" = false;
         };
       }
     ];
