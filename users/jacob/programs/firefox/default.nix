@@ -39,6 +39,8 @@ in {
           "devtools.chrome.enabled" = true;
           "devtools.debugger.remote-enabled" = true;
           "signon.rememberSignons" = false;
+          # "Open previous windows and tabs"
+          "browser.startup.page" = 3;
         };
       }
     ];
