@@ -1,4 +1,5 @@
 {
+  hmModules,
   lib,
   pkgs,
   ...
@@ -28,6 +29,8 @@ in {
     ./keepassxc.nix
     hmModules.firefox-pwa
   ];
+
+  programs.firefox.pwa.enable = true;
 
   programs.firefox.profiles = {
     "jacob.default" = lib.mkMerge [
