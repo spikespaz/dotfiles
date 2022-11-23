@@ -45,7 +45,7 @@
     };
     steam = {
       class = ["Steam"];
-      title = ["Steam"];
+      # title = ["Steam"];
     };
     minecraft = {
       class = ["Minecraft.+"];
