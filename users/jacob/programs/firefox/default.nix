@@ -10,7 +10,7 @@
     };
   };
   # set up for userChrome.css
-  userChrome = {
+  appearance = {
     settings = {
       "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       "browser.uidensity" = 1;
@@ -30,7 +30,7 @@ in {
   programs.firefox.profiles = {
     "jacob.default" = lib.mkMerge [
       prefab
-      userChrome
+      appearance
       {
         id = 0;
         isDefault = true;
