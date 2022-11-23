@@ -67,6 +67,11 @@
       class = ["firefox"];
       title = ["Extension.+Mozilla Firefox.*"];
     };
+
+    lxImageModal = {
+      class = ["lximage-qt"];
+      title = ["Print"];
+    };
   };
 in {
   wayland.windowManager.hyprland.config.windowRules.rules = with patterns;
@@ -83,6 +88,7 @@ in {
       (map (rule ["float"]) [
         kvantumConfig
         keePassModal
+        lxImageModal
         firefoxModal
         discordPopup
         obsStudio
