@@ -25,6 +25,8 @@ in {
 
   imports = [
     ./hosts.nix
+    ./keepassxc.nix
+    hmModules.firefox-pwa
   ];
 
   programs.firefox.profiles = {
