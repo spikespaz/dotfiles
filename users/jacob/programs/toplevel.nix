@@ -205,4 +205,15 @@
   transmission = {
     home.packages = [pkgs.transmission-qt];
   };
+
+  ###################
+  ### 3D PRINTING ###
+  ###################
+
+  printing-3d = {
+    home.packages = with pkgs; [
+      super-slicer-latest
+      cura
+    ];
+  };
 }
