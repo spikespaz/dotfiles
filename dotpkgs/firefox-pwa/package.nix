@@ -66,4 +66,9 @@ in
 
       runHook postInstall
     '';
+
+    # in fixup because this is nix-specific, needed for FFPWA_EXECUTABLES
+    fixupPhase = ''
+      ln -s $out/lib/firefoxpwa/firefoxpwa-connector $out/bin
+    '';
   }
