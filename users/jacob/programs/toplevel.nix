@@ -185,7 +185,17 @@
   ######################
 
   keepassxc = {
-    home.packages = [pkgs.keepassxc];
+    home.packages = [
+      (pkgs.symlinkJoin {
+        inherit (pkgs.keepassxc) name;
+        paths = [pkgs.keepassxc];
+        nativeBuildInputs = [pkgs.makeWrapper];
+        postBuild = ''
+          wrapProgram $out/bin/keepassxc \
+            --set QT_QPA_PLATFORMTHEME ""
+        '';
+      })
+    ];
   };
 
   ####################
