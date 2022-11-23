@@ -19,7 +19,9 @@ set -eu
 # 	/dev/input/event21
 # )
 
-# DISABLE_DEVICES=
+IFS=':' read -ra DISABLE_DEVICES <<< "$DISABLE_DEVICES"
+device_count=${#DISABLE_DEVICES[@]}
+
 : "${DISABLE_DURATION:=30}"
 : "${NOTIFICATION_USER:="${SUDO_USER-$USER}"}"
 : "${NOTIFICATION_COUNTDOWN:=28}"
