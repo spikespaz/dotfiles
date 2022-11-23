@@ -35,6 +35,10 @@
 
     homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
+
+    # TODO patch homeage
+    # ragenix.url = "github:yaxitech/ragenix";
+    # ragenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
