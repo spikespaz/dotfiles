@@ -33,6 +33,7 @@
         "plymouth-themes"
         "rofi-themes"
         "keyboard-functions"
+        "firefox-pwa"
       ]);
 
     overlays = genSystems (system: let
