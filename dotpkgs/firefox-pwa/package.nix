@@ -69,6 +69,10 @@ in
 
     # in fixup because this is nix-specific, needed for FFPWA_EXECUTABLES
     fixupPhase = ''
+      runHook preFixup
+
       ln -s $out/lib/firefoxpwa/firefoxpwa-connector $out/bin
+
+      runHook postFixup
     '';
   }
