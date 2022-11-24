@@ -22,15 +22,10 @@ stdenv.mkDerivation {
   nativeBuildInputs = [makeWrapper];
 
   installPhase = let
-    rootScriptPath = lib.makeBinPath [bash evtest];
+    rootScriptPath = lib.makeBinPath [bash coreutils evtest];
     userScriptPath =
       "/run/wrappers/bin:"
-      + lib.makeBinPath [
-        bash
-        coreutils
-        dbus
-        libnotify
-      ];
+      + lib.makeBinPath [bash coreutils dbus libnotify];
     disableDevices' = lib.concatStringsSep ":" disableDevices;
   in ''
     runHook preInstall
