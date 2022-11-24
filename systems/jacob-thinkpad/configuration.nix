@@ -253,7 +253,7 @@ lib.mkMerge [
     #   auth sufficient pam_unix.so try_first_pass nullok
     # '';
 
-    # imports = [flake.modules.disable-devices.module];
+    # imports = [flake.modules.disable-input.module];
     programs.disable-input-devices = {
       enable = true;
       allowedUsers = ["jacob"];

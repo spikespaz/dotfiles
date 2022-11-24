@@ -108,7 +108,7 @@
           greeter
           # gamemode
           gaming
-          flake.modules.disable-devices.module
+          flake.modules.disable-input.module
         ];
       };
     };
