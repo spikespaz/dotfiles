@@ -253,8 +253,8 @@ lib.mkMerge [
     #   auth sufficient pam_unix.so try_first_pass nullok
     # '';
 
-    # imports = [flake.modules.scripts.disable-kb.module];
-    desktopScripts.disableKeyboard = {
+    # imports = [flake.modules.disable-devices.module];
+    programs.disable-input-devices = {
       enable = true;
       allowedUsers = ["jacob"];
       # Show all event devices:

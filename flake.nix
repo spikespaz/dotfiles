@@ -108,7 +108,7 @@
           greeter
           # gamemode
           gaming
-          flake.modules.scripts.disable-kb.module
+          flake.modules.disable-devices.module
         ];
       };
     };

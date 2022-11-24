@@ -6,17 +6,17 @@
 }: let
   inherit (lib) types;
   defaultPackage = pkgs.callPackage ./package.nix {};
-  cfg = config.programs.wayland-disable-keyboard;
+  cfg = config.programs.disable-input-devices;
 in {
   options = {
-    programs.wayland-disable-keyboard = {
+    programs.disable-input-devices = {
       enable = lib.mkEnableOption (lib.mdDoc '''');
       package = lib.mkOption {
         type = types.package;
         default = defaultPackage;
         description = lib.mdDoc '''';
         example = lib.literalExpression ''
-          pkgs.wayland-disable-keyboard
+          pkgs.disable-input-devices
         '';
       };
       disableDevices = lib.mkOption {
