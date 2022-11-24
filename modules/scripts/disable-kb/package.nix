@@ -44,10 +44,11 @@ stdenv.mkDerivation {
 
     wrapProgram $out/bin/disable-input-devices \
       --set PATH '${rootScriptPath}' \
-      --set DISABLE_DEVICES ${disableDevices'}
+      --set DISABLE_DEVICES '${disableDevices'}'
 
     wrapProgram $out/bin/disable-input-devices-notify \
       --set PATH '${userScriptPath}' \
+      --set DEVICE_COUNT ${toString (builtins.length disableDevices)}
 
     runHook postInstall
   '';
