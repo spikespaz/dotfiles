@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -eux
+set -eu
 
 toggle_script="$(realpath "$(dirname "$0")")/toggle_kb.sh"
 
