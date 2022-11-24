@@ -18,8 +18,7 @@ case "$1" in
 		;;
 	release)
 		mapfile -t evtest_pids < "$lockfile"
-		# shellcheck disable=SC2068
-		kill ${evtest_pids[@]} || true
+		kill "${evtest_pids[@]}" || true
 		rm -f "$lockfile"
 		;;
 esac
