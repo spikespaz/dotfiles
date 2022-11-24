@@ -9,6 +9,7 @@
     ./theming.nix
     ./dunst.nix
     ./rofi.nix
+    ./utilities.nix
   ];
 
   home.packages = [
