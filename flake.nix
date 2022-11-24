@@ -106,7 +106,8 @@
           undervolt
           touchpad
           greeter
-          gamemode
+          # gamemode
+          gaming
           flake.modules.scripts.disable-kb.module
         ];
       };
