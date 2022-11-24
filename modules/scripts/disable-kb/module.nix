@@ -15,7 +15,13 @@
       evtest
     ])}'
     export DISABLE_DEVICES='${lib.concatStringsSep ":" deviceFds}'
-    ${builtins.readFile ./disable_kb.sh}
+    ${
+      builtins.replaceStrings [
+        "toggle_script=\"$here/toggle_kb.sh\""
+      ] [
+        "toggle_script='${./toggle_kb.sh}'"
+      ] (builtins.readFile ./disable_kb.sh)
+    }
   '';
   cfg = config.desktopScripts.disableKeyboard;
 in {
@@ -65,7 +71,7 @@ in {
         groups = cfg.allowedGroups;
         commands = [
           {
-            command = lib.getExe scriptBin;
+            command = "${./toggle_kb.sh}";
             options = ["NOPASSWD"];
           }
         ];

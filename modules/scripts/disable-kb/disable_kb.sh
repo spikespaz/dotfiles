@@ -1,24 +1,8 @@
 #! /usr/bin/env bash
-
 set -eux
 
-if [ "$(id -u)" -eq 0 ]; then
-	if [ "$1" == 'disable' ]; then
-		shift 1
-		pids=()
-		for event in "$@"; do
-			evtest --grab "$event" &> /dev/null &
-
-			pids+=($!)
-		done
-		echo "${pids[@]}"
-	elif [ "$1" == 'release' ]; then
-		shift 1
-		# shellcheck disable=SC2068
-		kill $@
-	fi
-	exit 0
-fi
+here="$(realpath "$(dirname "$0")")"
+toggle_script="$here/toggle_kb.sh"
 
 IFS=':' read -ra DISABLE_DEVICES <<< "$DISABLE_DEVICES"
 device_count=${#DISABLE_DEVICES[@]}
@@ -35,9 +19,7 @@ device_count=${#DISABLE_DEVICES[@]}
 
 __NOTIFICATION_COUNTDOWN_TIMEOUT=2000
 
-echo "$0"
-
-pids=("$(sudo "$0" disable "${DISABLE_DEVICES[@]}")")
+pids=("$(sudo bash "$toggle_script" disable "${DISABLE_DEVICES[@]}")")
 
 notify-send \
 	"$NOTIFICATION_TITLE" \
@@ -64,7 +46,7 @@ for i in $(seq 0 $NOTIFICATION_COUNTDOWN); do
 	sleep 1
 done
 
-sudo "$0" release "${pids[@]}"
+sudo bash "$toggle_script" release "${pids[@]}"
 
 notify-send \
 	"$NOTIFICATION_TITLE" \
