@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -eu
 
-toggle_script="$(realpath "$(dirname "$0")")/toggle_kb.sh"
+toggle_script="$(realpath "$(dirname "$0")")/disable-devices.sh"
 
 if [ -z "${DISABLE_DEVICES-}" ]; then
 	prefix=()
