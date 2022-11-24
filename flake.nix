@@ -107,7 +107,7 @@
           touchpad
           greeter
           gamemode
-          flake.wayland.scripts.disable_kb
+          flake.modules.scripts.disable-kb.module
         ];
       };
     };
