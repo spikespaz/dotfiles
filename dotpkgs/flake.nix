@@ -56,6 +56,7 @@
       "idlehack"
       "randbg"
       "zsh-uncruft"
+      "firefox-pwa"
     ];
   };
 }
