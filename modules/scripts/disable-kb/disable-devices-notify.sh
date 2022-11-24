@@ -3,7 +3,7 @@ set -eux
 
 toggle_script="$(realpath "$(dirname "$0")")/toggle_kb.sh"
 
-if [ -z "$DISABLE_DEVICES" ]; then
+if [ -z "${DISABLE_DEVICES-}" ]; then
 	prefix=()
 	: "${DEVICE_COUNT:=-1}"
 else
