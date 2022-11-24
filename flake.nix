@@ -97,7 +97,7 @@
           enableUnstableZfs = false;
         };
 
-        modules = lib.trace flake.wayland (with flake.systems.jacob-thinkpad; [
+        modules = with flake.systems.jacob-thinkpad; [
           bootloader
           filesystems
           plymouth
@@ -108,7 +108,7 @@
           greeter
           gamemode
           flake.wayland.scripts.disable_kb
-        ]);
+        ];
       };
     };
 
