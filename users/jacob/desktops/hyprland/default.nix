@@ -50,6 +50,10 @@
         }))
       ]
       (lib.concatStringsSep "\n\n" [
+        ''
+          blurls = rofi
+          blurls = notifications
+        ''
         # hyprland config, split up
         (builtins.readFile ./displays.conf)
         (builtins.readFile ./keybinds.conf)
