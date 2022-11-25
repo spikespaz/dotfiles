@@ -63,6 +63,7 @@ in {
           description = lib.mdDoc ''
             The name of the icon (in `iconCategory`) to use from
             the current user session's icon theme.
+            This can also be a path to an icon if `iconCategory` is null.
           '';
           example = lib.literalExpression "\"computerjanitor\"";
         };
