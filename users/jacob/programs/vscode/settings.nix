@@ -58,6 +58,9 @@
     # fix fuzzy text in integrated terminal
     "terminal.integrated.gpuAcceleration" = "on";
 
+    # show vcs changes and staged changes as a tree
+    "scm.defaultViewMode" = "tree";
+
     ## Saving and Formatting ##
 
     # auto-save when the active editor loses focus
