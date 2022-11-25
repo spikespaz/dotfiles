@@ -6,7 +6,6 @@ toggle_script="$(realpath "$(dirname "$0")")/disable-devices.sh"
 prefix=()
 if [ -n "${DISABLE_DEVICES-}" ]; then
 	prefix=("DISABLE_DEVICES='$DISABLE_DEVICES'")
-	IFS=':' read -ra __disable_devices <<< "$DISABLE_DEVICES"
 fi
 
 : "${DISABLE_DURATION:=30}"
@@ -19,7 +18,7 @@ fi
 : "${NOTIFICATION_TITLE:=Input/Keyboard}"
 __NOTIFICATION_COUNTDOWN_TIMEOUT=2000
 
-evtest_pids=("$(sudo "${prefix[@]}" "$toggle_script" disable)")
+IFS=' ' read -ra evtest_pids <<< "$(sudo "${prefix[@]}" "$toggle_script" disable)"
 device_count=${#evtest_pids[@]}
 
 notify-send \
