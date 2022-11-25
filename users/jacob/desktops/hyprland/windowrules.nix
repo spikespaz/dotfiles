@@ -34,10 +34,6 @@
       class = ["WebCord" "discord"];
       title = ["(\\[\\d+\\] )?WebCord.*" ".*Discord"];
     };
-    discordPopup = {
-      class = ["WebCord"];
-      title = ["WebCord . Settings"];
-    };
     calculator.class = ["qalculate-gtk"];
     obsStudio = {
       class = ["com.obsproject.Studio"];
@@ -58,16 +54,18 @@
 
     ### DESKTOP APPLICATION MODALS ###
 
+    discordModal = {
+      class = ["WebCord"];
+      title = ["WebCord . Settings"];
+    };
     keePassModal = {
       class = ["org\.keepassxc\.KeePassXC"];
       title = ["Unlock Database.+KeePassXC" "Generate Password"];
     };
-
     firefoxModal = {
       class = ["firefox"];
       title = ["Extension.+Mozilla Firefox.*"];
     };
-
     lxImageModal = {
       class = ["lximage-qt"];
       title = ["Print"];
@@ -90,7 +88,7 @@ in {
         keePassModal
         lxImageModal
         firefoxModal
-        discordPopup
+        discordModal
         obsStudio
       ])
       (map (rule ["opacity 0.97 0.97"]) [
