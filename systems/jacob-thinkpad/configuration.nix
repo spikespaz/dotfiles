@@ -5,7 +5,13 @@ args @ {
   lib,
   ...
 }:
-lib.mkMerge [
+(x: {
+  imports = [
+    flake.modules.disable-input.module
+  ];
+  config = x;
+})
+(lib.mkMerge [
   #################
   ### NIX SETUP ###
   #################
@@ -255,7 +261,6 @@ lib.mkMerge [
     #   auth sufficient pam_unix.so try_first_pass nullok
     # '';
 
-    # imports = [flake.modules.disable-input.module];
     programs.disable-input-devices = {
       enable = true;
       allowedUsers = ["jacob"];
@@ -347,4 +352,4 @@ lib.mkMerge [
       qemu.ovmf.packages = [pkgs.OVMFFull.fd];
     };
   }
-]
+])
