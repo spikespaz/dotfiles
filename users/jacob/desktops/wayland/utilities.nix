@@ -11,11 +11,12 @@
 
   programs.disable-input-devices = {
     enable = true;
-    duration = 60;
+    duration = 45;
     notification = {
-      # countdown = duration - 2;
-      iconName = "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark/24x24/apps/computerjanitor.svg";
+      iconCategory = "apps";
+      iconName = "computerjanitor";
       title = "Cleaning Mode";
+      urgency = "critical";
     };
   };
 }
