@@ -13,51 +13,75 @@ in {
       duration = lib.mkOption {
         type = types.ints.positive;
         default = 30;
-        description = lib.mdDoc '''';
-        example = lib.literalExpression "";
+        description = lib.mdDoc ''
+          Duration in seconds to temporarily disable input devices.
+        '';
+        example = lib.literalExpression "60";
       };
       notification = {
         countdown = lib.mkOption {
           type = types.ints.positive;
           default = cfg.duration - 2;
-          description = lib.mdDoc '''';
-          example = lib.literalExpression "";
+          description = lib.mdDoc ''
+            Duration in seconds to countdown before enabling input devices.
+            One notification is shown for each second of the countdown,
+            with a progress bar decreasing until zero.
+          '';
+          example = lib.literalExpression "55";
         };
         timeout = lib.mkOption {
           type = types.ints.positive;
           default = 2500;
-          description = lib.mdDoc '''';
-          example = lib.literalExpression "";
+          description = lib.mdDoc ''
+            The timeout in milliseconds before the last notification
+            (that says devices are enabled) disappears.
+          '';
+          example = lib.literalExpression "5000";
         };
         textSize = lib.mkOption {
-          type = types.enum ["x-large"];
+          type = types.singleLineStr;
           default = "x-large";
-          description = lib.mdDoc '''';
-          example = lib.literalExpression "";
+          description = lib.mdDoc ''
+            The size of the text in the first line of begin and end notifications.
+            Pango markup `text_size` attribute:
+            <https://docs.gtk.org/Pango/pango_markup.html#the-span-attributes>
+          '';
+          example = lib.literalExpression "\"200%\"";
         };
         iconCategory = lib.mkOption {
           type = types.nullOr types.singleLineStr;
           default = null;
-          description = lib.mdDoc '''';
-          example = lib.literalExpression "";
+          description = lib.mdDoc ''
+            The icon category to select `iconName` from for the current
+            user session's icon theme.
+          '';
+          example = lib.literalExpression "\"apps\"";
         };
         iconName = lib.mkOption {
           type = types.oneOf [types.singleLineStr types.path];
           default = "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark/24x24/devices/keyboard-input.svg";
-          description = lib.mdDoc '''';
-          example = lib.literalExpression "";
+          description = lib.mdDoc ''
+            The name of the icon (in `iconCategory`) to use from
+            the current user session's icon theme.
+          '';
+          example = lib.literalExpression "\"computerjanitor\"";
         };
         urgency = lib.mkOption {
-          type = types.enum ["normal"];
+          type = types.enum ["low" "normal" "critical"];
           default = "normal";
-          description = lib.mdDoc '''';
+          description = lib.mdDoc ''
+            The urgency of the notifications.
+            Read about this from your notification daemon's manual.
+          '';
           example = lib.literalExpression "";
         };
         title = lib.mkOption {
           type = types.singleLineStr;
           default = "Input/Keyboard";
-          description = lib.mdDoc '''';
-          example = lib.literalExpression "";
+          description = lib.mdDoc ''
+            The title to use for all three norification types.
+          '';
+          example = lib.literalExpression "\"Pause Device Input\"";
         };
       };
     };
