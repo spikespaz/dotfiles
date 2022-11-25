@@ -150,6 +150,8 @@ in {
 
     ### FILE SHARING ###
     programs.transmission
+    programs.filezilla
+
     ##############################
     ### USER-SPECIFIC SERVICES ###
     ##############################

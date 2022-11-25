@@ -205,6 +205,9 @@
   transmission = {
     home.packages = [pkgs.transmission-qt];
   };
+  filezilla = {
+    home.packages = [pkgs.filezilla];
+  };
 
   ###################
   ### 3D PRINTING ###
