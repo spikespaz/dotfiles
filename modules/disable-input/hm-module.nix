@@ -5,10 +5,12 @@
   ...
 }: let
   inherit (lib) types;
-  cfg = config.programs.disable-input-devices;
+  inherit (import ./common.nix) baseName version src;
+  optionName = baseName;
+  cfg = config.programs.${optionName};
 in {
   options = {
-    programs.disable-input-devices = {
+    programs.${optionName} = {
       enable = lib.mkEnableOption (lib.mdDoc '''');
       duration = lib.mkOption {
         type = types.ints.positive;
@@ -88,21 +90,43 @@ in {
     };
   };
   config = lib.mkIf cfg.enable (let
-    binaryName = "disable-input-devices-notify";
-    wrapperBin = pkgs.writeShellScriptBin binaryName ''
-      export DISABLE_DURATION=${toString cfg.duration}
-      export NOTIFICATION_COUNTDOWN=${toString cfg.notification.countdown}
-      export NOTIFICATION_TIMEOUT=${toString cfg.notification.timeout}
-      export NOTIFICATION_TEXT_SIZE=${toString cfg.notification.textSize}
-      export NOTIFICATION_ICON_CATEGORY=${toString cfg.notification.iconCategory}
-      export NOTIFICATION_ICON_NAME=${toString cfg.notification.iconName}
-      export NOTIFICATION_URGENCY=${cfg.notification.urgency}
-      export NOTIFICATION_TITLE='${cfg.notification.title}'
+    package = pkgs.stdenv.mkDerivation {
+      pname = "${baseName}-notify";
+      inherit version src;
 
-      /run/current-system/sw/bin/${binaryName}
-    '';
+      strictDeps = true;
+      nativeBuildInputs = [pkgs.makeWrapper];
+
+      installPhase = let
+        scriptName = "${baseName}-notify";
+        scriptPath =
+          "/run/wrappers/bin:"
+          + lib.makeBinPath (with pkgs; [bash coreutils dbus libnotify]);
+      in ''
+        install -Dm755 disable-devices-notify.sh $out/bin/${scriptName}
+
+        sed -i \
+          "s;toggle_script=.\+;toggle_script='/run/current-system/sw/bin/${baseName}';" \
+          $out/bin/${scriptName}
+
+        wrapProgram $out/bin/${scriptName} \
+          --set PATH '${scriptPath}'
+      '';
+    };
+    wrappedPackage = package.overrideAttrs (old: {
+      postFixup = ''
+        wrapProgram $out/bin/${old.pname} \
+          --set DISABLE_DURATION '${toString cfg.duration}' \
+          --set NOTIFICATION_COUNTDOWN '${toString cfg.notification.countdown}' \
+          --set NOTIFICATION_TIMEOUT '${toString cfg.notification.timeout}' \
+          --set NOTIFICATION_TEXT_SIZE '${toString cfg.notification.textSize}' \
+          --set NOTIFICATION_ICON_CATEGORY '${toString cfg.notification.iconCategory}' \
+          --set NOTIFICATION_ICON_NAME '${toString cfg.notification.iconName}' \
+          --set NOTIFICATION_URGENCY '${cfg.notification.urgency}' \
+          --set NOTIFICATION_TITLE '${cfg.notification.title}'
+      '';
+    });
   in {
-    # TODO probably don't make so many assumptions
-    home.packages = [wrapperBin];
+    home.packages = [wrappedPackage];
   });
 }

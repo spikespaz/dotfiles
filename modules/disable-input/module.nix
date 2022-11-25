@@ -5,20 +5,13 @@
   ...
 }: let
   inherit (lib) types;
-  defaultPackage = pkgs.callPackage ./package.nix {};
-  cfg = config.programs.disable-input-devices;
+  inherit (import ./common.nix) baseName version src;
+  optionName = baseName;
+  cfg = config.programs.${optionName};
 in {
   options = {
-    programs.disable-input-devices = {
+    programs.${optionName} = {
       enable = lib.mkEnableOption (lib.mdDoc '''');
-      package = lib.mkOption {
-        type = types.package;
-        default = defaultPackage;
-        description = lib.mdDoc '''';
-        example = lib.literalExpression ''
-          pkgs.disable-input-devices
-        '';
-      };
       disableDevices = lib.mkOption {
         type = types.attrsOf types.attrs;
         default = [];
@@ -39,41 +32,57 @@ in {
       };
     };
   };
-  config = lib.mkIf cfg.enable (
-    let
-      deviceFds = map (name: "/dev/${name}") (builtins.attrNames cfg.disableDevices);
-      wrappedPackage = cfg.package.override {
-        disableDevices = deviceFds;
-      };
-    in {
-      environment.systemPackages = [wrappedPackage];
+  config = lib.mkIf cfg.enable (let
+    package = pkgs.stdenv.mkDerivation {
+      pname = baseName;
+      inherit version src;
 
-      services.udev.extraRules = (
-        lib.concatStrings (
-          builtins.attrValues (
-            builtins.mapAttrs (name: {
-              product,
-              vendor,
-            }: ''
-              SUBSYSTEMS=="input", ATTRS{id/product}=="${product}", ATTRS{id/vendor}=="${vendor}", SYMLINK+="${name}"
-            '')
-            cfg.disableDevices
-          )
+      strictDeps = true;
+      nativeBuildInputs = [pkgs.makeWrapper];
+
+      installPhase = let
+        scriptPath = lib.makeBinPath (with pkgs; [bash coreutils evtest]);
+        DISABLE_DEVICES = lib.pipe cfg.disableDevices [
+          builtins.attrNames
+          (map (name: "/dev/${name}"))
+          (lib.concatStringsSep ":")
+        ];
+      in ''
+        install -Dm755 disable-devices.sh $out/bin/${baseName}
+
+        wrapProgram $out/bin/${baseName} \
+          --set PATH '${scriptPath}' \
+          --set DISABLE_DEVICES '${DISABLE_DEVICES}'
+      '';
+    };
+  in {
+    environment.systemPackages = [package];
+
+    services.udev.extraRules = (
+      lib.concatStrings (
+        builtins.attrValues (
+          builtins.mapAttrs (name: {
+            product,
+            vendor,
+          }: ''
+            SUBSYSTEMS=="input", ATTRS{id/product}=="${product}", ATTRS{id/vendor}=="${vendor}", SYMLINK+="${name}"
+          '')
+          cfg.disableDevices
         )
-      );
+      )
+    );
 
-      security.sudo.extraRules = [
-        {
-          users = cfg.allowedUsers;
-          groups = cfg.allowedGroups;
-          commands = [
-            {
-              command = "${cfg.package}/bin/disable-input-devices";
-              options = ["NOPASSWD"];
-            }
-          ];
-        }
-      ];
-    }
-  );
+    security.sudo.extraRules = [
+      {
+        users = cfg.allowedUsers;
+        groups = cfg.allowedGroups;
+        commands = [
+          {
+            command = lib.getExe package;
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
+    ];
+  });
 }

@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -eu
+set -eux
 
 if [ "$(id -u)" -ne 0 ]; then
 	echo 'Script must be run as root!'
@@ -11,10 +11,13 @@ IFS=':' read -ra DISABLE_DEVICES <<< "$DISABLE_DEVICES"
 
 case "$1" in
 	disable)
+		pids=()
 		for device in "${DISABLE_DEVICES[@]}"; do
 			evtest --grab "$device" &> /dev/null &
-			echo "$!" >> "$lockfile"
+			pids+=($!)
+			echo "${pids[-1]}" >> "$lockfile"
 		done
+		echo "${pids[@]}"
 		;;
 	release)
 		mapfile -t evtest_pids < "$lockfile"
