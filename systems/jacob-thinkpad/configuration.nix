@@ -5,13 +5,8 @@ args @ {
   lib,
   ...
 }:
-(x: {
-  imports = [
-    flake.modules.disable-input.module
-  ];
-  config = x;
-})
-(lib.mkMerge [
+(xs: {imports = xs;})
+[
   #################
   ### NIX SETUP ###
   #################
@@ -255,6 +250,10 @@ args @ {
   ### DESKTOP ENVIRONMENT: WAYLAND ###
   ####################################
   {
+    imports = [
+      flake.modules.disable-input.module
+    ];
+
     # <https://github.com/swaywm/swaylock/issues/61>
     # security.pam.services.swaylock.text = ''
     #   auth sufficient ${pkgs.fprintd-grosshack}/lib/security/pam_fprintd_grosshack.so
@@ -352,4 +351,4 @@ args @ {
       qemu.ovmf.packages = [pkgs.OVMFFull.fd];
     };
   }
-])
+]
