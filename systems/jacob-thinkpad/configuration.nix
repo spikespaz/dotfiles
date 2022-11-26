@@ -206,13 +206,6 @@ args @ {
     # enable fingerprint sensor
     services.fprintd.enable = true;
 
-    # <https://github.com/swaywm/swaylock/issues/61>
-    security.pam.services.swaylock.text = ''
-      auth sufficient pam_unix.so try_first_pass likeauth nullok
-      auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so
-      auth include login
-    '';
-
     # registry for linux, thanks to gnome
     programs.dconf.enable = true;
 
@@ -253,6 +246,12 @@ args @ {
     imports = [
       flake.modules.disable-input.module
     ];
+
+    # <https://github.com/swaywm/swaylock/issues/61>
+    security.pam.services.swaylock.text = ''
+      auth sufficient pam_unix.so try_first_pass nullok
+      auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so
+    '';
 
     # <https://github.com/swaywm/swaylock/issues/61>
     # security.pam.services.swaylock.text = ''
