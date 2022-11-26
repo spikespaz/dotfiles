@@ -70,6 +70,10 @@
       class = ["lximage-qt"];
       title = ["Print"];
     };
+    fileZillaModal = {
+      class = ["filezilla"];
+      title = ["Site Manager"];
+    };
   };
 in {
   wayland.windowManager.hyprland.config.windowRules.rules = with patterns;
@@ -88,6 +92,7 @@ in {
         keePassModal
         lxImageModal
         firefoxModal
+        fileZillaModal
         discordModal
         obsStudio
       ])
