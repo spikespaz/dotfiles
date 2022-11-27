@@ -20,7 +20,14 @@
 
     ### SYSTEM MODALS ###
 
-    filePickerPortal.class = ["xdg-desktop-portal-gtk"];
+    filePickerPortal = {
+      # I'm guessing that almost all portal interfaces are going to be modals
+      class = [
+        "xdg-desktop-portal-gtk"
+        "org\.freedesktop\.impl\.portal\.desktop\.kde"
+      ];
+      # title = ["Open Files.+Portal"];
+    };
     polkitAgent.class = ["lxqt-policykit-agent"];
     mountDialog.class = ["udiskie"];
 
@@ -36,7 +43,7 @@
     };
     calculator.class = ["qalculate-gtk"];
     obsStudio = {
-      class = ["com.obsproject.Studio"];
+      class = ["com\.obsproject\.Studio"];
       title = ["OBS\\s[\\d\\.]+.*"];
     };
     steam = {
