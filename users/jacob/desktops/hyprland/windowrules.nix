@@ -56,7 +56,7 @@
 
     discordModal = {
       class = ["WebCord"];
-      title = ["WebCord . Settings"];
+      title = ["WebCord.+Settings"];
     };
     keePassModal = {
       class = ["org\.keepassxc\.KeePassXC"];
