@@ -1,4 +1,5 @@
 {
+  flake,
   lib,
   pkgs,
   hmModules,
@@ -6,6 +7,7 @@
 }: {
   imports = [
     hmModules.hyprland
+    flake.modules.desktop-portals
     ./config.nix
     ./windowrules.nix
   ];
@@ -59,5 +61,36 @@
         (builtins.readFile ./keybinds.conf)
       ])
     );
+  };
+
+  xdg.desktopPortals = {
+    enable = true;
+    portals = let
+      useIn = ["Hyprland"];
+    in [
+      {
+        package = pkgs.xdg-desktop-portal-wlr;
+        inherit useIn;
+      }
+      {
+        package = pkgs.libsForQt5.xdg-desktop-portal-kde;
+        interfaces = [
+          # "org.freedesktop.impl.portal.Access"
+          # "org.freedesktop.impl.portal.Account"
+          # "org.freedesktop.impl.portal.AppChooser"
+          # "org.freedesktop.impl.portal.Background"
+          # "org.freedesktop.impl.portal.Email"
+          "org.freedesktop.impl.portal.FileChooser"
+          # "org.freedesktop.impl.portal.Inhibit"
+          # "org.freedesktop.impl.portal.Notification"
+          # "org.freedesktop.impl.portal.Print"
+          # "org.freedesktop.impl.portal.ScreenCast"
+          # "org.freedesktop.impl.portal.Screenshot"
+          # "org.freedesktop.impl.portal.RemoteDesktop"
+          # "org.freedesktop.impl.portal.Settings"
+        ];
+        inherit useIn;
+      }
+    ];
   };
 }

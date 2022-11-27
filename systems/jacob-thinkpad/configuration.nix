@@ -175,77 +175,7 @@ args @ {
   {
     ### SERVICES: FLATPAK ###
     services.flatpak.enable = true;
-
-    # TODO user-config the shit out of this
-
-    # cross-desktop group; they make specifications
-    # for what certain environment variables should be
-    # <https://github.com/fufexan/dotfiles/blob/785b65436f5849a8dea175d967d901159f689edd/modules/desktop.nix#L153>
-    # not just flatpak, also useful on wayland
-    xdg.portal = let
-      modifyPortal = package: {
-        interfaces ? null,
-        useIn ? null,
-        # environment ? null,
-      }:
-        pkgs.symlinkJoin {
-          inherit (package) name;
-          paths = [package];
-          nativeBuildInputs = [pkgs.makeWrapper];
-          postBuild = ''
-            ${lib.optionalString (interfaces != null) ''
-              sed -i \
-                's@Interfaces=.\+@Interfaces=${lib.concatStringsSep ";" interfaces};@' \
-                $out/share/xdg-desktop-portal/portals/*.portal
-            ''}
-            ${lib.optionalString (useIn != null) ''
-              sed -i \
-                's@UseIn=.\+@UseIn=${lib.concatStringsSep ";" useIn};@' \
-                $out/share/xdg-desktop-portal/portals/*.portal
-            ''}
-          '';
-          # ${lib.optionalString (environment != null) ''
-          #   wrapProgram $out/libexec/xdg-desktop-portal-* \
-          #     ${lib.concatStringsSep " " (builtins.attrValues (
-          #     builtins.mapAttrs (name: value: "--set ${name} ${value}") environment
-          #   ))}
-          # ''}
-        };
-    in {
-      enable = true;
-      # wlr.enable = true;
-      # wlr.package = ;
-      # lxqt.enable = true;
-      extraPortals = [
-        (modifyPortal pkgs.xdg-desktop-portal-wlr {
-          useIn = ["KDE" "wlroots" "Hyprland" "sway"];
-        })
-        # pkgs.lxqt.xdg-desktop-portal-lxqt
-        # pkgs.xdg-desktop-portal-gtk
-        # pkgs.xdg-desktop-portal-gnome
-        (modifyPortal pkgs.libsForQt5.xdg-desktop-portal-kde {
-          interfaces = [
-            # "org.freedesktop.impl.portal.Access"
-            # "org.freedesktop.impl.portal.Account"
-            # "org.freedesktop.impl.portal.AppChooser"
-            # "org.freedesktop.impl.portal.Background"
-            # "org.freedesktop.impl.portal.Email"
-            "org.freedesktop.impl.portal.FileChooser"
-            # "org.freedesktop.impl.portal.Inhibit"
-            # "org.freedesktop.impl.portal.Notification"
-            # "org.freedesktop.impl.portal.Print"
-            # "org.freedesktop.impl.portal.ScreenCast"
-            # "org.freedesktop.impl.portal.Screenshot"
-            # "org.freedesktop.impl.portal.RemoteDesktop"
-            # "org.freedesktop.impl.portal.Settings"
-          ];
-          useIn = ["KDE" "wlroots" "Hyprland" "sway"];
-          # environment = {
-          #   QT_QPA_PLATFORMTHEME = "qt5ct";
-          # };
-        })
-      ];
-    };
+    xdg.portal.enable = true;
   }
 
   ###########################
