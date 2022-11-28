@@ -60,15 +60,13 @@ in {
 
     services.udev.extraRules = (
       lib.concatStrings (
-        builtins.attrValues (
-          builtins.mapAttrs (name: {
-            product,
-            vendor,
-          }: ''
-            SUBSYSTEMS=="input", ATTRS{id/product}=="${product}", ATTRS{id/vendor}=="${vendor}", SYMLINK+="${name}"
-          '')
-          cfg.disableDevices
-        )
+        lib.mapAttrsToList (name: {
+          product,
+          vendor,
+        }: ''
+          SUBSYSTEMS=="input", ATTRS{id/product}=="${product}", ATTRS{id/vendor}=="${vendor}", SYMLINK+="${name}"
+        '')
+        cfg.disableDevices
       )
     );
 
