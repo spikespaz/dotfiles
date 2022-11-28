@@ -67,7 +67,11 @@
     };
     keePassModal = {
       class = ["org\.keepassxc\.KeePassXC"];
-      title = ["Unlock Database.+KeePassXC" "Generate Password"];
+      title = [
+        "Unlock Database.+KeePassXC"
+        "Generate Password"
+        "KeePassXC.+Browser Access Request"
+      ];
     };
     firefoxModal = {
       class = ["firefox"];
