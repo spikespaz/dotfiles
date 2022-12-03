@@ -8,6 +8,7 @@ if [ -n "${DISABLE_DEVICES-}" ]; then
 	prefix=("DISABLE_DEVICES='$DISABLE_DEVICES'")
 fi
 
+: "${DISABLE_DELAY:=1}"
 : "${DISABLE_DURATION:=30}"
 : "${NOTIFICATION_COUNTDOWN:=28}"
 : "${NOTIFICATION_TIMEOUT:=2000}"
@@ -17,6 +18,8 @@ fi
 : "${NOTIFICATION_URGENCY:=critical}"
 : "${NOTIFICATION_TITLE:=Input/Keyboard}"
 __NOTIFICATION_COUNTDOWN_TIMEOUT=2000
+
+sleep "$(bc <<< "scale=3; $DISABLE_DELAY / 1000")"
 
 IFS=' ' read -ra evtest_pids <<< "$(sudo "${prefix[@]}" "$toggle_script" disable)"
 device_count=${#evtest_pids[@]}

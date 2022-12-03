@@ -12,6 +12,16 @@ in {
   options = {
     programs.${optionName} = {
       enable = lib.mkEnableOption (lib.mdDoc '''');
+      delay = lib.mkOption {
+        type = types.ints.positive;
+        default = 2000;
+        description = lib.mdDoc ''
+          Delay in millseconds to wait before disabling input devices.
+          This option is provided because when triggered via keybind,
+          the keys pressed can get "stuck" after re-enabling devices.
+        '';
+        example = lib.literalExpression "2500";
+      };
       duration = lib.mkOption {
         type = types.ints.positive;
         default = 30;
@@ -101,7 +111,7 @@ in {
         scriptName = "${baseName}-notify";
         scriptPath =
           "/run/wrappers/bin:"
-          + lib.makeBinPath (with pkgs; [bash coreutils dbus libnotify]);
+          + lib.makeBinPath (with pkgs; [bash coreutils bc dbus libnotify]);
       in ''
         install -Dm755 disable-devices-notify.sh $out/bin/${scriptName}
 
@@ -116,6 +126,7 @@ in {
     wrappedPackage = package.overrideAttrs (old: {
       postFixup = ''
         wrapProgram $out/bin/${old.pname} \
+          --set DISABLE_DELAY '${toString cfg.delay}' \
           --set DISABLE_DURATION '${toString cfg.duration}' \
           --set NOTIFICATION_COUNTDOWN '${toString cfg.notification.countdown}' \
           --set NOTIFICATION_TIMEOUT '${toString cfg.notification.timeout}' \
