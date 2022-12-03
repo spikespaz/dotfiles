@@ -3,14 +3,13 @@
   nixpkgs,
   ...
 }: let
-  # maybe this will change in the future?
-  dataDir = "PolyMC";
-  # graalvm for java 8 is not in nixpkgs,
   # there are a few open issues but this seems simplest
+  # <https://sourcegraph.com/github.com/NixOS/nixpkgs/-/blob/pkgs/development/compilers/graalvm/community-edition/mkGraal.nix>
   mkGraal = opts:
     pkgs.callPackage (import "${nixpkgs}/pkgs/development/compilers/graalvm/community-edition/mkGraal.nix" opts) {
       Foundation = null;
     };
+
   # TODO clean up the nixpkgs source code,
   # only run what is necessary and remove the stupidity here
   graalvm8-ce =
@@ -42,6 +41,15 @@
         runHook postInstall
       '';
     });
+
+  graalvm8-ce-jre = "${graalvm8-ce}/jre";
+
+  javaPackages = [
+    pkgs.zulu8
+    graalvm8-ce-jre
+    pkgs.graalvm11-ce
+    pkgs.graalvm17-ce
+  ];
 in {
   home.packages = [
     # TODO make a pull request
@@ -53,18 +61,11 @@ in {
     #       pkgs.libsForQt5.qt5.qtwayland
     #     ];
     # }))
+
+    # Qt5 is supported by qt5ct, Qt6 is not
+    (pkgs.prismlauncher-qt5.override {
+      jdks = javaPackages;
+    })
     (pkgs.prismlauncher.override {enableLTO = true;})
   ];
-
-  xdg.dataFile."${dataDir}/java/graalvm-ce-java17".source = pkgs.graalvm17-ce;
-  xdg.dataFile."${dataDir}/java/graalvm-ce-java11".source = pkgs.graalvm11-ce;
-  xdg.dataFile."${dataDir}/java/graalvm-ce-java8".source = graalvm8-ce;
-  xdg.dataFile."${dataDir}/java/zulu-java8".source = pkgs.zulu8;
 }
-# Overriding PolyMC because of:
-#
-# qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
-# This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
-# Available platform plugins are: offscreen, eglfs, linuxfb, minimal, minimalegl, vnc, xcb, vkkhrdisplay.
-# zsh: IOT instruction (core dumped)  polymc
-
