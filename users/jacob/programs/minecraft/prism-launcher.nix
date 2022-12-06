@@ -66,6 +66,5 @@ in {
     (pkgs.prismlauncher-qt5.override {
       jdks = javaPackages;
     })
-    (pkgs.prismlauncher.override {enableLTO = true;})
   ];
 }
