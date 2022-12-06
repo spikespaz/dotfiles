@@ -109,6 +109,7 @@
           greeter
           # gamemode
           gaming
+          clight
         ];
       };
     };
