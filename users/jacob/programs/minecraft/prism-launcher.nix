@@ -45,11 +45,24 @@
   graalvm8-ce-jre = "${graalvm8-ce}/jre";
 
   javaPackages = [
+    # Java 8
+    pkgs.temurin-jre-bin-8
     pkgs.zulu8
     graalvm8-ce-jre
+    # Java 11
+    pkgs.temurin-jre-bin-11
     pkgs.graalvm11-ce
+    # Java 17
     pkgs.graalvm17-ce
+    # Latest
+    pkgs.temurin-jre-bin
+    pkgs.zulu
   ];
+
+  # wrapperScript = pkgs.writeShellScriptBin "polymc-minecraft-wrapper" ''
+  #   export force_glsl_extensions_warn=true
+  #   exec "$@"
+  # '';
 in {
   home.packages = [
     # TODO make a pull request
@@ -66,5 +79,7 @@ in {
     (pkgs.prismlauncher-qt5.override {
       jdks = javaPackages;
     })
+
+    # wrapperScript
   ];
 }
