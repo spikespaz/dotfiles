@@ -23,7 +23,7 @@
       '';
     });
 in {
-  canary = _: {
+  canary = {
     home.packages = [discordPackage];
 
     xdg.configFile."discordcanary/settings.json".text = builtins.toJSON {
