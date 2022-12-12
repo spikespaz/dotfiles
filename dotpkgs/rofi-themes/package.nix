@@ -3,10 +3,6 @@
   maintainers,
   stdenv,
   fetchFromGitHub,
-  makeWrapper,
-  bash,
-  coreutils,
-  fontconfig,
 }:
 stdenv.mkDerivation rec {
   pname = "adi1090x-rofi-themes";
@@ -19,22 +15,23 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-LsX543Pehflm/SP6bdffu1DZMrtzYKAyf6Riag/wlNw=";
   };
 
-  nativeBuildInputs = [makeWrapper];
-
-  configurePhase = ''
-    sed -i 's|#!/usr/bin/env bash||' ./setup.sh
-    sed -i 's|FONT_DIR=".\+"|FONT_DIR="$out/share/fonts/truetype/rofi"|' ./setup.sh
-    sed -i 's|ROFI_DIR=".\+"|ROFI_DIR="$out/share/rofi"|' ./setup.sh
-
-    wrapProgram ./setup.sh \
-      --set PATH \
-        ${lib.makeBinPath [coreutils fontconfig]}
-  '';
+  replaceImportFrom = ''@import\s\+\"\(.\+\)\"'';
+  replaceImportTo = ''@import \"$(dirname $file)/\1\"'';
 
   installPhase = ''
     runHook preInstall
 
-    ${lib.getExe bash} ./setup.sh
+    fonts_dir=$out/share/fonts/truetype/rofi
+    config_dir=$out/share/rofi
+
+    mkdir -p $fonts_dir $config_dir
+
+    cp -rf ./fonts/* "$fonts_dir"
+    cp -rf ./files/* "$config_dir"
+
+    for file in $config_dir/**/*.rasi; do
+      sed -i "s|${replaceImportFrom}|${replaceImportTo}|g" "$file"
+    done
 
     runHook postInstall
   '';
