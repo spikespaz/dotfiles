@@ -58,6 +58,7 @@ in {
     ### BASICS ###
     rycee.darkreader
     rycee.tree-style-tab
+    rycee.translate-web-pages
 
     ### PERFORMANCE ###
     rycee.h264ify
