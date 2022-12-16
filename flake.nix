@@ -5,7 +5,10 @@
   '';
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    nixpkgs.follows = "nixpkgs-unstable";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -45,6 +48,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixpkgs-stable,
     home-manager,
     nur,
     ...
@@ -76,6 +80,10 @@
         self.overlays.${system}.allowUnfree
         self.overlays.${system}.nixpkgsFixes
       ];
+    };
+    pkgs-stable = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
     };
     # manually import the packages subflake to avoid locking issues
     # this flake must have the same inputs that dotpkgs expects
@@ -119,7 +127,13 @@
         inherit pkgs;
 
         extraSpecialArgs = {
-          inherit self flake nixpkgs;
+          inherit
+            self
+            flake
+            nixpkgs
+            nixpkgs-stable
+            pkgs-stable
+            ;
           hmModules = homeModules;
           ulib = flake.users.lib;
         };
