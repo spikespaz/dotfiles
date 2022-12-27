@@ -3,7 +3,7 @@ args @ {
   fetchgit,
   callPackage,
   symlinkJoin,
-  programName,
+  programName ? null,
   enabledPlugins ? null,
   configFiles ? null,
 }: let
@@ -12,7 +12,10 @@ args @ {
   pluginPackages = lib.optionals (enabledPlugins != null) (map callPlugin enabledPlugins);
 in
   symlinkJoin {
-    name = "ja-netfilter-${programName}";
+    name =
+      if programName == null
+      then "ja-netfilter"
+      else "ja-netfilter-${programName}";
     paths = [ja-netfilter] ++ pluginPackages;
     postBuild = ''
       mv $out/share/ja-netfilter/plugins $out/share/ja-netfilter/plugins-${programName}

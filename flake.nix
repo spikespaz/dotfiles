@@ -62,7 +62,7 @@
     flake = flib.evalIndices {
       expr = ./.;
       isRoot = true;
-      pass = {inherit lib pkgs;};
+      pass = {inherit lib pkgs flake;};
     };
 
     inputPackageOverlays = flib.mkPackagesOverlay system (
