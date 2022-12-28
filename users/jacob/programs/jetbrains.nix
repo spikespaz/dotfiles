@@ -7,7 +7,7 @@
   ja-netfilter' = ja-netfilter.override {
     programName = "jetbrains";
     enabledPlugins = ["dns" "url" "hideme" "power"];
-    configFiles = {
+    pluginConfigs = {
       dns = ''
         [DNS]
         EQUAL,jetbrains.com
