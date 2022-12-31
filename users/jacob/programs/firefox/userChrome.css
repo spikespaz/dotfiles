@@ -37,7 +37,11 @@
     --tab-min-height: 26px !important;
 }
 
-#TabsToolbar {
+/* #TabsToolbar {
+    height: var(--tab-min-height) !important;
+} */
+
+#tabbrowser-tabs .tab-label-container {
     height: var(--tab-min-height) !important;
 }
 
