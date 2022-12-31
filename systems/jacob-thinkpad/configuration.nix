@@ -67,6 +67,13 @@ args @ {
         builtins.hashString "md5" config.networking.hostName
       );
 
+      # CloudFlare nameservers
+      nameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "2606:4700:4700::1111"
+        "2606:4700:4700::1001"
+      ];
 
       # networkmanager.enable = true;
       # networkmanager.wifi.backend = "iwd";
