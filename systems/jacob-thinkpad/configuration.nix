@@ -57,9 +57,9 @@ args @ {
       ];
     };
   }
-  ################
-  ### HOSTNAME ###
-  ################
+  #############################
+  ### NETWORKING & WIRELESS ###
+  #############################
   {
     networking = {
       hostName = "jacob-thinkpad";
@@ -67,7 +67,16 @@ args @ {
         builtins.hashString "md5" config.networking.hostName
       );
 
-      networkmanager.enable = true;
+
+      # networkmanager.enable = true;
+      # networkmanager.wifi.backend = "iwd";
+      wireless.iwd.enable = true;
+    };
+
+    hardware = {
+      # enable bluetooth but turn off power by default
+      bluetooth.enable = true;
+      bluetooth.powerOnBoot = false;
     };
   }
 
@@ -90,10 +99,6 @@ args @ {
 
       # wifi adapter
       firmware = [pkgs.rtw89-firmware];
-
-      # enable bluetooth but turn off power by default
-      bluetooth.enable = true;
-      bluetooth.powerOnBoot = false;
 
       # enable opengl just in case the compositor doesn't
       opengl.enable = true;
