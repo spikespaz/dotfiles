@@ -129,6 +129,11 @@
     };
   };
 
+  java = {
+    programs.java.enable = true;
+    programs.java.package = pkgs.temurin-bin;
+  };
+
   ##########################
   ### SHELL ENVIRONMENTS ###
   ##########################

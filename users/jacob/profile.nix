@@ -127,6 +127,7 @@ in {
 
     ### DEVELOPMENT TOOLS ###
     programs.git
+    programs.java
 
     ### SHELL ENVIRONMENTS ###
     programs.bash
