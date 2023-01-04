@@ -336,6 +336,17 @@ args @ {
     };
   }
 
+  ###################
+  ### PERIPHERALS ###
+  ###################
+  {
+    hardware.openrazer = {
+      enable = true;
+      users = ["jacob"];
+      devicesOffOnScreensaver = false;
+    };
+  }
+
   ######################
   ### VIRTUALIZATION ###
   ######################
