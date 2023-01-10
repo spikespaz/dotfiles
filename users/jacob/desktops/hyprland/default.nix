@@ -39,8 +39,20 @@
     # for starting swayidle
     extraConfig = (
       builtins.replaceStrings [
+        "%PIN_WINDOW_SCRIPT%"
         "%FUNCTIONS%"
       ] [
+        # PIN_WINDOW_SCRIPT
+        "${pkgs.writeShellScript "pin-window" (let
+          hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+        in ''
+          if ${hyprctl} activewindow | grep 'floating: 0'; then
+          	${hyprctl} dispatch togglefloating active;
+          fi
+
+          ${hyprctl} dispatch pin active
+        '')}"
+        # FUNCTIONS
         (lib.getExe (pkgs.keyboard-functions.override {
           scriptOptions = {
             # to get it to the top of the list
