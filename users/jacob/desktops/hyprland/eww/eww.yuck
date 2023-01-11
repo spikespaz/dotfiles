@@ -1,0 +1,120 @@
+(defwindow bar
+  :monitor 0
+  :stacking "overlay"
+  :exclusive true
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "100%"
+    :height "26px"
+  :anchor "top center")
+  (bar))
+
+(defwidget bar []
+  (centerbox
+    :class "bar"
+    :orientation "h"
+    (bar-start)
+    (bar-center)
+    (bar-end)))
+
+(defwidget bar-start []
+  (box
+    :class "bar-start"
+    :orientation "h"
+    :space-evenly true
+    :spacing 6
+    :halign "start"
+    (workspaces)))
+
+(defwidget bar-center []
+  (box
+    :class "bar-center"
+    :orientation "h"
+    :space-evenly true
+    :spacing 6
+    :halign "middle"
+    (datetime)))
+
+(defwidget bar-end []
+  (box
+    :class "bar-end"
+    :orientation "h"
+    :space-evenly true
+    :spacing 6
+    :halign "end"
+    (battery)))
+
+(defwidget workspaces []
+  (box
+    :class "workspaces"
+    :orientation "h"
+    :halign "middle"
+    (workspace-button :name "1")
+    (workspace-button :name "2")
+    (workspace-button :name "3")
+    (workspace-button :name "4")
+    (workspace-button :name "5")
+    (workspace-button :name "6")
+    (workspace-button :name "7")
+    (workspace-button :name "8")
+    (workspace-button :name "9")
+    (workspace-button :name "10")))
+
+(defwidget workspace-button [name]
+  (button
+    :onclick `hyprctl dispatch workspace ${name}`
+  {name}))
+
+(defpoll time :interval "10s" `date +'%a, %b %-d, %Y - %-I:%M %p'`)
+(defwidget datetime []
+  (button
+    :class "datetime"
+    :onclick '${EWW_CMD} open --toggle calendar'
+  {time}))
+
+(defwindow calendar
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "300px"
+    :height "200px"
+  :anchor "top center")
+  (box
+    :class "calendar"
+    :orientation "v"
+    (calendar
+      :show-details true
+    :show-heading true)
+    (label :text "America/Phoenix")))
+
+; (defpoll battery)
+(defwidget battery []
+  (box
+    :class "battery"
+    :orientation "h"
+    :tooltip {EWW_BATTERY}
+    ; (image :path "./icons/battery")
+    (label :text `${round(EWW_BATTERY.total_avg, 0)}%`)))
+
+(defwidget cpu-usage []
+  (box
+    :class "cpu-usage"
+    :orientation "h"
+    :haligh "middle"
+    (graph
+      ; :class "cpu-usage"
+      :value 50
+      :thickness 1.0
+      ; :geometry (geometry
+        ;   :width 20
+      ; :height 20)
+    :time-range "30s")))
+
+; (defwidget user []
+  ;   (box
+    ;     :class "user"
+    ;     :orientation "h"
+    ;     :halign "middle"
+    ;     (label :text {})))

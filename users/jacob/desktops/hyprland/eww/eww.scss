@@ -1,0 +1,93 @@
+$gb-dark0_hard: rgb(29, 32, 33);
+$gb-dark0: rgb(40, 40, 40);
+$gb-dark0_soft: rgb(50, 48, 47);
+$gb-dark1: rgb(60, 56, 54);
+$gb-dark2: rgb(80, 73, 69);
+$gb-dark3: rgb(102, 92, 84);
+$gb-dark4: rgb(124, 111, 100);
+$gb-gray: rgb(146, 131, 116);
+$gb-light0_hard: rgb(249, 245, 215);
+$gb-light0: rgb(253, 244, 193);
+$gb-light0_soft: rgb(242, 229, 188);
+$gb-light1: rgb(235, 219, 178);
+$gb-light2: rgb(213, 196, 161);
+$gb-light3: rgb(189, 174, 147);
+$gb-light4: rgb(168, 153, 132);
+$gb-bright_red: rgb(251, 73, 52);
+$gb-bright_green: rgb(184, 187, 38);
+$gb-bright_yellow: rgb(250, 189, 47);
+$gb-bright_blue: rgb(131, 165, 152);
+$gb-bright_purple: rgb(211, 134, 155);
+$gb-bright_aqua: rgb(142, 192, 124);
+$gb-bright_orange: rgb(254, 128, 25);
+$gb-neutral_red: rgb(204, 36, 29);
+$gb-neutral_green: rgb(152, 151, 26);
+$gb-neutral_yellow: rgb(215, 153, 33);
+$gb-neutral_blue: rgb(69, 133, 136);
+$gb-neutral_purple: rgb(177, 98, 134);
+$gb-neutral_aqua: rgb(104, 157, 106);
+$gb-neutral_orange: rgb(214, 93, 14);
+$gb-faded_red: rgb(157, 0, 6);
+$gb-faded_green: rgb(121, 116, 14);
+$gb-faded_yellow: rgb(181, 118, 20);
+$gb-faded_blue: rgb(7, 102, 120);
+$gb-faded_purple: rgb(143, 63, 113);
+$gb-faded_aqua: rgb(66, 123, 88);
+$gb-faded_orange: rgb(175, 58, 3);
+
+$background-alpha: 0.5;
+$foreground-alpha: 0.75;
+$background-color: rgba(0, 0, 0, $background-alpha);
+$text-color: $gb-light0_hard;
+$text-font-family: "Ubuntu";
+$text-font-size: 11pt;
+$text-font-weight: bold;
+$button-hover-background-color: rgba(0, 0, 0, $background-alpha);
+// $button-hover-text-color: $gb-dark0_hard;
+$button-hover-underline-color: rgba($gb-bright_orange, $foreground-alpha);
+$button-hover-underline-weight: 2px;
+
+.bar {
+  * {
+    all: unset;
+    font-family: $text-font-family;
+    font-size: $text-font-size;
+    font-weight: $text-font-weight;
+  }
+
+  background: $background-color;
+
+  button {
+    // box-sizing: border-box;
+    // min-height: 0;
+
+    &:hover {
+      background: $button-hover-background-color;
+
+      label {
+        margin-bottom: -$button-hover-underline-weight;
+      }
+
+      border-bottom: $button-hover-underline-weight $button-hover-underline-color solid;
+
+      // color: $button-hover-text-color;
+      // box-shadow: 0 0 0 2px $busstton-hover-underline-color inset;
+      // padding-bottom: -2px;
+      // outline-offset: -2px;
+      // border-bottom: 2px $button-hover-underline-color solid;
+    }
+  }
+
+  // .workspaces>button.active {
+  //   background-color: red;
+  // }
+
+  .workspaces>button {
+    padding: 2;
+  }
+
+  .datetime {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}

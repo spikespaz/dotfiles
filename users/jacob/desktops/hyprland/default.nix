@@ -10,6 +10,7 @@
     flake.modules.desktop-portals
     ./config.nix
     ./windowrules.nix
+    ./eww
   ];
 
   home.packages = [
