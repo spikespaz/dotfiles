@@ -121,6 +121,10 @@ in {
     programs.vscode.languages.web
     # TODO broken idk why
     # programs.vscode.languages.all
+    programs.jetbrains.clion
+    programs.jetbrains.goland
+    programs.jetbrains.idea
+    programs.jetbrains.pycharm
     programs.neovim
     programs.helix
     programs.lapce
