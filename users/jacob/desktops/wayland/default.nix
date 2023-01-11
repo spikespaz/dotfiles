@@ -22,7 +22,7 @@
 
   # make some environment tweaks for wayland
   home.sessionVariables = {
-    GDK_BACKEND = "wayland";
+    GDK_BACKEND = "wayland,x11";
     # some nixpkgs modules have wrapers
     # that force electron apps to use wayland
     NIXOS_OZONE_WL = "1";
