@@ -11,6 +11,7 @@
 
   programs.disable-input-devices = {
     enable = true;
+    delay = 750;
     duration = 45;
     notification = {
       iconCategory = "apps";

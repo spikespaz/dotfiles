@@ -42,6 +42,7 @@
       builtins.replaceStrings [
         "%PIN_WINDOW_SCRIPT%"
         "%FUNCTIONS%"
+        "%DISABLE_INPUT_DEVICES%"
       ] [
         # PIN_WINDOW_SCRIPT
         "${pkgs.writeShellScript "pin-window" (let
@@ -63,6 +64,11 @@
             colors.warningHighlight = "#cc241de6";
           };
         }))
+        # DISABLE_INPUT_DEVICES
+        # TODO probably should make this a package again, with overrides
+        # like the above. Or make it a module that provides an overridden
+        # package as a read-only option.
+        "disable-input-devices-notify"
       ]
       (lib.concatStringsSep "\n\n" [
         ''
