@@ -16,3 +16,33 @@
 window#waybar {
     background: #1c1c1c;
 }
+
+#workspaces button {
+    padding-left: 6px;
+    padding-right: 6px;
+    border-top: 2px solid transparent;
+    transition: border-color 300ms ease-in;
+}
+
+#workspaces button label {
+    margin-top: -2px;
+}
+
+#workspaces button.active {
+    border-color: #fe8019;
+    transition: border-color 600ms ease-out;
+}
+
+@keyframes blink-urgent {
+    0% {
+        background: transparent;
+    }
+
+    50% {
+        background: #cc241d;
+    }
+}
+
+#workspaces button.urgent {
+    animation: blink-urgent 1.5s ease-in-out 5s infinite;
+}
