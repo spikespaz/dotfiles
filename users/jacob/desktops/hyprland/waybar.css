@@ -55,6 +55,7 @@ tooltip {
 
     50% {
         background: #cc241d;
+        color: #fbf1c7;
     }
 }
 
@@ -78,10 +79,12 @@ tooltip {
 
     70% {
         background: #d79921;
+        color: #fbf1c7;
     }
 
     100% {
         background: #d79921;
+        color: #fbf1c7;
     }
 }
 
