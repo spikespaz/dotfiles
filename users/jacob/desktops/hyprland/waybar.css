@@ -18,9 +18,11 @@ window#waybar {
     border-bottom: 1px solid #3c3836;
 }
 
+#clock {
+    font-weight: bold;
+}
+
 #workspaces button {
-    padding-left: 6px;
-    padding-right: 6px;
     border-top: 2px solid transparent;
     transition: border-color 300ms ease-in;
 }
