@@ -46,7 +46,30 @@
 
       backlight = {};
 
-      network = {};
+      network = {
+        format-ethernet = "󰈀";
+        format-wifi = "{icon} {essid}";
+        format-linked = "󱫱";
+        format-disconnected = "󰲛";
+        format-icons = ["󰤟" "󰤢" "󰤥" "󰤨"];
+        tooltip-format = ''
+          <b>Interface</b>: {ifname}
+          <b>Address:</b> {ipaddr}
+          <b>Netmask:</b> {netmask}
+          <b>Gateway:</b> {gwaddr}
+          <b>Speeds:</b> {bandwidthUpBytes} UL & {bandwidthDownBytes} DL
+        '';
+        tooltip-format-wifi = ''
+          <b>SSID:</b> {essid}
+          <b>Strength:</b> {signaldBm} ({signalStrength})
+          <b>Frequency:</b> {frequency}
+          <b>Address:</b> {ipaddr}
+          <b>Netmask:</b> {netmask}
+          <b>Gateway:</b> {gwaddr}
+          <b>Speeds:</b> {bandwidthUpBytes} UL & {bandwidthDownBytes} DL
+        '';
+        tooltip-format-disconnected = "Network disconnected.";
+      };
 
       bluetooth = {};
 
