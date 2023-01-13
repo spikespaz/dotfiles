@@ -2,6 +2,7 @@
   programs.waybar.enable = true;
   programs.waybar.package = pkgs.waybar-hyprland;
   programs.waybar.systemd.enable = true;
+  programs.waybar.style = ./waybar.css;
   programs.waybar.settings = {
     mainBar = {
       layer = "top";
