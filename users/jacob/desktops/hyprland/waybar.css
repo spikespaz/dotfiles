@@ -33,7 +33,7 @@ window#waybar {
     transition: border-color 600ms ease-out;
 }
 
-@keyframes blink-urgent {
+@keyframes urgent-workspace {
     0% {
         background: transparent;
     }
@@ -44,5 +44,36 @@ window#waybar {
 }
 
 #workspaces button.urgent {
-    animation: blink-urgent 1.5s ease-in-out 5s infinite;
+    animation-name: urgent-workspace;
+    animation-duration: 1.5s;
+    animation-delay: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+#idle_inhibitor {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+@keyframes inhibitor-active {
+    0% {
+        background: transparent;
+    }
+
+    70% {
+        background: #d79921;
+    }
+
+    100% {
+        background: #d79921;
+    }
+}
+
+#idle_inhibitor.activated {
+    animation-name: inhibitor-active;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate-reverse;
 }

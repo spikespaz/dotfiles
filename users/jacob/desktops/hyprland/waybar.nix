@@ -1,6 +1,9 @@
 {pkgs, ...}: {
   programs.waybar.enable = true;
-  programs.waybar.package = pkgs.waybar-hyprland;
+  programs.waybar.package = pkgs.symlinkJoin {
+    name = "waybar";
+    paths = [pkgs.waybar-hyprland pkgs.material-design-icons];
+  };
   programs.waybar.systemd.enable = true;
   programs.waybar.style = ./waybar.css;
   programs.waybar.settings = {
@@ -24,6 +27,7 @@
         "network"
         "bluetooth"
         "battery"
+        "idle_inhibitor"
       ];
 
       ## MODULES-LEFT ##
@@ -47,6 +51,14 @@
       bluetooth = {};
 
       battery = {};
+
+      idle_inhibitor = {
+        format = "{icon}";
+        format-icons = {
+          activated = "󱎬";
+          deactivated = "󱎫";
+        };
+      };
     };
   };
 }
