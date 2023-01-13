@@ -4,10 +4,20 @@
   ...
 }: {
   programs.vscode.enable = true;
-
-  home.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["JetBrainsMono"];})
-  ];
+  programs.vscode.package = let
+    editorPackage = pkgs.vscode;
+    fontPackages = with pkgs; [
+      (nerdfonts.override {fonts = ["JetBrainsMono"];})
+      material-design-icons
+    ];
+  in
+    (pkgs.symlinkJoin {
+      inherit (editorPackage) name;
+      paths = [editorPackage] ++ fontPackages;
+    })
+    .overrideAttrs (_: {
+      inherit (editorPackage) pname;
+    });
 
   programs.vscode.extensions = with pkgs.vscode-extensions;
     [
