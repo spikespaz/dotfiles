@@ -10,14 +10,10 @@
       (nerdfonts.override {fonts = ["JetBrainsMono"];})
       material-design-icons
     ];
-  in
-    (pkgs.symlinkJoin {
-      inherit (editorPackage) name;
-      paths = [editorPackage] ++ fontPackages;
-    })
-    .overrideAttrs (_: {
-      inherit (editorPackage) pname;
-    });
+  in (pkgs.symlinkJoin {
+    inherit (editorPackage) name pname;
+    paths = [editorPackage] ++ fontPackages;
+  });
 
   programs.vscode.extensions = with pkgs.vscode-extensions;
     [
@@ -42,7 +38,7 @@
     ## Appearances ##
 
     # the most important setting
-    "editor.fontFamily" = "JetBrainsMono Nerd Font";
+    "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Material Design Icons'";
     "editor.fontSize" = 14;
     "editor.cursorSmoothCaretAnimation" = true;
     "editor.cursorStyle" = "block";
