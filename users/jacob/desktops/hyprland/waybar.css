@@ -61,7 +61,7 @@ window#waybar {
 
 @keyframes inhibitor-active {
     0% {
-        background: transparent;
+        background: #3c3836;
     }
 
     70% {

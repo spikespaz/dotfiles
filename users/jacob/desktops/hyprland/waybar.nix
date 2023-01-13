@@ -84,9 +84,11 @@
       idle_inhibitor = {
         format = "{icon}";
         format-icons = {
-          activated = "󱎬";
+          activated = "󰈈";
           deactivated = "󱎫";
         };
+        tooltip-format-activated = "Idle timer inhibited, device will not sleep.";
+        tooltop-format-deactivated = "Idle timer enabled, device will sleep when not in use.";
       };
     };
   };
