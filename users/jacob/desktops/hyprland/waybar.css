@@ -19,6 +19,12 @@ window#waybar {
     border-bottom: 1px solid #3c3836;
 }
 
+tooltip {
+    background: #282828;
+    border-radius: 5px;
+    border: 1px solid #665c54;
+}
+
 #clock.time {
     font-weight: bold;
 }
