@@ -5,6 +5,7 @@
     color: #ebdbb2;
 }
 
+#clock,
 #backlight,
 #network,
 #bluetooth,
@@ -18,7 +19,7 @@ window#waybar {
     border-bottom: 1px solid #3c3836;
 }
 
-#clock {
+#clock.time {
     font-weight: bold;
 }
 

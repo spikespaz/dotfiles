@@ -38,8 +38,12 @@
 
       ## MODULES-CENTER ##
 
-      clock = {
-        format = "{:%I:%M %p - %a, %b %d}";
+      "clock#time" = {
+        format = "{:%I:%M %p}";
+      };
+
+      "clock#date" = {
+        format = "{:%A, %B %d}";
       };
 
       ## MODULES-RIGHT ##
