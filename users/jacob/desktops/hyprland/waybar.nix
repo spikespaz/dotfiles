@@ -10,7 +10,7 @@
       height = 26;
 
       modules-left = [
-        "workspaces"
+        "wlr/workspaces"
         "hyprland/window"
       ];
 
@@ -24,6 +24,28 @@
         "bluetooth"
         "battery"
       ];
+
+      ## MODULES-LEFT ##
+
+      "wlr/workspaces" = {};
+
+      "hyprland/window" = {};
+
+      ## MODULES-CENTER ##
+
+      clock = {
+        format = "{:%I:%M %p - %a, %b %d}";
+      };
+
+      ## MODULES-RIGHT ##
+
+      backlight = {};
+
+      network = {};
+
+      bluetooth = {};
+
+      battery = {};
     };
   };
 }
