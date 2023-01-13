@@ -9,7 +9,10 @@
 #backlight,
 #network,
 #bluetooth,
-#battery {
+#battery,
+#idle_inhibitor,
+#workspaces button,
+#window {
     padding-left: 8px;
     padding-right: 8px;
 }
