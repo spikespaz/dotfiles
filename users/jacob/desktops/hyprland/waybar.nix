@@ -19,7 +19,8 @@
       ];
 
       modules-center = [
-        "clock"
+        "clock#time"
+        "clock#date"
       ];
 
       modules-right = [
