@@ -50,7 +50,36 @@
 
       bluetooth = {};
 
-      battery = {};
+      battery = {
+        interval = 5;
+        bat = "BAT0";
+        full-at = 94;
+        format = "{icon} {capacity}%";
+        format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+        states = {
+          battery-10 = 10;
+          battery-20 = 20;
+          battery-30 = 30;
+          battery-40 = 40;
+          battery-50 = 50;
+          battery-60 = 60;
+          battery-70 = 70;
+          battery-80 = 80;
+          battery-90 = 90;
+          battery-100 = 100;
+        };
+        format-notcharging = "󰚥 AC";
+        format-charging-battery-10 = "󰢜 {capacity}%";
+        format-charging-battery-20 = "󰂆 {capacity}%";
+        format-charging-battery-30 = "󰂇 {capacity}%";
+        format-charging-battery-40 = "󰂈 {capacity}%";
+        format-charging-battery-50 = "󰢝 {capacity}%";
+        format-charging-battery-60 = "󰂉 {capacity}%";
+        format-charging-battery-70 = "󰢞 {capacity}%";
+        format-charging-battery-80 = "󰂊 {capacity}%";
+        format-charging-battery-90 = "󰂋 {capacity}%";
+        format-charging-battery-100 = "󰂅 {capacity}%";
+      };
 
       idle_inhibitor = {
         format = "{icon}";
