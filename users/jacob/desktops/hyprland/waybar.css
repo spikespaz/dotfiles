@@ -48,7 +48,18 @@ tooltip {
         background 600ms ease-out;
 }
 
-@keyframes urgent-workspace {
+@keyframes blink-warning {
+    0% {
+        background: transparent;
+    }
+
+    50% {
+        background: #d65d0e;
+        color: #fbf1c7;
+    }
+}
+
+@keyframes blink-urgent {
     0% {
         background: transparent;
     }
@@ -60,16 +71,32 @@ tooltip {
 }
 
 #workspaces button.urgent {
-    animation-name: urgent-workspace;
+    animation-name: blink-urgent;
     animation-duration: 1.5s;
     animation-delay: 5s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
 }
 
-#idle_inhibitor {
-    padding-left: 6px;
-    padding-right: 6px;
+#battery.battery-30 {
+    animation-name: blink-warning;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+}
+
+#battery.battery-20 {
+    animation-name: blink-urgent;
+    animation-duration: 1.75s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+}
+
+#battery.battery-10 {
+    animation-name: blink-urgent;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
 }
 
 @keyframes inhibitor-active {
