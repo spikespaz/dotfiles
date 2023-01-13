@@ -25,7 +25,9 @@ window#waybar {
 
 #workspaces button {
     border-top: 2px solid transparent;
-    transition: border-color 300ms ease-in;
+    transition:
+        border-color 300ms ease-in,
+        background 300ms ease-in;
 }
 
 #workspaces button label {
@@ -33,8 +35,11 @@ window#waybar {
 }
 
 #workspaces button.active {
+    background: #3c3836;
     border-color: #fe8019;
-    transition: border-color 600ms ease-out;
+    transition:
+        border-color 600ms ease-out,
+        background 600ms ease-out;
 }
 
 @keyframes urgent-workspace {
