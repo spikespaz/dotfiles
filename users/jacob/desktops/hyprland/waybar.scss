@@ -8,27 +8,7 @@ $highlight-foreground: #fbf1c7;
   color: $default-foreground;
 }
 
-@mixin breathe-highlight($hlbg, $duration) {
-  $name: inline-#{unique-id()};
-
-  @keyframes #{$name} {
-    from {
-      background: initial;
-    }
-
-    to {
-      background: $hlbg;
-      color: $highlight-foreground;
-    }
-  }
-
-  animation-name: $name;
-  animation-duration: $duration;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-
-@mixin pulse-highlight($stop, $hlbg, $duration) {
+@mixin oscillate-highlight($function, $stop, $background, $duration) {
   $name: inline-#{unique-id()};
 
   @keyframes #{$name} {
@@ -37,7 +17,7 @@ $highlight-foreground: #fbf1c7;
     }
 
     #{$stop} {
-      background: $hlbg;
+      background: $background;
       color: $highlight-foreground;
     }
 
@@ -49,7 +29,15 @@ $highlight-foreground: #fbf1c7;
   animation-name: $name;
   animation-duration: $duration;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-out;
+  animation-timing-function: $function;
+}
+
+@mixin breathe-highlight($background, $duration) {
+  @include oscillate-highlight(ease-in-out, 50%, $background, $duration);
+}
+
+@mixin pulse-highlight($stop, $background, $duration) {
+  @include oscillate-highlight(ease-out, $stop, $background, $duration);
 }
 
 #clock,
@@ -100,22 +88,22 @@ tooltip {
 
     &.urgent {
       animation-delay: 5s;
-      @include pulse-highlight(10%, #cc241d, 1.5s);
+      @include pulse-highlight(10%, #458588, 1.5s);
     }
   }
 }
 
 #battery {
   &.battery-30 {
-    @include breathe-highlight(#d64d0e, 3s);
+    @include breathe-highlight(#d64d0e, 10s);
   }
 
   &.battery-20 {
-    @include pulse-highlight(25%, #d64d0e, 1.75s);
+    @include pulse-highlight(10%, #d64d0e, 5s);
   }
 
   &.battery-10 {
-    @include pulse-highlight(50%, #cc241d, 500ms);
+    @include pulse-highlight(30%, #cc241d, 750ms);
   }
 }
 
