@@ -1,11 +1,21 @@
-{pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: let
+  compileSCSS = name: source: "${pkgs.runCommandLocal name {} ''
+    mkdir -p $out
+    ${lib.getExe pkgs.sassc} -t expanded '${source}' > $out/${name}.css
+  ''}/${name}.css";
+in {
   programs.waybar.enable = true;
   programs.waybar.package = pkgs.symlinkJoin {
     name = "waybar";
     paths = [pkgs.waybar-hyprland pkgs.material-design-icons];
   };
   programs.waybar.systemd.enable = true;
-  programs.waybar.style = ./waybar.css;
+  programs.waybar.style =
+    builtins.readFile (compileSCSS "waybar-style" ./waybar.scss);
   programs.waybar.settings = {
     mainBar = {
       layer = "top";

@@ -1,0 +1,125 @@
+$default-foreground: #ebdbb2;
+$highlight-foreground: #fbf1c7;
+
+* {
+  all: unset;
+  font-family: Ubuntu, "Material Design Icons";
+  font-size: 10pt;
+  color: $default-foreground;
+}
+
+@mixin breathe-highlight($hlbg, $duration) {
+  $name: inline-#{unique-id()};
+
+  @keyframes #{$name} {
+    from {
+      background: initial;
+    }
+
+    to {
+      background: $hlbg;
+      color: $highlight-foreground;
+    }
+  }
+
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@mixin pulse-highlight($stop, $hlbg, $duration) {
+  $name: inline-#{unique-id()};
+
+  @keyframes #{$name} {
+    0% {
+      background: initial;
+    }
+
+    #{$stop} {
+      background: $hlbg;
+      color: $highlight-foreground;
+    }
+
+    100% {
+      background: initial;
+    }
+  }
+
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+#clock,
+#backlight,
+#network,
+#bluetooth,
+#battery,
+#idle_inhibitor,
+#workspaces button,
+#window {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+window#waybar {
+  background: #1d2021;
+  border-bottom: 1px solid #3c3836;
+}
+
+tooltip {
+  background: #282828;
+  border-radius: 5px;
+  border: 1px solid #665c54;
+}
+
+#clock.time {
+  font-weight: bold;
+}
+
+#workspaces {
+  button {
+    border-top: 2px solid transparent;
+    transition:
+      border-color 300ms ease-in,
+      background 300ms ease-in;
+
+    label {
+      margin-top: -2px;
+    }
+
+    &.active {
+      background: #3c3836;
+      border-color: #fe8019;
+      transition:
+        border-color 600ms ease-out,
+        background 600ms ease-out;
+    }
+
+    &.urgent {
+      animation-delay: 5s;
+      @include pulse-highlight(10%, #cc241d, 1.5s);
+    }
+  }
+}
+
+#battery {
+  &.battery-30 {
+    @include breathe-highlight(#d64d0e, 3s);
+  }
+
+  &.battery-20 {
+    @include pulse-highlight(25%, #d64d0e, 1.75s);
+  }
+
+  &.battery-10 {
+    @include pulse-highlight(50%, #cc241d, 500ms);
+  }
+}
+
+#idle_inhibitor.activated {
+  background: #3c3836;
+  @include pulse-highlight(10%, #d79921, 5s);
+}
