@@ -62,7 +62,7 @@
           <b>Address:</b> {ipaddr}
           <b>Netmask:</b> {netmask}
           <b>Gateway:</b> {gwaddr}
-          <b>Speeds:</b> {bandwidthUpBytes} UL & {bandwidthDownBytes} DL
+          <b>Speeds:</b> {bandwidthUpBytes} UL, {bandwidthDownBytes} DL
         '';
         tooltip-format-wifi = ''
           <b>SSID:</b> {essid}
@@ -71,7 +71,7 @@
           <b>Address:</b> {ipaddr}
           <b>Netmask:</b> {netmask}
           <b>Gateway:</b> {gwaddr}
-          <b>Speeds:</b> {bandwidthUpBytes} UL & {bandwidthDownBytes} DL
+          <b>Speeds:</b> {bandwidthUpBytes} UL, {bandwidthDownBytes} DL
         '';
         tooltip-format-disconnected = "Network disconnected.";
       };
