@@ -87,8 +87,8 @@ in {
         '';
         tooltip-format-wifi = ''
           <b>SSID:</b> {essid}
-          <b>Strength:</b> {signaldBm} ({signalStrength})
-          <b>Frequency:</b> {frequency}
+          <b>Strength:</b> {signaldBm} dBm ({signalStrength}%)
+          <b>Frequency:</b> {frequency} gHz
           <b>Address:</b> {ipaddr}
           <b>Netmask:</b> {netmask}
           <b>Gateway:</b> {gwaddr}
