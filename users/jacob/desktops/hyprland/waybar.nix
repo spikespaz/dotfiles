@@ -34,9 +34,9 @@ in {
       ];
 
       modules-right = [
-        "backlight"
         "network"
         "bluetooth"
+        "backlight"
         "battery"
         "idle_inhibitor"
       ];
@@ -59,7 +59,12 @@ in {
 
       ## MODULES-RIGHT ##
 
-      backlight = {};
+      backlight = {
+        device = "intel_backlight";
+        format = "{icon} {percent}%";
+        # format-icons = ["󰃜" "󰃛" "󰃝" "󰃟" "󰃠"];
+        format-icons = ["󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨"];
+      };
 
       network = {
         format-ethernet = "󰈀";
