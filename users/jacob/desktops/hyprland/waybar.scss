@@ -32,6 +32,20 @@ $highlight-foreground: #fbf1c7;
   @include oscillate-highlight(ease-out, $stop, $background, $duration);
 }
 
+@mixin indicate-active($color, $selector) {
+  transition:
+    box-shadow 300ms ease-in,
+    background 300ms ease-in;
+
+  #{$selector} {
+    transition:
+      box-shadow 600ms ease-out,
+      background 600ms ease-out;
+    box-shadow: 0 2px 0 0 $color inset;
+    background: #3c3836;
+  }
+}
+
 #clock,
 #backlight,
 #network,
@@ -62,22 +76,7 @@ tooltip {
   button {
     min-width: 26px;
 
-    border-top: 2px solid transparent;
-    transition:
-      border-color 300ms ease-in,
-      background 300ms ease-in;
-
-    label {
-      margin-top: -2px;
-    }
-
-    &.active {
-      background: #3c3836;
-      border-color: #fe8019;
-      transition:
-        border-color 600ms ease-out,
-        background 600ms ease-out;
-    }
+    @include indicate-active(#f38019, "&.active");
 
     &.urgent {
       animation-delay: 5s;
@@ -100,7 +99,10 @@ tooltip {
   }
 }
 
-#idle_inhibitor.activated {
-  background: #3c3836;
-  @include pulse-highlight(10%, #d79921, 5s);
+#idle_inhibitor {
+  @include indicate-active(#d79921, "&.activated");
+
+  &.activated {
+    @include pulse-highlight(10%, #d79921, 5s);
+  }
 }
