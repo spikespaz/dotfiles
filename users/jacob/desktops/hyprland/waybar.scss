@@ -87,15 +87,15 @@ tooltip {
 }
 
 #battery {
-  &.battery-30 {
+  &.battery-30:not(.charging) {
     @include breathe-highlight(#d64d0e, 10s);
   }
 
-  &.battery-20 {
+  &.battery-20:not(.charging) {
     @include pulse-highlight(10%, #d64d0e, 5s);
   }
 
-  &.battery-10 {
+  &.battery-10:not(.charging) {
     @include pulse-highlight(30%, #cc241d, 750ms);
   }
 }
