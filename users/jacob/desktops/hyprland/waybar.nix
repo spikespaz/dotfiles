@@ -37,6 +37,7 @@ in {
         "network"
         "bluetooth"
         "backlight"
+        "memory"
         "battery"
         "idle_inhibitor"
       ];
@@ -64,6 +65,11 @@ in {
         format = "{icon} {percent}%";
         # format-icons = ["󰃜" "󰃛" "󰃝" "󰃟" "󰃠"];
         format-icons = ["󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨"];
+      };
+
+      memory = {
+        interval = 10;
+        format = "󰍛 {percentage}% ({used:.2g}/{total:.2g} GiB)";
       };
 
       network = {
