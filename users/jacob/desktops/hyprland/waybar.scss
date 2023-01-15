@@ -12,17 +12,9 @@ $highlight-foreground: #fbf1c7;
   $name: inline-#{unique-id()};
 
   @keyframes #{$name} {
-    0% {
-      background: initial;
-    }
-
     #{$stop} {
       background: $background;
       color: $highlight-foreground;
-    }
-
-    100% {
-      background: initial;
     }
   }
 
