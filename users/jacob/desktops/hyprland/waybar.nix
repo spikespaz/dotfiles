@@ -86,6 +86,9 @@ in {
         format-linked = "󱫱";
         format-disconnected = "󰲛";
         format-icons = ["󰤟" "󰤢" "󰤥" "󰤨"];
+
+        on-click = "iwgtk";
+
         tooltip-format = ''
           <b>Interface</b>: {ifname}
           <b>Address:</b> {ipaddr}
@@ -95,8 +98,8 @@ in {
         '';
         tooltip-format-wifi = ''
           <b>SSID:</b> {essid}
-          <b>Strength:</b> {signaldBm} dBm ({signalStrength}%)
-          <b>Frequency:</b> {frequency} gHz
+          <b>Strength:</b> {signaldBm} dBmW ({signalStrength}%)
+          <b>Frequency:</b> {frequency} GHz
           <b>Address:</b> {ipaddr}
           <b>Netmask:</b> {netmask}
           <b>Gateway:</b> {gwaddr}
