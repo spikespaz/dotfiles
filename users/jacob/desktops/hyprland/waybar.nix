@@ -47,7 +47,9 @@ in {
 
       "wlr/workspaces" = {};
 
-      "hyprland/window" = {};
+      "hyprland/window" = {
+        max-length = 70;
+      };
 
       ## MODULES-CENTER ##
 
