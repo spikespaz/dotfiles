@@ -87,6 +87,27 @@ tooltip {
   }
 }
 
+#bluetooth {
+  @include indicate-active(#458588, "&.on");
+  @include indicate-active(#98971a, "&.connected");
+
+  &.on {
+    @include breathe-highlight(#458588, 5s);
+  }
+
+  // &.discoverable {
+  //   @include breathe-highlight(#b16286, 5s);
+  // }
+
+  // &.discovering {
+  //   @include breathe-highlight(#b16286, 5s);
+  // }
+
+  // &.pairable:not(.connected) {
+  //   @include breathe-highlight(#b16286, 5s);
+  // }
+}
+
 #battery {
   &.battery-30:not(.charging) {
     @include breathe-highlight(#d64d0e, 10s);

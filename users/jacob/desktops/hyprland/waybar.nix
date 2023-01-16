@@ -34,12 +34,12 @@ in {
       ];
 
       modules-right = [
-        "network"
-        "bluetooth"
         "backlight"
         "memory"
         "cpu"
         "battery"
+        "network"
+        "bluetooth"
         "idle_inhibitor"
       ];
 
@@ -103,7 +103,17 @@ in {
         tooltip-format-disconnected = "Network disconnected.";
       };
 
-      bluetooth = {};
+      bluetooth = {
+        controller = "C0:3C:59:02:25:C3";
+        format-on = "󰂯";
+        format-off = "󰂲";
+        format-disabled = "󰂲";
+        format-connected = "󰂱 {num_connections}";
+        format-connected-battery = "󰂱 {device_alias} ({device_battery_percentage}%) ({num_connections})";
+
+        on-click = "rfkill unblock bluetooth && bluetoothctl power on && blueman-manager";
+        on-click-right = "bluetoothctl power off && rfkill block bluetooth";
+      };
 
       battery = {
         interval = 5;
