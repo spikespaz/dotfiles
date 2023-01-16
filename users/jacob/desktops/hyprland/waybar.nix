@@ -38,6 +38,7 @@ in {
         "bluetooth"
         "backlight"
         "memory"
+        "cpu"
         "battery"
         "idle_inhibitor"
       ];
@@ -70,6 +71,11 @@ in {
       memory = {
         interval = 10;
         format = "󰍛 {percentage}% ({used:.2g}/{total:.2g} GiB)";
+      };
+
+      cpu = {
+        interval = 5;
+        format = "󰘚 {usage}%";
       };
 
       network = {
