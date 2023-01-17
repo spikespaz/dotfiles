@@ -129,3 +129,7 @@ tooltip {
     @include pulse-highlight(10%, #d79921, 5s);
   }
 }
+
+#pulseaudio.warning {
+  @include breathe-highlight(#cc241d, 10s);
+}

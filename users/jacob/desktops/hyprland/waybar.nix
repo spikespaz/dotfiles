@@ -7,6 +7,16 @@
     mkdir -p $out
     ${lib.getExe pkgs.sassc} -t expanded '${source}' > $out/${name}.css
   ''}/${name}.css";
+
+  kbFns = lib.getExe (pkgs.keyboard-functions.override {
+    scriptOptions = {
+      # to get it to the top of the list
+      urgency = "critical";
+      outputMaximum = 1.25;
+      colors.normalHighlight = "#458588e6";
+      colors.warningHighlight = "#cc241de6";
+    };
+  });
 in {
   programs.waybar.enable = true;
   programs.waybar.package = pkgs.symlinkJoin {
@@ -62,6 +72,32 @@ in {
       };
 
       ## MODULES-RIGHT ##
+
+      "pulseaudio#output" = {
+        format = "{icon} {volume}%";
+        format-muted = "󰖁 {volume}%";
+        format-icons = {
+          headphone = "󰋋";
+          # speaker = "󰓃";
+          hdmi = "󰽟";
+          headset = "󰋎";
+          # hands-free = "󰋎";
+          # portable = "";
+          # car = "󰄋";
+          # hifi = "󰓃";
+          # phone = "󰏲";
+          default = ["󰕿" "󰖀" "󰕾"];
+        };
+
+        states = {
+          warning = 101;
+        };
+
+        on-click = "${lib.getExe pkgs.lxqt.pavucontrol-qt} --tab 'Output Devices'";
+        on-click-right = "${kbFns} output mute";
+        on-scroll-up = "${kbFns} output +0.05";
+        on-scroll-down = "${kbFns} output -0.05";
+      };
 
       backlight = {
         device = "intel_backlight";
