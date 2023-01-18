@@ -55,8 +55,10 @@ in {
 
       ## MODULES-LEFT ##
 
-      "wlr/workspaces" = {};
+      "wlr/workspaces" = {
+        sort-by-number = true;
 
+      };
       "hyprland/window" = {
         max-length = 70;
       };
