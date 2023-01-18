@@ -8,19 +8,36 @@
     ${lib.getExe pkgs.sassc} -t expanded '${source}' > $out/${name}.css
   ''}/${name}.css";
 
-  kbFns = lib.getExe (pkgs.keyboard-functions.override {
-    scriptOptions = {
-      # to get it to the top of the list
-      urgency = "critical";
-      outputMaximum = 1.25;
-      colors.normalHighlight = "#458588e6";
-      colors.warningHighlight = "#cc241de6";
-    };
-  });
-
-  commands = {
-    backlightUp = "busctl --user call org.clight.clight /org/clight/clight org.clight.clight IncBl d 0.05";
-    backlightDown = "busctl --user call org.clight.clight /org/clight/clight org.clight.clight DecBl d 0.05";
+  commands = let
+    busctl = "${pkgs.systemd}/bin/busctl";
+    hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+    # TODO this is duplicated from the hyprland config, make it a module
+    kbFns = lib.getExe (pkgs.keyboard-functions.override {
+      scriptOptions = {
+        # to get it to the top of the list
+        urgency = "critical";
+        outputMaximum = 1.25;
+        colors.normalHighlight = "#458588e6";
+        colors.warningHighlight = "#cc241de6";
+      };
+    });
+    pavucontrol = lib.getExe pkgs.lxqt.pavucontrol-qt;
+    blueman-manager = "${pkgs.blueman}/bin/blueman-manager";
+    bluetoothctl = "${pkgs.bluez}/bin/bluetoothctl";
+    iwgtk = lib.getExe pkgs.iwgtk;
+  in {
+    backlightUp = "${busctl} --user call org.clight.clight /org/clight/clight org.clight.clight IncBl d 0.05";
+    backlightDown = "${busctl} --user call org.clight.clight /org/clight/clight org.clight.clight DecBl d 0.05";
+    outputSoundSettings = "${pavucontrol} --tab 'Output Devices'";
+    outputVolumeMute = "${kbFns} output mute";
+    outputVolumeUp = "${kbFns} output +0.05";
+    outputVolumeDown = "${kbFns} output -0.05";
+    bluetoothSettings = blueman-manager;
+    bluetoothOn = "rfkill unblock bluetooth && sleep 5; ${bluetoothctl} power on";
+    bluetoothOff = "${bluetoothctl} power off";
+    wirelessSettings = iwgtk;
+    workspaceSwitchPrev = "${hyprctl} dispatch workspace m-1";
+    workspaceSwitchNext = "${hyprctl} dispatch workspace m+1";
   };
 in {
   programs.waybar.enable = true;
@@ -63,8 +80,8 @@ in {
       "wlr/workspaces" = {
         sort-by-number = true;
 
-        on-scroll-up = "hyprctl dispatch workspace m-1";
-        on-scroll-down = "hyprctl dispatch workspace m+1";
+        on-scroll-up = commands.workspaceSwitchPrev;
+        on-scroll-down = commands.workspaceSwitchNext;
       };
       "hyprland/window" = {
         max-length = 70;
@@ -102,10 +119,10 @@ in {
           warning = 101;
         };
 
-        on-click = "${lib.getExe pkgs.lxqt.pavucontrol-qt} --tab 'Output Devices'";
-        on-click-right = "${kbFns} output mute";
-        on-scroll-up = "${kbFns} output +0.05";
-        on-scroll-down = "${kbFns} output -0.05";
+        on-click = commands.outputSoundSettings;
+        on-click-right = commands.outputVolumeMute;
+        on-scroll-up = commands.outputVolumeUp;
+        on-scroll-down = commands.outputVolumeDown;
       };
 
       backlight = {
@@ -135,8 +152,6 @@ in {
         format-disconnected = "󰲛";
         format-icons = ["󰤟" "󰤢" "󰤥" "󰤨"];
 
-        on-click = "iwgtk";
-
         tooltip-format = ''
           <b>Interface</b>: {ifname}
           <b>Address:</b> {ipaddr}
@@ -154,6 +169,8 @@ in {
           <b>Speeds:</b> {bandwidthUpBytes} UL, {bandwidthDownBytes} DL
         '';
         tooltip-format-disconnected = "Network disconnected.";
+
+        on-click = commands.wirelessSettings;
       };
 
       bluetooth = {
@@ -164,8 +181,9 @@ in {
         format-connected = "󰂱 {num_connections}";
         format-connected-battery = "󰂱 {device_alias} ({device_battery_percentage}%) ({num_connections})";
 
-        on-click = "rfkill unblock bluetooth && bluetoothctl power on && blueman-manager";
-        on-click-right = "bluetoothctl power off && rfkill block bluetooth";
+        on-click = commands.bluetoothOn;
+        on-click-middle = commands.bluetoothSettings;
+        on-click-right = commands.bluetoothOff;
       };
 
       battery = {
