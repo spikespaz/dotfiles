@@ -4,12 +4,11 @@
 
 use strict;
 use warnings;
+use 5.036;
+use feature qw(switch);
 no warnings 'experimental';
 
-use 5.010;
-
 use IO::Socket qw(AF_UNIX);
-
 
 my $his = $ENV{'HYPRLAND_INSTANCE_SIGNATURE'};
 die "Hyprland instance signature is not set!" unless $his;
@@ -18,52 +17,71 @@ my $socket_path = "/tmp/hypr/$his/.socket2.sock";
 
 my $socket = IO::Socket->new(
     Domain => AF_UNIX,
-    Peer => $socket_path
+    Peer   => $socket_path
 );
 die "Could not open socket!" unless $socket;
 
-while (my $line = <$socket>) {
+my %handlers = (
+    windowfocus      => [ split( ':', $ENV{'__HL_HANDLERS_WINDOWFOCUS'} ) ],
+    windowopen       => [ split( ':', $ENV{'__HL_HANDLERS_WINDOWOPEN'} ) ],
+    windowclose      => [ split( ':', $ENV{'__HL_HANDLERS_WINDOWCLOSE'} ) ],
+    windowmove       => [ split( ':', $ENV{'__HL_HANDLERS_WINDOWMOVE'} ) ],
+    windowfullscreen =>
+      [ split( ':', $ENV{'__HL_HANDLERS_WINDOWFULLSCREEN'} ) ],
+    workspacefocus   => [ split( ':', $ENV{'__HL_HANDLERS_WORKSPACEFOCUS'} ) ],
+    workspacecreate  => [ split( ':', $ENV{'__HL_HANDLERS_WORKSPACECREATE'} ) ],
+    workspacedestroy =>
+      [ split( ':', $ENV{'__HL_HANDLERS_WORKSPACEDESTROY'} ) ],
+    workspacemove => [ split( ':', $ENV{'__HL_HANDLERS_WORKSPACEMOVE'} ) ],
+    monitorfocus  => [ split( ':', $ENV{'__HL_HANDLERS_MONITORFOCUS'} ) ],
+    monitoradd    => [ split( ':', $ENV{'__HL_HANDLERS_MONITORADD'} ) ],
+    monitorremove => [ split( ':', $ENV{'__HL_HANDLERS_MONITORREMOVE'} ) ],
+    layoutchange  => [ split( ':', $ENV{'__HL_HANDLERS_LAYOUTCHANGE'} ) ],
+    submapchange  => [ split( ':', $ENV{'__HL_HANDLERS_SUBMAPCHANGE'} ) ],
+);
+
+while ( my $line = <$socket> ) {
     given ($line) {
-        when ($line =~ /^workspace>>(.*)$/) {
+        when ( $line =~ /^workspace>>(.*)$/ ) {
             h_WorkspaceFocus($1);
         }
-        when ($line =~ /^focusedmon>>(.*),(.*)$/) {
-            h_MonitorFocus($1, $2);
+        when ( $line =~ /^focusedmon>>(.*),(.*)$/ ) {
+            h_MonitorFocus( $1, $2 );
         }
-        when ($line =~ /^activewindow>>(.*),(.*)$/) {
-            h_WindowFocus($1, $2);
+        when ( $line =~ /^activewindow>>(.*),(.*)$/ ) {
+            h_WindowFocus( $1, $2 );
         }
-        when ($line =~ /^fullscreen>>(.*)$/) {
+        when ( $line =~ /^fullscreen>>(.*)$/ ) {
             h_WindowFullscreen($1);
         }
-        when ($line =~ /^monitorremoved>>(.*)$/) {
+        when ( $line =~ /^monitorremoved>>(.*)$/ ) {
             h_MonitorRemove($1);
         }
-        when ($line =~ /^monitoradded>>(.*)$/) {
+        when ( $line =~ /^monitoradded>>(.*)$/ ) {
             h_MonitorAdd($1);
         }
-        when ($line =~ /^createworkspace>>(.*)$/) {
+        when ( $line =~ /^createworkspace>>(.*)$/ ) {
             h_WorkspaceCreate($1);
         }
-        when ($line =~ /^destroyworkspace>>(.*)$/) {
+        when ( $line =~ /^destroyworkspace>>(.*)$/ ) {
             h_WorkspaceDestroy($1);
         }
-        when ($line =~ /^moveworkspace>>(.*),(.*)$/) {
-            h_WorkspaceMove($1, $2);
+        when ( $line =~ /^moveworkspace>>(.*),(.*)$/ ) {
+            h_WorkspaceMove( $1, $2 );
         }
-        when ($line =~ /^activelayout>>(.*),(.*)$/) {
-            h_LayoutChange($1, $2);
+        when ( $line =~ /^activelayout>>(.*),(.*)$/ ) {
+            h_LayoutChange( $1, $2 );
         }
-        when ($line =~ /^openwindow>>(.*),(.*),(.*),(.*)$/) {
-            h_WindowOpen($1, $2, $3, $4);
+        when ( $line =~ /^openwindow>>(.*),(.*),(.*),(.*)$/ ) {
+            h_WindowOpen( $1, $2, $3, $4 );
         }
-        when ($line =~ /^closewindow>>(.*)$/) {
+        when ( $line =~ /^closewindow>>(.*)$/ ) {
             h_WindowClose($1);
         }
-        when ($line =~ /^movewindow>>(.*),(.*)$/) {
-            h_WindowMove($1, $2);
+        when ( $line =~ /^movewindow>>(.*),(.*)$/ ) {
+            h_WindowMove( $1, $2 );
         }
-        when ($line =~ /^submap>>(.*)$/) {
+        when ( $line =~ /^submap>>(.*)$/ ) {
             h_SubmapChange($1);
         }
         default {
@@ -75,71 +93,127 @@ while (my $line = <$socket>) {
 ### WINDOWS ###
 
 sub h_WindowFocus {
-    my $window_class = shift;
-    my $window_title = shift;
+    $ENV{'HL_WINDOW_CLASS'} = shift;
+    $ENV{'HL_WINDOW_TITLE'} = shift;
+
+    foreach my $script ( $handlers{windowfocus}->@* ) {
+        system($script);
+    }
 }
 
 sub h_WindowOpen {
-    my $window_address = shift;
-    my $workspace_name = shift;
-    my $window_class = shift;
-    my $window_title = shift;
+    $ENV{'HL_WINDOW_ADDRESS'} = shift;
+    $ENV{'HL_WORKSPACE_NAME'} = shift;
+    $ENV{'HL_WINDOW_CLASS'}   = shift;
+    $ENV{'HL_WINDOW_TITLE'}   = shift;
+
+    foreach my $script ( $handlers{windowopen}->@* ) {
+        system($script);
+    }
 }
 
 sub h_WindowClose {
-    my $window_address = shift;
+    $ENV{'HL_WINDOW_ADDRESS'} = shift;
+
+    foreach my $script ( $handlers{windowclose}->@* ) {
+        system($script);
+    }
 }
 
 sub h_WindowMove {
-    my $window_address = shift;
-    my $workspace_name = shift;
+    $ENV{'HL_WINDOW_ADDRESS'} = shift;
+    $ENV{'HL_WORKSPACE_NAME'} = shift;
+
+    foreach my $script ( $handlers{windowmove}->@* ) {
+        system($script);
+    }
 }
 
 sub h_WindowFullscreen {
-    my $fullscreen_state = shift;
+    $ENV{'HL_FULLSCREEN_STATE'} = shift;
+
+    foreach my $script ( $handlers{windowfullscreen}->@* ) {
+        system($script);
+    }
 }
 
 ### WORKSPACES ###
 
 sub h_WorkspaceFocus {
-    my $workspace_name = shift;
+    $ENV{'HL_WORKSPACE_NAME'} = shift;
+
+    foreach my $script ( $handlers{workspacefocus}->@* ) {
+        system($script);
+    }
 }
 
 sub h_WorkspaceCreate {
-    my $workspace_name = shift;
+    $ENV{'HL_WORKSPACE_NAME'} = shift;
+
+    foreach my $script ( $handlers{workspacecreate}->@* ) {
+        system($script);
+    }
 }
 
 sub h_WorkspaceDestroy {
-    my $workspace_name = shift;
+    $ENV{'HL_WORKSPACE_NAME'} = shift;
+
+    foreach my $script ( $handlers{workspacedestroy}->@* ) {
+        system($script);
+    }
 }
 
 sub h_WorkspaceMove {
-    my $workspace_name = shift;
-    my $monitor_name = shift;
+    $ENV{'HL_WORKSPACE_NAME'} = shift;
+    $ENV{'HL_MONITOR_NAME'}   = shift;
+
+    foreach my $script ( $handlers{workspacemove}->@* ) {
+        system($script);
+    }
 }
 
 ### MONITORS ###
 
 sub h_MonitorFocus {
-    my $monitor_name = shift;
-    my $workspace_name = shift;
+    $ENV{'HL_MONITOR_NAME'}   = shift;
+    $ENV{'HL_WORKSPACE_NAME'} = shift;
+
+    foreach my $script ( $handlers{monitorfocus}->@* ) {
+        system($script);
+    }
 }
 
 sub h_MonitorAdd {
-    my $monitor_name = shift;
+    $ENV{'HL_MONITOR_NAME'} = shift;
+
+    foreach my $script ( $handlers{monitoradd}->@* ) {
+        system($script);
+    }
 }
 
 sub h_MonitorRemove {
-    my $monitor_name = shift;
+    $ENV{'HL_MONITOR_NAME'} = shift;
+
+    foreach my $script ( $handlers{monitorremove}->@* ) {
+        system($script);
+    }
 }
 
 ### MISCELLANEOUS ###
 
 sub h_LayoutChange {
-    my $keyboard_name = shift;
-    my $layout_name = shift;
+    $ENV{'HL_KEYBOARD_NAME'} = shift;
+    $ENV{'HL_LAYOUT_NAME'}   = shift;
+
+    foreach my $script ( $handlers{layoutchange}->@* ) {
+        system($script);
+    }
 }
 
 sub h_SubmapChange {
-    my $submap_name = shift;
+    $ENV{'HL_SUBMAP_NAME'} = shift;
+
+    foreach my $script ( $handlers{submapchange}->@* ) {
+        system($script);
+    }
 }
