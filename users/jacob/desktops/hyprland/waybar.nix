@@ -146,7 +146,7 @@ in {
       };
 
       network = {
-        format-ethernet = "󰈀";
+        format-ethernet = "󰈀 {ifname}";
         format-wifi = "{icon} {essid}";
         format-linked = "󱫱";
         format-disconnected = "󰲛";
