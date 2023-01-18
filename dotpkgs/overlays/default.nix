@@ -1,6 +1,17 @@
 # This file contains overlays that fix issues with nixpkgs.
 # TODO: When I have the time, I need to turn these into pull requests.
 lib: (_: prev: {
+  haruna = prev.haruna.overrideAttrs (old: rec {
+    version = "0.10.2";
+    src = prev.fetchFromGitLab {
+      owner = "multimedia";
+      repo = "haruna";
+      rev = "v${version}";
+      hash = "sha256-hhHWxmr2EzW9QqfV1bpJCiWOWsmGJmvxvtQcuXlMTc4=";
+      domain = "invent.kde.org";
+    };
+  });
+
   # Fuck you Oracle
   # <https://nadwey.eu.org/java/8/jdk-8u351/>
   oraclejdk = let
