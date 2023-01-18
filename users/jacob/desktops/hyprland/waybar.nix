@@ -3,6 +3,24 @@
   pkgs,
   ...
 }: let
+  # package overridden for hyprland-specific patches
+  # <https://wiki.hyprland.org/Useful-Utilities/Status-Bars/#clicking-on-a-workspace-icon-does-not-work>
+  # TODO upstream this to the Hyprland flake!
+  package = pkgs.waybar.overrideAttrs (old: {
+    mesonFlags = old.mesonFlags ++ ["-Dexperimental=true"];
+    # needs hyprctl for workspace switching
+    # included in the systemd unit's Environment PATH
+    buildInputs = old.buildInputs ++ [pkgs.hyprland];
+    postPatch = ''
+      sed -i 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' src/modules/wlr/workspace_manager.cpp
+    '';
+  });
+
+  fontPackages = [
+    pkgs.ubuntu_font_family
+    pkgs.material-design-icons
+  ];
+
   compileSCSS = name: source: "${pkgs.runCommandLocal name {} ''
     mkdir -p $out
     ${lib.getExe pkgs.sassc} -t expanded '${source}' > $out/${name}.css
@@ -41,13 +59,21 @@
   };
 in {
   programs.waybar.enable = true;
+
   programs.waybar.package = pkgs.symlinkJoin {
-    name = "waybar";
-    paths = [pkgs.waybar-hyprland pkgs.material-design-icons];
+    name = package.name;
+    paths = [package] ++ fontPackages;
   };
+
   programs.waybar.systemd.enable = true;
+
+  systemd.user.services.waybar.Service.Environment = [
+    "PATH=${lib.makeBinPath (map lib.getBin package.buildInputs)}"
+  ];
+
   programs.waybar.style =
     builtins.readFile (compileSCSS "waybar-style" ./waybar.scss);
+
   programs.waybar.settings = {
     mainBar = {
       layer = "top";
@@ -80,6 +106,7 @@ in {
       "wlr/workspaces" = {
         sort-by-number = true;
 
+        on-click = "activate";
         on-scroll-up = commands.workspaceSwitchPrev;
         on-scroll-down = commands.workspaceSwitchNext;
       };
