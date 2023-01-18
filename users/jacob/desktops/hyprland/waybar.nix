@@ -58,6 +58,8 @@ in {
       "wlr/workspaces" = {
         sort-by-number = true;
 
+        on-scroll-up = "hyprctl dispatch workspace m-1";
+        on-scroll-down = "hyprctl dispatch workspace m+1";
       };
       "hyprland/window" = {
         max-length = 70;
