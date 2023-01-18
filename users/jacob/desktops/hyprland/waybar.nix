@@ -189,7 +189,7 @@ in {
       battery = {
         interval = 5;
         bat = "BAT0";
-        full-at = 94;
+        # full-at = 94;
         format = "{icon} {capacity}%";
         format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
         states = {
@@ -204,7 +204,10 @@ in {
           battery-90 = 90;
           battery-100 = 100;
         };
-        format-notcharging = "󰚥 AC";
+        # <https://github.com/Alexays/Waybar/issues/1938>
+        # the wiki lies about this, does not match
+        # /sys/class/power_supply/BAT0/status
+        format-plugged = "󰚥 AC";
         format-charging-battery-10 = "󰢜 {capacity}%";
         format-charging-battery-20 = "󰂆 {capacity}%";
         format-charging-battery-30 = "󰂇 {capacity}%";
