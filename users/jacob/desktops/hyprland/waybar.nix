@@ -17,6 +17,11 @@
       colors.warningHighlight = "#cc241de6";
     };
   });
+
+  commands = {
+    backlightUp = "busctl --user call org.clight.clight /org/clight/clight org.clight.clight IncBl d 0.05";
+    backlightDown = "busctl --user call org.clight.clight /org/clight/clight org.clight.clight DecBl d 0.05";
+  };
 in {
   programs.waybar.enable = true;
   programs.waybar.package = pkgs.symlinkJoin {
@@ -108,6 +113,9 @@ in {
         format = "{icon} {percent}%";
         # format-icons = ["󰃜" "󰃛" "󰃝" "󰃟" "󰃠"];
         format-icons = ["󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨"];
+
+        on-scroll-up = commands.backlightUp;
+        on-scroll-down = commands.backlightDown;
       };
 
       memory = {
