@@ -157,10 +157,12 @@ in {
     enumerate = f: l: lib.zipListsWith f (lib.range 0 (builtins.length l)) l;
 
     listenerScript = pkgs.writeShellScript "hyprland-event-listener" ''
+      set -o pipefail
+
       socket="/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
       echo "INFO: opening socket: $socket"
 
-      ${lib.getExe pkgs.socat} - UNIX-CONNECT:"$socket" | while read -r line; do
+      ${pkgs.netcat}/bin/nc -U "$socket" | while read -r line; do
         ${lib.concatStrings (lib.mapAttrsToList (_: info: ''
           if [[ "$line" =~ ${mkEventRegex info} ]]; then
             ${lib.concatStringsSep "\n  " (
@@ -180,8 +182,8 @@ in {
         '')
         handlerInfos)}
 
-        # echo "INFO: unhandled event: $line"
-      done
+        echo "INFO: unhandled event: $line"
+      done || echo "ERROR: main pipeline failed, exit: $?"
     '';
   in
     lib.mkMerge [
