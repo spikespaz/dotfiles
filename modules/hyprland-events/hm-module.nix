@@ -5,249 +5,153 @@
   ...
 }: let
   inherit (lib) types;
-  cfg = config.wayland.windowManager.hyprland.eventHandlers;
+  cfg = config.wayland.windowManager.hyprland.eventListener;
 
   description = ''
-    Harness script to dispatch Hyprland IPC events to
-    registered handlers from Nix configurations.
+    Event listener for Hyprland's `socket2` IPC protocol.
   '';
 
-  mkEventDescription = ipcName: ipcArgs: envVars: extraText:
-    lib.mdDoc (''
-        Corresponds to `${ipcName}` event, with arguments:
-        ${lib.concatStringsSep "\n- " ipcArgs}
+  # prefix to avoid any potential collisions
+  eventVarPrefix = "HL_";
+  # TODO openlayer closelayer changefloatingmode
+  eventHandlers =
+    lib.mapAttrs (
+      _: attrs @ {vars, ...}:
+        attrs // {vars = map (v: eventVarPrefix + v) vars;}
+    ) {
+      ### WINDOWS ###
+      windowFocus = {
+        event = "activewindow";
+        vars = ["WINDOW_CLASS" "WINDOW_TITLE"];
+      };
+      windowOpen = {
+        event = "openwindow";
+        vars = ["WINDOW_ADDRESS" "WORKSPACE_NAME" "WINDOW_CLASS" "WINDOW_TITLE"];
+      };
+      windowClose = {
+        event = "movewindow";
+        vars = ["WINDOW_ADDRESS"];
+      };
+      windowMove = {
+        event = "movewindow";
+        vars = ["WINDOW_ADDRESS" "WORKSPACE_NAME"];
+      };
+      windowFullscreen = {
+        event = "fullscreen";
+        vars = ["FULLSCREEN_STATE"];
+      };
 
-        Scripts and binaries will have access to the following environment variables:
-        ${lib.concatStringsSep "\n- " envVars}
-      ''
-      + lib.optionalString (extraText != null) "\n${extraText}"
-      + ''
+      ### WORKSPACES ###
+      workspaceFocus = {
+        event = "workspace";
+        vars = ["WORKSPACE_NAME"];
+      };
+      workspaceCreate = {
+        event = "createworkspace";
+        vars = ["WORKSPACE_NAME"];
+      };
+      workspaceDestroy = {
+        event = "destroyworkspace";
+        vars = ["WORKSPACE_NAME"];
+      };
+      workspaceMove = {
+        event = "moveworkspace";
+        vars = ["WORKSPACE_NAME" "MONITOR_NAME"];
+      };
 
-        Read about this event on the wiki.
+      ### MONITORS ###
+      monitorFocus = {
+        event = "focusedmon";
+        vars = ["MONITOR_NAME" "WORKSPACE_NAME"];
+      };
+      monitorAdd = {
+        event = "monitoradded";
+        vars = ["MONITOR_NAME"];
+      };
+      monitorRemove = {
+        event = "monitorremoved";
+        vars = ["MONITOR_NAME"];
+      };
 
-        <https://wiki.hyprland.org/IPC/>
-      '');
-
-  handlerListType = types.listOf (types.oneOf [types.path types.package types.nonEmptyStr]);
+      ### MISCELLANEOUS ###
+      layoutChange = {
+        event = "activelayout";
+        vars = ["KEYBOARD_NAME" "LAYOUT_NAME"];
+      };
+      submapChange = {
+        event = "submap";
+        vars = ["SUBMAP_NAME"];
+      };
+    };
 in {
   options = {
-    wayland.windowManager.hyprland.eventHandlers = {
+    wayland.windowManager.hyprland.eventListener = {
       enable = lib.mkEnableOption (lib.mdDoc ''
-        Enable the Hyprland IPC handlers configuration.
+        Enable the Hyprland IPC listener & handlers configuration.
 
         ${description}
       '');
 
-      systemdService = lib.mkEnableOption (lib.mdDoc ''
-        Enable the IPC event handler to be run as a systemd service
-        wanted by `hyprland-sesion.target` instead of running as an `exec-start`
-        entry in the Hyprland config file.
+      systemdService = lib.mkOption {
+        type = types.bool;
+        default = true;
+        description = lib.mdDoc ''
+          Enable the IPC event listener to be run as a systemd service
+          wanted by `hyprland-sesion.target` instead of running as an
+          `exec-start` entry in the Hyprland config file.
 
-        This is recommended if you would like to be able to
-        `systemctl --user restart hyprland-event-handler` instead of restarting
-        the entire Hyprland session.
-      '');
-
-      # TODO openlayer closelayer changefloatingmode
-      handlers = {
-        ### WINDOWS ###
-
-        windowFocus = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "activewindow"
-            ["WINDOWCLASS" "WINDOWTITLE"]
-            ["HL_WINDOW_CLASS" "HL_WINDOW_TITLE"]
-            null;
-        };
-
-        windowOpen = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "openwindow"
-            ["WINDOWADDRESS" "WORKSPACENAME" "WINDOWCLASS" "WINDOWTITLE"]
-            ["HL_WINDOW_ADDRESS" "HL_WORKSPACE_NAME" "HL_WINDOW_CLASS" "HL_WINDOW_TITLE"]
-            null;
-        };
-
-        windowClose = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "closewindow"
-            ["WINDOWADDRESS"]
-            ["HL_WINDOW_ADDRESS"]
-            null;
-        };
-
-        windowMove = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "movewindow"
-            ["WINDOWADDRESS" "WORKSPACENAME"]
-            ["HL_WINDOW_ADDRESS" "HL_WORKSPACE_NAME"]
-            null;
-        };
-
-        windowFullscreen = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "fullscreen"
-            ["<unknown>"]
-            ["HL_FULLSCREEN_STATE"]
-            null;
-        };
-
-        ### WORKSPACES ###
-
-        workspaceFocus = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "workspace"
-            ["WORKSPACENAME"]
-            ["HL_WORKSPACE_NAME"]
-            null;
-        };
-
-        workspaceCreate = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "createworkspace"
-            ["WORKSPACENAME"]
-            ["HL_WORKSPACE_NAME"]
-            null;
-        };
-
-        workspaceDestroy = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "destroyworkspace"
-            ["WORKSPACENAME"]
-            ["HL_WORKSPACE_NAME"]
-            null;
-        };
-
-        workspaceMove = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "moveworkspace"
-            ["WORKSPACENAME" "MONNAME"]
-            ["HL_WORKSPACE_NAME" "HL_MONITOR_NAME"]
-            null;
-        };
-
-        ### MONITORS ###
-
-        monitorFocus = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "focusedmon"
-            ["MONNAME" "WORKSPACENAME"]
-            ["HL_MONITOR_NAME" "HL_WORKSPACE_NAME"]
-            null;
-        };
-
-        monitorAdd = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "monitoradded"
-            ["MONITORNAME"]
-            ["HL_MONITOR_NAME"]
-            null;
-        };
-
-        monitorRemove = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "monitorremoved"
-            ["MONITORNAME"]
-            ["HL_MONITOR_NAME"]
-            null;
-        };
-
-        ### MISCELLANEOUS ###
-
-        layoutChange = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "activelayout"
-            ["KEYBOARDNAME" "LAYOUTNAME"]
-            ["HL_KEYBOARD_NAME" "HL_LAYOUT_NAME"]
-            null;
-        };
-
-        submapChange = lib.mkOption {
-          type = handlerListType;
-          default = [];
-          example = lib.literalExpression '''';
-          description =
-            mkEventDescription
-            "submap"
-            ["SUBMAPNAME"]
-            ["HL_SUBMAP_NAME"]
-            null;
-        };
+          This is recommended if you would like to be able to
+          `systemctl --user restart hyprland-event-handler`
+          (for instance, when testing changes) instead of restarting
+          the entire Hyprland session.
+        '';
       };
+
+      handlers = builtins.mapAttrs (_: {
+        event,
+        vars,
+        ...
+      }:
+        lib.mkOption {
+          type = types.nullOr types.lines;
+          default = null;
+          description = lib.mdDoc ''
+            IPC socket event name: `${event}`
+
+            Environment variables:
+
+              - `${lib.concatStringsSep "`\n  - `" vars}`
+
+            The above environment variables can be used in lines of
+            shell code declared by this option. They are exported such that
+            any subprocesses called by this handler
+            script will also recieve them. The order they are listed in
+            agrees with the positional data shown for the `${event}` event
+            as shown on the wiki.
+
+            <https://wiki.hyprland.org/IPC/>
+          '';
+        })
+      eventHandlers;
     };
   };
 
   config = lib.mkIf cfg.enable (let
-    # The idea here is to accept three types: path, package, and string.
-    # A path is assumed to be an executable binary, a package is assumed to have
-    # meta.mainProgram set to a valid binary, and a string is expected to be
-    # script code.
-    mkHandlerExecPath = v:
-      if (builtins.typeOf v) == "path"
-      then v
-      else if (builtins.typeOf v) == "package"
-      then lib.getExe v
-      else pkgs.writeScript "" v;
-    # Coerce all hs to a path, and then concat them with
-    # ':' as sep, unix-style.
-    mkHandlersEnvList = hs: lib.concatStringsSep ":" (map mkHandlerExecPath hs);
-    mkHandlersEnvVar = name: hs: "export __HL_HANDLERS_${lib.toUpper name}='${mkHandlersEnvList hs}'";
+    enabledHandlers = lib.filterAttrs (_: v: v != null) cfg.handlers;
 
-    wrapper = pkgs.writeShellScript "hyprland-event-handler" ''
+    handlerScripts =
+      lib.mapAttrs' (name: text: {
+        name = "__HL_HANDLER_${lib.toUpper name}";
+        value = pkgs.writeShellScript "hl-handler-${name}" text;
+      })
+      enabledHandlers;
+
+    listenerWrapper = pkgs.writeShellScript "hyprland-event-listener" ''
       ${lib.concatStringsSep "\n" (
-        lib.mapAttrsToList mkHandlersEnvVar cfg.handlers
+        lib.mapAttrsToList (var: script: ''
+          export ${var}=${script}
+        '')
+        handlerScripts
       )}
 
       ${lib.getExe pkgs.perl} ${./handler.pl}
@@ -255,14 +159,14 @@ in {
   in {
     # if cfg.systemdService
     # then {
-    systemd.user.services.hyprland-event-handler = {
+    systemd.user.services.hyprland-event-listener = {
       Unit = {
         Description = description;
         PartOf = "hyprland-session.target";
       };
       Service = {
         Type = "simple";
-        ExecStart = "${wrapper}";
+        ExecStart = "${listenerWrapper}";
         Restart = "on-failure";
         RestartSec = 5;
       };

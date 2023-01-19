@@ -22,22 +22,20 @@ my $socket = IO::Socket->new(
 die "Could not open socket!" unless $socket;
 
 my %handlers = (
-    windowfocus      => [ split( ':', $ENV{'__HL_HANDLERS_WINDOWFOCUS'} ) ],
-    windowopen       => [ split( ':', $ENV{'__HL_HANDLERS_WINDOWOPEN'} ) ],
-    windowclose      => [ split( ':', $ENV{'__HL_HANDLERS_WINDOWCLOSE'} ) ],
-    windowmove       => [ split( ':', $ENV{'__HL_HANDLERS_WINDOWMOVE'} ) ],
-    windowfullscreen =>
-      [ split( ':', $ENV{'__HL_HANDLERS_WINDOWFULLSCREEN'} ) ],
-    workspacefocus   => [ split( ':', $ENV{'__HL_HANDLERS_WORKSPACEFOCUS'} ) ],
-    workspacecreate  => [ split( ':', $ENV{'__HL_HANDLERS_WORKSPACECREATE'} ) ],
-    workspacedestroy =>
-      [ split( ':', $ENV{'__HL_HANDLERS_WORKSPACEDESTROY'} ) ],
-    workspacemove => [ split( ':', $ENV{'__HL_HANDLERS_WORKSPACEMOVE'} ) ],
-    monitorfocus  => [ split( ':', $ENV{'__HL_HANDLERS_MONITORFOCUS'} ) ],
-    monitoradd    => [ split( ':', $ENV{'__HL_HANDLERS_MONITORADD'} ) ],
-    monitorremove => [ split( ':', $ENV{'__HL_HANDLERS_MONITORREMOVE'} ) ],
-    layoutchange  => [ split( ':', $ENV{'__HL_HANDLERS_LAYOUTCHANGE'} ) ],
-    submapchange  => [ split( ':', $ENV{'__HL_HANDLERS_SUBMAPCHANGE'} ) ],
+    windowfocus      => $ENV{'__HL_HANDLER_WINDOWFOCUS'},
+    windowopen       => $ENV{'__HL_HANDLER_WINDOWOPEN'},
+    windowclose      => $ENV{'__HL_HANDLER_WINDOWCLOSE'},
+    windowmove       => $ENV{'__HL_HANDLER_WINDOWMOVE'},
+    windowfullscreen => $ENV{'__HL_HANDLER_WINDOWFULLSCREEN'},
+    workspacefocus   => $ENV{'__HL_HANDLER_WORKSPACEFOCUS'},
+    workspacecreate  => $ENV{'__HL_HANDLER_WORKSPACECREATE'},
+    workspacedestroy => $ENV{'__HL_HANDLER_WORKSPACEDESTROY'},
+    workspacemove    => $ENV{'__HL_HANDLER_WORKSPACEMOVE'},
+    monitorfocus     => $ENV{'__HL_HANDLER_MONITORFOCUS'},
+    monitoradd       => $ENV{'__HL_HANDLER_MONITORADD'},
+    monitorremove    => $ENV{'__HL_HANDLER_MONITORREMOVE'},
+    layoutchange     => $ENV{'__HL_HANDLER_LAYOUTCHANGE'},
+    submapchange     => $ENV{'__HL_HANDLER_SUBMAPCHANGE'},
 );
 
 while ( my $line = <$socket> ) {
@@ -96,8 +94,8 @@ sub h_WindowFocus {
     $ENV{'HL_WINDOW_CLASS'} = shift;
     $ENV{'HL_WINDOW_TITLE'} = shift;
 
-    foreach my $script ( $handlers{windowfocus}->@* ) {
-        system($script);
+    if ( defined $handlers{windowfocus} ) {
+        system( $handlers{windowfocus} );
     }
 }
 
@@ -107,16 +105,16 @@ sub h_WindowOpen {
     $ENV{'HL_WINDOW_CLASS'}   = shift;
     $ENV{'HL_WINDOW_TITLE'}   = shift;
 
-    foreach my $script ( $handlers{windowopen}->@* ) {
-        system($script);
+    if ( defined $handlers{windowopen} ) {
+        system( $handlers{windowopen} );
     }
 }
 
 sub h_WindowClose {
     $ENV{'HL_WINDOW_ADDRESS'} = shift;
 
-    foreach my $script ( $handlers{windowclose}->@* ) {
-        system($script);
+    if ( defined $handlers{windowclose} ) {
+        system( $handlers{windowclose} );
     }
 }
 
@@ -124,16 +122,16 @@ sub h_WindowMove {
     $ENV{'HL_WINDOW_ADDRESS'} = shift;
     $ENV{'HL_WORKSPACE_NAME'} = shift;
 
-    foreach my $script ( $handlers{windowmove}->@* ) {
-        system($script);
+    if ( defined $handlers{windowmove} ) {
+        system( $handlers{windowmove} );
     }
 }
 
 sub h_WindowFullscreen {
     $ENV{'HL_FULLSCREEN_STATE'} = shift;
 
-    foreach my $script ( $handlers{windowfullscreen}->@* ) {
-        system($script);
+    if ( defined $handlers{windowfullscreen} ) {
+        system( $handlers{windowfullscreen} );
     }
 }
 
@@ -142,24 +140,24 @@ sub h_WindowFullscreen {
 sub h_WorkspaceFocus {
     $ENV{'HL_WORKSPACE_NAME'} = shift;
 
-    foreach my $script ( $handlers{workspacefocus}->@* ) {
-        system($script);
+    if ( defined $handlers{workspacefocus} ) {
+        system( $handlers{workspacefocus} );
     }
 }
 
 sub h_WorkspaceCreate {
     $ENV{'HL_WORKSPACE_NAME'} = shift;
 
-    foreach my $script ( $handlers{workspacecreate}->@* ) {
-        system($script);
+    if ( defined $handlers{workspacecreate} ) {
+        system( $handlers{workspacecreate} );
     }
 }
 
 sub h_WorkspaceDestroy {
     $ENV{'HL_WORKSPACE_NAME'} = shift;
 
-    foreach my $script ( $handlers{workspacedestroy}->@* ) {
-        system($script);
+    if ( defined $handlers{workspacedestroy} ) {
+        system( $handlers{workspacedestroy} );
     }
 }
 
@@ -167,8 +165,8 @@ sub h_WorkspaceMove {
     $ENV{'HL_WORKSPACE_NAME'} = shift;
     $ENV{'HL_MONITOR_NAME'}   = shift;
 
-    foreach my $script ( $handlers{workspacemove}->@* ) {
-        system($script);
+    if ( defined $handlers{workspacemove} ) {
+        system( $handlers{workspacemove} );
     }
 }
 
@@ -178,24 +176,24 @@ sub h_MonitorFocus {
     $ENV{'HL_MONITOR_NAME'}   = shift;
     $ENV{'HL_WORKSPACE_NAME'} = shift;
 
-    foreach my $script ( $handlers{monitorfocus}->@* ) {
-        system($script);
+    if ( defined $handlers{monitorfocus} ) {
+        system( $handlers{monitorfocus} );
     }
 }
 
 sub h_MonitorAdd {
     $ENV{'HL_MONITOR_NAME'} = shift;
 
-    foreach my $script ( $handlers{monitoradd}->@* ) {
-        system($script);
+    if ( defined $handlers{monitoradd} ) {
+        system( $handlers{monitoradd} );
     }
 }
 
 sub h_MonitorRemove {
     $ENV{'HL_MONITOR_NAME'} = shift;
 
-    foreach my $script ( $handlers{monitorremove}->@* ) {
-        system($script);
+    if ( defined $handlers{monitorremove} ) {
+        system( $handlers{monitorremove} );
     }
 }
 
@@ -205,15 +203,15 @@ sub h_LayoutChange {
     $ENV{'HL_KEYBOARD_NAME'} = shift;
     $ENV{'HL_LAYOUT_NAME'}   = shift;
 
-    foreach my $script ( $handlers{layoutchange}->@* ) {
-        system($script);
+    if ( defined $handlers{layoutchange} ) {
+        system( $handlers{layoutchange} );
     }
 }
 
 sub h_SubmapChange {
     $ENV{'HL_SUBMAP_NAME'} = shift;
 
-    foreach my $script ( $handlers{submapchange}->@* ) {
-        system($script);
+    if ( defined $handlers{submapchange} ) {
+        system( $handlers{submapchange} );
     }
 }
