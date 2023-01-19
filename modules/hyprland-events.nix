@@ -140,7 +140,7 @@ in {
 
             Environment variables:
 
-              - `${lib.concatStringsSep "`\n  - `" vars}`
+            ${lib.concatMapStrings (v: " - `${v}`\n") vars}
 
             The above environment variables can be used in lines of
             shell code declared by this option. They are exported such that
