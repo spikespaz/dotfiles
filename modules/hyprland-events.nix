@@ -13,7 +13,7 @@
 
   # prefix to avoid any potential collisions
   eventVarPrefix = "HL_";
-  # TODO openlayer closelayer changefloatingmode
+
   eventHandlers =
     lib.mapAttrs (
       _: attrs @ {vars, ...}:
@@ -36,9 +36,23 @@
         event = "movewindow";
         vars = ["WINDOW_ADDRESS" "WORKSPACE_NAME"];
       };
+      windowFloat = {
+        event = "changefloatingmode";
+        vars = ["WINDOW_ADDRESS" "FLOAT_STATE"];
+      };
       windowFullscreen = {
         event = "fullscreen";
         vars = ["FULLSCREEN_STATE"];
+      };
+
+      ### LAYERS ###
+      layerOpen = {
+        event = "openlayer";
+        vars = ["LAYER_NAMESPACE"];
+      };
+      layerClose = {
+        event = "closelayer";
+        vars = ["LAYER_NAMESPACE"];
       };
 
       ### WORKSPACES ###
@@ -88,6 +102,12 @@ in {
     wayland.windowManager.hyprland.eventListener = {
       enable = lib.mkEnableOption (lib.mdDoc ''
         Enable the Hyprland IPC listener & handlers configuration.
+
+        See the documentation for each event on the Hyprland wiki:
+        <https://wiki.hyprland.org/IPC/>.
+
+        Events and variables have been renamed
+        to satisfy your mental disorders.
 
         ${description}
       '');
@@ -141,7 +161,7 @@ in {
       (lib.filterAttrs (_: v: v != null))
       (lib.mapAttrs (n: text: {
         inherit (builtins.getAttr n eventHandlers) event vars;
-        script = pkgs.writeShellScript "hl-handler-${n}" text;
+        script = pkgs.writeShellScript "hyprland-${n}-handler" text;
       }))
     ];
 

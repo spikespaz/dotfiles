@@ -89,10 +89,6 @@
     eventListener.handlers = let
       hyprctl = "${pkgs.hyprland}/bin/hyprctl";
     in {
-      windowOpen = ''
-        ${pkgs.libnotify}/bin/notify-send -t 1000 -a 'WindowOpen' 'It works!' \
-          "WINDOW_ADDRESS: $HL_WINDOW_ADDRESS\nWORKSPACE_NAME: $HL_WORKSPACE_NAME\nWINDOW_CLASS: $HL_WINDOW_CLASS\nWINDOW_TITLE: $HL_WINDOW_TITLE"
-      '';
       monitorAdd = ''
         ${hyprctl} dispatch moveworkspacetomonitor 2 $HL_MONITOR_NAME
         ${hyprctl} dispatch moveworkspacetomonitor 4 $HL_MONITOR_NAME
