@@ -91,46 +91,41 @@ while ( my $line = <$socket> ) {
 ### WINDOWS ###
 
 sub h_WindowFocus {
-    $ENV{'HL_WINDOW_CLASS'} = shift;
-    $ENV{'HL_WINDOW_TITLE'} = shift;
-
     if ( defined $handlers{windowfocus} ) {
+        $ENV{'HL_WINDOW_CLASS'} = shift;
+        $ENV{'HL_WINDOW_TITLE'} = shift;
         system( $handlers{windowfocus} );
     }
 }
 
 sub h_WindowOpen {
-    $ENV{'HL_WINDOW_ADDRESS'} = shift;
-    $ENV{'HL_WORKSPACE_NAME'} = shift;
-    $ENV{'HL_WINDOW_CLASS'}   = shift;
-    $ENV{'HL_WINDOW_TITLE'}   = shift;
-
     if ( defined $handlers{windowopen} ) {
+        $ENV{'HL_WINDOW_ADDRESS'} = shift;
+        $ENV{'HL_WORKSPACE_NAME'} = shift;
+        $ENV{'HL_WINDOW_CLASS'}   = shift;
+        $ENV{'HL_WINDOW_TITLE'}   = shift;
         system( $handlers{windowopen} );
     }
 }
 
 sub h_WindowClose {
-    $ENV{'HL_WINDOW_ADDRESS'} = shift;
-
     if ( defined $handlers{windowclose} ) {
+        $ENV{'HL_WINDOW_ADDRESS'} = shift;
         system( $handlers{windowclose} );
     }
 }
 
 sub h_WindowMove {
-    $ENV{'HL_WINDOW_ADDRESS'} = shift;
-    $ENV{'HL_WORKSPACE_NAME'} = shift;
-
     if ( defined $handlers{windowmove} ) {
+        $ENV{'HL_WINDOW_ADDRESS'} = shift;
+        $ENV{'HL_WORKSPACE_NAME'} = shift;
         system( $handlers{windowmove} );
     }
 }
 
 sub h_WindowFullscreen {
-    $ENV{'HL_FULLSCREEN_STATE'} = shift;
-
     if ( defined $handlers{windowfullscreen} ) {
+        $ENV{'HL_FULLSCREEN_STATE'} = shift;
         system( $handlers{windowfullscreen} );
     }
 }
@@ -138,34 +133,30 @@ sub h_WindowFullscreen {
 ### WORKSPACES ###
 
 sub h_WorkspaceFocus {
-    $ENV{'HL_WORKSPACE_NAME'} = shift;
-
     if ( defined $handlers{workspacefocus} ) {
+        $ENV{'HL_WORKSPACE_NAME'} = shift;
         system( $handlers{workspacefocus} );
     }
 }
 
 sub h_WorkspaceCreate {
-    $ENV{'HL_WORKSPACE_NAME'} = shift;
-
     if ( defined $handlers{workspacecreate} ) {
+        $ENV{'HL_WORKSPACE_NAME'} = shift;
         system( $handlers{workspacecreate} );
     }
 }
 
 sub h_WorkspaceDestroy {
-    $ENV{'HL_WORKSPACE_NAME'} = shift;
-
     if ( defined $handlers{workspacedestroy} ) {
+        $ENV{'HL_WORKSPACE_NAME'} = shift;
         system( $handlers{workspacedestroy} );
     }
 }
 
 sub h_WorkspaceMove {
-    $ENV{'HL_WORKSPACE_NAME'} = shift;
-    $ENV{'HL_MONITOR_NAME'}   = shift;
-
     if ( defined $handlers{workspacemove} ) {
+        $ENV{'HL_WORKSPACE_NAME'} = shift;
+        $ENV{'HL_MONITOR_NAME'}   = shift;
         system( $handlers{workspacemove} );
     }
 }
@@ -173,26 +164,23 @@ sub h_WorkspaceMove {
 ### MONITORS ###
 
 sub h_MonitorFocus {
-    $ENV{'HL_MONITOR_NAME'}   = shift;
-    $ENV{'HL_WORKSPACE_NAME'} = shift;
-
     if ( defined $handlers{monitorfocus} ) {
+        $ENV{'HL_MONITOR_NAME'}   = shift;
+        $ENV{'HL_WORKSPACE_NAME'} = shift;
         system( $handlers{monitorfocus} );
     }
 }
 
 sub h_MonitorAdd {
-    $ENV{'HL_MONITOR_NAME'} = shift;
-
     if ( defined $handlers{monitoradd} ) {
+        $ENV{'HL_MONITOR_NAME'} = shift;
         system( $handlers{monitoradd} );
     }
 }
 
 sub h_MonitorRemove {
-    $ENV{'HL_MONITOR_NAME'} = shift;
-
     if ( defined $handlers{monitorremove} ) {
+        $ENV{'HL_MONITOR_NAME'} = shift;
         system( $handlers{monitorremove} );
     }
 }
@@ -200,18 +188,16 @@ sub h_MonitorRemove {
 ### MISCELLANEOUS ###
 
 sub h_LayoutChange {
-    $ENV{'HL_KEYBOARD_NAME'} = shift;
-    $ENV{'HL_LAYOUT_NAME'}   = shift;
-
     if ( defined $handlers{layoutchange} ) {
+        $ENV{'HL_KEYBOARD_NAME'} = shift;
+        $ENV{'HL_LAYOUT_NAME'}   = shift;
         system( $handlers{layoutchange} );
     }
 }
 
 sub h_SubmapChange {
-    $ENV{'HL_SUBMAP_NAME'} = shift;
-
     if ( defined $handlers{submapchange} ) {
+        $ENV{'HL_SUBMAP_NAME'} = shift;
         system( $handlers{submapchange} );
     }
 }
