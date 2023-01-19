@@ -148,37 +148,36 @@ in {
 
     listenerWrapper = pkgs.writeShellScript "hyprland-event-listener" ''
       ${lib.concatStringsSep "\n" (
-        lib.mapAttrsToList (var: script: ''
-          export ${var}=${script}
-        '')
+        lib.mapAttrsToList
+        (var: script: "export ${var}=${script}")
         handlerScripts
       )}
 
       ${lib.getExe pkgs.perl} ${./handler.pl}
     '';
-  in {
-    # if cfg.systemdService
-    # then {
-    systemd.user.services.hyprland-event-listener = {
-      Unit = {
-        Description = description;
-        PartOf = "hyprland-session.target";
-      };
-      Service = {
-        Type = "simple";
-        ExecStart = "${listenerWrapper}";
-        Restart = "on-failure";
-        RestartSec = 5;
-      };
-      Install.WantedBy = ["hyprland-session.target"];
-    };
-    # }
-    # else {
-    #   wayland.windowManager.hyprland = {
-    #     extraInitConfig = ''
-    #       exec-once = ${wrapper}
-    #     '';
-    #   };
-    # });
-  });
+  in
+    lib.mkMerge [
+      (lib.mkIf cfg.systemdService {
+        systemd.user.services.hyprland-event-listener = {
+          Unit = {
+            Description = description;
+            PartOf = "hyprland-session.target";
+          };
+          Service = {
+            Type = "simple";
+            ExecStart = "${listenerWrapper}";
+            Restart = "on-failure";
+            RestartSec = 5;
+          };
+          Install.WantedBy = ["hyprland-session.target"];
+        };
+      })
+      (lib.mkIf (!cfg.systemdService) {
+        wayland.windowManager.hyprland = {
+          extraInitConfig = ''
+            exec-once = ${listenerWrapper}
+          '';
+        };
+      })
+    ]);
 }
