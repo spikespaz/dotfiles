@@ -105,8 +105,7 @@
       useIn = ["Hyprland"];
     in [
       {
-        package = pkgs.xdg-desktop-portal-wlr;
-        inherit useIn;
+        package = pkgs.xdg-desktop-portal-hyprland;
       }
       {
         package = pkgs.libsForQt5.xdg-desktop-portal-kde;
