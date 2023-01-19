@@ -137,23 +137,50 @@ in {
   };
 
   config = lib.mkIf cfg.enable (let
-    enabledHandlers = lib.filterAttrs (_: v: v != null) cfg.handlers;
+    handlerInfos = lib.pipe cfg.handlers [
+      (lib.filterAttrs (_: v: v != null))
+      (lib.mapAttrs (n: text: {
+        inherit (builtins.getAttr n eventHandlers) event vars;
+        script = pkgs.writeShellScript "hl-handler-${n}" text;
+      }))
+    ];
 
-    handlerScripts =
-      lib.mapAttrs' (name: text: {
-        name = "__HL_HANDLER_${lib.toUpper name}";
-        value = pkgs.writeShellScript "hl-handler-${name}" text;
-      })
-      enabledHandlers;
+    # TODO vaxry, window titles can have commas in them...
+    mkEventRegex = {
+      event,
+      vars,
+      ...
+    }: "^${event}\\>\\>${lib.concatStringsSep "," (
+      builtins.genList (_: "(.+)") (builtins.length vars)
+    )}$";
 
-    listenerWrapper = pkgs.writeShellScript "hyprland-event-listener" ''
-      ${lib.concatStringsSep "\n" (
-        lib.mapAttrsToList
-        (var: script: "export ${var}=${script}")
-        handlerScripts
-      )}
+    enumerate = f: l: lib.zipListsWith f (lib.range 0 (builtins.length l)) l;
 
-      ${lib.getExe pkgs.perl} ${./handler.pl}
+    listenerScript = pkgs.writeShellScript "hyprland-event-listener" ''
+      socket="/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+      echo "INFO: opening socket: $socket"
+
+      ${lib.getExe pkgs.socat} - UNIX-CONNECT:"$socket" | while read -r line; do
+        ${lib.concatStrings (lib.mapAttrsToList (_: info: ''
+          if [[ "$line" =~ ${mkEventRegex info} ]]; then
+            ${lib.concatStringsSep "\n  " (
+            enumerate
+            (i: v: "export ${v}=\"\${BASH_REMATCH[${toString (i + 1)}]}\"")
+            info.vars
+          )}
+            ${info.script}
+            exit=$?
+            if [[ $exit -ne 0 ]]; then
+              echo "ERROR: exited $exit: ''${BASH_REMATCH[0]}"
+            else
+              echo "SUCCESS: handled: ''${BASH_REMATCH[0]}"
+            fi
+            continue
+          fi
+        '')
+        handlerInfos)}
+        # echo "INFO: unhandled event: $line"
+      done
     '';
   in
     lib.mkMerge [
@@ -165,7 +192,7 @@ in {
           };
           Service = {
             Type = "simple";
-            ExecStart = "${listenerWrapper}";
+            ExecStart = "${listenerScript}";
             Restart = "on-failure";
             RestartSec = 5;
           };
@@ -175,7 +202,7 @@ in {
       (lib.mkIf (!cfg.systemdService) {
         wayland.windowManager.hyprland = {
           extraInitConfig = ''
-            exec-once = ${listenerWrapper}
+            exec-once = ${listenerScript}
           '';
         };
       })
