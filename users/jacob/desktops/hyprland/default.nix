@@ -7,7 +7,7 @@
 }: {
   imports = [
     hmModules.hyprland
-    flake.modules.hyprland-events.hm-module
+    flake.modules.hyprland-events
     flake.modules.desktop-portals
     ./config.nix
     ./windowrules.nix
