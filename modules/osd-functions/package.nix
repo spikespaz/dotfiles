@@ -1,5 +1,5 @@
 {
-  maintainers,
+  # maintainers,
   lib,
   stdenv,
   makeWrapper,
@@ -11,7 +11,6 @@
   libnotify,
   wireplumber,
   scriptOptions ? {},
-  ...
 }: let
   scriptOptions' = (
     lib.recursiveUpdate
@@ -42,7 +41,7 @@
   );
 in
   stdenv.mkDerivation {
-    pname = "keyboard-functions";
+    pname = "osd-functions";
     version = "0.0.1";
 
     strictDeps = true;
@@ -109,13 +108,15 @@ in
       ]}'
     '';
 
-    meta = {
-      description = ''
-        Shell script to execute actions when function keys are triggered
-      '';
-      license = lib.licenses.mit;
-      platforms = lib.platforms.linux;
-      mainProgram = "functions";
-      maintainers = with maintainers; [spikespaz];
-    };
+    meta.mainProgram = "functions";
+
+    # meta = {
+    #   description = ''
+    #     Shell script to execute actions when function keys are triggered
+    #   '';
+    #   license = lib.licenses.mit;
+    #   platforms = lib.platforms.linux;
+    #   mainProgram = "functions";
+    #   maintainers = with maintainers; [spikespaz];
+    # };
   }

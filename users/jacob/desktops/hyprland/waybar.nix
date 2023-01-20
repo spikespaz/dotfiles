@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   ...
@@ -32,15 +33,7 @@
     busctl = "${pkgs.systemd}/bin/busctl";
     hyprctl = "${pkgs.hyprland}/bin/hyprctl";
     # TODO this is duplicated from the hyprland config, make it a module
-    kbFns = lib.getExe (pkgs.keyboard-functions.override {
-      scriptOptions = {
-        # to get it to the top of the list
-        urgency = "critical";
-        outputMaximum = 1.25;
-        colors.normalHighlight = "#458588e6";
-        colors.warningHighlight = "#cc241de6";
-      };
-    });
+    kbFns = lib.getExe config.utilities.osd-functions.package;
     pavucontrol = lib.getExe pkgs.lxqt.pavucontrol-qt;
     blueman-manager = "${pkgs.blueman}/bin/blueman-manager";
     bluetoothctl = "${pkgs.bluez}/bin/bluetoothctl";

@@ -15,7 +15,7 @@
   '';
 
   rePatterns = builtins.mapAttrs (_: p: "^(${p})$") {
-    hexColor = "#[0-9a-fA-F]{6}";
+    hexColor = "#[0-9a-fA-F]{6,8}";
     fontSize = "[0-9]+(\\.[0-9]+)?pt|[0-9]+%";
   };
 
@@ -252,5 +252,43 @@ in {
     };
   };
 
-  config = {};
+  config = let
+    scriptPackage = pkgs.callPackage ./package.nix {
+      scriptOptions = with cfg.settings; {
+        timeout = notification.duration;
+        urgency = notification.urgency;
+        mainTextSize = notification.mainTextSize;
+        iconsDirectory = notification.iconsDir;
+        outputTitle = audioOutput.notification.title;
+        inputTitle = audioInput.notification.title;
+        outputDevice = toString audioOutput.deviceNode;
+        inputDevice = toString audioInput.deviceNode;
+        outputMaximum = audioOutput.maxVolume;
+        colors.normalHighlight = notification.colors.highlightNormal;
+        colors.warningHighlight = notification.colors.highlightWarning;
+        # TODO these don't work with paths as I say they should
+        icons.outputEnable = audioOutput.notification.icons.enable;
+        icons.outputDisable = audioOutput.notification.icons.disable;
+        icons.outputIncrease = audioOutput.notification.icons.volumeUp;
+        icons.outputDecrease = audioOutput.notification.icons.volumeDown;
+        icons.inputEnable = audioInput.notification.icons.enable;
+        icons.inputDisable = audioInput.notification.icons.disable;
+      };
+    };
+  in {
+    utilities.osd-functions.package =
+      if (cfg.exeName == null)
+      then scriptPackage
+      else
+        pkgs.symlinkJoin {
+          inherit (scriptPackage) pname name;
+          paths = [scriptPackage];
+          postBuild = ''
+            mv \
+              $out/bin/${baseNameOf (lib.getExe scriptPackage)} \
+              $out/bin/${cfg.exeName}
+          '';
+          meta.mainProgram = cfg.exeName;
+        };
+  };
 }

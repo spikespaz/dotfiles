@@ -1,4 +1,5 @@
 {
+  config,
   flake,
   lib,
   pkgs,
@@ -9,6 +10,7 @@
     hmModules.hyprland
     flake.modules.hyprland-events
     flake.modules.desktop-portals
+    flake.modules.osd-functions
     ./config.nix
     ./windowrules.nix
     ./waybar.nix
@@ -57,15 +59,7 @@
           ${hyprctl} dispatch pin active
         '')}"
         # FUNCTIONS
-        (lib.getExe (pkgs.keyboard-functions.override {
-          scriptOptions = {
-            # to get it to the top of the list
-            urgency = "critical";
-            outputMaximum = 1.25;
-            colors.normalHighlight = "#458588e6";
-            colors.warningHighlight = "#cc241de6";
-          };
-        }))
+        (lib.getExe config.utilities.osd-functions.package)
         # DISABLE_INPUT_DEVICES
         # TODO probably should make this a package again, with overrides
         # like the above. Or make it a module that provides an overridden
