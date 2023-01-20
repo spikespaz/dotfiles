@@ -206,6 +206,15 @@ in {
         # 4x low, 2x mid, 3x high, for 0-90
         format-icons = ["󱃃" "󱃃" "󱃃" "󱃃" "󰔏" "󰔏" "󱃂" "󱃂" "󱃂"];
       };
+
+      network = let
+        tooltip = ''
+          <b>Address:</b> {ipaddr}
+          <b>Netmask:</b> {netmask}
+          <b>Gateway:</b> {gwaddr}
+          <b>Speeds:</b> {bandwidthUpBytes} UL, {bandwidthDownBytes} DL
+        '';
+      in {
         format-ethernet = "󰈀 {ifname}";
         format-wifi = "{icon} {essid}";
         format-linked = "󱫱";
@@ -214,19 +223,13 @@ in {
 
         tooltip-format = ''
           <b>Interface</b>: {ifname}
-          <b>Address:</b> {ipaddr}
-          <b>Netmask:</b> {netmask}
-          <b>Gateway:</b> {gwaddr}
-          <b>Speeds:</b> {bandwidthUpBytes} UL, {bandwidthDownBytes} DL
+          ${tooltip}
         '';
         tooltip-format-wifi = ''
           <b>SSID:</b> {essid}
           <b>Strength:</b> {signaldBm} dBmW ({signalStrength}%)
           <b>Frequency:</b> {frequency} GHz
-          <b>Address:</b> {ipaddr}
-          <b>Netmask:</b> {netmask}
-          <b>Gateway:</b> {gwaddr}
-          <b>Speeds:</b> {bandwidthUpBytes} UL, {bandwidthDownBytes} DL
+          ${tooltip}
         '';
         tooltip-format-disconnected = "Network disconnected.";
 
