@@ -156,6 +156,23 @@ in {
         };
 
         audioOutput = {
+          deviceNode = lib.mkOption {
+            type =
+              types.either
+              types.ints.unsigned
+              (types.strMatching "^(@DEFAULT_AUDIO_SINK@)$");
+            default = "@DEFAULT_AUDIO_SINK@";
+            description = lib.mdDoc ''
+              WirePlumber's device node ID for the output (sink)
+              device you would like this group of actions to control.
+
+              You can get the IDs for your devices by running
+              `wpctl status` and looking at the numbers to the left of
+              your device names in the **Sinks** section under **Audio**.
+
+              Use `@DEFAULT_AUDIO_SINK@` for the fallback (default) device.
+            '';
+          };
           maxVolume = lib.mkOption {
             type = typeFloatPositive;
             default = 1.0;
