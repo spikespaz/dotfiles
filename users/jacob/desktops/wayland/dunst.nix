@@ -33,7 +33,7 @@
         # monitor = 1;
         follow = "mouse";
         origin = "top-right";
-        offset = "6x6";
+        offset = "6x32";
 
         # limits
         notification-limit = 7;
