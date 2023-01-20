@@ -51,6 +51,7 @@ $highlight-foreground: #fbf1c7;
 #network,
 #bluetooth,
 #cpu,
+#temperature,
 #pulseaudio,
 #memory,
 #battery,
@@ -121,6 +122,10 @@ tooltip {
   &.battery-10:not(.charging) {
     @include pulse-highlight(30%, #cc241d, 750ms);
   }
+}
+
+#temperature.critical {
+  @include pulse-highlight(30%, #cc241d, 750ms);
 }
 
 #idle_inhibitor {

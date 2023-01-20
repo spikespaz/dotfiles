@@ -196,7 +196,16 @@ in {
         format = "󰘚 {usage}%";
       };
 
-      network = {
+      temperature = {
+        interval = 5;
+        hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
+        input-filename = "temp1_input";
+        critical-threshold = 90; # 15C lower than Tjmax <https://www.amd.com/en/product/9686>
+        format = "{icon} {temperatureC}°C";
+        format-critical = "󰈸 {temperatureC}°C";
+        # 4x low, 2x mid, 3x high, for 0-90
+        format-icons = ["󱃃" "󱃃" "󱃃" "󱃃" "󰔏" "󰔏" "󱃂" "󱃂" "󱃂"];
+      };
         format-ethernet = "󰈀 {ifname}";
         format-wifi = "{icon} {essid}";
         format-linked = "󱫱";
