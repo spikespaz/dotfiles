@@ -181,11 +181,11 @@ in {
                 actionName = "output device disable";
                 default = "volume_off_white_36dp.svg";
               };
-              increase = mkIconOption {
+              volumeUp = mkIconOption {
                 actionName = "output volume increase";
                 default = "volume_up_white_36dp.svg";
               };
-              decrease = mkIconOption {
+              volumeDown = mkIconOption {
                 actionName = "output volume decrease";
                 default = "volume_down_white_36dp.svg";
               };
