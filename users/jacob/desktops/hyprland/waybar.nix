@@ -26,6 +26,8 @@
     ${lib.getExe pkgs.sassc} -t expanded '${source}' > $out/${name}.css
   ''}/${name}.css";
 
+  # TODO when using store paths to executables, they do not inherit the user's
+  # environment (at least with systemd) and therefore GUIs use the default theme
   commands = let
     busctl = "${pkgs.systemd}/bin/busctl";
     hyprctl = "${pkgs.hyprland}/bin/hyprctl";
@@ -46,10 +48,16 @@
   in {
     backlightUp = "${busctl} --user call org.clight.clight /org/clight/clight org.clight.clight IncBl d 0.05";
     backlightDown = "${busctl} --user call org.clight.clight /org/clight/clight org.clight.clight DecBl d 0.05";
+    # TODO --tab no longer works, what is the identifier to use?
     outputSoundSettings = "${pavucontrol} --tab 'Output Devices'";
     outputVolumeMute = "${kbFns} output mute";
     outputVolumeUp = "${kbFns} output +0.05";
     outputVolumeDown = "${kbFns} output -0.05";
+    # TODO --tab no longer works, what is the identifier to use?
+    inputSoundSettings = "${pavucontrol} --tab 'Input Devices'";
+    inputVolumeMute = "${kbFns} input mute";
+    # inputVolumeUp = "${kbFns} input +0.05";
+    # inputVolumeDown = "${kbFns} input -0.05";
     bluetoothSettings = blueman-manager;
     bluetoothOn = "rfkill unblock bluetooth && sleep 5; ${bluetoothctl} power on";
     bluetoothOff = "${bluetoothctl} power off";
@@ -68,7 +76,8 @@ in {
   programs.waybar.systemd.enable = true;
 
   systemd.user.services.waybar.Service.Environment = [
-    "PATH=${lib.makeBinPath (map lib.getBin package.buildInputs)}"
+    # fix mainly for missing the hyprctl binary
+    "PATH=${lib.makeBinPath package.buildInputs}"
   ];
 
   programs.waybar.style =
@@ -92,6 +101,7 @@ in {
       ];
 
       modules-right = [
+        "pulseaudio#output"
         "backlight"
         "memory"
         "cpu"
@@ -150,6 +160,20 @@ in {
         on-click-right = commands.outputVolumeMute;
         on-scroll-up = commands.outputVolumeUp;
         on-scroll-down = commands.outputVolumeDown;
+      };
+
+      # TODO volume
+      "pulseaudio#input" = {
+        format = "{format_source}";
+        # format-source = "󰍬 {volume}%";
+        # format-source-muted = "󰍭 {volume}%";
+        format-source = "󰍬";
+        format-source-muted = "󰍭";
+
+        on-click = commands.inputSoundSettings;
+        on-click-right = commands.inputVolumeMute;
+        # on-scroll-up = commands.inputVolumeUp;
+        # on-scroll-down = commands.inputVolumeDown;
       };
 
       backlight = {
