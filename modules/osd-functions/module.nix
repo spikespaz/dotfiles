@@ -14,12 +14,12 @@
     showing an on-screen display (with Dunst).
   '';
 
-  rePatterns = builtins.mapAttrs (p: "^(${p})$") {
+  rePatterns = builtins.mapAttrs (_: p: "^(${p})$") {
     hexColor = "#[0-9a-fA-F]{6}";
     fontSize = "[0-9]+(\\.[0-9]+)?pt|[0-9]+%";
   };
 
-  typePercentageFloat = lib.mkOptionType {
+  typeFloatPositive = lib.mkOptionType {
     name = "float";
     description = "floating point number as a percentage";
     descriptionClass = "noun";
@@ -157,7 +157,7 @@ in {
 
         audioOutput = {
           maxVolume = lib.mkOption {
-            type = typePercentageFloat;
+            type = typeFloatPositive;
             default = 1.0;
             description = lib.mdDoc ''
               The maximum volume to allow for the output device.
@@ -197,9 +197,9 @@ in {
           deviceNode = lib.mkOption {
             type =
               types.either
-              types.ints.positive
-              (types.strMatching "^(@DEFAULT_AUDIO_SINK@)$");
-            default = "@DEFAULT_AUDIO_SINK@";
+              types.ints.unsigned
+              (types.strMatching "^(@DEFAULT_AUDIO_SOURCE@)$");
+            default = "@DEFAULT_AUDIO_SOURCE@";
             description = lib.mdDoc ''
               WirePlumber's device node ID for the input (source)
               device you would like this group of actions to control.
@@ -208,7 +208,7 @@ in {
               `wpctl status` and looking at the numbers to the left of
               your device names in the **Sources** section under **Audio**.
 
-              Use `@DEFAULT_AUDIO_SINK@` for the fallback (default) device.
+              Use `@DEFAULT_AUDIO_SOURCE@` for the fallback (default) device.
             '';
           };
           notification = {
