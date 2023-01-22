@@ -43,12 +43,14 @@ in {
       p2 = -100;
     };
   in {
-    serviceConfig.Type = "notify";
+    serviceConfig.Type = "oneshot";
     description = "control undervolt with amdctl";
     documentation = ["https://github.com/kevinlekiller/amdctl"];
     after = ["multi-user.target"];
     wantedBy = ["multi-user.target"];
     script = ''
+      set -eu
+
       re_vid='s/[A-z ]\+\([0-9]\+\)[A-z ]\+\([0-9]\+\)mV.*/\1/'
 
       p0_vid=$(${lib.getExe amdctl} -p0 -u${toString (default.p0 + offset.p0)} \
@@ -61,18 +63,6 @@ in {
       ${lib.getExe amdctl} -p0 -v$p0_vid
       ${lib.getExe amdctl} -p1 -v$p1_vid
       ${lib.getExe amdctl} -p2 -v$p2_vid
-
-      echo "NOTIFY_SOCKET=''${NOTIFY_SOCKET-}"
-      if [ -n "''${NOTIFY_SOCKET-}" ]; then
-        ${pkgs.systemd}/bin/systemd-notify --ready
-        ## systemd-notify always returns nonzero, but the message is sent anyway
-        # if [ "$(systemd-notify --ready)" ]; then
-        #   echo "Notified systemd that this unit is ready."
-        # else
-        #   echo 'Error: failed to notify systemd that we are ready!'
-        #   exit 30
-        # fi
-      fi
     '';
   };
 }
