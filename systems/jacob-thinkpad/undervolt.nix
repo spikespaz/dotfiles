@@ -49,14 +49,14 @@ in {
     after = ["multi-user.target"];
     wantedBy = ["multi-user.target"];
     script = ''
-      sed_script='s/[A-z ]\+\([[:digit:]]\+\)[A-z ]\+\([[:digit:]]\+\)mV.*/\1/'
+      re_vid='s/[A-z ]\+\([0-9]\+\)[A-z ]\+\([0-9]\+\)mV.*/\1/'
 
       p0_vid=$(${lib.getExe amdctl} -p0 -u${toString (default.p0 + offset.p0)} \
-        | sed "$sed_script")
+        | sed "$re_vid")
       p1_vid=$(${lib.getExe amdctl} -p1 -u${toString (default.p1 + offset.p1)} \
-        | sed "$sed_script")
+        | sed "$re_vid")
       p2_vid=$(${lib.getExe amdctl} -p2 -u${toString (default.p2 + offset.p2)} \
-        | sed "$sed_script")
+        | sed "$re_vid")
 
       ${lib.getExe amdctl} -p0 -v$p0_vid
       ${lib.getExe amdctl} -p1 -v$p1_vid
