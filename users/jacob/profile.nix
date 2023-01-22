@@ -119,6 +119,7 @@ in {
     programs.vscode.languages.perl
     programs.vscode.languages.rust
     programs.vscode.languages.web
+    programs.vscode.languages.yuck
     # TODO broken idk why
     # programs.vscode.languages.all
     programs.jetbrains.clion
