@@ -136,6 +136,10 @@
     programs.java.package = pkgs.temurin-bin;
   };
 
+  rustup = {
+    home.packages = [pkgs.rustup];
+  };
+
   ##########################
   ### SHELL ENVIRONMENTS ###
   ##########################

@@ -133,6 +133,7 @@ in {
     ### DEVELOPMENT TOOLS ###
     programs.git
     programs.java
+    programs.rustup
 
     ### SHELL ENVIRONMENTS ###
     programs.bash
