@@ -1,6 +1,3 @@
-[submodule "inputs/webcord"]
-	path = inputs/webcord
-	url = https://github.com/spikespaz/webcord-flake
 [submodule "inputs/spicetify"]
 	path = inputs/spicetify
 	url = https://github.com/spikespaz/spicetify-nix
