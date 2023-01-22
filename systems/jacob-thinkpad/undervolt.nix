@@ -42,12 +42,13 @@ in {
       p1 = -100;
       p2 = -100;
     };
+    targets = ["multi-user.target" "post-resume.target"];
   in {
     serviceConfig.Type = "oneshot";
     description = "control undervolt with amdctl";
     documentation = ["https://github.com/kevinlekiller/amdctl"];
-    after = ["multi-user.target"];
-    wantedBy = ["multi-user.target"];
+    after = targets;
+    wantedBy = targets;
     script = ''
       set -eu
 
