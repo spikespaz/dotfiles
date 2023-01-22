@@ -15,24 +15,17 @@
     paths = [editorPackage] ++ fontPackages;
   });
 
-  programs.vscode.extensions = with pkgs.vscode-extensions;
-    [
-      ## Appearances ##
-      jdinhlife.gruvbox
-      pkief.material-icon-theme
+  programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
+    ## Appearances ##
+    jdinhlife.gruvbox
+    pkief.material-icon-theme
 
-      ## Behaviors ##
-      christian-kohler.path-intellisense
-    ]
-    ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-      {
-        # For keybind macros
-        name = "multi-command";
-        publisher = "ryuta46";
-        version = "1.6.0";
-        sha256 = "sha256-AnHN1wvyVrZRlnOgxBK7xKLcL7SlAEKDcw6lEf+2J2E=";
-      }
-    ];
+    ## Intelligence ##
+    christian-kohler.path-intellisense
+
+    ## Editor Extension ##
+    ryuta46.multi-command
+  ];
 
   programs.vscode.userSettings = {
     ## Appearances ##
