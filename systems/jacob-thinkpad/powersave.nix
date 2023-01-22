@@ -11,30 +11,29 @@
   hibernate_delay = 30 * 60;
   MHz = x: x * 1000;
 in {
-  # imports = [modules.auto-cpufreq];
+  services.tlp.enable = false;
+  services.auto-cpufreq.enable = true;
 
-  # services.auto-cpufreq = {
-  #   enable = true;
-  #   settings = {
-  #     battery = {
-  #       governor = "powersave";
-  #       scaling_min_freq = MHz 1400;
-  #       scaling_max_freq = MHz 1600;
-  #       turbo = "never";
-  #     };
-  #     charger = {
-  #       governor = "performance";
-  #       scaling_min_freq = MHz 1600;
-  #       scaling_max_freq = MHz 1700;
-  #       turbo = "auto";
-  #     };
-  #   };
-  # };
+  imports = [modules.auto-cpufreq];
 
   # temperature target on battery
   services.undervolt.tempBat = 65; # deg C
 
-  services.tlp.enable = true;
+  services.auto-cpufreq.settings = {
+    battery = {
+      governor = "powersave";
+      scaling_min_freq = MHz 1400;
+      scaling_max_freq = MHz 1600;
+      turbo = "never";
+    };
+    charger = {
+      governor = "performance";
+      scaling_min_freq = MHz 1600;
+      scaling_max_freq = MHz 1700;
+      turbo = "auto";
+    };
+  };
+
   # <https://linrunner.de/tlp/settings>
   services.tlp.settings = {
     TLP_ENABLE = 1;
