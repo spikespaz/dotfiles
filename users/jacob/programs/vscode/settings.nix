@@ -127,6 +127,11 @@
     # name of current scope sticks to top of editor pane
     "editor.stickyScroll.enabled" = true;
 
+    ## Intelligence Features ##
+
+    # prompt for completions after the last path segment is accepted
+    "path-intellisense.autoTriggerNextSuggestion" = true;
+
     ## Miscellaneous ##
 
     # disable automatic update checking
