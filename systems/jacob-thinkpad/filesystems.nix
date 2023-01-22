@@ -68,6 +68,7 @@ in {
       enableUnstable = enableUnstableZfs;
       forceImportAll = false;
       forceImportRoot = false;
+      allowHibernation = true;
     };
   };
 

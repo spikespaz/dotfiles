@@ -20,7 +20,6 @@
   boot.initrd.verbose = false;
 
   boot.kernelParams = [
-    "noresume"
     # ensures that amdgpu is loaded over radeon
     "amdgpu"
     # allows the backlight to be controlled via software
