@@ -8,7 +8,7 @@
     shfmt
   ];
 
-  programs.vscode.extensions = with pkgs.vscode-extensions; [
+  programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     mads-hartmann.bash-ide-vscode
     timonwong.shellcheck
     foxundermoon.shell-format

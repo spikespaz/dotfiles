@@ -15,6 +15,8 @@
 
     nur.url = "github:nix-community/NUR";
 
+    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+
     hyprland.url = "github:hyprwm/hyprland";
     # this prevents cache hits
     # hyprland.inputs.nixpkgs.follows = "nixpkgs";
@@ -51,6 +53,7 @@
     nixpkgs-stable,
     home-manager,
     nur,
+    vscode-extensions,
     ...
   }: let
     system = "x86_64-linux";
@@ -69,6 +72,7 @@
       removeAttrs inputs [
         "nixpkgs"
         "nur"
+        "vscode-extensions"
       ]
     );
     pkgs = import nixpkgs {
@@ -77,6 +81,7 @@
       overlays = [
         inputPackageOverlays
         nur.overlay
+        vscode-extensions.overlays.${system}.default
         self.overlays.${system}.allowUnfree
         self.overlays.${system}.nixpkgsFixes
       ];

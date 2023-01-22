@@ -7,7 +7,7 @@
     # empty
   ];
 
-  programs.vscode.extensions = with pkgs.vscode-extensions; [
+  programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     rust-lang.rust-analyzer
     tamasfe.even-better-toml
   ];

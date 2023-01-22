@@ -8,7 +8,7 @@
     alejandra
   ];
 
-  programs.vscode.extensions = with pkgs.vscode-extensions; [
+  programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     jnoortheen.nix-ide
     kamadorueda.alejandra
   ];
