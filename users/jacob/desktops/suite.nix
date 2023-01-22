@@ -11,6 +11,7 @@
     # Device Configuration
     lxqt.pavucontrol-qt # Pulse Audio Volume Control
     system-config-printer
+    iwgtk # Wireless GUI
 
     # Authentication
     # libsForQt5.kauth

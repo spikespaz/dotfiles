@@ -325,7 +325,7 @@ args @ {
       jacob = {
         description = "Jacob Birkett";
         isNormalUser = true;
-        extraGroups = ["networkmanager" "wheel" "libvirtd"];
+        extraGroups = ["wheel" "libvirtd"];
         inherit initialPassword;
       };
       guest = {
