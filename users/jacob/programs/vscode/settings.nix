@@ -17,7 +17,14 @@
 
   programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     ## Appearances ##
-    jdinhlife.gruvbox
+    # jdinhlife.gruvbox
+    monokai.theme-monokai-pro-vscode
+    # teeseal.ayu-legacy
+    # be5invis.theme-railgun
+    # origamid.origamid-next
+    # sainnhe.sonokai
+    # dimitarnonov.jellybeans-theme
+
     pkief.material-icon-theme
 
     ## Intelligence ##
@@ -26,6 +33,33 @@
     ## Editor Extension ##
     ryuta46.multi-command
   ];
+
+  ## Gruvbox Dark Hard
+  #
+  # Hard to go wrong with this theme, has good contrast and balanced hues.
+  # Unfortunately, I've been using it the longest, so it feels boring.
+  # Strings in some languages are far too prominent--this is probably the
+  # fault of the grammar, but nevertheless, I'm ready for a change.
+
+  ## Railgun Chroma
+  #
+  # This theme looks really good. The colors are well-chosen,
+  # and I like that it leans on the warmer side of the spectrum.
+  # Almost like a rich espresso, not pitch black, and not blazing.
+  # I just wish the colors were lighter, because they are a little hard to see.
+  # This could easily be my favorite theme if text were more visible.
+  # TODO fork it, increase brightness in LAB colorspace.
+
+  ## Ayu Dark (Legacy)
+  #
+  # This theme has *perfect* vibrancy, well balanced colors, and excellent
+  # contrast and readability. Comments are pale though, and considering
+  # they are often the most important lines in a sea of code,
+  # it would be nice if they were slightly more emphasized.
+  # One minor nitpick is the navy-blue background:
+  # the foreground colors would be complimented better
+  # if the background were slightly less saturated, and more dark.
+  # Love the cursor color.
 
   programs.vscode.userSettings = {
     ## Appearances ##
@@ -36,14 +70,22 @@
     "editor.cursorSmoothCaretAnimation" = true;
     "editor.cursorStyle" = "block";
 
+    # colors
+    "workbench.colorTheme" = "Monokai Pro (Filter Spectrum)";
+    "workbench.colorCustomizations" = {
+      "[Sonokai Espresso]" = {
+        "editor.background" = "#211e1d";
+      };
+    };
+
+    # icons
+    "workbench.iconTheme" = "material-icon-theme";
+    "material-icon-theme.folders.theme" = "classic";
+
     # scale the ui down
     "window.zoomLevel" = -1;
     # hide the menu bar unless alt is pressed
     "window.menuBarVisibility" = "toggle";
-    # colors and icons
-    "workbench.colorTheme" = "Gruvbox Dark Hard";
-    "workbench.iconTheme" = "material-icon-theme";
-    "material-icon-theme.folders.theme" = "classic";
     # the minimap gets in the way
     "editor.minimap.enabled" = false;
     # scroll with an animation
