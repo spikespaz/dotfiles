@@ -142,12 +142,16 @@
     "workbench.editor.untitled.labelFormat" = "name";
     # default hard and soft rulers
     "editor.rulers" = [80 120];
-    # fancy features with the integrated terminal
-    "terminal.integrated.shellIntegration.enabled" = true;
     # files can be recovered with undo
     "explorer.confirmDelete" = false;
     # set the integrated terminal to use zsh
     "terminal.integrated.defaultProfile.linux" = "zsh";
+
+    ## Temporarily Disabled ###
+
+    # fancy features with the integrated terminal
+    # this makes the terminal horribly slow
+    # "terminal.integrated.shellIntegration.enabled" = true;
   };
 
   programs.vscode.keybindings = let
