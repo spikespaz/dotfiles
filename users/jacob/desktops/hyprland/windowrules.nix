@@ -118,11 +118,10 @@ in {
         mountDialog
       ])
       (map (rule ["opacity 0.92 0.92"]) [
-        vscode
+        steam
       ])
       (map (rule ["opacity 0.92 0.92" "float"]) [
         filePickerPortal
-        steam
       ])
       (map (rule ["opacity 0.87 0.87"]) [])
       (map (rule ["opacity 0.87 0.87" "float"]) [
