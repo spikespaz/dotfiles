@@ -97,16 +97,13 @@ args @ {
 
       ZSH_AUTOSUGGEST_STRATEGY=(history completion)
       znap source zsh-users/zsh-autosuggestions
+      znap source hlissner/zsh-autopair
 
       ### SYNTAX HIGHLIGHTING ###
 
       znap source zdharma-continuum/fast-syntax-highlighting
 
       PAGER='${lib.getExe pkgs.most}'
-
-      ### MISCELLANEOUS ###
-
-      znap source hlissner/zsh-autopair
 
       ### KEYBINDINGS ###
 
@@ -120,8 +117,12 @@ args @ {
       AUTO_NOTIFY_BODY+='\n'
       AUTO_NOTIFY_BODY+='With exit code %exit_code after %elapsed seconds.'
       AUTO_NOTIFY_EXPIRE_TIME=15000
-
       znap source michaelaquilina/zsh-auto-notify
+
+      ### WINDOW TITLE ###
+
+      ZSH_WINDOW_TITLE_DIRECTORY_DEPTH=4
+      znap source olets/zsh-window-title
     '';
   };
 }
