@@ -108,6 +108,7 @@ in {
         obsStudio
       ])
       (map (rule ["opacity 0.97 0.97"]) [
+        vscode
         discord
       ])
       (map (rule ["opacity 0.97 0.97" "float"]) [
