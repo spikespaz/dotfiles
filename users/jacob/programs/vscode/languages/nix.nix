@@ -3,11 +3,6 @@
   pkgs,
   ...
 }: {
-  home.packages = with pkgs; [
-    nil
-    alejandra
-  ];
-
   programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     jnoortheen.nix-ide
     kamadorueda.alejandra

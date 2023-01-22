@@ -3,10 +3,6 @@
   pkgs,
   ...
 }: {
-  home.packages = with pkgs; [
-    shellcheck
-    shfmt
-  ];
 
   programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     mads-hartmann.bash-ide-vscode

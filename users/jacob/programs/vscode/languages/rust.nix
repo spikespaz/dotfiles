@@ -3,10 +3,6 @@
   pkgs,
   ...
 }: {
-  home.packages = with pkgs; [
-    # empty
-  ];
-
   programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     rust-lang.rust-analyzer
     tamasfe.even-better-toml

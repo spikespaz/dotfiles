@@ -3,10 +3,6 @@
   pkgs,
   ...
 }: {
-  home.packages = with pkgs; [
-    perlPackages.PLS
-  ];
-
   programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     fractalboy.pls
   ];
