@@ -13,7 +13,7 @@
     printerConfig.class = ["system-config-printer"];
     audioControl.class = ["pavucontrol-qt"];
     bluetoothControl = {
-      class = [".*blueman-manager"];
+      class = [".*blueman-manager.*"];
       title = ["Bluetooth Devices"];
     };
     kvantumConfig.class = ["kvantummanager"];
