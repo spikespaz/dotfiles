@@ -10,7 +10,6 @@
     hmModules.hyprland
     flake.modules.hyprland-events
     flake.modules.desktop-portals
-    flake.modules.osd-functions
     ./config.nix
     ./windowrules.nix
     ./waybar.nix
