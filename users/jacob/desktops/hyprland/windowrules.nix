@@ -12,6 +12,7 @@
 
     printerConfig.class = ["system-config-printer"];
     audioControl.class = ["pavucontrol-qt"];
+    wifiControl.class = ["org\.twosheds\.iwgtk" "iwgtk"];
     bluetoothControl = {
       class = [".*blueman-manager.*"];
       title = ["Bluetooth Devices"];
@@ -114,6 +115,7 @@ in {
       (map (rule ["opacity 0.97 0.97" "float"]) [
         printerConfig
         audioControl
+        wifiControl
         bluetoothControl
         polkitAgent
         mountDialog
