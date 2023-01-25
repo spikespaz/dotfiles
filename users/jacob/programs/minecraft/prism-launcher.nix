@@ -59,10 +59,16 @@
     pkgs.zulu
   ];
 
-  # wrapperScript = pkgs.writeShellScriptBin "polymc-minecraft-wrapper" ''
-  #   export force_glsl_extensions_warn=true
-  #   exec "$@"
-  # '';
+  cmd.preLaunch = ''
+    bash -c "test -f '$INST_MC_DIR/options.txt' && sed -i 's/fullscreen:true/fullscreen:false/' '$INST_MC_DIR/options.txt' || exit 0"
+  '';
+
+  cmd.wrapper = ''
+    export force_glsl_extensions_warn=true
+    run-game "$@"
+  '';
+
+  cmd.postExit = '''';
 in {
   home.packages = [
     # TODO make a pull request
