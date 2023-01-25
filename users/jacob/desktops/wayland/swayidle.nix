@@ -15,12 +15,21 @@
   # it reacts to events (such as timeouts) and runs commands
   # <https://github.com/swaywm/swayidle/blob/master/swayidle.1.scd>
   services.swayidle = let
-    autoLock.timeout = 2 * 60;
-    autoLock.grace = 30;
-    forcedLock.grace = 5;
-
     hyprctl = "${pkgs.hyprland}/bin/hyprctl";
     swaylock = "${lib.getExe config.programs.swaylock.package}";
+
+    eventNames = {
+      beforeSleep = "before-sleep";
+      afterResume = "after-resume";
+    };
+
+    mkEventsList = lib.mapAttrsToList (name: script: {
+      event =
+        if eventNames ? ${name}
+        then eventNames.${name}
+        else name;
+      command = (pkgs.writeShellScript "swayidle-${name}" script).outPath;
+    });
 
     mkTimeoutsList = lib.mapAttrsToList (
       name: {
@@ -39,24 +48,14 @@
   in {
     enable = true;
 
-    events = [
-      {
-        event = "before-sleep";
-        command =
-          (pkgs.writeShellScript "swayidle-beforeSleep" ''
-            ${swaylock} -f
-          '')
-          .outPath;
-      }
-      {
-        event = "lock";
-        command =
-          (pkgs.writeShellScript "swayidle-forcedLock" ''
-            ${swaylock} -f --grace ${toString forcedLock.grace} --grace-no-mouse
-          '')
-          .outPath;
-      }
-    ];
+    events = mkEventsList {
+      beforeSleep = ''
+        ${swaylock} -f
+      '';
+      lock = ''
+        ${swaylock} -f --grace-no-mouse --grace 5
+      '';
+    };
 
     timeouts = mkTimeoutsList {
       autoLock = {
