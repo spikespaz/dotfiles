@@ -66,10 +66,50 @@ window#waybar {
   border-bottom: 1px solid #3c3836;
 }
 
-tooltip {
+tooltip,
+window.popup {
   background: #282828;
-  border-radius: 5px;
   border: 1px solid #665c54;
+  border-radius: 5px;
+}
+
+window.popup {
+  menu {
+    arrow {
+      min-width: 16px;
+      min-height: 16px;
+
+      &.top {
+        -gtk-icon-source: -gtk-icontheme("pan-up-symbolic");
+      }
+
+      &.bottom {
+        -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+      }
+
+      &.right {
+        -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+      }
+
+      &.left {
+        -gtk-icon-source: -gtk-icontheme("pan-start-symbolic");
+      }
+    }
+
+    menuitem {
+      padding: 4px 8px;
+
+      &:hover {
+        background: #504945;
+      }
+    }
+
+    separator {
+      min-height: 1px;
+      background: #665c54;
+      margin: 4px 0;
+    }
+  }
 }
 
 #clock.time {
