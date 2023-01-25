@@ -7,6 +7,7 @@
 
     # Diagnostics
     wev
+    qdirstat
 
     # Device Configuration
     lxqt.pavucontrol-qt # Pulse Audio Volume Control
