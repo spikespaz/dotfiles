@@ -6,6 +6,7 @@
 }: {
   imports = [
     ./swayidle.nix
+    ./swaylock.nix
     ./theming.nix
     ./dunst.nix
     ./rofi.nix
