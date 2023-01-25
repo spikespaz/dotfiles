@@ -67,6 +67,10 @@ in {
   };
 
   programs.waybar.systemd.enable = true;
+  xdg.configFile."waybar/config".onChange = ''
+    echo 'Restarting waybar.service'
+    ${pkgs.systemd}/bin/systemctl --user restart waybar.service
+  '';
 
   systemd.user.services.waybar.Service.Environment = [
     # fix mainly for missing the hyprctl binary
