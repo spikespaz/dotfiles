@@ -65,6 +65,15 @@
           ${swaylock} -f --grace 30
         '';
       };
+      screenOff = {
+        timeout = 5 * 60;
+        script = ''
+          ${hyprctl} dpms on
+        '';
+        resumeScript = ''
+          ${hyprctl} dpms off
+        '';
+      };
     };
 
     systemdTarget = "hyprland-session.target";
