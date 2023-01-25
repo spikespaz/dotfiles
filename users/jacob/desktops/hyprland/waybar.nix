@@ -100,9 +100,11 @@ in {
 
       modules-right = [
         "pulseaudio#output"
+        "pulseaudio#input"
         "backlight"
         "memory"
         "cpu"
+        "temperature"
         "battery"
         "network"
         "bluetooth"
