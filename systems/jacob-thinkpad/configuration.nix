@@ -75,6 +75,15 @@ args @ {
         "2606:4700:4700::1001"
       ];
 
+      firewall = {
+        enable = true;
+        allowedTCPPorts = [80 443 8096 8920];
+        # allowedUDPPortRanges = [
+        #   { from = 4000; to = 4007; }
+        #   { from = 8000; to = 8010; }
+        # ];
+      };
+
       # networkmanager.enable = true;
       # networkmanager.wifi.backend = "iwd";
       wireless.iwd.enable = true;
