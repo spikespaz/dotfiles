@@ -86,6 +86,12 @@
           curve = "easeInOutCubic";
           style = "popin";
         };
+        workspaces = {
+          enable = true;
+          duration = 200;
+          curve = "easeOutCirc";
+          style = "slide";
+        };
       };
     };
 
