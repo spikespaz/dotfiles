@@ -52,20 +52,14 @@ in {
     script = ''
       set -eu
 
-      re_vid='s/[A-z ]\+\([0-9]\+\)[A-z ]\+\([0-9]\+\)mV.*/\1/'
+      get_vid() {
+        ${lib.getExe amdctl} -p$1 -u$2 \
+          | sed -E 's;^.+vid ([0-9]+).+$;\1;'
+      }
 
-      p0_vid="$(
-        ${lib.getExe amdctl} -p0 -u${toString (default.p0 + offset.p0)} \
-        | sed "$re_vid"
-      )"
-      p1_vid="$(
-        ${lib.getExe amdctl} -p1 -u${toString (default.p1 + offset.p1)} \
-        | sed "$re_vid"
-      )"
-      p2_vid="$(
-        ${lib.getExe amdctl} -p2 -u${toString (default.p2 + offset.p2)} \
-        | sed "$re_vid"
-      )"
+      p0_vid=$(get_vid 0 ${toString (default.p0 + offset.p0)})
+      p1_vid=$(get_vid 1 ${toString (default.p1 + offset.p1)})
+      p2_vid=$(get_vid 2 ${toString (default.p2 + offset.p2)})
 
       echo "P-State 0 VID = $p0_vid"
       echo "P-State 1 VID = $p1_vid"
