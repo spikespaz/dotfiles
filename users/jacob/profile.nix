@@ -156,6 +156,9 @@ in {
     programs.qbittorrent
     programs.filezilla
 
+    ### HARDWARE ###
+    # programs.hardware.razer
+
     ##############################
     ### USER-SPECIFIC SERVICES ###
     ##############################

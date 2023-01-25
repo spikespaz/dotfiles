@@ -28,6 +28,10 @@
     home.packages = [pkgs.mailspring];
   };
 
+  # bluemail = {
+  #   home.packages = [pkgs.bluemail];
+  # };
+
   hexchat = {
     programs.hexchat.enable = true;
   };
@@ -232,5 +236,13 @@
       super-slicer-latest
       cura
     ];
+  };
+
+  ################
+  ### HARDWARE ###
+  ################
+
+  hardware.razer = {
+    home.packages = [pkgs.polychromatic];
   };
 }
