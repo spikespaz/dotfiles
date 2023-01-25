@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   hmModules,
@@ -17,35 +18,39 @@
     autoLock.timeout = 2 * 60;
     autoLock.grace = 30;
     forcedLock.grace = 5;
+
+    hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+    swaylock = "${lib.getExe config.programs.swaylock.package}";
   in {
     enable = true;
 
     events = [
       {
         event = "before-sleep";
-        command = "${lib.getExe pkgs.swaylock-effects} -f";
+        command =
+          (pkgs.writeShellScript "swayidle-beforeSleep" ''
+            ${swaylock} -f
+          '')
+          .outPath;
       }
       {
         event = "lock";
-        command = lib.concatStringsSep " " [
-          (lib.getExe pkgs.swaylock-effects)
-          "-f"
-          "--grace"
-          (toString forcedLock.grace)
-          "--grace-no-mouse"
-        ];
+        command =
+          (pkgs.writeShellScript "swayidle-forcedLock" ''
+            ${swaylock} -f --grace ${toString forcedLock.grace} --grace-no-mouse
+          '')
+          .outPath;
       }
     ];
 
     timeouts = [
       {
-        timeout = autoLock.timeout;
-        command = lib.concatStringsSep " " [
-          (lib.getExe pkgs.swaylock-effects)
-          "-f"
-          "--grace"
-          (toString autoLock.grace)
-        ];
+        inherit (autoLock) timeout;
+        command =
+          (pkgs.writeShellScript "swayidle-autoLock" ''
+            ${swaylock} -f --grace ${toString autoLock.grace}
+          '')
+          .outPath;
       }
     ];
 
