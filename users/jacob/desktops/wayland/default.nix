@@ -14,9 +14,6 @@
   ];
 
   home.packages = [
-    # Lock Screen
-    pkgs.swaylock-effects
-
     # Wallpaper
     pkgs.swaybg
   ];
