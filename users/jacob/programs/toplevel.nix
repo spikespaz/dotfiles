@@ -216,6 +216,9 @@
   transmission = {
     home.packages = [pkgs.transmission-qt];
   };
+  qbittorrent = {
+    home.packages = [pkgs.qbittorrent];
+  };
   filezilla = {
     home.packages = [pkgs.filezilla];
   };

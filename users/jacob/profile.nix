@@ -152,7 +152,8 @@ in {
     programs.keepassxc
 
     ### FILE SHARING ###
-    programs.transmission
+    # programs.transmission
+    programs.qbittorrent
     programs.filezilla
 
     ##############################
