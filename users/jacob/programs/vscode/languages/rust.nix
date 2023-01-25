@@ -16,7 +16,7 @@
     };
 
     # use clippy over cargo check
-    "rust-analyzer.checkOnSave.command" = "clippy";
+    "rust-analyzer.check.command" = "clippy";
 
     # use nightly range formatting, should be faster
     "rust-analyzer.rustfmt.rangeFormatting.enable" = true;
