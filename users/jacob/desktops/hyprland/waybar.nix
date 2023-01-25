@@ -89,6 +89,7 @@ in {
 
       modules-left = [
         "wlr/workspaces"
+        "tray"
         "hyprland/window"
       ];
 
@@ -117,6 +118,13 @@ in {
         on-scroll-up = commands.workspaceSwitchPrev;
         on-scroll-down = commands.workspaceSwitchNext;
       };
+
+      tray = {
+        show-passive-items = true;
+        icon-size = 12;
+        spacing = 16;
+      };
+
       "hyprland/window" = {
         max-length = 70;
       };
