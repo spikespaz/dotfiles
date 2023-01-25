@@ -21,6 +21,21 @@
 
     hyprctl = "${pkgs.hyprland}/bin/hyprctl";
     swaylock = "${lib.getExe config.programs.swaylock.package}";
+
+    mkTimeoutsList = lib.mapAttrsToList (
+      name: {
+        timeout,
+        script,
+        resumeScript ? null,
+      }: {
+        inherit timeout;
+        command = (pkgs.writeShellScript "swayidle-${name}" script).outPath;
+        resumeCommand =
+          if resumeScript == null
+          then null
+          else (pkgs.writeShellScript "swayidle-${name}-resume" resumeScript).outPath;
+      }
+    );
   in {
     enable = true;
 
@@ -43,16 +58,14 @@
       }
     ];
 
-    timeouts = [
-      {
-        inherit (autoLock) timeout;
-        command =
-          (pkgs.writeShellScript "swayidle-autoLock" ''
-            ${swaylock} -f --grace ${toString autoLock.grace}
-          '')
-          .outPath;
-      }
-    ];
+    timeouts = mkTimeoutsList {
+      autoLock = {
+        timeout = 2 * 60;
+        script = ''
+          ${swaylock} -f --grace 30
+        '';
+      };
+    };
 
     systemdTarget = "hyprland-session.target";
   };
