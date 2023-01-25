@@ -1,11 +1,15 @@
 {
   config,
+  flake,
   lib,
   pkgs,
   hmModules,
   ...
 }: {
-  imports = [hmModules.idlehack];
+  imports = [
+    flake.modules.swayidle
+    hmModules.idlehack
+  ];
 
   # enable the idlehack deamon, it watches for inhibits
   # on dbus and sends them to swayidle/anything listening
@@ -14,41 +18,17 @@
   # this is the idle daemon by the sway developers
   # it reacts to events (such as timeouts) and runs commands
   # <https://github.com/swaywm/swayidle/blob/master/swayidle.1.scd>
-  services.swayidle = let
+  services.swayidle.alt = let
     hyprctl = "${pkgs.hyprland}/bin/hyprctl";
     swaylock = "${lib.getExe config.programs.swaylock.package}";
-
-    eventNames = {
-      beforeSleep = "before-sleep";
-      afterResume = "after-resume";
-    };
-
-    mkEventsList = lib.mapAttrsToList (name: script: {
-      event =
-        if eventNames ? ${name}
-        then eventNames.${name}
-        else name;
-      command = (pkgs.writeShellScript "swayidle-${name}" script).outPath;
-    });
-
-    mkTimeoutsList = lib.mapAttrsToList (
-      name: {
-        timeout,
-        script,
-        resumeScript ? null,
-      }: {
-        inherit timeout;
-        command = (pkgs.writeShellScript "swayidle-${name}" script).outPath;
-        resumeCommand =
-          if resumeScript == null
-          then null
-          else (pkgs.writeShellScript "swayidle-${name}-resume" resumeScript).outPath;
-      }
-    );
   in {
     enable = true;
+    systemdTarget = "hyprland-session.target";
 
-    events = mkEventsList {
+    extraArgs = ["-w"];
+    idleHint = 2 * 60;
+
+    events = {
       beforeSleep = ''
         ${swaylock} -f
       '';
@@ -57,7 +37,7 @@
       '';
     };
 
-    timeouts = mkTimeoutsList {
+    timeouts = {
       autoLock = {
         timeout = 2 * 60;
         script = ''
@@ -74,7 +54,5 @@
         '';
       };
     };
-
-    systemdTarget = "hyprland-session.target";
   };
 }
