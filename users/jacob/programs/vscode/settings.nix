@@ -126,6 +126,8 @@
     "workbench.editor.scrollToSwitchTabs" = true;
     # name of current scope sticks to top of editor pane
     "editor.stickyScroll.enabled" = true;
+    # larger indent
+    "workbench.tree.indent" = 16;
 
     ## Intelligence Features ##
 
