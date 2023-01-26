@@ -47,10 +47,10 @@
       screenOff = {
         timeout = 5 * 60;
         script = ''
-          ${hyprctl} dpms on
+          ${hyprctl} dispatch dpms off
         '';
         resumeScript = ''
-          ${hyprctl} dpms off
+          ${hyprctl} dispatch dpms on
         '';
       };
     };
