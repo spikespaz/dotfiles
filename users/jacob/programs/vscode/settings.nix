@@ -82,6 +82,16 @@
     "workbench.iconTheme" = "material-icon-theme";
     "material-icon-theme.folders.theme" = "classic";
 
+    # title
+    "window.titleSeparator" = " - ";
+    "window.title" = lib.concatStrings (map (s: "\${${s}}") [
+      "rootName"
+      "separator"
+      "activeEditorMedium"
+      "separator"
+      "appName"
+    ]);
+
     # scale the ui down
     "window.zoomLevel" = -1;
     # hide the menu bar unless alt is pressed
