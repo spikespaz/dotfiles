@@ -3,4 +3,4 @@
 	url = https://github.com/spikespaz/spicetify-nix
 [submodule "inputs/hyprland"]
 	path = inputs/hyprland
-	url = https://github.com/hyprwm/Hyprland
+	url = https://github.com/spikespaz/hyprland-window-manager
