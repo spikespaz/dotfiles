@@ -1,14 +1,14 @@
 {
+  self,
   config,
-  flake,
   lib,
   pkgs,
   hmModules,
   ...
 }: {
   imports = [
-    flake.modules.swayidle
-    hmModules.idlehack
+    self.homeManagerModules.swayidle
+    self.homeManagerModules.idlehack
   ];
 
   # enable the idlehack deamon, it watches for inhibits

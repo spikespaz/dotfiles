@@ -1,5 +1,5 @@
 args @ {
-  flake,
+  self,
   config,
   pkgs,
   lib,
@@ -251,7 +251,7 @@ args @ {
   ####################################
   {
     imports = [
-      flake.modules.disable-input.module
+      self.nixosModules.disable-input
     ];
 
     # <https://github.com/swaywm/swaylock/issues/61>

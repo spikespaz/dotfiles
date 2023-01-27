@@ -82,6 +82,7 @@
         inputPackageOverlays
         nur.overlay
         (_: _: {vscode-marketplace = vscode-extensions.extensions.${system};})
+        self.overlays.${system}.default
         self.overlays.${system}.allowUnfree
         self.overlays.${system}.nixpkgsFixes
       ];
@@ -96,9 +97,19 @@
 
     nixosModules = flib.joinNixosModules inputs;
     homeModules = flib.joinHomeModules inputs;
+
+    genSystems = lib.genAttrs ["x86_64-linux"];
   in {
-    # merge the packages flake into this one
-    inherit (dotpkgs) packages overlays nixosModules homeManagerModules;
+    packages = dotpkgs.packages;
+    overlays =
+      lib.recursiveUpdate
+      dotpkgs.overlays
+      (genSystems (_: {
+        default = _: prev:
+          builtins.mapAttrs (_: p: prev.callPackage p {}) flake.packages;
+      }));
+    nixosModules = dotpkgs.nixosModules // flake.modules;
+    homeManagerModules = dotpkgs.homeManagerModules // flake.hm-modules;
 
     nixosConfigurations = {
       jacob-thinkpad = lib.nixosSystem {

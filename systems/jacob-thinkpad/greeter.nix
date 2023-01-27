@@ -1,5 +1,5 @@
 {
-  flake,
+  self,
   config,
   lib,
   pkgs,
@@ -13,7 +13,7 @@
   ];
 in {
   imports = [
-    flake.modules.greetd
+    self.nixosModules.greetd
   ];
 
   # needed to get the .desktop file copied

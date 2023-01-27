@@ -1,6 +1,6 @@
 {
+  self,
   config,
-  flake,
   lib,
   pkgs,
   hmModules,
@@ -8,8 +8,8 @@
 }: {
   imports = [
     hmModules.hyprland
-    flake.modules.hyprland-events
-    flake.modules.desktop-portals
+    self.homeManagerModules.hyprland-events
+    self.homeManagerModules.desktop-portals
     ./config.nix
     ./events.nix
     ./windowrules.nix

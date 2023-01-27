@@ -1,10 +1,5 @@
-{
-  flake,
-  pkgs,
-  ...
-}: let
-  ja-netfilter = pkgs.callPackage flake.packages.ja-netfilter {};
-  ja-netfilter' = ja-netfilter.override {
+{pkgs, ...}: let
+  ja-netfilter = pkgs.ja-netfilter.override {
     programName = "jetbrains";
     enabledPlugins = ["dns" "url" "hideme" "power"];
     pluginConfigs = {
@@ -28,7 +23,7 @@
       '';
     };
   };
-  javaAgentJar = "${ja-netfilter'}/share/ja-netfilter/ja-netfilter.jar";
+  javaAgentJar = "${ja-netfilter}/share/ja-netfilter/ja-netfilter.jar";
   vmopts = ''
     --add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED
     --add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED

@@ -1,13 +1,13 @@
 {
+  self,
   config,
-  flake,
   lib,
   pkgs,
   ...
 }: {
   imports = [
-    flake.modules.disable-input.hm-module
-    flake.modules.osd-functions
+    self.homeManagerModules.osd-functions
+    self.homeManagerModules.disable-input
   ];
 
   utilities.osd-functions.settings = {
