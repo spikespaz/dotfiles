@@ -81,7 +81,7 @@
       overlays = [
         inputPackageOverlays
         nur.overlay
-        vscode-extensions.overlays.${system}.default
+        (_: _: {vscode-marketplace = vscode-extensions.extensions.${system};})
         self.overlays.${system}.allowUnfree
         self.overlays.${system}.nixpkgsFixes
       ];
