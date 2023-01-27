@@ -1,11 +1,11 @@
 args @ {
+  self,
   config,
   lib,
   pkgs,
-  hmModules,
   ...
 }: {
-  imports = [hmModules.zsh-uncruft];
+  imports = [self.homeManagerModules.zsh-uncruft];
 
   home.packages = [pkgs.most];
 

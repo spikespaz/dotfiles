@@ -1,4 +1,4 @@
-{...}: {
+{
   config,
   lib,
   ...
@@ -27,7 +27,7 @@ in {
         }
       '';
       description = lib.mdDoc ''
-        Settings for *auto-cpufreq`.
+        Settings for *auto-cpufreq*.
         See the readme on GitHub for valid entries:
         <https://github.com/AdnanHodzic/auto-cpufreq#2-auto-cpufreq-config-file>
       '';

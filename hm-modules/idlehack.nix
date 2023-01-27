@@ -1,4 +1,4 @@
-{self, ...}: {
+{
   config,
   lib,
   pkgs,
@@ -12,7 +12,7 @@ in {
       enable = lib.mkEnableOption cfg.package.meta.description;
       package = lib.mkOption {
         type = types.package;
-        default = self.packages.${pkgs.system}.idlehack;
+        default = pkgs.idlehack;
         example = lib.literalExpression ''
           pkgs.idlehack
         '';

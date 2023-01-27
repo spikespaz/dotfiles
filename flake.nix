@@ -83,33 +83,62 @@
         nur.overlay
         (_: _: {vscode-marketplace = vscode-extensions.extensions.${system};})
         self.overlays.${system}.default
+        self.overlays.${system}.fixes
         self.overlays.${system}.allowUnfree
-        self.overlays.${system}.nixpkgsFixes
       ];
     };
     pkgs-stable = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
     };
-    # manually import the packages subflake to avoid locking issues
-    # this flake must have the same inputs that dotpkgs expects
-    dotpkgs = (import ./dotpkgs/flake.nix).outputs inputs;
 
     nixosModules = flib.joinNixosModules inputs;
     homeModules = flib.joinHomeModules inputs;
 
     genSystems = lib.genAttrs ["x86_64-linux"];
+
+    # TODO cannot handle scoped packages
+    mkUnfreeOverlay = pkgs: names:
+      lib.pipe names [
+        (map (name: {
+          inherit name;
+          value = pkgs.${name};
+        }))
+        builtins.listToAttrs
+        (builtins.mapAttrs (_: package:
+          package.overrideAttrs (
+            old:
+              lib.recursiveUpdate old {
+                meta.license = (
+                  if builtins.isList old.meta.license
+                  then map (_: {free = true;}) old.meta.license
+                  else {free = true;}
+                );
+              }
+          )))
+      ];
   in {
-    packages = dotpkgs.packages;
-    overlays =
-      lib.recursiveUpdate
-      dotpkgs.overlays
-      (genSystems (_: {
-        default = _: prev:
-          builtins.mapAttrs (_: p: prev.callPackage p {}) flake.packages;
-      }));
-    nixosModules = dotpkgs.nixosModules // flake.modules;
-    homeManagerModules = dotpkgs.homeManagerModules // flake.hm-modules;
+    # packages = dotpkgs.packages;
+    overlays = genSystems (_: {
+      default = _: prev:
+        builtins.mapAttrs (_: p:
+          prev.callPackage p (let
+            pass = {
+              maintainers = import ./maintainers.nix;
+            };
+            fArgs = builtins.functionArgs p;
+          in
+            lib.filterAttrs (n: _: fArgs ? ${n}) pass))
+        flake.packages;
+      fixes = import ./overlays lib;
+      allowUnfree = _: prev:
+        mkUnfreeOverlay prev [
+          "ttf-ms-win11"
+        ];
+    });
+
+    nixosModules = flake.modules;
+    homeManagerModules = flake.hm-modules;
 
     nixosConfigurations = {
       jacob-thinkpad = lib.nixosSystem {

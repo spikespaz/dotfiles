@@ -1,5 +1,5 @@
 {
-  hmModules,
+  self,
   lib,
   pkgs,
   ...
@@ -27,7 +27,7 @@ in {
   imports = [
     ./hosts.nix
     ./keepassxc.nix
-    hmModules.firefox-pwa
+    self.homeManagerModules.firefox-pwa
   ];
 
   programs.firefox.pwa.enable = true;
