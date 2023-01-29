@@ -6,6 +6,11 @@
   programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
     rust-lang.rust-analyzer
     tamasfe.even-better-toml
+    # these guys are sort of inconsiderate and not even designing
+    # the extension properly, I should be able to provide
+    # the binaries it wants and disable the auto download thing
+    # <https://github.com/vadimcn/vscode-lldb/issues/310>
+    pkgs.vscode-extensions.vadimcn.vscode-lldb
   ];
 
   programs.vscode.userSettings = {
@@ -22,6 +27,9 @@
 
     # use nightly range formatting, should be faster
     "rust-analyzer.rustfmt.rangeFormatting.enable" = true;
+
+    # use lldb for debugging
+    "rust-analyzer.debug.engine" = "vadimcn.vscode-lldb";
 
     # show references for everything
     "rust-analyzer.hover.actions.references.enable" = true;
