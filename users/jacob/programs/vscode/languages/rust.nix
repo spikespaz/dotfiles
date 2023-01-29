@@ -18,6 +18,8 @@
     # use clippy over cargo check
     "rust-analyzer.check.command" = "clippy";
 
+    "rust-analyzer.server.path" = lib.getExe pkgs.rust-analyzer;
+
     # use nightly range formatting, should be faster
     "rust-analyzer.rustfmt.rangeFormatting.enable" = true;
 
