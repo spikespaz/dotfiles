@@ -74,6 +74,10 @@
     # colors
     "workbench.colorTheme" = "Monokai Pro (Filter Spectrum)";
     "workbench.colorCustomizations" = {
+      "[Monokai Pro (Filter Spectrum)]" = {
+        "editorInlayHint.foreground" = "#69676c";
+        "editorInlayHint.background" = "#222222";
+      };
       "[Sonokai Espresso]" = {
         "editor.background" = "#211e1d";
       };
