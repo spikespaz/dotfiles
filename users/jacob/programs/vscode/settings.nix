@@ -29,6 +29,7 @@
 
     ## Intelligence ##
     christian-kohler.path-intellisense
+    streetsidesoftware.code-spell-checker
 
     ## Editor Extension ##
     ryuta46.multi-command
