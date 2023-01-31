@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  flib,
+  ...
+}: {
   ####################
   ### WEB BROWSERS ###
   ####################
@@ -141,7 +146,13 @@
   };
 
   rustup = {
-    home.packages = [pkgs.rustup];
+    home.packages = [pkgs.rustup pkgs.gcc];
+    home.file.".cargo/config.toml".source = flib.toTOMLFile "cargo-config" {
+      "target.x86_64-unknown-linux-gnu" = {
+        linker = lib.getExe pkgs.clang;
+        rustFlags = ["-C" "link-arg=--ld-path=${lib.makeBinPath [pkgs.mold]}"];
+      };
+    };
   };
 
   ##########################
