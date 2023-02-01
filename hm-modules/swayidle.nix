@@ -30,7 +30,7 @@ in {
 
       extraArgs = lib.mkOption {
         type = types.listOf types.singleLineStr;
-        default = [];
+        default = ["-w"];
         example = lib.literalExpression ''
           ["-w" "-d"]
         '';
@@ -147,7 +147,7 @@ in {
         Type = "simple";
         # swayidle executes commands using "sh -c", so the PATH needs to contain a shell.
         Environment = ["PATH=${lib.makeBinPath [pkgs.bash]}"];
-        ExecStart = "${cfg.package}/bin/swayidle -w ${lib.concatStringsSep " " args}";
+        ExecStart = "${cfg.package}/bin/swayidle ${lib.concatStringsSep " " args}";
       };
 
       Install.WantedBy = targets;
