@@ -6,6 +6,32 @@
 }: let
   inherit (lib) types;
   cfg = config.services.swayidle.alt;
+
+  typeTimeout = {
+    options = {
+      timeout = lib.mkOption {
+        type = types.ints.positive;
+        description = lib.mdDoc ''
+          The amount of idle time (in seconds) to wait before
+          executing the provided script.
+        '';
+      };
+      script = lib.mkOption {
+        type = types.lines;
+        description = lib.mdDoc ''
+          Lines of shell code to execute after the idle timeout.
+        '';
+      };
+      resumeScript = lib.mkOption {
+        type = types.nullOr types.lines;
+        default = null;
+        description = lib.mdDoc ''
+          Lines of shell code to execute when activity is detected again,
+          after the main timeout script has executed.
+        '';
+      };
+    };
+  };
 in {
   options = {
     services.swayidle.alt = {
@@ -78,7 +104,7 @@ in {
       };
 
       timeouts = lib.mkOption {
-        type = types.attrs;
+        type = types.attrsOf (types.submodule typeTimeout);
         default = {};
         example = lib.literalExpression '''';
         description = lib.mdDoc ''
