@@ -54,13 +54,13 @@
           brightness="''${brightness/\%/}"
           if [[ "$brightness" -gt ${toString dimTarget} ]]; then
             printf '%s' "$brightness" > /tmp/slight_saved_brightness
-            ${slight} set ${toString dimTarget}% -t ${decreaseDuration}
+            ${slight} set -D ${toString dimTarget}% -t ${decreaseDuration}
           fi
         '';
         resumeScript = ''
           set -eu
           brightness="$(cat /tmp/slight_saved_brightness)"
-          ${slight} set "$brightness%" -t ${increaseDuration}
+          ${slight} set -I "$brightness%" -t ${increaseDuration}
           rm -f /tmp/slight_saved_brightness
         '';
       };

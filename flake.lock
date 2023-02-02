@@ -735,11 +735,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1675272729,
-        "narHash": "sha256-E7DRXDuFC4H80pktzgg8P3XyKPY0HpWD7zSmaPwChN8=",
+        "lastModified": 1675361556,
+        "narHash": "sha256-XCK8C5ymf9o3jM9qVexpMMkLtGov+CN8FWPYgbIJviU=",
         "owner": "spikespaz",
         "repo": "slight",
-        "rev": "3049e90254fbb996e7385da3e93d5ff3756e74d8",
+        "rev": "c07a6b374be8a0038d623a0cf50c8fdf9ac379dd",
         "type": "github"
       },
       "original": {
