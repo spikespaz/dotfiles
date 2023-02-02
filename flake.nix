@@ -85,9 +85,9 @@
         inputPackageOverlays
         nur.overlay
         (_: _: {vscode-marketplace = vscode-extensions.extensions.${system};})
-        self.overlays.${system}.default
-        self.overlays.${system}.fixes
-        self.overlays.${system}.allowUnfree
+        self.overlays.default
+        self.overlays.fixes
+        self.overlays.allowUnfree
       ];
     };
     pkgs-stable = import nixpkgs {
@@ -97,8 +97,6 @@
 
     nixosModules = flib.joinNixosModules inputs;
     homeModules = flib.joinHomeModules inputs;
-
-    genSystems = lib.genAttrs ["x86_64-linux"];
 
     # TODO cannot handle scoped packages
     mkUnfreeOverlay = pkgs: names:
@@ -122,7 +120,7 @@
       ];
   in {
     # packages = dotpkgs.packages;
-    overlays = genSystems (_: {
+    overlays = {
       default = _: prev:
         builtins.mapAttrs (_: p:
           prev.callPackage p (let
@@ -138,7 +136,7 @@
         mkUnfreeOverlay prev [
           "ttf-ms-win11"
         ];
-    });
+    };
 
     nixosModules = flake.modules;
     homeManagerModules = flake.hm-modules;
