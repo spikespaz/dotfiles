@@ -64,17 +64,15 @@ in {
 
       theme.overrides = lib.mkOption {
         type = types.attrs;
-        apply = x:
-          lib.mapAttrs' (
-            name: value:
-              if name == "General"
-              then {
-                name = "%General";
-                inherit value;
-              }
-              else {inherit name value;}
-          )
-          x;
+        apply = lib.mapAttrs' (
+          name: value:
+            if name == "General"
+            then {
+              name = "%General";
+              inherit value;
+            }
+            else {inherit name value;}
+        );
         default = {};
         example = lib.literalExpression ''
           {
@@ -112,13 +110,13 @@ in {
     newThemePath = "${cfg.theme.name}#/${cfg.theme.name}#.kvconfig";
     oldTheme =
       lib.pipe (
-        pkgs.runCommand
+        pkgs.runCommandLocal
         "convert-kvantum-${cfg.theme.name}-to-json"
-        {nativeBuildInputs = [pkgs.jc];}
+        {}
         ''
           mkdir $out
           cat '${oldThemePath}' \
-            | "${lib.getExe pkgs.jc}" --ini \
+            | '${lib.getExe pkgs.jc}' --ini \
             > "$out/${cfg.theme.name}.json"
         ''
       ) [
