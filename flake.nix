@@ -55,8 +55,6 @@
     nixpkgs,
     nixpkgs-stable,
     home-manager,
-    nur,
-    vscode-extensions,
     ...
   }: let
     system = "x86_64-linux";
@@ -71,23 +69,17 @@
       pass = {inherit lib pkgs flake flib;};
     };
 
-    inputPackageOverlays = flib.mkPackagesOverlay system (
-      removeAttrs inputs [
-        "nixpkgs"
-        "nur"
-        "vscode-extensions"
-      ]
-    );
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
       overlays = [
-        inputPackageOverlays
-        nur.overlay
-        (_: _: {vscode-marketplace = vscode-extensions.extensions.${system};})
         self.overlays.default
         self.overlays.fixes
         self.overlays.allowUnfree
+        inputs.nur.overlay
+        inputs.hyprland.overlays.default
+        inputs.slight.overlays.default
+        (_: _: {vscode-marketplace = inputs.vscode-extensions.extensions.${system};})
       ];
     };
     pkgs-stable = import nixpkgs {

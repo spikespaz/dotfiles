@@ -18,14 +18,14 @@
   # if there is a default and an arrt matching newName,
   # the default attr will be renamed to ${newName}_default
   # and default will be renamed to newName
-  _renameDefaultAttr = newName: attrs: (
+  _renameDefaultAttr = prefix: attrs: (
     lib.mapAttrs' (name: value: {
       name =
         if name == "default"
         then
-          if attrs ? ${newName}
-          then "${newName}_default"
-          else newName
+          if attrs ? ${prefix}
+          then "${prefix}_default"
+          else prefix
         else name;
       inherit value;
     })
@@ -46,15 +46,6 @@
       (builtins.mapAttrs _renameDefaultAttr)
       builtins.attrValues
       updates
-    ];
-
-  # returns an attrset of all packages defined by input flakes
-  # flattening them and renaming default packages
-  mkPackagesOverlay = system: flakes:
-    lib.pipe flakes [
-      (lib.filterAttrs (_: attrs: attrs ? packages))
-      (_joinAttrFromInputs ["packages" system])
-      (overrides: _: _: overrides)
     ];
 
   # with a list of inputs, for each that has nixosModules
