@@ -89,27 +89,6 @@
 
     nixosModules = flib.joinNixosModules inputs;
     homeModules = flib.joinHomeModules inputs;
-
-    # TODO cannot handle scoped packages
-    mkUnfreeOverlay = pkgs: names:
-      lib.pipe names [
-        (map (name: {
-          inherit name;
-          value = pkgs.${name};
-        }))
-        builtins.listToAttrs
-        (builtins.mapAttrs (_: package:
-          package.overrideAttrs (
-            old:
-              lib.recursiveUpdate old {
-                meta.license = (
-                  if builtins.isList old.meta.license
-                  then map (_: {free = true;}) old.meta.license
-                  else {free = true;}
-                );
-              }
-          )))
-      ];
   in {
     # packages = dotpkgs.packages;
     overlays = {
@@ -125,7 +104,7 @@
         flake.packages;
       fixes = import ./overlays lib;
       allowUnfree = _: prev:
-        mkUnfreeOverlay prev [
+        flib.mkUnfreeOverlay prev [
           "ttf-ms-win11"
         ];
     };
