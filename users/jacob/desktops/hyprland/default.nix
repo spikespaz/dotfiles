@@ -46,6 +46,7 @@
       builtins.replaceStrings [
         "%PIN_WINDOW_SCRIPT%"
         "%FUNCTIONS%"
+        "%SLIGHT%"
         "%DISABLE_INPUT_DEVICES%"
       ] [
         # PIN_WINDOW_SCRIPT
@@ -60,6 +61,8 @@
         '')}"
         # FUNCTIONS
         (lib.getExe config.utilities.osd-functions.package)
+        # LIGHT
+        (lib.getExe pkgs.slight)
         # DISABLE_INPUT_DEVICES
         # TODO probably should make this a package again, with overrides
         # like the above. Or make it a module that provides an overridden
