@@ -172,7 +172,7 @@ in {
       Service = {
         Type = "simple";
         # swayidle executes commands using "sh -c", so the PATH needs to contain a shell.
-        Environment = ["PATH=${lib.makeBinPath [pkgs.bash]}"];
+        Environment = ["PATH=${lib.makeBinPath [pkgs.bash pkgs.coreutils]}"];
         ExecStart = "${cfg.package}/bin/swayidle ${lib.concatStringsSep " " args}";
       };
 
