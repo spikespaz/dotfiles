@@ -663,6 +663,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "prismlauncher": "prismlauncher",
+        "slight": "slight",
         "spicetify": "spicetify",
         "vscode-extensions": "vscode-extensions",
         "webcord": "webcord"
@@ -724,6 +725,26 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "slight": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1675272729,
+        "narHash": "sha256-E7DRXDuFC4H80pktzgg8P3XyKPY0HpWD7zSmaPwChN8=",
+        "owner": "spikespaz",
+        "repo": "slight",
+        "rev": "3049e90254fbb996e7385da3e93d5ff3756e74d8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "spikespaz",
+        "repo": "slight",
         "type": "github"
       }
     },

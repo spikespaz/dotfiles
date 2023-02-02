@@ -19,13 +19,13 @@
   # it reacts to events (such as timeouts) and runs commands
   # <https://github.com/swaywm/swayidle/blob/master/swayidle.1.scd>
   services.swayidle.alt = let
+    slight = "${lib.getExe pkgs.slight}";
     hyprctl = "${pkgs.hyprland}/bin/hyprctl";
     swaylock = "${lib.getExe config.programs.swaylock.package}";
   in {
     enable = true;
     systemdTarget = "hyprland-session.target";
 
-    extraArgs = ["-w"];
     idleHint = 2 * 60;
 
     events = {
@@ -42,6 +42,28 @@
     };
 
     timeouts = {
+      dimScreen = let
+        dimTarget = 15;
+        decreaseDuration = "2s";
+        increaseDuration = "500ms";
+      in {
+        timeout = 60;
+        script = ''
+          set -eu
+          brightness="$(${slight} get -p)"
+          brightness="''${brightness/\%/}"
+          if [[ "$brightness" -gt ${toString dimTarget} ]]; then
+            printf '%s' "$brightness" > /tmp/slight_saved_brightness
+            ${slight} set ${toString dimTarget}% -t ${decreaseDuration}
+          fi
+        '';
+        resumeScript = ''
+          set -eu
+          brightness="$(cat /tmp/slight_saved_brightness)"
+          ${slight} set "$brightness%" -t ${increaseDuration}
+          rm -f /tmp/slight_saved_brightness
+        '';
+      };
       autoLock = {
         timeout = 2 * 60;
         script = ''
