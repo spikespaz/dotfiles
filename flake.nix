@@ -79,7 +79,7 @@
         inputs.nur.overlay
         inputs.hyprland.overlays.default
         inputs.slight.overlays.default
-        (_: _: {vscode-marketplace = inputs.vscode-extensions.extensions.${system};})
+        (_: _: {vscode-marketplace = inputs.vscode-extensions.extensions.${system}.vscode-marketplace;})
       ];
     };
     pkgs-stable = import nixpkgs {
@@ -90,7 +90,6 @@
     nixosModules = flib.joinNixosModules inputs;
     homeModules = flib.joinHomeModules inputs;
   in {
-    # packages = dotpkgs.packages;
     overlays = {
       default = _: prev:
         builtins.mapAttrs (_: p:
@@ -108,6 +107,10 @@
           "ttf-ms-win11"
         ];
     };
+    packages = lib.genAttrs ["x86_64-linux"] (
+      system:
+        self.overlays.default null nixpkgs.legacyPackages.${system}
+    );
 
     nixosModules = flake.modules;
     homeManagerModules = flake.hm-modules;
