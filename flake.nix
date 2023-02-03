@@ -74,7 +74,7 @@
       config.allowUnfree = true;
       overlays = [
         self.overlays.default
-        self.overlays.fixes
+        self.overlays.oraclejdk
         self.overlays.allowUnfree
         inputs.nur.overlay
         inputs.hyprland.overlays.default
@@ -90,23 +90,24 @@
     nixosModules = flib.joinNixosModules inputs;
     homeModules = flib.joinHomeModules inputs;
   in {
-    overlays = {
-      default = _: prev:
-        builtins.mapAttrs (_: p:
-          prev.callPackage p (let
-            pass = {
-              maintainers = import ./maintainers.nix;
-            };
-            fArgs = builtins.functionArgs p;
-          in
-            lib.filterAttrs (n: _: fArgs ? ${n}) pass))
-        flake.packages;
-      fixes = import ./overlays lib;
-      allowUnfree = _: prev:
-        flib.mkUnfreeOverlay prev [
-          "ttf-ms-win11"
-        ];
-    };
+    overlays =
+      flake.overlays
+      // {
+        default = _: prev:
+          builtins.mapAttrs (_: p:
+            prev.callPackage p (let
+              pass = {
+                maintainers = import ./maintainers.nix;
+              };
+              fArgs = builtins.functionArgs p;
+            in
+              lib.filterAttrs (n: _: fArgs ? ${n}) pass))
+          flake.packages;
+        allowUnfree = _: prev:
+          flib.mkUnfreeOverlay prev [
+            "ttf-ms-win11"
+          ];
+      };
     packages = lib.genAttrs ["x86_64-linux"] (
       system:
         self.overlays.default null nixpkgs.legacyPackages.${system}
