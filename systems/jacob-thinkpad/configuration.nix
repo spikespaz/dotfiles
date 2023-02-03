@@ -266,6 +266,10 @@ args @ {
     #   auth sufficient pam_unix.so try_first_pass nullok
     # '';
 
+    # backlight brightness control (and keyboard, etc)
+    environment.systemPackages = [pkgs.slight];
+    services.udev.packages = [pkgs.slight];
+
     programs.disable-input-devices = {
       enable = true;
       allowedUsers = ["jacob"];
@@ -334,7 +338,7 @@ args @ {
       jacob = {
         description = "Jacob Birkett";
         isNormalUser = true;
-        extraGroups = ["wheel" "libvirtd"];
+        extraGroups = ["audio" "video" "wheel" "libvirtd"];
         inherit initialPassword;
       };
       guest = {
