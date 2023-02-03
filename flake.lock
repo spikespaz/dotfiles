@@ -612,7 +612,7 @@
         "type": "github"
       }
     },
-    "prismlauncher": {
+    "prism-launcher": {
       "inputs": {
         "flake-compat": "flake-compat",
         "libnbtplusplus": "libnbtplusplus",
@@ -647,7 +647,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
-        "prismlauncher": "prismlauncher",
+        "prism-launcher": "prism-launcher",
         "slight": "slight",
         "spicetify": "spicetify",
         "vscode-extensions": "vscode-extensions",

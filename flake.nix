@@ -38,8 +38,8 @@
     # polymc.url = "github:PolyMC/PolyMC";
     # polymc.inputs.nixpkgs.follows = "nixpkgs";
 
-    prismlauncher.url = "github:PrismLauncher/PrismLauncher";
-    prismlauncher.inputs.nixpkgs.follows = "nixpkgs";
+    prism-launcher.url = "github:PrismLauncher/PrismLauncher";
+    prism-launcher.inputs.nixpkgs.follows = "nixpkgs";
 
     homeage.url = "github:jordanisaacs/homeage";
     homeage.inputs.nixpkgs.follows = "nixpkgs";
@@ -82,6 +82,10 @@
         inputs.hyprland.overlays.default
         inputs.slight.overlays.default
         inputs.vscode-extensions.overlays.default
+        inputs.alejandra.overlays.default
+        inputs.nil.overlays.default
+        inputs.prism-launcher.overlay
+        # inputs.webcord.overlays.default
       ];
     };
     pkgs-stable = import nixpkgs {
