@@ -13,7 +13,8 @@ lib: (_: prev: {
   });
 
   # Oracle, fuck you. 🖕
-  # <https://nadwey.eu.org/java/8/jdk-8u351/>
+  # <https://nadwey.eu.org/java/8/>
+  # <https://gist.github.com/wavezhang/ba8425f24a968ec9b2a8619d7c2d86a6>
   # This override calls `jdk-linux-base.nix` with product information
   # matching a tarball that we can get from the link above.
   # In order to hide the "we can't download that for you" message
@@ -28,17 +29,19 @@ lib: (_: prev: {
   oraclejdk = let
     product = {
       productVersion = "8";
-      patchVersion = "351";
-      sha256.x86_64-linux = "07fw6j38gz0jwxg9qkzsdjzxcnivwq48i9b7pmy7fgk184qcl2gr";
-      jceName = "jce_policy-8.zip";
-      sha256JCE = "";
+      patchVersion = "361";
+      sha256.x86_64-linux = "sha256-YeP0CZqZp3pweFOAizps+ofSuCsZt8dtzGxdPu37O50=";
+      jceName = null;
+      sha256JCE = null;
     };
+    version = "${product.productVersion}u${product.patchVersion}";
+    tarballName = "jdk-${version}-${platformName}.tar.gz";
     src = prev.fetchzip {
-      url = "https://nadwey.eu.org/java/8/jdk-8u351/jdk-8u351-linux-x64.tar.gz";
-      sha256 = "sha256-vHqjfVqEzWHaIOeZglzAoIwxTxhmy5AbJVsyoJgSDcg=";
+      url = "https://nadwey.eu.org/java/${product.productVersion}/jdk-${version}/${tarballName}";
+      sha256 = product.sha256.${prev.system};
     };
     package = import "${prev.path}/pkgs/development/compilers/oraclejdk/jdk-linux-base.nix" product;
-    platformName = builtins.getAttr prev.stdenv.hostPlatform.system {
+    platformName = builtins.getAttr prev.system {
       i686-linux = "linux-i586";
       x86_64-linux = "linux-x64";
       armv7l-linux = "linux-arm32-vfp-hflt";
@@ -49,7 +52,7 @@ lib: (_: prev: {
       installjdk = true;
       pluginSupport = false;
       requireFile = args @ {name, ...}:
-        if name == "jdk-${product.productVersion}u${product.patchVersion}-${platformName}.tar.gz"
+        if name == tarballName
         then src
         else prev.requireFile args;
     };
