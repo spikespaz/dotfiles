@@ -1,17 +1,6 @@
 # This file contains overlays that fix issues with nixpkgs.
 # TODO: When I have the time, I need to turn these into pull requests.
 lib: (_: prev: {
-  haruna = prev.haruna.overrideAttrs (old: rec {
-    version = "0.10.2";
-    src = prev.fetchFromGitLab {
-      owner = "multimedia";
-      repo = "haruna";
-      rev = "v${version}";
-      hash = "sha256-hhHWxmr2EzW9QqfV1bpJCiWOWsmGJmvxvtQcuXlMTc4=";
-      domain = "invent.kde.org";
-    };
-  });
-
   # Oracle, fuck you. 🖕
   # <https://nadwey.eu.org/java/8/>
   # <https://gist.github.com/wavezhang/ba8425f24a968ec9b2a8619d7c2d86a6>
@@ -68,42 +57,4 @@ lib: (_: prev: {
       sha256 = "sha256-obczZbf/oH4xGaVvp3y3ZyDdYhZnxlCWvL0irgEYIi0=";
     };
   });
-
-  obs-studio-plugins = (
-    with prev.obs-studio-plugins;
-      prev.obs-studio-plugins
-      // {
-        # # <https://github.com/exeldro/obs-move-transition>
-        # obs-move-transition = obs-move-transition.overrideAttrs (old: rec {
-        #   version = "2.6.3";
-        #   src = prev.fetchFromGitHub {
-        #     owner = "exeldro";
-        #     repo = old.pname;
-        #     rev = version;
-        #     sha256 = "sha256-jFN1JAaLebLqUVz/tM3i9LE4O+ih21SN8Ya+FuY5gsE=";
-        #   };
-        #   patches = [
-        #     # ./obs-move-transition.CMakeLists.txt.patch
-        #   ];
-        # });
-      }
-  );
-
-  # lapce = (prev.lapce.overrideAttrs (old: rec {
-  #   version = "0.2.0";
-  #   src = prev.fetchFromGitHub {
-  #     owner = "lapce";
-  #     repo = "lapce";
-  #     rev = "v${version}";
-  #     sha256 = "sha256-cCcI5V6CMLkJM0miLv/o7LAJedrgb+z2CtWmF5/dmvY=";
-  #   };
-  #   # cannot set cargoSha256 because the output is transformed before
-  #   # it is overrideable, this is the way since
-  #   # rustPlatform.fetchCargoTarball is lib.mkOverrideable
-  #   cargoDeps = old.cargoDeps.overrideAttrs (_: {
-  #     inherit src;
-  #     name = "${old.pname}-${version}-vendor.tar.gz";
-  #     outputHash = "sha256-H8vPBXJ0tom07wjzi18oIYNUhZXraD74DF7+xn8hfrQ=";
-  #   });
-  # }));
 })
