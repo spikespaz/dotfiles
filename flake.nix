@@ -27,6 +27,8 @@
     alejandra.url = "github:kamadorueda/alejandra";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
 
+    # use the package from nixpkgs, probably better-kept
+    # but this flake provides the module (which I contribute to)
     webcord.url = "github:fufexan/webcord-flake";
     webcord.inputs.nixpkgs.follows = "nixpkgs";
 

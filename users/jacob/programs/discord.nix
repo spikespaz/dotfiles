@@ -44,6 +44,9 @@ in {
 
     programs.webcord = {
       enable = true;
+      # use the one from nixpkgs,
+      # probably more correct with dependencies & stuff
+      package = pkgs.webcord;
       themes = {
         DiscordRecolor = "${bdAddons}/Themes/DiscordRecolor/DiscordRecolor.theme.css";
         # SettingsModal = "${bdAddons}/Themes/SettingsModal/SettingsModal.theme.css";
