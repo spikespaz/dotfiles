@@ -11,6 +11,7 @@
     ./dunst.nix
     ./rofi.nix
     ./utilities.nix
+    ./gammastep.nix
   ];
 
   home.packages = [
