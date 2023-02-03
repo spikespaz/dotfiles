@@ -138,7 +138,6 @@
           greeter
           # gamemode
           gaming
-          clight
           pia-openvpn
         ];
       };
