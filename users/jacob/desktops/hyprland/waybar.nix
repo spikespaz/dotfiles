@@ -30,7 +30,7 @@
   # TODO when using store paths to executables, they do not inherit the user's
   # environment (at least with systemd) and therefore GUIs use the default theme
   commands = let
-    busctl = "${pkgs.systemd}/bin/busctl";
+    slight = "${lib.getExe pkgs.slight}";
     hyprctl = "${pkgs.hyprland}/bin/hyprctl";
     # TODO this is duplicated from the hyprland config, make it a module
     kbFns = lib.getExe config.utilities.osd-functions.package;
@@ -39,8 +39,8 @@
     bluetoothctl = "${pkgs.bluez}/bin/bluetoothctl";
     iwgtk = lib.getExe pkgs.iwgtk;
   in {
-    backlightUp = "${busctl} --user call org.clight.clight /org/clight/clight org.clight.clight IncBl d 0.05";
-    backlightDown = "${busctl} --user call org.clight.clight /org/clight/clight org.clight.clight DecBl d 0.05";
+    backlightUp = "${slight} inc 5% -t 150ms";
+    backlightDown = "${slight} dec 5% -t 150ms";
     # TODO --tab no longer works, what is the identifier to use?
     outputSoundSettings = "${pavucontrol} --tab 'Output Devices'";
     outputVolumeMute = "${kbFns} output mute";
@@ -128,7 +128,7 @@ in {
       };
 
       "hyprland/window" = {
-        max-length = 70;
+        max-length = 50;
       };
 
       ## MODULES-CENTER ##
@@ -184,7 +184,7 @@ in {
       };
 
       backlight = {
-        device = "intel_backlight";
+        device = "amdgpu_bl0";
         format = "{icon} {percent}%";
         # format-icons = ["󰃜" "󰃛" "󰃝" "󰃟" "󰃠"];
         format-icons = ["󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨"];
