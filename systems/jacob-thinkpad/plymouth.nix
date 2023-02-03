@@ -24,8 +24,6 @@
     "amdgpu"
     # allows the backlight to be controlled via software
     "amdgpu.backlight=0"
-    # allows systemd to set and save the backlight state
-    "acpi_backlight=none"
     # prevent the kernel from blanking plymouth out of the fb
     "fbcon=nodefer"
     # disable boot logo if any
