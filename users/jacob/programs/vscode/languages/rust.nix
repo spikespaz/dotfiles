@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: {
-  programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
+  programs.vscode.extensions = with pkgs.vscode-marketplace; [
     rust-lang.rust-analyzer
     tamasfe.even-better-toml
     # these guys are sort of inconsiderate and not even designing

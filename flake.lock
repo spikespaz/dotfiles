@@ -254,21 +254,6 @@
         "type": "github"
       }
     },
-    "flake-utils_2": {
-      "locked": {
-        "lastModified": 1667395993,
-        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "flakeCompat": {
       "flake": false,
       "locked": {
@@ -787,16 +772,16 @@
     "vscode-extensions": {
       "inputs": {
         "flake-compat": "flake-compat_2",
-        "flake-utils": "flake-utils_2",
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1674786870,
-        "narHash": "sha256-nf7s2BOTz6yrGn/eNmf4rG3ToF5pdARNYGXvIDXhGgg=",
-        "owner": "nix-community",
-        "repo": "nix-vscode-extensions",
-        "rev": "7347937a77910e7154621e94b6d96a32a1300342",
-        "type": "github"
+        "lastModified": 1675390466,
+        "narHash": "sha256-Pfj9PbZPPvVx51MaqBfje3T2sEg5QEZbq7Y61loah7I=",
+        "ref": "refs/heads/rewrite-flake",
+        "rev": "04bf8e4b85afe0a4d1ecfde7a8467ae1b48ff600",
+        "revCount": 190,
+        "type": "git",
+        "url": "file:///home/jacob/Documents/dotfiles/inputs/vscode-extensions"
       },
       "original": {
         "owner": "nix-community",

@@ -4,3 +4,6 @@
 [submodule "inputs/hyprland"]
 	path = inputs/hyprland
 	url = https://github.com/spikespaz/hyprland-window-manager
+[submodule "inputs/vscode-extensions"]
+	path = inputs/vscode-extensions
+	url = https://github.com/spikespaz/nix-vscode-extensions

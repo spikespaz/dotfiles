@@ -4,7 +4,7 @@
   ...
 }: {
 
-  programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
+  programs.vscode.extensions = with pkgs.vscode-marketplace; [
     mads-hartmann.bash-ide-vscode
     timonwong.shellcheck
     foxundermoon.shell-format

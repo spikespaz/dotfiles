@@ -79,7 +79,7 @@
         inputs.nur.overlay
         inputs.hyprland.overlays.default
         inputs.slight.overlays.default
-        (_: _: {vscode-marketplace = inputs.vscode-extensions.extensions.${system}.vscode-marketplace;})
+        inputs.vscode-extensions.overlays.default
       ];
     };
     pkgs-stable = import nixpkgs {
@@ -138,6 +138,7 @@
           # gamemode
           gaming
           clight
+          pia-openvpn
         ];
       };
     };

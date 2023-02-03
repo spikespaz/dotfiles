@@ -15,7 +15,7 @@
     paths = [editorPackage] ++ fontPackages;
   });
 
-  programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
+  programs.vscode.extensions = with pkgs.vscode-marketplace; [
     ## Appearances ##
     # jdinhlife.gruvbox
     monokai.theme-monokai-pro-vscode

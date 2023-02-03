@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: {
-  programs.vscode.extensions = with pkgs.vscode-marketplace.vscode; [
+  programs.vscode.extensions = with pkgs.vscode-marketplace; [
     jnoortheen.nix-ide
     # kamadorueda.alejandra
   ];
