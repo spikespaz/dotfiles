@@ -77,6 +77,7 @@
       overlays = [
         self.overlays.default
         self.overlays.oraclejdk
+        self.overlays.handbrake
         self.overlays.allowUnfree
         inputs.nur.overlay
         inputs.hyprland.overlays.default
