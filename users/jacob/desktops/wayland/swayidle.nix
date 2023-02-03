@@ -44,8 +44,8 @@
     timeouts = {
       dimScreen = let
         dimTarget = 15;
-        decreaseDuration = "2s";
-        increaseDuration = "500ms";
+        dimDuration = "2s";
+        undimDuration = "500ms";
       in {
         timeout = 60;
         script = ''
@@ -53,15 +53,17 @@
           brightness="$(${slight} get -p)"
           brightness="''${brightness/\%/}"
           if [[ "$brightness" -gt ${toString dimTarget} ]]; then
-            printf '%s' "$brightness" > /tmp/slight_saved_brightness
-            ${slight} set -D ${toString dimTarget}% -t ${decreaseDuration}
+            printf '%s' "$brightness" > /tmp/.slight_saved_brightness
+            ${slight} set -D ${toString dimTarget}% -t ${dimDuration} &
+            printf '%s' "$!" > /tmp/.slight_saved_brightness.pid
           fi
         '';
         resumeScript = ''
           set -eu
-          brightness="$(cat /tmp/slight_saved_brightness)"
-          ${slight} set -I "$brightness%" -t ${increaseDuration}
-          rm -f /tmp/slight_saved_brightness
+          brightness="$(cat /tmp/.slight_saved_brightness)"
+          kill "$(cat /tmp/.slight_saved_brightness.pid)" || true
+          ${slight} set -I "$brightness%" -t ${undimDuration}
+          rm -f /tmp/.slight_saved_brightness{,.pid}
         '';
       };
       autoLock = {
