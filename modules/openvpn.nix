@@ -117,7 +117,7 @@ in {
 
       type = types.attrsOf (types.submodule {
         options = {
-          config = types.mkOption {
+          config = lib.mkOption {
             type = types.lines;
             description = lib.mdDoc ''
               Configuration of this OpenVPN instance.  See
@@ -129,7 +129,7 @@ in {
             '';
           };
 
-          up = types.mkOption {
+          up = lib.mkOption {
             default = "";
             type = types.lines;
             description = lib.mdDoc ''
@@ -137,7 +137,7 @@ in {
             '';
           };
 
-          down = types.mkOption {
+          down = lib.mkOption {
             default = "";
             type = types.lines;
             description = lib.mdDoc ''
@@ -145,13 +145,13 @@ in {
             '';
           };
 
-          autoStart = types.mkOption {
+          autoStart = lib.mkOption {
             default = true;
             type = types.bool;
             description = lib.mdDoc "Whether this OpenVPN instance should be started automatically.";
           };
 
-          updateResolvConf = types.mkOption {
+          updateResolvConf = lib.mkOption {
             default = false;
             type = types.bool;
             description = lib.mdDoc ''
@@ -161,7 +161,7 @@ in {
             '';
           };
 
-          authUserPass = types.mkOption {
+          authUserPass = lib.mkOption {
             default = null;
             description = lib.mdDoc ''
               This option can be used to store the username / password credentials
@@ -171,12 +171,12 @@ in {
             '';
             type = types.nullOr (types.submodule {
               options = {
-                username = types.mkOption {
+                username = lib.mkOption {
                   description = lib.mdDoc "The username to store inside the credentials file.";
                   type = types.str;
                 };
 
-                password = types.mkOption {
+                password = lib.mkOption {
                   description = lib.mdDoc "The password to store inside the credentials file.";
                   type = types.str;
                 };
