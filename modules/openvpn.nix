@@ -10,8 +10,6 @@
 
   cfg = config.services.openvpn.alt;
 
-  inherit (pkgs) openvpn;
-
   makeOpenVPNJob = cfg: name: let
     path = lib.makeBinPath (builtins.getAttr "openvpn-${name}" config.systemd.services).path;
 
@@ -65,19 +63,16 @@
 
     path = [pkgs.iptables pkgs.iproute2 pkgs.nettools];
 
-    serviceConfig.ExecStart = "@${openvpn}/sbin/openvpn openvpn --suppress-timestamps --config ${configFile}";
+    serviceConfig.ExecStart = "@${cfg.package}/sbin/openvpn openvpn --suppress-timestamps --config ${configFile}";
     serviceConfig.Restart = "always";
     serviceConfig.Type = "notify";
   };
 in {
-  imports = [
-    (lib.mkRemovedOptionModule ["services" "openvpn" "enable"] "")
-  ];
-
   ###### interface
 
   options = {
-    services.openvpn.servers = lib.mkOption {
+    services.openvpn.alt.package = lib.mkPackageOption pkgs "openvpn" {};
+    services.openvpn.alt.servers = lib.mkOption {
       default = {};
 
       example = lib.literalExpression ''
@@ -201,7 +196,7 @@ in {
       )
       cfg.servers);
 
-    environment.systemPackages = [openvpn];
+    environment.systemPackages = [cfg.package];
 
     boot.kernelModules = ["tun"];
   };
