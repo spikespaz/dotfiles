@@ -49,11 +49,17 @@
         "up ${pkgs.writeScript "openvpn-${name}-up" upScript}"}
       ${lib.optionalString (server.down != "" || server.updateResolvConf)
         "down ${pkgs.writeScript "openvpn-${name}-down" downScript}"}
-      ${lib.optionalString (server.authUserPass != null)
+      ${
+        if server.authUserPass == null
+        then ""
+        else if builtins.isAttrs server.authUserPass
+        then # it must be a string or path
         "auth-user-pass ${pkgs.writeText "openvpn-credentials-${name}" ''
           ${server.authUserPass.username}
           ${server.authUserPass.password}
-        ''}"}
+        ''}"
+        else "auth-user-pass ${server.authUserPass}"
+      }
     '';
   in {
     description = "OpenVPN instance ‘${name}’";
@@ -167,21 +173,27 @@ in {
               This option can be used to store the username / password credentials
               with the "auth-user-pass" authentication method.
 
-              WARNING: Using this option will put the credentials WORLD-READABLE in the Nix store!
-            '';
-            type = types.nullOr (types.submodule {
-              options = {
-                username = lib.mkOption {
-                  description = lib.mdDoc "The username to store inside the credentials file.";
-                  type = types.str;
-                };
+              You can either provide an attribute set of `username` and `password`,
+              or the path to a file containing the credentials on two lines.
 
-                password = lib.mkOption {
-                  description = lib.mdDoc "The password to store inside the credentials file.";
-                  type = types.str;
+              WARNING: If you use an attribute set, this option will put the credentials WORLD-READABLE into the Nix store!
+            '';
+            type = types.oneOf [
+              types.path
+              (types.submodule {
+                options = {
+                  username = lib.mkOption {
+                    description = lib.mdDoc "The username to store inside the credentials file.";
+                    type = types.str;
+                  };
+
+                  password = lib.mkOption {
+                    description = lib.mdDoc "The password to store inside the credentials file.";
+                    type = types.str;
+                  };
                 };
-              };
-            });
+              })
+            ];
           };
         };
       });
