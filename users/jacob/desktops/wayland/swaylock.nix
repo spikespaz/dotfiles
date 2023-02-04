@@ -1,6 +1,35 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  package = pkgs.swaylock-effects.overrideAttrs (old: rec {
+    version = "1.6.11";
+    src = pkgs.fetchFromGitHub {
+      owner = "jirutka";
+      repo = "swaylock-effects";
+      rev = "v${version}";
+      sha256 = "sha256-MKmWVYssO9HAcP5uqwpy9kDa6/kfZyV2NI7ibozt7Ug=";
+    };
+  });
+  withRandomImage = pkgs.writeShellScriptBin "swaylock" ''
+    wallpapers='${config.home.sessionVariables.USER_WALLPAPERS_DIRECTORY}'
+    if [ -n "$wallpapers" ]; then
+      image="$(
+        find "$wallpapers" \
+          -type f \
+          -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' \
+          | shuf -n1
+      )"
+      ${lib.getExe package} -i "$image" $@
+    else
+      ${lib.getExe package} $@
+    fi
+  '';
+in {
   programs.swaylock.enable = true;
-  programs.swaylock.package = pkgs.swaylock-effects;
+  programs.swaylock.package = withRandomImage;
 
   programs.swaylock.settings = let
     ### Indicator Colors ###
@@ -11,6 +40,7 @@
     inside_color = "0f0f0f";
     text_color = "dedede";
     line_color = "000000";
+    background = "282828";
 
     ### Ring Colors ###
     # <https://materialui.co/colors/>
@@ -51,12 +81,15 @@
 
     ### Effect ###
 
-    fade-in = 200 / 1000;
+    fade-in = 0.25; # s
     screenshots = true;
     effect-blur = "15x3";
     # causes a white border around the edges of the screen
     # effect-scale = 0.5;
     effect-vignette = "0.25:0.5";
+    # for when a random wallpaper isn't set,
+    # and a new monitor is connected
+    color = background;
 
     ### Indicator ###
 
