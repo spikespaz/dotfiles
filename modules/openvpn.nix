@@ -10,7 +10,7 @@
 
   cfg = config.services.openvpn.alt;
 
-  makeOpenVPNJob = cfg: name: let
+  makeOpenVPNJob = server: name: let
     path = lib.makeBinPath (builtins.getAttr "openvpn-${name}" config.systemd.services).path;
 
     upScript = ''
@@ -28,37 +28,37 @@
         fi
       done
 
-      ${cfg.up}
-      ${lib.optionalString cfg.updateResolvConf
+      ${server.up}
+      ${lib.optionalString server.updateResolvConf
         "${pkgs.update-resolv-conf}/libexec/openvpn/update-resolv-conf"}
     '';
 
     downScript = ''
       #! /bin/sh
       export PATH=${path}
-      ${lib.optionalString cfg.updateResolvConf
+      ${lib.optionalString server.updateResolvConf
         "${pkgs.update-resolv-conf}/libexec/openvpn/update-resolv-conf"}
-      ${cfg.down}
+      ${server.down}
     '';
 
     configFile = pkgs.writeText "openvpn-config-${name}" ''
       errors-to-stderr
-      ${lib.optionalString (cfg.up != "" || cfg.down != "" || cfg.updateResolvConf) "script-security 2"}
-      ${cfg.config}
-      ${lib.optionalString (cfg.up != "" || cfg.updateResolvConf)
+      ${lib.optionalString (server.up != "" || server.down != "" || server.updateResolvConf) "script-security 2"}
+      ${server.config}
+      ${lib.optionalString (server.up != "" || server.updateResolvConf)
         "up ${pkgs.writeScript "openvpn-${name}-up" upScript}"}
-      ${lib.optionalString (cfg.down != "" || cfg.updateResolvConf)
+      ${lib.optionalString (server.down != "" || server.updateResolvConf)
         "down ${pkgs.writeScript "openvpn-${name}-down" downScript}"}
-      ${lib.optionalString (cfg.authUserPass != null)
+      ${lib.optionalString (server.authUserPass != null)
         "auth-user-pass ${pkgs.writeText "openvpn-credentials-${name}" ''
-          ${cfg.authUserPass.username}
-          ${cfg.authUserPass.password}
+          ${server.authUserPass.username}
+          ${server.authUserPass.password}
         ''}"}
     '';
   in {
     description = "OpenVPN instance ‘${name}’";
 
-    wantedBy = lib.optional cfg.autoStart "multi-user.target";
+    wantedBy = lib.optional server.autoStart "multi-user.target";
     after = ["network.target"];
 
     path = [pkgs.iptables pkgs.iproute2 pkgs.nettools];
