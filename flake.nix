@@ -48,8 +48,8 @@
     slight.inputs.nixpkgs.follows = "nixpkgs";
 
     # TODO patch homeage
-    # ragenix.url = "github:yaxitech/ragenix";
-    # ragenix.inputs.nixpkgs.follows = "nixpkgs";
+    ragenix.url = "github:yaxitech/ragenix";
+    ragenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
@@ -87,6 +87,7 @@
         inputs.nil.overlays.default
         inputs.prism-launcher.overlay
         # inputs.webcord.overlays.default
+        inputs.ragenix.overlays.default
       ];
     };
     pkgs-stable = import nixpkgs {

@@ -1,12 +1,12 @@
 {
+  self,
+  config,
   pkgs,
   lib,
+  modules,
   ...
 }: let
-  authUserPass = {
-    username = "";
-    password = "";
-  };
+  authUserPass = config.age.secrets."root.pia.age".path;
   updateResolvConf = true;
 
   src = pkgs.fetchzip {
@@ -33,5 +33,7 @@
     inherit name value;
   }) (builtins.readDir src.outPath)) ["_"];
 in {
-  services.openvpn.servers = configs;
+  imports = [modules.openvpn modules.age];
+  age.secrets."root.pia.age".file = "${self}/secrets/root.pia.age";
+  services.openvpn.alt.servers = configs;
 }
