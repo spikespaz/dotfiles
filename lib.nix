@@ -241,7 +241,6 @@
   evalIndices = {
     pass ? {},
     expr,
-    isRoot ? false,
   }: let
     # provide a default mkModuleIndex
     pass' = {inherit mkModuleIndex;} // pass;
@@ -257,9 +256,7 @@
         })
       expr
     # is a path literal or string, import and recurse
-    else if
-      builtins.isPath expr
-      && (isRoot || _isImportable expr)
+    else if builtins.isPath expr && _isImportable expr
     then
       evalIndices {
         pass = pass';
@@ -284,7 +281,8 @@
     ignore ? [],
     include ? {},
   }: pass:
-    lib.pipe (builtins.readDir path) [
+    lib.pipe path [
+      builtins.readDir
       # remove file names from ignore list
       (ls: removeAttrs ls ignore)
       # (traceValM "IGNORES REMOVED\n${path}")

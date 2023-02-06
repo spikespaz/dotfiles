@@ -66,8 +66,7 @@
 
     # get directory structure as nested attrsets of modules
     flake = flib.evalIndices {
-      expr = ./.;
-      isRoot = true;
+      expr = import ./.;
       pass = {inherit lib pkgs flake flib;};
     };
 
