@@ -83,7 +83,7 @@
         )))
     ];
 
-  mergeAttrs = attrList: (
+  deepMergeAttrs = attrList: (
     let
       recurse = attrPath:
         lib.zipAttrsWith (n: values: (
@@ -308,7 +308,7 @@
       (builtins.listToAttrs)
       # (traceValM "BACK TO ATTRS\n${path}")
       # merge any provided includes
-      (index: mergeAttrs [index include])
+      (index: deepMergeAttrs [index include])
       # (traceValM "MERGED INCLUDES\n${path}")
       # evaluate recursively
       (expr: evalIndices {inherit pass expr;})
@@ -333,7 +333,7 @@ in {
     joinNixosModules
     joinHomeModules
     mkUnfreeOverlay
-    mergeAttrs
+    deepMergeAttrs
     imply
     implyDefault
     indicesOf
