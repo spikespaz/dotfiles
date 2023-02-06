@@ -100,16 +100,7 @@
     overlays =
       flake.overlays
       // {
-        default = _: prev:
-          builtins.mapAttrs (_: p:
-            prev.callPackage p (let
-              pass = {
-                maintainers = import ./maintainers.nix;
-              };
-              fArgs = builtins.functionArgs p;
-            in
-              lib.filterAttrs (n: _: fArgs ? ${n}) pass))
-          flake.packages;
+        default = _: flake.packages;
         allowUnfree = _: prev:
           flib.mkUnfreeOverlay prev [
             "ttf-ms-win11"
@@ -117,7 +108,7 @@
       };
     packages = lib.genAttrs ["x86_64-linux"] (
       system:
-        self.overlays.default null nixpkgs.legacyPackages.${system}
+        flake.packages nixpkgs.legacyPackages.${system}
     );
 
     nixosModules = flake.modules;
