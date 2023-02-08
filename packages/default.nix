@@ -22,4 +22,11 @@ in {
   };
   plymouth-themes = pkgs.callPackage ./plymouth-themes.nix {};
   rofi-themes = pkgs.callPackage ./rofi-themes.nix {};
+
+  obs-studio-plugins =
+    pkgs.obs-studio-plugins
+    // {
+      advanced-scene-switcher = pkgs.qt6.callPackage ./obs-studio-plugins/advanced-scene-switcher.nix {};
+      advanced-scene-switcher-qt5 = pkgs.libsForQt5.callPackage ./obs-studio-plugins/advanced-scene-switcher.nix {};
+    };
 }
