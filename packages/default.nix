@@ -20,6 +20,8 @@ in {
   idlehack = pkgs.callPackage ./idlehack.nix {
     inherit maintainers;
   };
+  mcpelauncher = pkgs.qt6.callPackage ./mcpelauncher.nix {};
+  mcpelauncher-qt5 = pkgs.libsForQt5.callPackage ./mcpelauncher.nix {};
   plymouth-themes = pkgs.callPackage ./plymouth-themes.nix {};
   rofi-themes = pkgs.callPackage ./rofi-themes.nix {};
 
