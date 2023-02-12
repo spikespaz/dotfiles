@@ -27,6 +27,14 @@ in
     nativeBuildInputs = [pkg-config];
     buildInputs = [openssl.dev openssl];
 
+    # <https://github.com/filips123/PWAsForFirefox/blob/014b1a4c5b21e14789a007f85c56b6b0c4956613/native/src/directories.rs#L109>
+    FFPWA_STATIC_DIRS = 1;
+    # <https://github.com/filips123/PWAsForFirefox/blob/014b1a4c5b21e14789a007f85c56b6b0c4956613/native/src/directories.rs#L55>
+    FFPWA_EXECUTABLES = "${placeholder "out"}/libexec";
+    # <https://github.com/filips123/PWAsForFirefox/blob/014b1a4c5b21e14789a007f85c56b6b0c4956613/native/src/directories.rs#L77>
+    FFPWA_SYSDATA = "${placeholder "out"}/share/firefoxpwa";
+    # Leave FFPWA_USERDATA unset so that the default still applies at runtime.
+
     preConfigure = ''
       # replace the version number in the manifest
       sed -i 's;version = "0.0.0";version = "${version}";' Cargo.toml
