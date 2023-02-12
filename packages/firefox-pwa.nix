@@ -38,7 +38,7 @@
       # replace the version number in the manifest
       sed -i 's;version = "0.0.0";version = "${version}";' Cargo.toml
       # replace the version in the lockfile, otherwise Nix complains
-      sed -zi 's;name = "firefoxpwa"\nversion = "0.0.0";name = "firefoxpwa"\nversion = "2.1.2";' Cargo.lock
+      sed -zi 's;name = "firefoxpwa"\nversion = "0.0.0";name = "firefoxpwa"\nversion = "${version}";' Cargo.lock
       # replace the version number in the profile template files
       sed -i $'s;DISTRIBUTION_VERSION = \'0.0.0\';DISTRIBUTION_VERSION = \'${version}\';' userchrome/profile/chrome/pwa/chrome.jsm
     '';
