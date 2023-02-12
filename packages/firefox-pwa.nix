@@ -43,7 +43,7 @@ in
 
       # Executables
       install -Dm755 ${target}/firefoxpwa $out/bin/firefoxpwa
-      install -Dm755 ${target}/firefoxpwa-connector $out/lib/firefoxpwa/firefoxpwa-connector
+      install -Dm755 ${target}/firefoxpwa-connector $out/libexec/firefoxpwa-connector
 
       # Manifest
       install -Dm644 manifests/linux.json $out/lib/mozilla/native-messaging-hosts/firefoxpwa.json
