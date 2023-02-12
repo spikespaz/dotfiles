@@ -14,8 +14,7 @@
     rev = "v${version}";
     sha256 = "sha256-zJSrZOLHyvvu+HoHrPkDDISuY9GqpKtwGn/7jKzg5pI=";
   };
-in
-  rustPlatform.buildRustPackage {
+  self = rustPlatform.buildRustPackage {
     pname = "firefox-pwa";
     inherit version;
 
@@ -83,4 +82,10 @@ in
 
       runHook postFixup
     '';
-  }
+
+    passthru = {
+      nativeManifest = "${self}/lib/mozilla/native-messaging-hosts/firefoxpwa.json";
+    };
+  };
+in
+  self
