@@ -7,19 +7,28 @@
   pkg-config,
   maintainers,
 }: let
-  version = "2.1.2";
+  version = "2.4.1";
+
   source = fetchFromGitHub {
     owner = "filips123";
     repo = "PWAsForFirefox";
     rev = "v${version}";
-    sha256 = "sha256-zJSrZOLHyvvu+HoHrPkDDISuY9GqpKtwGn/7jKzg5pI=";
+    sha256 = "sha256-0XgZGOA8KdGZwot+eqKAmpYQCGmf6ghcKruBEo/BpZc=";
   };
+
   self = rustPlatform.buildRustPackage {
     pname = "firefox-pwa";
     inherit version;
 
     src = "${source}/native";
-    cargoSha256 = "sha256-zLl7WvGzN/ltc7hT5cAsp3ByrlThQmRXrGM5rKbntdY=";
+    cargoLock = {
+      lockFile = "${source}/native/Cargo.lock";
+      outputHashes = {
+        "data-url-0.1.0" = "sha256-rESQz5jjNpVfIuTaRCAV2TLeUs09lOaLZVACsb/3Adg=";
+        "web_app_manifest-0.0.0" = "sha256-CpND9SxPwFmXe6fINrvd/7+HHzESh/O4GMJzaKQIjc8=";
+        "mime-0.4.0-a.0" = "sha256-LjM7LH6rL3moCKxVsA+RUL9lfnvY31IrqHa9pDIAZNE=";
+      };
+    };
 
     doCheck = false;
 
