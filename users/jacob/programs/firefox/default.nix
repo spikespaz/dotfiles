@@ -78,7 +78,7 @@ in {
     bandithedoge.gitako
     # rycee.enhanced-github
     # rycee.refined-github
-    # rycee.lovely-forks
+    rycee.lovely-forks
     # rycee.octolinker
     # rycee.octotree
 
