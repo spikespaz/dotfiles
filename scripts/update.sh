@@ -103,7 +103,7 @@ if [ $use_overrides -eq 1 ]; then
 	args=()
 
 	for dir in "$flake_path"/inputs/*; do
-		args+=(--override-input "$(basename "$dir")" "$dir")
+		args+=(--override-input "$(basename "$dir")" "$(realpath "$dir")")
 	done
 
 	nix flake lock "${args[@]}"
