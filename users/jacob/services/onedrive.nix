@@ -12,7 +12,7 @@
     Unit = {
       Description = pkgs.onedrive.meta.description;
       Documentation = "https://github.com/abraunegg/onedrive";
-      After = ["network-online.target"];
+      After = ["multi-user.target"];
       Wants = ["network-online.target"];
     };
 
