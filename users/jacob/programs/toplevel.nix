@@ -170,7 +170,7 @@
   };
   zsh = {
     imports = [./zsh.nix];
-    programs.zsh-uncruft.enable = true;
+    programs.zsh.alt.enable = true;
   };
 
   #####################
