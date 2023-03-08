@@ -4,15 +4,16 @@
   lib,
   ...
 }: let
-  package = pkgs.swaylock-effects.overrideAttrs (old: rec {
-    version = "1.6.11";
-    src = pkgs.fetchFromGitHub {
-      owner = "jirutka";
-      repo = "swaylock-effects";
-      rev = "v${version}";
-      sha256 = "sha256-MKmWVYssO9HAcP5uqwpy9kDa6/kfZyV2NI7ibozt7Ug=";
-    };
-  });
+  # package = pkgs.swaylock-effects.overrideAttrs (old: rec {
+  #   version = "1.6.11";
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "jirutka";
+  #     repo = "swaylock-effects";
+  #     rev = "v${version}";
+  #     sha256 = "sha256-MKmWVYssO9HAcP5uqwpy9kDa6/kfZyV2NI7ibozt7Ug=";
+  #   };
+  # });
+  package = pkgs.swaylock-effects;
   withRandomImage = pkgs.writeShellScriptBin "swaylock" ''
     wallpapers='${config.home.sessionVariables.USER_WALLPAPERS_DIRECTORY}'
     if [ -n "$wallpapers" ]; then
