@@ -1,7 +1,7 @@
 {
   lib,
   tree,
-  stdenv,
+  clangStdenv,
   fetchurl,
   fetchFromGitHub,
   wrapQtAppsHook,
@@ -27,22 +27,19 @@
     find_package(nlohmann_json 3.7.3 REQUIRED)
   '';
 
-  # nlohmann_json' = nlohmann_json.overrideAttrs (_: rec {
-  #   version = "3.9.1";
-  #   src = fetchFromGitHub {
-  #     owner = "nlohmann";
-  #     repo = "json";
-  #     rev = "v${version}";
-  #     hash = "sha256-THordDPdH2qwk6lFTgeFmkl7iDuA/7YH71PTUe6vJCs=";
-  #   };
-
-  #   patches = [
-  #     (fetchurl {
-  #       url = "https://patch-diff.githubusercontent.com/raw/nlohmann/json/pull/2687.patch";
-  #       sha256 = "sha256-i8hd6Ja2pKZoxt3JusgTo5sC6nP+0GAkLlaAoyNoJ+c=";
-  #     })
-  #   ];
-  # });
+  nlohmann_json' =
+    (nlohmann_json.override {
+      stdenv = clangStdenv;
+    })
+    .overrideAttrs (_: rec {
+      version = "3.7.3";
+      src = fetchFromGitHub {
+        owner = "nlohmann";
+        repo = "json";
+        rev = "v${version}";
+        hash = "sha256-PNH+swMdjrh53Ioz2D8KuERKFpKM+iBf+eHo+HvwORM=";
+      };
+    });
 
   # msa = stdenv.mkDerivation rec {
   #   pname = "msa";
@@ -69,7 +66,7 @@
   #     # "DFETCHCONTENT_SOURCE_DIR_NLOHMANN_JSON_EXT=${nlohmann-json}"
   #   ];
   # };
-  mcpelauncher = stdenv.mkDerivation rec {
+  mcpelauncher = clangStdenv.mkDerivation rec {
     pname = "mcpelauncher";
     version = "0.8.0";
     src = fetchFromGitHub {
@@ -84,7 +81,7 @@
     '';
     nativeBuildInputs = [cmake pkg-config];
     buildInputs = [
-      nlohmann_json
+      nlohmann_json'
       curlMinimal
       zlib
       pngpp
@@ -99,7 +96,7 @@
     #   "DUSE_OWN_CURL=ON"
     # ];
   };
-  versiondb = stdenv.mkDerivation rec {
+  versiondb = clangStdenv.mkDerivation rec {
     pname = "mcpelauncher-versiondb";
     version = "083802b29ae645a139077fbd496187f64dbdbc1c";
     src = fetchFromGitHub {
@@ -109,13 +106,12 @@
       sha256 = "sha256-1eEiC2dScfOTaDloZZ/46kjlv/NPonzY6THL2eyoD6k=";
     };
     installPhase = ''
-      install -Dm644 versions.{x86,x86_64,armeabi-v7a,arm64-v8a}.json.min -t $out/share/versiondb
+      install -Dm644 \
+        versions.{x86,x86_64,armeabi-v7a,arm64-v8a}.json.min \
+        -t $out/share/versiondb
     '';
-    #   postUnpack = ''
-    #     cp ${jsonCMake} source/ext/json.cmake
-    #   '';
   };
-  mcpelauncher-ui = stdenv.mkDerivation rec {
+  mcpelauncher-ui = clangStdenv.mkDerivation rec {
     pname = "mcpelauncher-ui";
     version = "0.7.1";
     src = fetchFromGitHub {
