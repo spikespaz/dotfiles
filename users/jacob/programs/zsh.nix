@@ -5,7 +5,7 @@ args @ {
   pkgs,
   ...
 }: {
-  imports = [self.homeManagerModules.zsh-uncruft];
+  imports = [self.homeManagerModules.zsh];
 
   home.packages = [pkgs.most];
 
@@ -30,7 +30,7 @@ args @ {
     enableAliases = true;
   };
 
-  programs.zsh-uncruft = {
+  programs.zsh.alt = {
     znap.enable = true;
     # automatically update every two weeks
     znap.autoUpdate = true;

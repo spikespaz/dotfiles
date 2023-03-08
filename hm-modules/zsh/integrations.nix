@@ -3,10 +3,10 @@
   lib,
   ...
 }: let
-  cfg = config.programs.zsh-uncruft;
+  cfg = config.programs.zsh.alt;
 in {
   options = {
-    programs.zsh-uncruft = {
+    programs.zsh.alt = {
       enableIntegrations = lib.mkEnableOption ''
         Enable integrations from other Home Manager modules.
       '';
@@ -19,7 +19,7 @@ in {
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     (lib.mkIf cfg.enableIntegrations {
-      programs.zsh-uncruft.zshrc.postInit = ''
+      programs.zsh.alt.zshrc.postInit = ''
         ### HOME MANAGER EXTRA INITIALIZATION ###
 
         ${config.programs.zsh.initExtra}
@@ -29,7 +29,7 @@ in {
     })
 
     (lib.mkIf cfg.enableAliases {
-      programs.zsh-uncruft.zshrc.main =
+      programs.zsh.alt.zshrc.main =
         lib.mkAfter
         (lib.concatStringsSep "\n" (builtins.concatLists [
           (lib.singleton "### HOME MANAGER ALIASES ###\n")

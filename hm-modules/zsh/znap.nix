@@ -7,12 +7,12 @@
     A lightweight plugin manager for ZSH.
     <https://github.com/marlonrichert/zsh-snap>
   '';
-  cfg = config.programs.zsh-uncruft;
+  cfg = config.programs.zsh.alt;
   znap = cfg.znap;
   inherit (lib) types;
 in {
   options = {
-    programs.zsh-uncruft.znap = {
+    programs.zsh.alt.znap = {
       enable = lib.mkEnableOption description;
 
       pluginsDir = lib.mkOption {
@@ -78,7 +78,7 @@ in {
       gitUrl = "https://github.com/marlonrichert/zsh-snap";
       scriptPath = "${znap.pluginsDir}/zsh-snap/znap.zsh";
     in {
-      programs.zsh-uncruft.zshrc.init = lib.mkBefore ''
+      programs.zsh.alt.zshrc.init = lib.mkBefore ''
         ### DOWNLOAD AND SOURCE ZNAP ###
 
         [[ ! -d '${znap.pluginsDir}' ]] &&
@@ -96,7 +96,7 @@ in {
     (lib.mkIf znap.autoUpdate (let
       lastUpdateFile = "${znap.pluginsDir}/.last_update";
     in {
-      programs.zsh-uncruft.zshrc.init = lib.mkAfter ''
+      programs.zsh.alt.zshrc.init = lib.mkAfter ''
         ### AUTOMATIC UPDATE ZNAP PLUGINS ###
 
         [[ ! -f '${lastUpdateFile}' ]] &&

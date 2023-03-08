@@ -7,7 +7,7 @@
   description = ''
     An alternative to the Home Manager ZSH module.
   '';
-  cfg = config.programs.zsh-uncruft;
+  cfg = config.programs.zsh.alt;
   inherit (lib) types;
 in {
   imports = [
@@ -16,7 +16,7 @@ in {
   ];
 
   options = {
-    programs.zsh-uncruft = {
+    programs.zsh.alt = {
       enable = lib.mkEnableOption description;
 
       zdotdir = lib.mkOption {
@@ -227,7 +227,7 @@ in {
     })
 
     {
-      programs.zsh-uncruft.zshrc.preInit = lib.mkBefore ''
+      programs.zsh.alt.zshrc.preInit = lib.mkBefore ''
         ### DEFAULT INITIALIZATION ###
 
         typeset -U path cdpath fpath manpath
