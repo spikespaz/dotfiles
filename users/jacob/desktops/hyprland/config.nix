@@ -152,9 +152,9 @@
       disable_autoreload = true; # false # nix takes care of that
       enable_swallow = true; # false
       swallow_regex = [
-        "Alacritty"
-        "org\\.kde\\.dolphin"
-        "Steam"
+        # "Alacritty"
+        # "org\\.kde\\.dolphin"
+        # "Steam"
       ]; # [EMPTY]
     };
 
