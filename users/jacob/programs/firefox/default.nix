@@ -54,6 +54,7 @@ in {
   programs.firefox.extensions = let
     rycee = pkgs.nur.repos.rycee.firefox-addons;
     bandithedoge = pkgs.nur.repos.bandithedoge.firefoxAddons;
+    slaier = pkgs.nur.repos.slaier.firefox-addons;
   in [
     ### BASICS ###
     rycee.darkreader
@@ -99,5 +100,6 @@ in {
     # rycee.markdownload
     # rycee.flagfox
     rycee.keepassxc-browser
+    slaier.dictionary-anyvhere
   ];
 }
