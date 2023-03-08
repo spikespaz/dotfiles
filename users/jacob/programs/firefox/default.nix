@@ -58,7 +58,7 @@ in {
   in [
     ### BASICS ###
     rycee.darkreader
-    rycee.tree-style-tab
+    # rycee.tree-style-tab
     rycee.translate-web-pages
 
     ### PERFORMANCE ###
