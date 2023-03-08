@@ -29,7 +29,8 @@ _: prev: {
     version = "${product.productVersion}u${product.patchVersion}";
     tarballName = "jdk-${version}-${platformName}.tar.gz";
     src = prev.fetchzip {
-      url = "https://nadwey.eu.org/java/${product.productVersion}/jdk-${version}/${tarballName}";
+      url = "https://cfdownload.adobe.com/pub/adobe/coldfusion/java/java${product.productVersion}/java${version}/jdk/${tarballName}";
+      # url = "https://nadwey.eu.org/java/${product.productVersion}/jdk-${version}/${tarballName}";
       sha256 = product.sha256.${prev.system};
     };
     package = import "${prev.path}/pkgs/development/compilers/oraclejdk/jdk-linux-base.nix" product;
