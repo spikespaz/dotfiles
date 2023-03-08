@@ -39,5 +39,6 @@ in {
     };
 
   kvantum-qt6 = pkgs.callPackage ./kvantum-qt6.nix {};
+  proton-ge-custom = pkgs.callPackage ./proton-ge-custom.nix {};
   qt6ct = pkgs.qt6.callPackage ./qt6ct.nix {};
 }
