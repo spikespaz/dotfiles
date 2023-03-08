@@ -171,5 +171,8 @@ in {
 
     ### DEVICE MANAGEMENT ###
     services.udiskie
+
+    ### SECRET MANAGEMENT ###
+    services.keepassxc
   ];
 }

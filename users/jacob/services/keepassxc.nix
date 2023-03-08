@@ -6,10 +6,6 @@
   lib,
   ...
 }: {
-  programs.firefox.extensions = [
-    pkgs.nur.repos.rycee.firefox-addons.keepassxc-browser
-  ];
-
   # This is for keepassxc-browser integration.
   # Needs the respective options changed in the GUI,
   # TODO set those options declaratively.
