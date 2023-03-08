@@ -31,4 +31,7 @@ in {
       advanced-scene-switcher = pkgs.qt6.callPackage ./obs-studio-plugins/advanced-scene-switcher.nix {};
       advanced-scene-switcher-qt5 = pkgs.libsForQt5.callPackage ./obs-studio-plugins/advanced-scene-switcher.nix {};
     };
+
+  kvantum-qt6 = pkgs.callPackage ./kvantum-qt6.nix {};
+  qt6ct = pkgs.qt6.callPackage ./qt6ct.nix {};
 }
