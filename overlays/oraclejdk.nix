@@ -32,7 +32,7 @@ final: prev: {
     version = "${product.productVersion}u${product.patchVersion}";
     tarballName = "jdk-${version}-${platformName}.tar.gz";
     src = final.fetchzip {
-      url = final.lib.traceVal "https://cfdownload.adobe.com/pub/adobe/coldfusion/java/java${product.productVersion}/java${version}/jdk/${tarballName}";
+      url = "https://cfdownload.adobe.com/pub/adobe/coldfusion/java/java${product.productVersion}/java${version}/jdk/${tarballName}";
       # url = "https://nadwey.eu.org/java/${product.productVersion}/jdk-${version}/${tarballName}";
       sha256 = product.sha256.${final.system};
     };
