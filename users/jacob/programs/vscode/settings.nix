@@ -11,7 +11,7 @@
       material-design-icons
     ];
   in (pkgs.symlinkJoin {
-    inherit (editorPackage) name pname;
+    inherit (editorPackage) name pname version;
     paths = [editorPackage] ++ fontPackages;
   });
 
