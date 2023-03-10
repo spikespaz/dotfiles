@@ -6,7 +6,7 @@
   inherit (pkgs.nur.repos.rycee) firefox-addons;
 in {
   # this nix configuration requires two extensions
-  programs.firefox.extensions = with firefox-addons; [
+  programs.firefox.profiles."jacob.default".extensions = with firefox-addons; [
     localcdn
     ublock-origin
   ];
