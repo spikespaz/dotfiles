@@ -22,7 +22,10 @@ _: prev: {
     product = {
       productVersion = "8";
       patchVersion = "361";
-      sha256.x86_64-linux = "sha256-YeP0CZqZp3pweFOAizps+ofSuCsZt8dtzGxdPu37O50=";
+      # for <cfdownload.adobe.com>
+      sha256.x86_64-linux = "sha256-JYWpJLuNLDFdj+RL+lNPYV94knlliWPTD/4Un9dB2W4=";
+      # for <nadwey.eu.org>
+      # sha256.x86_64-linux = "sha256-YeP0CZqZp3pweFOAizps+ofSuCsZt8dtzGxdPu37O50=";
       jceName = null;
       sha256JCE = null;
     };
