@@ -83,8 +83,8 @@ in {
     "($git_metrics${sep.right})"
     "($git_status${sep.right})"
     "$fill"
-    "(${sep.left}$battery)"
-    "(${sep.left}$memory_usage)"
+    # "(${sep.left}$battery)"
+    # "(${sep.left}$memory_usage)"
     "$line_break"
     "($status)"
     "$character"
@@ -152,83 +152,83 @@ in {
     style = "${colors.bg3}";
   };
 
-  battery = {
-    format = " [$symbol $percentage](bold $style)";
-    full_symbol = "";
-    # charging_symbol
-    # discharging_symbol
-    unknown_symbol = "";
-    empty_symbol = "";
-    display = [
-      {
-        threshold = 10;
-        style = "${colors.red}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 20;
-        style = "${colors.red}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 30;
-        style = "${colors.orange}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 40;
-        style = "${colors.orange}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 50;
-        style = "${colors.yellow}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 60;
-        style = "${colors.yellow}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 70;
-        style = "${colors.yellow}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 80;
-        style = "${colors.green}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 90;
-        style = "${colors.green}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-      {
-        threshold = 100;
-        style = "${colors.green}";
-        charging_symbol = "";
-        discharging_symbol = "";
-      }
-    ];
-  };
-
-  memory_usage = {
-    disabled = false;
-    threshold = 0;
-    format = " [ $ram_pct]($style)";
-    style = "bold ${colors.fg2}";
-  };
+  # battery = {
+  #   format = " [$symbol $percentage](bold $style)";
+  #   full_symbol = "";
+  #   # charging_symbol
+  #   # discharging_symbol
+  #   unknown_symbol = "";
+  #   empty_symbol = "";
+  #   display = [
+  #     {
+  #       threshold = 10;
+  #       style = "${colors.red}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 20;
+  #       style = "${colors.red}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 30;
+  #       style = "${colors.orange}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 40;
+  #       style = "${colors.orange}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 50;
+  #       style = "${colors.yellow}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 60;
+  #       style = "${colors.yellow}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 70;
+  #       style = "${colors.yellow}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 80;
+  #       style = "${colors.green}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 90;
+  #       style = "${colors.green}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #     {
+  #       threshold = 100;
+  #       style = "${colors.green}";
+  #       charging_symbol = "";
+  #       discharging_symbol = "";
+  #     }
+  #   ];
+  # };
+  #
+  # memory_usage = {
+  #   disabled = false;
+  #   threshold = 0;
+  #   format = " [ $ram_pct]($style)";
+  #   style = "bold ${colors.fg2}";
+  # };
 
   cmd_duration = {
     show_notifications = false;

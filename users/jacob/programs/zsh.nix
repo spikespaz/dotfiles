@@ -44,7 +44,7 @@ args @ {
       if ! tty | grep '/dev/tty[0-9]\?'; then
         znap eval starship '${lib.getExe pkgs.starship} init zsh --print-full-init'
         # <https://github.com/starship/starship/issues/4358>
-        PROMPT="''${PROMPT//\$COLUMNS/\$((COLUMNS+2))}"
+        # PROMPT="''${PROMPT//\$COLUMNS/\$((COLUMNS+2))}"
         ZLE_RPROMPT_INDENT=0
         znap prompt
       fi
@@ -102,6 +102,7 @@ args @ {
       ### SYNTAX HIGHLIGHTING ###
 
       znap source zdharma-continuum/fast-syntax-highlighting
+      # znap source z-shell/F-Sy-H
 
       PAGER='${lib.getExe pkgs.most}'
 
