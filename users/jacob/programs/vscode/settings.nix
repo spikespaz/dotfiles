@@ -68,7 +68,7 @@
     # the most important setting
     "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Material Design Icons'";
     "editor.fontSize" = 14;
-    "editor.cursorSmoothCaretAnimation" = true;
+    "editor.cursorSmoothCaretAnimation" = "explicit";
     "editor.cursorStyle" = "block";
 
     # colors
