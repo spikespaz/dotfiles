@@ -1,4 +1,4 @@
-_: prev: {
+final: prev: {
   # Oracle, fuck you. 🖕
   #
   # <https://nadwey.eu.org/java/8/>
@@ -31,25 +31,25 @@ _: prev: {
     };
     version = "${product.productVersion}u${product.patchVersion}";
     tarballName = "jdk-${version}-${platformName}.tar.gz";
-    src = prev.fetchzip {
-      url = "https://cfdownload.adobe.com/pub/adobe/coldfusion/java/java${product.productVersion}/java${version}/jdk/${tarballName}";
+    src = final.fetchzip {
+      url = final.lib.traceVal "https://cfdownload.adobe.com/pub/adobe/coldfusion/java/java${product.productVersion}/java${version}/jdk/${tarballName}";
       # url = "https://nadwey.eu.org/java/${product.productVersion}/jdk-${version}/${tarballName}";
-      sha256 = product.sha256.${prev.system};
+      sha256 = product.sha256.${final.system};
     };
-    package = import "${prev.path}/pkgs/development/compilers/oraclejdk/jdk-linux-base.nix" product;
-    platformName = builtins.getAttr prev.system {
+    package = import "${final.path}/pkgs/development/compilers/oraclejdk/jdk-linux-base.nix" product;
+    platformName = builtins.getAttr final.system {
       i686-linux = "linux-i586";
       x86_64-linux = "linux-x64";
       armv7l-linux = "linux-arm32-vfp-hflt";
       aarch64-linux = "linux-aarch64";
     };
   in
-    prev.callPackage package {
+    final.callPackage package {
       installjdk = true;
       pluginSupport = false;
       requireFile = args @ {name, ...}:
         if name == tarballName
         then src
-        else prev.requireFile args;
+        else final.requireFile args;
     };
 }
