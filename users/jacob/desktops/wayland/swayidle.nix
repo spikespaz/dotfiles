@@ -82,26 +82,39 @@
         '';
       };
 
-      screenOff = {
+      screenOffBat = {
         timeout = 5 * 60;
         script = ''
           set -eu
           if ! ${batStatus ["Charging" "Not charging"]}; then
             ${hyprctl} dispatch dpms off
-            touch /tmp/.timeout_screen_off
+            touch /tmp/.timeout_screen_off_bat
+          fi
+        '';
+        resumeScript = ''
+          set -eu
+          if [ -f /tmp/.timeout_screen_off_bat ]; then
+            ${hyprctl} dispatch dpms on
+            rm /tmp/.timeout_screen_off_bat
+          fi
+        '';
+      };
+
+      screenOffAC = {
+        timeout = 60 * 60;
+        script = ''
+          set -eu
+          if ${batStatus ["Charging" "Not charging"]}; then
+            ${hyprctl} dispatch dpms off
+            touch /tmp/.timeout_screen_off_ac
           fi
         '';
         resumeScript = ''
           set -eu
           if [ -f /tmp/.timeout_screen_off ]; then
             ${hyprctl} dispatch dpms on
-            rm /tmp/.timeout_screen_off
+            rm /tmp/.timeout_screen_off_ac
           fi
-        '';
-      };
-        '';
-        resumeScript = ''
-          ${hyprctl} dispatch dpms on
         '';
       };
     };
