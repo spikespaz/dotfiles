@@ -19,9 +19,17 @@
   # it reacts to events (such as timeouts) and runs commands
   # <https://github.com/swaywm/swayidle/blob/master/swayidle.1.scd>
   services.swayidle.alt = let
-    slight = "${lib.getExe pkgs.slight}";
+    grep = lib.getExe pkgs.gnugrep;
+    slight = lib.getExe pkgs.slight;
     hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-    swaylock = "${lib.getExe config.programs.swaylock.package}";
+    swaylock = lib.getExe config.programs.swaylock.package;
+
+    # macro to check if sfsTsBat state matches any states
+    # <https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power>
+    sysFsBat = "/sys/class/power_supply/BAT0";
+    batStatus = states: "${grep} -q -x -F ${
+      lib.concatMapStrings (s: " -e '${s}'") states
+    } ${sysFsBat}/status";
   in {
     enable = true;
     systemdTarget = "hyprland-session.target";
@@ -66,16 +74,31 @@
           rm -f /tmp/.slight_saved_brightness{,.pid}
         '';
       };
+
       autoLock = {
         timeout = 2 * 60;
         script = ''
           ${swaylock} -f --grace 30
         '';
       };
+
       screenOff = {
         timeout = 5 * 60;
         script = ''
-          ${hyprctl} dispatch dpms off
+          set -eu
+          if ! ${batStatus ["Charging" "Not charging"]}; then
+            ${hyprctl} dispatch dpms off
+            touch /tmp/.timeout_screen_off
+          fi
+        '';
+        resumeScript = ''
+          set -eu
+          if [ -f /tmp/.timeout_screen_off ]; then
+            ${hyprctl} dispatch dpms on
+            rm /tmp/.timeout_screen_off
+          fi
+        '';
+      };
         '';
         resumeScript = ''
           ${hyprctl} dispatch dpms on
