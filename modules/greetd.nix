@@ -18,7 +18,7 @@
         example = lib.literalExpression ''TODO'';
       };
       comment = lib.mkOption {
-        type = types.string;
+        type = types.singleLineStr;
         # default = "";
         description = lib.mdDoc ''
           The description to be used in the Desktop Entry.
