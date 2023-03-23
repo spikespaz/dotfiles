@@ -116,6 +116,7 @@ in {
     programs.vscode.languages.rust
     programs.vscode.languages.web
     programs.vscode.languages.yuck
+    programs.vscode.other.marp
     # TODO broken idk why
     # programs.vscode.languages.all
     programs.jetbrains.clion
