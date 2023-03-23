@@ -111,7 +111,7 @@
         '';
         resumeScript = ''
           set -eu
-          if [ -f /tmp/.timeout_screen_off ]; then
+          if [ -f /tmp/.timeout_screen_off_ac ]; then
             ${hyprctl} dispatch dpms on
             rm /tmp/.timeout_screen_off_ac
           fi
