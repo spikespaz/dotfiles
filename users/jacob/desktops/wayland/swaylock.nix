@@ -14,23 +14,24 @@
   #   };
   # });
   package = pkgs.swaylock-effects;
-  withRandomImage = pkgs.writeShellScriptBin "swaylock" ''
-    wallpapers='${config.home.sessionVariables.USER_WALLPAPERS_DIRECTORY}'
-    if [ -n "$wallpapers" ]; then
-      image="$(
-        find "$wallpapers" \
-          -type f \
-          -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' \
-          | shuf -n1
-      )"
-      ${lib.getExe package} -i "$image" $@
-    else
-      ${lib.getExe package} $@
-    fi
-  '';
+  # withRandomImage = pkgs.writeShellScriptBin "swaylock" ''
+  #   wallpapers='${config.home.sessionVariables.USER_WALLPAPERS_DIRECTORY}'
+  #   if [ -n "$wallpapers" ]; then
+  #     image="$(
+  #       find "$wallpapers" \
+  #         -type f \
+  #         -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' \
+  #         | shuf -n1
+  #     )"
+  #     ${lib.getExe package} -i "$image" $@
+  #   else
+  #     ${lib.getExe package} $@
+  #   fi
+  # '';
 in {
   programs.swaylock.enable = true;
-  programs.swaylock.package = withRandomImage;
+  # programs.swaylock.package = withRandomImage;
+  programs.swaylock.package = package;
 
   programs.swaylock.settings = let
     ### Indicator Colors ###
