@@ -230,5 +230,14 @@
     }
 
     ### END ###
+
+    ### FOCUS THE TERMINAL ###
+
+    {
+      key = "shift+`";
+      command = "workbench.action.terminal.focus";
+    }
+
+    ### END ###
   ];
 }
