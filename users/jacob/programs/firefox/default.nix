@@ -20,7 +20,6 @@
       "layout.css.has-selector.enabled" = true;
       "tabMinWidth" = 130;
     };
-    userChrome = builtins.readFile ./userChrome.css;
   };
 
   extensions = {
@@ -33,6 +32,7 @@ in {
 
   imports = [
     ./hosts.nix
+    ./appearance.nix
     self.homeManagerModules.firefox-pwa
   ];
 
