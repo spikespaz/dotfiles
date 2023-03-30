@@ -13,5 +13,8 @@
   };
 in {
   home.file.".mozilla/firefox/${profile}/chrome".source = "${styles}/current";
-  programs.firefox.profiles.${profile}.userChrome = builtins.readFile ./userChrome.css;
+  programs.firefox.profiles.${profile} = {
+    userChrome = builtins.readFile ./userChrome.css;
+    userContent = builtins.readFile ./userContent.css;
+  };
 }
