@@ -1,0 +1,9 @@
+    /* Hide sidebar header, when using Tree Style Tab */
+
+    #sidebar-box[sidebarcommand^="treestyletab"] #sidebar-header {
+        visibility: collapse;
+    }
+
+    :root:has(#sidebar-box[checked="true"]) #TabsToolbar {
+        visibility: collapse;
+    }

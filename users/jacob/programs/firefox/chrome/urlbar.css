@@ -1,0 +1,18 @@
+/* Hide the little search engine icons */
+
+.search-one-offs {
+    display: none !important;
+}
+
+/* Fix the size of the URL bar so that it doesn't change when suggestions are shown */
+
+#urlbar[breakout][breakout-extend] {
+    top: calc((var(--urlbar-toolbar-height) - var(--urlbar-height)) / 2) !important;
+    left: 0 !important;
+    width: 100% !important;
+}
+
+#urlbar[breakout][breakout-extend]>#urlbar-input-container {
+    height: var(--urlbar-height) !important;
+    padding: var(--urlbar-container-padding) !important;
+}

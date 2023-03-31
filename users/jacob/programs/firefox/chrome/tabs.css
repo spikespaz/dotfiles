@@ -1,0 +1,38 @@
+/* Hide main tabs toolbar */
+
+/* #TabsToolbar {
+    visibility: collapse;
+} */
+:root {
+    --tab-block-margin: 0 !important;
+    --tab-toolbar-navbar-overlap: 0px !important;
+    --tab-min-height: 26px !important;
+}
+
+/* #TabsToolbar {
+    height: var(--tab-min-height) !important;
+} */
+
+#tabbrowser-tabs .tab-label-container {
+    height: var(--tab-min-height) !important;
+}
+
+/* I don't know if this is the right element */
+#TabsToolbar-customization-target {
+    background: -moz-dialog !important;
+}
+
+.tabbrowser-tab {
+    padding: 0 !important;
+    border-right: 1px -moz-dialog solid !important;
+}
+
+.tab-background {
+    border-radius: 0 !important;
+    background-color: var(--toolbar-bgcolor) !important;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.0375), rgba(255, 255, 255, .0375)) !important;
+}
+
+.tab-background:is([selected], [multiselected]) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, .075)) !important;
+}

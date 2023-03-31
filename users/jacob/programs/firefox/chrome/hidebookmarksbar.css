@@ -1,0 +1,12 @@
+    /* EXPAND AND CONTRACT BOOKMARKS BAR WHEN HOVERING NAV */
+
+    #PersonalToolbar {
+        transition: max-height 500ms ease-in-out 250ms;
+        min-height: 0 !important;
+        max-height: 0 !important;
+    }
+
+    #navigator-toolbox:hover>#PersonalToolbar {
+        transition: max-height 500ms ease-in-out 250ms;
+        max-height: 1000px !important;
+    }
