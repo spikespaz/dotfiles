@@ -32,7 +32,7 @@ in {
 
   imports = [
     ./hosts.nix
-    ./appearance.nix
+    ./chrome
     self.homeManagerModules.firefox-pwa
   ];
 
