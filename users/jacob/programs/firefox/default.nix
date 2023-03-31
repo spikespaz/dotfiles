@@ -4,23 +4,14 @@
   pkgs,
   ...
 }: let
+  profile = "jacob.default";
+  profileName = "jacob-default";
+
   # things to do for every user
   prefab = {
     settings = {
       "trailhead.firstrun.didSeeAboutWelcome" = true;
     };
-  };
-
-  # set up for userChrome.css
-  appearance = {
-    settings = {
-      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      "browser.uidensity" = 1;
-      "ui.prefersReducedMotion" = 1;
-      "layout.css.has-selector.enabled" = true;
-      "tabMinWidth" = 130;
-    };
-    userChrome = builtins.readFile ./userChrome.css;
   };
 
   extensions = {
@@ -33,18 +24,18 @@ in {
 
   imports = [
     ./hosts.nix
+    (import ./chrome profile)
     self.homeManagerModules.firefox-pwa
   ];
 
   programs.firefox.pwa.enable = true;
 
-  programs.firefox.profiles."jacob.default" = lib.mkMerge [
+  programs.firefox.profiles.${profile} = lib.mkMerge [
     prefab
-    appearance
     {
       id = 0;
       isDefault = true;
-      name = "jacob-default";
+      name = profileName;
 
       settings = {
         "devtools.chrome.enabled" = true;
