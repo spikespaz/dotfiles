@@ -7,7 +7,12 @@
     "tabMinWidth" = 130;
   };
 
-  sources = [
-    ./.
+  sources = {
+    "./" = ./.;
+  };
+
+  blacklistGlobs = [
+    "default.nix"
+    "chrome.nix"
   ];
 }
