@@ -543,10 +543,12 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1680920736,
-        "narHash": "sha256-A+OyoDKU1nf2LVyxg//xd6YnQacAFAOzHcgw4zAup9I=",
-        "type": "git",
-        "url": "file:///home/jacob/Documents/dotfiles/inputs/hyprland"
+        "lastModified": 1681948002,
+        "narHash": "sha256-rVBkoL5zSXqB+Uc4156gCP9VoxokZ8g1OC3YOhcpUWY=",
+        "owner": "hyprwm",
+        "repo": "hyprland",
+        "rev": "b15803510c67b7b89090c99f03781d9052c959f5",
+        "type": "github"
       },
       "original": {
         "owner": "hyprwm",

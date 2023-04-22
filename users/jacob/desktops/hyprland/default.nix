@@ -10,6 +10,7 @@
     hmModules.hyprland
     self.homeManagerModules.hyprland-events
     self.homeManagerModules.desktop-portals
+    self.homeManagerModules.hyprland-dyn-conf
     ./config.nix
     ./events.nix
     ./windowrules.nix
@@ -29,6 +30,7 @@
     enable = true;
     systemdIntegration = true;
     recommendedEnvironment = true;
+    reloadConfig = false;
 
     xwayland.enable = true;
     xwayland.hidpi = false;

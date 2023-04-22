@@ -12,7 +12,8 @@
   ##
   ##  Options that are commented out are (probably) their default value.
   ##
-  wayland.windowManager.hyprland.config = {
+  wayland.windowManager.hyprland.alt.enableConfig = true;
+  wayland.windowManager.hyprland.alt.config = {
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     general = {
       # sensitivity = 1.0;
@@ -51,49 +52,49 @@
       # dim_strength = 0.5;
     };
 
-    # <https://wiki.hyprland.org/Configuring/Animations/#curves>
-    animations = {
-      enable = true;
-      animation = {
-        # window creation
-        windowsIn = {
-          enable = true;
-          duration = 200;
-          curve = "easeOutCirc";
-          style = "popin 60%";
-        };
-        fadeIn = {
-          enable = true;
-          duration = 100;
-          curve = "easeOutCirc";
-        };
-        # window destruction
-        windowsOut = {
-          enable = true;
-          duration = 200;
-          curve = "easeOutCirc";
-          style = "popin 60%";
-        };
-        fadeOut = {
-          enable = true;
-          duration = 100;
-          curve = "easeOutCirc";
-        };
-        # window movement
-        windowsMove = {
-          enable = true;
-          duration = 300;
-          curve = "easeInOutCubic";
-          style = "popin";
-        };
-        workspaces = {
-          enable = true;
-          duration = 200;
-          curve = "easeOutCirc";
-          style = "slide";
-        };
-      };
-    };
+    # # <https://wiki.hyprland.org/Configuring/Animations/#curves>
+    # animations = {
+    #   enable = true;
+    #   animation = {
+    #     # window creation
+    #     windowsIn = {
+    #       enable = true;
+    #       duration = 200;
+    #       curve = "easeOutCirc";
+    #       style = "popin 60%";
+    #     };
+    #     fadeIn = {
+    #       enable = true;
+    #       duration = 100;
+    #       curve = "easeOutCirc";
+    #     };
+    #     # window destruction
+    #     windowsOut = {
+    #       enable = true;
+    #       duration = 200;
+    #       curve = "easeOutCirc";
+    #       style = "popin 60%";
+    #     };
+    #     fadeOut = {
+    #       enable = true;
+    #       duration = 100;
+    #       curve = "easeOutCirc";
+    #     };
+    #     # window movement
+    #     windowsMove = {
+    #       enable = true;
+    #       duration = 300;
+    #       curve = "easeInOutCubic";
+    #       style = "popin";
+    #     };
+    #     workspaces = {
+    #       enable = true;
+    #       duration = 200;
+    #       curve = "easeOutCirc";
+    #       style = "slide";
+    #     };
+    #   };
+    # };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#input>
     input = {
@@ -126,18 +127,18 @@
       };
     };
 
-    gestures = {
-      workspace_swipe = {
-        enable = true;
-        # fingers = 3;
-        # distance = 300;
-        invert = false;
-        min_speed_to_force = 20;
-        cancel_ratio = 0.65;
-        create_new = false;
-        # forever = false;
-      };
-    };
+    # gestures = {
+    #   workspace_swipe = {
+    #     enable = true;
+    #     # fingers = 3;
+    #     # distance = 300;
+    #     invert = false;
+    #     min_speed_to_force = 20;
+    #     cancel_ratio = 0.65;
+    #     create_new = false;
+    #     # forever = false;
+    #   };
+    # };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#misc>
     misc = {
