@@ -30,7 +30,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     enableConfig = true;
-    # reloadConfig = false;
+    reloadConfig = true;
     systemdIntegration = true;
     recommendedEnvironment = true;
 
