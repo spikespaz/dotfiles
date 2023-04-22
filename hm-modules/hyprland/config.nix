@@ -7,7 +7,9 @@ args @ {
   inherit (lib) types;
   cfg = config.wayland.windowManager.hyprland // config.wayland.windowManager.hyprland.alt;
   cfgPath = "config.wayland.windowManager.hyprland.alt";
-  configFormat = (import ./configFormat.nix args) {};
+  configFormat = (import ./configFormat.nix args) {
+    renames = import ./renames.nix;
+  };
 in {
   options = {
     wayland.windowManager.hyprland.alt = {
