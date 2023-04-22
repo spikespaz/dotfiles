@@ -150,7 +150,25 @@
 
   java = {
     programs.java.enable = true;
-    programs.java.package = pkgs.temurin-bin;
+    programs.java.package = pkgs.temurin-bin-16;
+
+    # IntelliJ likes to see a `~/.jdks` directory,
+    # so we will use that convention for now.
+    home.file = lib.traceValSeqN 3 (builtins.listToAttrs (map (package: {
+        name = ".jdks/${package.name}";
+        value = {source = "${package.home}";};
+      }) [
+        pkgs.jdk8
+        pkgs.jdk11
+        pkgs.jdk17
+        pkgs.jdk # latest
+        pkgs.temurin-bin-8
+        pkgs.temurin-bin-11
+        pkgs.temurin-bin-16
+        pkgs.temurin-bin-17
+        pkgs.temurin-bin-18
+        pkgs.temurin-bin # latest
+      ]));
   };
 
   rustup = {
