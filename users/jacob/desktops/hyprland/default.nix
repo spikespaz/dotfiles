@@ -14,6 +14,7 @@
     ./config.nix
     ./events.nix
     ./windowrules.nix
+    ./keybinds.nix
     ./waybar.nix
     # ./eww
   ];
@@ -28,9 +29,10 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    enableConfig = true;
+    # reloadConfig = false;
     systemdIntegration = true;
     recommendedEnvironment = true;
-    # reloadConfig = false;
 
     xwayland.enable = true;
     xwayland.hidpi = false;
@@ -41,45 +43,6 @@
       # allow apps with risen perms after agent to connect to local xwayland
       "${lib.getExe pkgs.xorg.xhost} +local:"
     ];
-
-    # # prepend the config with more exec lines,
-    # # for starting swayidle
-    # extraConfig = (
-    #   builtins.replaceStrings [
-    #     "%PIN_WINDOW_SCRIPT%"
-    #     "%FUNCTIONS%"
-    #     "%SLIGHT%"
-    #     "%DISABLE_INPUT_DEVICES%"
-    #   ] [
-    #     # PIN_WINDOW_SCRIPT
-    #     "${pkgs.writeShellScript "pin-window" (let
-    #       hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-    #     in ''
-    #       if ${hyprctl} activewindow | grep 'floating: 0'; then
-    #       	${hyprctl} dispatch togglefloating active;
-    #       fi
-
-    #       ${hyprctl} dispatch pin active
-    #     '')}"
-    #     # FUNCTIONS
-    #     (lib.getExe config.utilities.osd-functions.package)
-    #     # LIGHT
-    #     (lib.getExe pkgs.slight)
-    #     # DISABLE_INPUT_DEVICES
-    #     # TODO probably should make this a package again, with overrides
-    #     # like the above. Or make it a module that provides an overridden
-    #     # package as a read-only option.
-    #     "disable-input-devices-notify"
-    #   ]
-    #   (lib.concatStringsSep "\n\n" [
-    #     ''
-    #       blurls = rofi
-    #       blurls = notifications
-    #     ''
-    #     # hyprland config, split up
-    #     (builtins.readFile ./keybinds.conf)
-    #   ])
-    # );
   };
 
   xdg.desktopPortals = {
