@@ -75,4 +75,12 @@
     prefer = ["gestures" "workspace_swipe" "numbered"];
     original = ["gestures" "workspace_swipe_numbered"];
   }
+  {
+    prefer = ["misc" "variable_framerate"];
+    original = ["misc" "vfr"];
+  }
+  {
+    prefer = ["misc" "variable_refresh"];
+    original = ["misc" "vrr"];
+  }
 ]
