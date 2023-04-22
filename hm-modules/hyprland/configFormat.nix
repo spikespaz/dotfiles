@@ -17,21 +17,33 @@
   # Takes an attrset and writes out a Hyprland config.
   configToString = let
     recurse = level: attrs: let
-      lines = lib.filterAttrs (_: v: !(lib.isAttrs v)) attrs;
+      variables = lib.filterAttrs (_: v: !(lib.isAttrs v || lib.isList v)) attrs;
+      repeats = lib.filterAttrs (_: lib.isList) attrs;
       sections = lib.filterAttrs (_: lib.isAttrs) attrs;
     in
-      lib.concatStrings (
-        # Top level config attributes
+      lib.concatStrings (lib.flatten [
+        # Variables
         (lib.mapAttrsToList (
             name: value: "\n${indentChars' level}${name} = ${valueToString value}"
           )
-          lines)
-        # Then the sections
-        ++ (lib.mapAttrsToList (
-            name: value: "\n${indentChars' level}${name} {${recurse (level + 1) value}\n${indentChars' level}}"
+          variables)
+        "\n"
+        # Repeating Variables
+        (lib.mapAttrsToList (name: value:
+          map (
+            value: "\n${indentChars' level}${name} = ${valueToString value}"
+          )
+          value)
+        repeats)
+        "\n"
+        # Sections
+        (lib.mapAttrsToList (
+            name: value: "\n${indentChars' level}${name} {${
+              recurse (level + 1) value
+            }\n${indentChars' level}}\n"
           )
           sections)
-      );
+      ]);
   in
     recurse 0;
 
