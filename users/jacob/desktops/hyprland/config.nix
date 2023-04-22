@@ -1,18 +1,6 @@
 {
-  ## NOTE: My config should be consistent with the options presented on the wiki.
-  ##   Use the wiki links, so that you can see the differences in the "API".
-  ##   Some options are renamed, but it should be obvious. Their renamed
-  ##   configuration equivalent will be documented in the module.
-  ##   See the module documentation for the module here:
-  ##   - TODO
-  ##   - https://github.com/spikespaz/hyprland-window-manager/tree/nix-hm-module/nix/hm-module>
-  ##
-  ##   Hyprland changes frequently, so some options may be missing. If you need,
-  ##   use `wayland.windowManager.hyprland.extraConfig`.
-  ##
-  ##  Options that are commented out are (probably) their default value.
-  ##
   wayland.windowManager.hyprland.alt.enableConfig = true;
+  wayland.windowManager.hyprland.alt.reloadConfig = false;
   wayland.windowManager.hyprland.alt.config = {
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     general = {
@@ -127,18 +115,18 @@
       };
     };
 
-    # gestures = {
-    #   workspace_swipe = {
-    #     enable = true;
-    #     # fingers = 3;
-    #     # distance = 300;
-    #     invert = false;
-    #     min_speed_to_force = 20;
-    #     cancel_ratio = 0.65;
-    #     create_new = false;
-    #     # forever = false;
-    #   };
-    # };
+    gestures = {
+      workspace_swipe = {
+        enable = true;
+        # fingers = 3;
+        # distance = 300;
+        invert = false;
+        min_speed_to_force = 20;
+        cancel_ratio = 0.65;
+        create_new = false;
+        # forever = false;
+      };
+    };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#misc>
     misc = {

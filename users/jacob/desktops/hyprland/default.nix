@@ -13,7 +13,7 @@
     self.homeManagerModules.hyprland
     ./config.nix
     ./events.nix
-    # ./windowrules.nix
+    ./windowrules.nix
     ./waybar.nix
     # ./eww
   ];

@@ -88,7 +88,7 @@
     };
   };
 in {
-  wayland.windowManager.hyprland.config.windowRules.rules = with patterns;
+  wayland.windowManager.hyprland.windowRules = with patterns;
     lib.concatLists [
       [
         (rule ["size 740 460"] filePickerPortal)
