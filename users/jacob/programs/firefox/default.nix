@@ -25,10 +25,10 @@ in {
   imports = [
     ./hosts.nix
     (import ./chrome profile)
-    self.homeManagerModules.firefox-pwa
+    # self.homeManagerModules.firefox-pwa
   ];
 
-  programs.firefox.pwa.enable = true;
+  # programs.firefox.pwa.enable = true;
 
   programs.firefox.profiles.${profile} = lib.mkMerge [
     prefab
