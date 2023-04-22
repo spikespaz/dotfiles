@@ -88,47 +88,54 @@
     };
   };
 in {
-  wayland.windowManager.hyprland.windowRules = with patterns;
-    lib.concatLists [
-      [
-        (rule ["size 740 460"] filePickerPortal)
-        (rule ["size 950 700"] kvantumConfig)
-        (rule ["size 1200 800"] obsStudio)
-      ]
-      (map (rule ["idleinhibit focus"]) [
-        minecraft
-        virtManagerConsole
-      ])
-      (map (rule ["float"]) [
-        kvantumConfig
-        keePassModal
-        lxImageModal
-        firefoxModal
-        fileZillaModal
-        discordModal
-        obsStudio
-      ])
-      (map (rule ["opacity 0.97 0.97"]) [
-        vscode
-        discord
-      ])
-      (map (rule ["opacity 0.97 0.97" "float"]) [
-        printerConfig
-        audioControl
-        wifiControl
-        bluetoothControl
-        polkitAgent
-        mountDialog
-      ])
-      (map (rule ["opacity 0.92 0.92"]) [
-        steam
-      ])
-      (map (rule ["opacity 0.92 0.92" "float"]) [
-        filePickerPortal
-      ])
-      (map (rule ["opacity 0.87 0.87"]) [])
-      (map (rule ["opacity 0.87 0.87" "float"]) [
-        calculator
-      ])
+  wayland.windowManager.hyprland = {
+    config.blurls = [
+      "rofi"
+      "notifications"
     ];
+
+    windowRules = with patterns;
+      lib.concatLists [
+        [
+          (rule ["size 740 460"] filePickerPortal)
+          (rule ["size 950 700"] kvantumConfig)
+          (rule ["size 1200 800"] obsStudio)
+        ]
+        (map (rule ["idleinhibit focus"]) [
+          minecraft
+          virtManagerConsole
+        ])
+        (map (rule ["float"]) [
+          kvantumConfig
+          keePassModal
+          lxImageModal
+          firefoxModal
+          fileZillaModal
+          discordModal
+          obsStudio
+        ])
+        (map (rule ["opacity 0.97 0.97"]) [
+          vscode
+          discord
+        ])
+        (map (rule ["opacity 0.97 0.97" "float"]) [
+          printerConfig
+          audioControl
+          wifiControl
+          bluetoothControl
+          polkitAgent
+          mountDialog
+        ])
+        (map (rule ["opacity 0.92 0.92"]) [
+          steam
+        ])
+        (map (rule ["opacity 0.92 0.92" "float"]) [
+          filePickerPortal
+        ])
+        (map (rule ["opacity 0.87 0.87"]) [])
+        (map (rule ["opacity 0.87 0.87" "float"]) [
+          calculator
+        ])
+      ];
+  };
 }

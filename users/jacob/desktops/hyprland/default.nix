@@ -12,6 +12,7 @@
     self.homeManagerModules.desktop-portals
     self.homeManagerModules.hyprland
     ./config.nix
+    ./monitors.nix
     ./events.nix
     ./windowrules.nix
     ./keybinds.nix
