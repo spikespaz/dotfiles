@@ -11,92 +11,98 @@
     Event listener for Hyprland's `socket2` IPC protocol.
   '';
 
-  # prefix to avoid any potential collisions
-  eventVarPrefix = "HL_";
-
-  eventHandlers =
+  # takes a prefix string and an attrset of attrsets
+  # ```
+  # <eventName> = {
+  #   event = "<socketeventname>";
+  #   vars = [list of event parameters];
+  # }
+  addEventVarPrefixes = prefix:
     lib.mapAttrs (
       _: attrs @ {vars, ...}:
-        attrs // {vars = map (v: eventVarPrefix + v) vars;}
-    ) {
-      ### WINDOWS ###
-      windowFocus = {
-        event = "activewindow";
-        vars = ["WINDOW_CLASS" "WINDOW_TITLE"];
-      };
-      windowOpen = {
-        event = "openwindow";
-        vars = ["WINDOW_ADDRESS" "WORKSPACE_NAME" "WINDOW_CLASS" "WINDOW_TITLE"];
-      };
-      windowClose = {
-        event = "movewindow";
-        vars = ["WINDOW_ADDRESS"];
-      };
-      windowMove = {
-        event = "movewindow";
-        vars = ["WINDOW_ADDRESS" "WORKSPACE_NAME"];
-      };
-      windowFloat = {
-        event = "changefloatingmode";
-        vars = ["WINDOW_ADDRESS" "FLOAT_STATE"];
-      };
-      windowFullscreen = {
-        event = "fullscreen";
-        vars = ["FULLSCREEN_STATE"];
-      };
+        attrs // {vars = map (v: prefix + v) vars;}
+    );
 
-      ### LAYERS ###
-      layerOpen = {
-        event = "openlayer";
-        vars = ["LAYER_NAMESPACE"];
-      };
-      layerClose = {
-        event = "closelayer";
-        vars = ["LAYER_NAMESPACE"];
-      };
-
-      ### WORKSPACES ###
-      workspaceFocus = {
-        event = "workspace";
-        vars = ["WORKSPACE_NAME"];
-      };
-      workspaceCreate = {
-        event = "createworkspace";
-        vars = ["WORKSPACE_NAME"];
-      };
-      workspaceDestroy = {
-        event = "destroyworkspace";
-        vars = ["WORKSPACE_NAME"];
-      };
-      workspaceMove = {
-        event = "moveworkspace";
-        vars = ["WORKSPACE_NAME" "MONITOR_NAME"];
-      };
-
-      ### MONITORS ###
-      monitorFocus = {
-        event = "focusedmon";
-        vars = ["MONITOR_NAME" "WORKSPACE_NAME"];
-      };
-      monitorAdd = {
-        event = "monitoradded";
-        vars = ["MONITOR_NAME"];
-      };
-      monitorRemove = {
-        event = "monitorremoved";
-        vars = ["MONITOR_NAME"];
-      };
-
-      ### MISCELLANEOUS ###
-      layoutChange = {
-        event = "activelayout";
-        vars = ["KEYBOARD_NAME" "LAYOUT_NAME"];
-      };
-      submapChange = {
-        event = "submap";
-        vars = ["SUBMAP_NAME"];
-      };
+  # prefix to avoid any potential collisions
+  eventHandlers = addEventVarPrefixes "HL_" {
+    ### WINDOWS ###
+    windowFocus = {
+      event = "activewindow";
+      vars = ["WINDOW_CLASS" "WINDOW_TITLE"];
     };
+    windowOpen = {
+      event = "openwindow";
+      vars = ["WINDOW_ADDRESS" "WORKSPACE_NAME" "WINDOW_CLASS" "WINDOW_TITLE"];
+    };
+    windowClose = {
+      event = "movewindow";
+      vars = ["WINDOW_ADDRESS"];
+    };
+    windowMove = {
+      event = "movewindow";
+      vars = ["WINDOW_ADDRESS" "WORKSPACE_NAME"];
+    };
+    windowFloat = {
+      event = "changefloatingmode";
+      vars = ["WINDOW_ADDRESS" "FLOAT_STATE"];
+    };
+    windowFullscreen = {
+      event = "fullscreen";
+      vars = ["FULLSCREEN_STATE"];
+    };
+
+    ### LAYERS ###
+    layerOpen = {
+      event = "openlayer";
+      vars = ["LAYER_NAMESPACE"];
+    };
+    layerClose = {
+      event = "closelayer";
+      vars = ["LAYER_NAMESPACE"];
+    };
+
+    ### WORKSPACES ###
+    workspaceFocus = {
+      event = "workspace";
+      vars = ["WORKSPACE_NAME"];
+    };
+    workspaceCreate = {
+      event = "createworkspace";
+      vars = ["WORKSPACE_NAME"];
+    };
+    workspaceDestroy = {
+      event = "destroyworkspace";
+      vars = ["WORKSPACE_NAME"];
+    };
+    workspaceMove = {
+      event = "moveworkspace";
+      vars = ["WORKSPACE_NAME" "MONITOR_NAME"];
+    };
+
+    ### MONITORS ###
+    monitorFocus = {
+      event = "focusedmon";
+      vars = ["MONITOR_NAME" "WORKSPACE_NAME"];
+    };
+    monitorAdd = {
+      event = "monitoradded";
+      vars = ["MONITOR_NAME"];
+    };
+    monitorRemove = {
+      event = "monitorremoved";
+      vars = ["MONITOR_NAME"];
+    };
+
+    ### MISCELLANEOUS ###
+    layoutChange = {
+      event = "activelayout";
+      vars = ["KEYBOARD_NAME" "LAYOUT_NAME"];
+    };
+    submapChange = {
+      event = "submap";
+      vars = ["SUBMAP_NAME"];
+    };
+  };
 in {
   options = {
     wayland.windowManager.hyprland.eventListener = {
@@ -156,15 +162,25 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable (let
+  config = let
+    # Turn each value in `cfg.handler` into an attrset
+    # saturated with `event` and `vars` from `eventHandlers`.
+    # The existing value (string) will be kept as `script`.
     handlerInfos = lib.pipe cfg.handler [
+      # remove handlers which are null
       (lib.filterAttrs (_: v: v != null))
+      # map each handler name and value
+      # to have a value of `{event, vars, script}`
+      # where `event` and `vars` are from the attribute in
+      # `eventHandlers` of the same name.
       (lib.mapAttrs (n: text: {
         inherit (builtins.getAttr n eventHandlers) event vars;
         script = pkgs.writeShellScript "hyprland-${n}-handler" text;
       }))
     ];
 
+    # Given an attrset from `handlerInfos`, create a regex pattern
+    # to match the expected socket message, the entire line including parameters.
     # TODO vaxry, window titles can have commas in them...
     mkEventRegex = {
       event,
@@ -174,8 +190,17 @@ in {
       builtins.genList (_: "(.+)") (builtins.length vars)
     )}$";
 
+    # Given a function and a list, map each value with the given function.
+    # The function is expected to consume two arguments,
+    # the index of the value in the list, and the value itself.
     enumerate = f: l: lib.zipListsWith f (lib.range 0 (builtins.length l)) l;
 
+    # This script is used in a systemd service that is `PartOf`
+    # `hyprland-session.target`.
+    # It is itself the event listener. It opens the socket, and
+    # forever reads the lines, branching out to a handler script
+    # if the line matches a pattern created from an event's name
+    # and parameter list.
     listenerScript = pkgs.writeShellScript "hyprland-event-listener" ''
       set -o pipefail
 
@@ -206,28 +231,34 @@ in {
       done || echo "ERROR: main pipeline failed, exit: $?"
     '';
   in
-    lib.mkMerge [
-      (lib.mkIf cfg.systemdService {
-        systemd.user.services.hyprland-event-listener = {
-          Unit = {
-            Description = description;
-            PartOf = "hyprland-session.target";
+    lib.mkIf cfg.enable (
+      lib.mkMerge [
+        # If it is a systemd service,
+        (lib.mkIf cfg.systemdService {
+          systemd.user.services.hyprland-event-listener = {
+            Unit = {
+              Description = description;
+              PartOf = "hyprland-session.target";
+            };
+            Service = {
+              Type = "simple";
+              ExecStart = "${listenerScript}";
+              Restart = "on-failure";
+              RestartSec = 5;
+            };
+            Install.WantedBy = ["hyprland-session.target"];
           };
-          Service = {
-            Type = "simple";
-            ExecStart = "${listenerScript}";
-            Restart = "on-failure";
-            RestartSec = 5;
+        })
+        # Otherwise use an `execOnce` line in the Hyprland config.
+        # Requires the `extraInitConfig` to be specified by my (Jacob)
+        # `nix/hm-module/config.nix` in my Hyprland fork.
+        (lib.mkIf (!cfg.systemdService) {
+          wayland.windowManager.hyprland = {
+            extraInitConfig = ''
+              exec-once = ${listenerScript}
+            '';
           };
-          Install.WantedBy = ["hyprland-session.target"];
-        };
-      })
-      (lib.mkIf (!cfg.systemdService) {
-        wayland.windowManager.hyprland = {
-          extraInitConfig = ''
-            exec-once = ${listenerScript}
-          '';
-        };
-      })
-    ]);
+        })
+      ]
+    );
 }
