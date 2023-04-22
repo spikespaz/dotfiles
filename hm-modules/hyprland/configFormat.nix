@@ -6,46 +6,52 @@
   ...
 }: {
   renames,
-  indent ? "    ",
+  indentChars ? "    ",
 }: let
   inherit (lib) types;
 
   # Creates a string with chars repeated N times.
-  indentChars = chars: level: lib.concatStrings (map (_: chars) (lib.range 1 level));
-  indentChars' = indentChars indent;
+  mkIndent = chars: level: lib.concatStrings (map (_: chars) (lib.range 1 level));
+
+  # Writes a string line by line. Input is a list of lists and strings.
+  # Each string at any nested level is a line. Nested level determines indentation.
+  writeIndented = chars: lines: let
+    recurse = level:
+      lib.foldl' (buf: it:
+        if lib.isList it
+        then recurse (level + 1) buf it
+        else buf + "\n" + (mkIndent chars level) + it);
+  in
+    recurse 0 "" lines;
+
+  concatListsSep = sep: lib.foldl' (acc: it: acc ++ [sep] ++ it) [];
 
   # Takes an attrset and writes out a Hyprland config.
-  configToString = let
+  configToString = attrs: let
     recurse = level: attrs: let
       variables = lib.filterAttrs (_: v: !(lib.isAttrs v || lib.isList v)) attrs;
       repeats = lib.filterAttrs (_: lib.isList) attrs;
       sections = lib.filterAttrs (_: lib.isAttrs) attrs;
     in
-      lib.concatStrings (lib.flatten [
+      lib.concatLists [
         # Variables
         (lib.mapAttrsToList (
-            name: value: "\n${indentChars' level}${name} = ${valueToString value}"
+            name: value: "${name} = ${valueToString value}"
           )
           variables)
-        "\n"
-        # Repeating Variables
-        (lib.mapAttrsToList (name: value:
-          map (
-            value: "\n${indentChars' level}${name} = ${valueToString value}"
+        # Repeats
+        (concatListsSep "" (lib.mapAttrsToList (
+            name: value: (map (value: "${name} = ${valueToString value}") value)
           )
-          value)
-        repeats)
-        "\n"
+          repeats))
         # Sections
-        (lib.mapAttrsToList (
-            name: value: "\n${indentChars' level}${name} {${
-              recurse (level + 1) value
-            }\n${indentChars' level}}\n"
+        (concatListsSep "" (lib.mapAttrsToList (
+            name: value: ["${name} {" (recurse (level + 1) value) "}"]
           )
-          sections)
-      ]);
+          sections))
+      ];
   in
-    recurse 0;
+    writeIndented indentChars (recurse 0 attrs);
 
   # Converts a single value to a valid Hyprland config RHS
   valueToString = value:
