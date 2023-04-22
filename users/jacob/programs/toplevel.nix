@@ -154,7 +154,7 @@
 
     # IntelliJ likes to see a `~/.jdks` directory,
     # so we will use that convention for now.
-    home.file = lib.traceValSeqN 3 (builtins.listToAttrs (map (package: {
+    home.file = builtins.listToAttrs (map (package: {
         name = ".jdks/${package.name}";
         value = {source = "${package.home}";};
       }) [
@@ -168,7 +168,7 @@
         pkgs.temurin-bin-17
         pkgs.temurin-bin-18
         pkgs.temurin-bin # latest
-      ]));
+      ]);
   };
 
   rustup = {
