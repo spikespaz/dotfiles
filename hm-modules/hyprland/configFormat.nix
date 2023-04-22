@@ -24,34 +24,41 @@
   in
     recurse 0 "" lines;
 
+  sectionLines = attrs: let
+    variables = lib.filterAttrs (_: v: !(lib.isAttrs v || lib.isList v)) attrs;
+    repeats = lib.filterAttrs (_: lib.isList) attrs;
+    sections = lib.filterAttrs (_: lib.isAttrs) attrs;
+  in
+    lib.concatLists [
+      # Variables
+      (lib.mapAttrsToList (
+          name: value: "${name} = ${valueToString value}"
+        )
+        variables)
+      # Repeats
+      (concatListsSep "" (lib.mapAttrsToList (
+          name: value: (map (value: "${name} = ${valueToString value}") value)
+        )
+        repeats))
+      # Sections
+      (concatListsSep "" (lib.mapAttrsToList (
+          name: value: ["${name} {" (sectionLines value) "}"]
+        )
+        sections))
+    ];
+
   concatListsSep = sep: lib.foldl' (acc: it: acc ++ [sep] ++ it) [];
 
   # Takes an attrset and writes out a Hyprland config.
-  configToString = attrs: let
-    recurse = level: attrs: let
-      variables = lib.filterAttrs (_: v: !(lib.isAttrs v || lib.isList v)) attrs;
-      repeats = lib.filterAttrs (_: lib.isList) attrs;
-      sections = lib.filterAttrs (_: lib.isAttrs) attrs;
-    in
-      lib.concatLists [
-        # Variables
-        (lib.mapAttrsToList (
-            name: value: "${name} = ${valueToString value}"
-          )
-          variables)
-        # Repeats
-        (concatListsSep "" (lib.mapAttrsToList (
-            name: value: (map (value: "${name} = ${valueToString value}") value)
-          )
-          repeats))
-        # Sections
-        (concatListsSep "" (lib.mapAttrsToList (
-            name: value: ["${name} {" (recurse (level + 1) value) "}"]
-          )
-          sections))
-      ];
-  in
-    writeIndented indentChars (recurse 0 attrs);
+  configToString = attrs:
+    lib.pipe attrs [
+      sectionLines
+      (writeIndented indentChars)
+    ];
+
+  # isOrdered = x: lib.isAttrs x && x ? _type && x._type == "order";
+  # isAttrs = x: !(lib.isOrdered x) && lib.isAttrs x;
+  # isList = x: lib.isString x || (lib.isOrdered x && lib.isString x.content);
 
   # Converts a single value to a valid Hyprland config RHS
   valueToString = value:
