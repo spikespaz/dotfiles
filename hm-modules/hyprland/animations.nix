@@ -44,8 +44,6 @@
 in {
   options = {
     wayland.windowManager.hyprland.animations = {
-      enable = lib.mkEnableOption "animations";
-
       animation = lib.mkOption {
         type = types.attrsOf (types.submodule ({name, ...}: {
           options = {
@@ -147,7 +145,6 @@ in {
     }";
   in {
     wayland.windowManager.hyprland.config.animations = {
-      inherit (cfg) enable;
       bezier = lib.mapAttrsToList stringifyBezier cfg.bezierCurve;
       animation = lib.mapAttrsToList (_: stringifyAnimation) cfg.animation;
     };
