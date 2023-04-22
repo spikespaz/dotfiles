@@ -127,7 +127,7 @@ in {
         '';
       };
 
-      handlers = builtins.mapAttrs (_: {
+      handler = builtins.mapAttrs (_: {
         event,
         vars,
         ...
@@ -157,7 +157,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable (let
-    handlerInfos = lib.pipe cfg.handlers [
+    handlerInfos = lib.pipe cfg.handler [
       (lib.filterAttrs (_: v: v != null))
       (lib.mapAttrs (n: text: {
         inherit (builtins.getAttr n eventHandlers) event vars;

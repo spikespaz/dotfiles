@@ -8,7 +8,7 @@
     eventListener.enable = true;
     eventListener.systemdService = true;
 
-    eventListener.handlers = let
+    eventListener.handler = let
       hyprctl = "${pkgs.hyprland}/bin/hyprctl";
       testRe = against: patterns:
         lib.concatStringsSep " || "
