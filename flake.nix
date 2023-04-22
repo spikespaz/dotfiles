@@ -85,7 +85,7 @@
         inputs.vscode-extensions.overlays.default
         inputs.alejandra.overlays.default
         inputs.nil.overlays.default
-        inputs.prism-launcher.overlay
+        inputs.prism-launcher.overlays.default
         # inputs.webcord.overlays.default
         inputs.ragenix.overlays.default
       ];
