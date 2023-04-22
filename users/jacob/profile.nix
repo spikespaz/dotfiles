@@ -98,7 +98,7 @@ in {
     programs.tools.image-editing
 
     ### MEDIA CONSUMPTION ###
-    programs.spotify
+    # programs.spotify
 
     ### OFFICE & WRITING SOFTWARE ###
     programs.onlyoffice
