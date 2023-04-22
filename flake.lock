@@ -820,12 +820,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1675397410,
-        "narHash": "sha256-7HruDRRDy8bH3IqBnSaa1wNIC93nITUyxIUZNM/BRYA=",
-        "owner": "spikespaz",
-        "repo": "slight",
-        "rev": "f8a327740d48fa07709a4ed2dad78c8ebc2b4ff9",
-        "type": "github"
+        "lastModified": 1681445635,
+        "narHash": "sha256-xePoezsYTE7Jf5JRZAkFVH9aISgYBnrUgpAsGRKXRlo=",
+        "type": "git",
+        "url": "file:///home/jacob/Documents/slight"
       },
       "original": {
         "owner": "spikespaz",
