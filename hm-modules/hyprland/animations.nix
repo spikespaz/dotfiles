@@ -146,7 +146,7 @@ in {
       lib.concatStringsSep ", " (map toString points)
     }";
   in {
-    wayland.windowManager.hyprland.alt.config.animations = {
+    wayland.windowManager.hyprland.config.animations = {
       inherit (cfg) enable;
       bezier = lib.mapAttrsToList stringifyBezier cfg.bezierCurve;
       animation = lib.mapAttrsToList (_: stringifyAnimation) cfg.animation;

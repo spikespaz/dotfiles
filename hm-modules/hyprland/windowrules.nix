@@ -123,7 +123,7 @@ in {
       ++ (lib.optional (title != null) title)
     )}";
   in {
-    wayland.windowManager.hyprland.alt.config.windowrulesv2 = lib.pipe cfg [
+    wayland.windowManager.hyprland.config.windowrulesv2 = lib.pipe cfg [
       (map expandRule)
       lib.concatLists
       (map compileRule)

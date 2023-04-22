@@ -5,14 +5,15 @@ args @ {
   ...
 }: let
   inherit (lib) types;
-  cfg = config.wayland.windowManager.hyprland // config.wayland.windowManager.hyprland.alt;
-  cfgPath = "config.wayland.windowManager.hyprland.alt";
+  cfg = config.wayland.windowManager.hyprland;
+  cfgPath = "config.wayland.windowManager.hyprland";
+
   configFormat = (import ./configFormat.nix args) {
     renames = import ./renames.nix;
   };
 in {
   options = {
-    wayland.windowManager.hyprland.alt = {
+    wayland.windowManager.hyprland = {
       enableConfig = lib.mkEnableOption (lib.mdDoc ''
         Enable writing the Hyprland configuration file.
 
@@ -66,23 +67,23 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf (cfg.extraInitConfig != null) {
-      wayland.windowManager.hyprland.alt.configLines = lib.mkOrder 0 cfg.extraInitConfig;
+      wayland.windowManager.hyprland.configLines = lib.mkOrder 0 cfg.extraInitConfig;
     })
     (lib.mkIf cfg.systemdIntegration {
-      wayland.windowManager.hyprland.alt.configLines = lib.mkOrder 50 ''
+      wayland.windowManager.hyprland.configLines = lib.mkOrder 50 ''
         exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP
         exec-once=systemctl --user start hyprland-session.target
       '';
     })
     (lib.mkIf (cfg.config != null) {
-      wayland.windowManager.hyprland.alt.configLines = lib.mkOrder 350 (configFormat.stringify cfg.config);
+      wayland.windowManager.hyprland.configLines = lib.mkOrder 350 (configFormat.stringify cfg.config);
     })
     (lib.mkIf (cfg.extraConfig != null) {
-      wayland.windowManager.hyprland.alt.configLines = lib.mkOrder 900 cfg.extraConfig;
+      wayland.windowManager.hyprland.configLines = lib.mkOrder 900 cfg.extraConfig;
     })
     (lib.mkIf cfg.enableConfig {
       # Create the config file with content from `configLines`.
-      # This replaces `wayland.windowManager.hyprland.alt.extraConfig`.
+      # This replaces `wayland.windowManager.hyprland.extraConfig`.
       xdg.configFile."hypr/hyprland.conf" = lib.mkForce {
         text = cfg.configLines;
         onChange = lib.mkIf (cfg.reloadConfig) ''

@@ -1,8 +1,8 @@
 {
-  wayland.windowManager.hyprland.alt.enableConfig = true;
-  wayland.windowManager.hyprland.alt.reloadConfig = false;
+  wayland.windowManager.hyprland.enableConfig = true;
+  wayland.windowManager.hyprland.reloadConfig = false;
 
-  wayland.windowManager.hyprland.alt.config = {
+  wayland.windowManager.hyprland.config = {
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     general = {
       # sensitivity = 1.0;
