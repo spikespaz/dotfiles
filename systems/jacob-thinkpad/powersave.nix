@@ -8,7 +8,7 @@
   ...
 }: let
   idle_after = 5 * 60;
-  hibernate_delay = 30 * 60;
+  hibernate_delay = 1.5 * 60;
   MHz = x: x * 1000;
 in {
   services.tlp.enable = false;
