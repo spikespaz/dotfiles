@@ -3,17 +3,17 @@
   config,
   lib,
   pkgs,
-  hmModules,
+  # hmModules,
+  inputs,
   ...
 }: {
   imports = [
-    hmModules.hyprland
-    self.homeManagerModules.hyprland-events
+    inputs.hyprland.homeManagerModules.default
     self.homeManagerModules.desktop-portals
-    self.homeManagerModules.hyprland-dyn-conf
+    self.homeManagerModules.hyprland
     ./config.nix
     ./events.nix
-    ./windowrules.nix
+    # ./windowrules.nix
     ./waybar.nix
     # ./eww
   ];
@@ -30,57 +30,57 @@
     enable = true;
     systemdIntegration = true;
     recommendedEnvironment = true;
-    reloadConfig = false;
+    # reloadConfig = false;
 
     xwayland.enable = true;
     xwayland.hidpi = false;
 
-    extraInitConfig = ''
-      # polkit agent, raises to root access with gui
-      exec-once = ${lib.getExe pkgs.lxqt.lxqt-policykit}
-      # allow apps with risen perms after agent to connect to local xwayland
-      exec-once = ${lib.getExe pkgs.xorg.xhost} +local:
-    '';
+    # extraInitConfig = ''
+    #   # polkit agent, raises to root access with gui
+    #   exec-once = ${lib.getExe pkgs.lxqt.lxqt-policykit}
+    #   # allow apps with risen perms after agent to connect to local xwayland
+    #   exec-once = ${lib.getExe pkgs.xorg.xhost} +local:
+    # '';
 
-    # prepend the config with more exec lines,
-    # for starting swayidle
-    extraConfig = (
-      builtins.replaceStrings [
-        "%PIN_WINDOW_SCRIPT%"
-        "%FUNCTIONS%"
-        "%SLIGHT%"
-        "%DISABLE_INPUT_DEVICES%"
-      ] [
-        # PIN_WINDOW_SCRIPT
-        "${pkgs.writeShellScript "pin-window" (let
-          hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-        in ''
-          if ${hyprctl} activewindow | grep 'floating: 0'; then
-          	${hyprctl} dispatch togglefloating active;
-          fi
+    # # prepend the config with more exec lines,
+    # # for starting swayidle
+    # extraConfig = (
+    #   builtins.replaceStrings [
+    #     "%PIN_WINDOW_SCRIPT%"
+    #     "%FUNCTIONS%"
+    #     "%SLIGHT%"
+    #     "%DISABLE_INPUT_DEVICES%"
+    #   ] [
+    #     # PIN_WINDOW_SCRIPT
+    #     "${pkgs.writeShellScript "pin-window" (let
+    #       hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+    #     in ''
+    #       if ${hyprctl} activewindow | grep 'floating: 0'; then
+    #       	${hyprctl} dispatch togglefloating active;
+    #       fi
 
-          ${hyprctl} dispatch pin active
-        '')}"
-        # FUNCTIONS
-        (lib.getExe config.utilities.osd-functions.package)
-        # LIGHT
-        (lib.getExe pkgs.slight)
-        # DISABLE_INPUT_DEVICES
-        # TODO probably should make this a package again, with overrides
-        # like the above. Or make it a module that provides an overridden
-        # package as a read-only option.
-        "disable-input-devices-notify"
-      ]
-      (lib.concatStringsSep "\n\n" [
-        ''
-          blurls = rofi
-          blurls = notifications
-        ''
-        # hyprland config, split up
-        (builtins.readFile ./displays.conf)
-        (builtins.readFile ./keybinds.conf)
-      ])
-    );
+    #       ${hyprctl} dispatch pin active
+    #     '')}"
+    #     # FUNCTIONS
+    #     (lib.getExe config.utilities.osd-functions.package)
+    #     # LIGHT
+    #     (lib.getExe pkgs.slight)
+    #     # DISABLE_INPUT_DEVICES
+    #     # TODO probably should make this a package again, with overrides
+    #     # like the above. Or make it a module that provides an overridden
+    #     # package as a read-only option.
+    #     "disable-input-devices-notify"
+    #   ]
+    #   (lib.concatStringsSep "\n\n" [
+    #     ''
+    #       blurls = rofi
+    #       blurls = notifications
+    #     ''
+    #     # hyprland config, split up
+    #     (builtins.readFile ./displays.conf)
+    #     (builtins.readFile ./keybinds.conf)
+    #   ])
+    # );
   };
 
   xdg.desktopPortals = {

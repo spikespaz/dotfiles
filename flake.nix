@@ -149,6 +149,7 @@
         extraSpecialArgs = {
           inherit
             self
+            inputs
             flake
             nixpkgs
             nixpkgs-stable

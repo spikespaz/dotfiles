@@ -254,7 +254,8 @@ in {
         # `nix/hm-module/config.nix` in my Hyprland fork.
         (lib.mkIf (!cfg.systemdService) {
           wayland.windowManager.hyprland = {
-            extraInitConfig = ''
+            # extraInitConfig = ''
+            extraConfig = ''
               exec-once = ${listenerScript}
             '';
           };
