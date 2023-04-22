@@ -144,33 +144,4 @@ in {
     ring-clear-color = green_a700 + fg_opacity;
     ring-wrong-color = deep_orange_600 + fg_opacity;
   };
-
-  # Hiding this at the end. This is just a quick fix for there being no
-  # `package` option, as any configuration depending on knowing which
-  # executable to use will need to be hand-written to use a specific package.
-  # Note that because the original module is part of Home Manager,
-  # to keep this simple, there is no attempt to prevent writing
-  # `settings` if `enable` is `false`.
-  imports = [
-    ({
-      config,
-      pkgs,
-      lib,
-      ...
-    }: let
-      cfg = config.programs.swaylock;
-    in {
-      options = {
-        programs.swaylock.enable = lib.mkEnableOption (lib.mdDoc ''
-          Whether to install the specified package to `home.packages`.
-        '');
-        programs.swaylock.package = lib.mkPackageOption pkgs "swaylock" {
-          example = lib.literalExpression "pkgs.swaylock-effects";
-        };
-      };
-      config = lib.mkIf cfg.enable {
-        home.packages = [cfg.package];
-      };
-    })
-  ];
 }
