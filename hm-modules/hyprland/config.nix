@@ -44,7 +44,7 @@ in {
       ### CONFIG ###
 
       extraInitConfig = lib.mkOption {
-        type = types.nullOr types.lines;
+        type = configFormat.type;
         default = null;
         description = lib.mdDoc ''
           Extra configuration to be prepended to the top of
@@ -66,20 +66,23 @@ in {
   };
 
   config = lib.mkMerge [
-    (lib.mkIf (cfg.extraInitConfig != null) {
-      wayland.windowManager.hyprland.configLines = lib.mkOrder 0 cfg.extraInitConfig;
-    })
     (lib.mkIf cfg.systemdIntegration {
-      wayland.windowManager.hyprland.configLines = lib.mkOrder 50 ''
+      wayland.windowManager.hyprland.configLines = lib.mkOrder 1 ''
         exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP
         exec-once=systemctl --user start hyprland-session.target
       '';
     })
+    (lib.mkIf (cfg.extraInitConfig != null) {
+      wayland.windowManager.hyprland.configLines =
+        lib.mkOrder 50 (configFormat.stringify cfg.extraInitConfig);
+    })
     (lib.mkIf (cfg.config != null) {
-      wayland.windowManager.hyprland.configLines = lib.mkOrder 350 (configFormat.stringify cfg.config);
+      wayland.windowManager.hyprland.configLines =
+        lib.mkOrder 350 (configFormat.stringify cfg.config);
     })
     (lib.mkIf (cfg.extraConfig != null) {
-      wayland.windowManager.hyprland.configLines = lib.mkOrder 900 cfg.extraConfig;
+      wayland.windowManager.hyprland.configLines =
+        lib.mkOrder 900 cfg.extraConfig;
     })
     (lib.mkIf cfg.enableConfig {
       # Create the config file with content from `configLines`.

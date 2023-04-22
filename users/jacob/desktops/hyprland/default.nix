@@ -35,12 +35,12 @@
     xwayland.enable = true;
     xwayland.hidpi = false;
 
-    # extraInitConfig = ''
-    #   # polkit agent, raises to root access with gui
-    #   exec-once = ${lib.getExe pkgs.lxqt.lxqt-policykit}
-    #   # allow apps with risen perms after agent to connect to local xwayland
-    #   exec-once = ${lib.getExe pkgs.xorg.xhost} +local:
-    # '';
+    extraInitConfig.exec_once = [
+      # polkit agent, raises to root access with gui
+      "${lib.getExe pkgs.lxqt.lxqt-policykit}"
+      # allow apps with risen perms after agent to connect to local xwayland
+      "${lib.getExe pkgs.xorg.xhost} +local:"
+    ];
 
     # # prepend the config with more exec lines,
     # # for starting swayidle
