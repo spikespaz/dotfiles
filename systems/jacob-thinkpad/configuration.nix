@@ -114,7 +114,8 @@ args @ {
       cpu.amd.updateMicrocode = true;
 
       # wifi adapter
-      firmware = [pkgs.rtw89-firmware];
+      # error: rtw89-firmware has been removed because linux-firmware now contains it.
+      # firmware = [pkgs.rtw89-firmware];
 
       # enable opengl just in case the compositor doesn't
       opengl.enable = true;
