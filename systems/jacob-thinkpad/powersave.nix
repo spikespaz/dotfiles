@@ -2,19 +2,13 @@
 # - <https://www.kernel.org/doc/Documentation/power/states.txt>
 # - `man sleep.conf.d`
 # - `man logind.conf`
-{
-  lib,
-  modules,
-  ...
-}: let
+let
   idle_after = 5 * 60;
   hibernate_delay = 1.5 * 60;
   MHz = x: x * 1000;
 in {
   services.tlp.enable = false;
   services.auto-cpufreq.enable = true;
-
-  imports = [modules.auto-cpufreq];
 
   # temperature target on battery
   services.undervolt.tempBat = 65; # deg C
