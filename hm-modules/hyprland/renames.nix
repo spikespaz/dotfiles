@@ -1,5 +1,9 @@
 [
   {
+    prefer = ["exec_once"];
+    original = ["exec-once"];
+  }
+  {
     prefer = ["general" "gaps_inside"];
     original = ["general" "gaps_in"];
   }
