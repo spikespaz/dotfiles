@@ -1,12 +1,20 @@
 args @ {
+  inputs,
   config,
   pkgs,
   lib,
   ...
 }: let
   inherit (lib) types;
+
   cfg = config.wayland.windowManager.hyprland;
   cfgPath = "config.wayland.windowManager.hyprland";
+
+  defaultPackage = inputs.hyprland.packages.${pkgs.system}.default.override {
+    enableXWayland = cfg.xwayland.enable;
+    hidpiXWayland = cfg.xwayland.hidpi;
+    inherit (cfg) nvidiaPatches;
+  };
 
   configRenames = import ./configRenames.nix args;
   configFormat = (import ./configFormat.nix args) {
@@ -34,17 +42,78 @@ args @ {
 in {
   options = {
     wayland.windowManager.hyprland = {
-      enableConfig = lib.mkEnableOption (lib.mdDoc ''
-        Enable writing the Hyprland configuration file.
+      enable = lib.mkEnableOption (lib.mdDoc ''
+        Whether to install the Hyprland package and generate configuration files.
 
-        `~/.config/hypr/hyprland.conf`
+        ${cfg.package.meta.description}
+
+        See <${cfg.package.meta.homepage}> for more information.
+      '');
+      package = lib.mkOption {
+        type = with lib.types; nullOr package;
+        default = defaultPackage;
+        defaultText = lib.literalExpression ''
+          hyprland.packages.''${pkgs.stdenv.hostPlatform.system}.default.override {
+            enableXWayland = config.wayland.windowManager.hyprland.xwayland.enable;
+            hidpiXWayland = config.wayland.windowManager.hyprland.xwayland.hidpi;
+            inherit (config.wayland.windowManager.hyprland) nvidiaPatches;
+          }
+        '';
+        description = lib.mdDoc ''
+          Hyprland package to use. Will override the 'xwayland' and
+          'nvidiaPatches' options.
+
+          Defaults to the one provided by the flake. Set it to
+          {package}`pkgs.hyprland` to use the one provided by nixpkgs or
+          if you have an overlay.
+
+          Set to null to not add any Hyprland package to your path. This should
+          be done if you want to use the NixOS module to install Hyprland.
+        '';
+      };
+
+      systemdIntegration = lib.mkOption {
+        type = types.bool;
+        default = pkgs.stdenv.isLinux;
+        description = lib.mdDoc ''
+          Whether to enable {file}`hyprland-session.target` on
+          hyprland startup. This links to {file}`graphical-session.target`.
+          Some important environment variables will be imported to systemd
+          and dbus user environment before reaching the target, including
+          - {env}`DISPLAY`
+          - {env}`HYPRLAND_INSTANCE_SIGNATURE`
+          - {env}`WAYLAND_DISPLAY`
+          - {env}`XDG_CURRENT_DESKTOP`
+        '';
+      };
+
+      recommendedEnvironment = lib.mkEnableOption (lib.mdDoc ''
+        Whether to set the recommended environment variables.
       '');
 
-      # This replaces `wayland.windowManager.hyprland.extraConfig`.
-      configLines = lib.mkOption {
-        type = types.lines;
+      xwayland.enable = lib.mkOption {
+        type = types.bool;
+        default = true;
         description = lib.mdDoc ''
-          Lines of the hyprland config to write.
+          Enable XWayland.
+        '';
+      };
+
+      xwayland.hidpi = lib.mkOption {
+        type = types.bool;
+        default = false;
+        description = lib.mdDoc ''
+          Enable HiDPI XWayland.
+        '';
+      };
+
+      nvidiaPatches = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        defaultText = lib.literalExpression "false";
+        example = lib.literalExpression "true";
+        description = lib.mdDoc ''
+          Patch wlroots for better Nvidia support.
         '';
       };
 
@@ -63,16 +132,6 @@ in {
 
       ### CONFIG ###
 
-      extraInitConfig = lib.mkOption {
-        type = configFormat.type;
-        default = null;
-        description = lib.mdDoc ''
-          Extra configuration to be prepended to the top of
-          `~/.config/hypr/hyprland.conf` (after module's generated init).
-        '';
-        # example = lib.literalExpression "";
-      };
-
       config = lib.mkOption {
         type = configFormat.type;
         default = {};
@@ -80,6 +139,22 @@ in {
           Hyprland config attributes.
           These will be serialized to lines of text,
           included in `configLines`.
+        '';
+      };
+
+      extraConfig = lib.mkOption {
+        type = types.nullOr types.lines;
+        default = null;
+        description = lib.mdDoc ''
+          Extra configuration lines to append to the bottom of
+          `~/.config/hypr/hyprland.conf`.
+        '';
+      };
+
+      configLines = lib.mkOption {
+        type = types.lines;
+        description = lib.mdDoc ''
+          Lines of the hyprland config to write.
         '';
       };
 
@@ -121,46 +196,60 @@ in {
     };
   };
 
-  config = lib.mkMerge [
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    {
+      home.packages =
+        lib.optional (cfg.package != null) cfg.package
+        ++ lib.optional cfg.xwayland.enable pkgs.xwayland;
+
+      home.sessionVariables =
+        lib.mkIf cfg.recommendedEnvironment {NIXOS_OZONE_WL = "1";};
+
+      xdg.configFile."hypr/hyprland.conf".text = cfg.configLines;
+    }
     (lib.mkIf cfg.systemdIntegration {
-      wayland.windowManager.hyprland.configLines = lib.mkOrder 1 ''
-        exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP
-        exec-once=systemctl --user start hyprland-session.target
-      '';
-    })
-    (lib.mkIf (cfg.extraInitConfig != null) {
-      wayland.windowManager.hyprland.configLines =
-        lib.mkOrder 50 (toConfigString cfg.extraInitConfig);
+      systemd.user.targets.hyprland-session = {
+        Unit = {
+          Description = "hyprland compositor session";
+          Documentation = ["man:systemd.special(7)"];
+          BindsTo = ["graphical-session.target"];
+          Wants = ["graphical-session-pre.target"];
+          After = ["graphical-session-pre.target"];
+        };
+      };
+
+      wayland.windowManager.hyprland.config.exec_once = [
+        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP"
+        "systemctl --user start hyprland-session.target"
+      ];
     })
     (lib.mkIf (cfg.config != null) {
-      wayland.windowManager.hyprland.configLines =
-        lib.mkOrder 350 (toConfigString cfg.config);
+      xdg.configFile."hypr/hyprland.conf".text =
+        lib.mkOrder 500 (toConfigString cfg.config);
     })
     (lib.mkIf (cfg.extraConfig != null) {
-      wayland.windowManager.hyprland.configLines =
+      xdg.configFile."hypr/hyprland.conf".text =
         lib.mkOrder 900 cfg.extraConfig;
     })
-    (lib.mkIf cfg.enableConfig {
-      # Create the config file with content from `configLines`.
-      # This replaces `wayland.windowManager.hyprland.extraConfig`.
-      xdg.configFile."hypr/hyprland.conf" = lib.mkForce {
-        text = cfg.configLines;
-        onChange = lib.mkIf (cfg.reloadConfig) ''
-          (
-            shopt -s nullglob
-            for socket in /tmp/hypr/_*/.socket.sock; do
-              response="$(
-                printf 'reload config-only' \
-                  | ${pkgs.netcat}/bin/nc -U $socket 2>/dev/null || true
-              )"
-              if [[ "$response" == 'ok' ]]; then
-                instance="$(egrep -o '_[0-9]+' <<< $socket)"
-                echo "Reloading Hyprland instance $instance"
-              fi
-            done
-          )
-        '';
-      };
-    })
-  ];
+    # (lib.mkIf cfg.enableConfig {
+    #   xdg.configFile."hypr/hyprland.conf" = lib.mkForce {
+    #     text = cfg.configLines;
+    #     onChange = lib.mkIf (cfg.reloadConfig) ''
+    #       (
+    #         shopt -s nullglob
+    #         for socket in /tmp/hypr/_*/.socket.sock; do
+    #           response="$(
+    #             printf 'reload config-only' \
+    #               | ${pkgs.netcat}/bin/nc -U $socket 2>/dev/null || true
+    #           )"
+    #           if [[ "$response" == 'ok' ]]; then
+    #             instance="$(egrep -o '_[0-9]+' <<< $socket)"
+    #             echo "Reloading Hyprland instance $instance"
+    #           fi
+    #         done
+    #       )
+    #     '';
+    #   };
+    # })
+  ]);
 }
