@@ -10,6 +10,12 @@
       sortPred = _: _: false;
       indentChars = "    ";
       spaceAroundEquals = true;
+      lineBreakPred = prev: next: let
+        betweenDifferent = nodeType prev != nodeType next;
+        betweenRepeats = isRepeatNode prev && isRepeatNode next;
+        betweenSections = isSectionNode prev && isSectionNode next;
+      in
+        prev != null && (betweenDifferent || betweenRepeats || betweenSections);
     }
     // configOpts;
 
@@ -17,10 +23,12 @@
     sortPred,
     indentChars,
     spaceAroundEquals,
+    lineBreakPred,
   }: attrs:
     lib.pipe attrs [
       (attrsToNodeList [])
       (sortNodeListRecursive sortPred)
+      (insertLineBreakNodesRecursive lineBreakPred)
       (insertIndentNodesRecursive indentChars)
       (renderNodeList {
         inherit indentChars spaceAroundEquals;
@@ -45,6 +53,8 @@
   mkVariableNode = mkNodeType "variable";
   mkRepeatNode = mkNodeType "repeatBlock";
   mkSectionNode = mkNodeType "configDocument";
+
+  nodeType = builtins.getAttr "_node_type";
 
   mapValue = fn: node: node // {value = fn node.value;};
 
@@ -79,6 +89,26 @@
           else node))
         (lib.sort (a: b: sortPred a.path b.path))
       ];
+  in
+    recurse;
+
+  insertLineBreakNodesRecursive = breakPred: let
+    recurse = lib.foldl' (
+      nodes: next: let
+        prev =
+          if nodes == []
+          then null
+          else builtins.elemAt nodes (builtins.length nodes - 1);
+        next' =
+          if isRepeatNode next || isSectionNode next
+          then mapValue recurse next
+          else next;
+        newline = mkStringNode next.path "newline" "\n";
+      in
+        if breakPred prev next'
+        then nodes ++ [newline] ++ [next']
+        else nodes ++ [next']
+    ) [];
   in
     recurse;
 
