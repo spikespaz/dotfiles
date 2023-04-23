@@ -19,14 +19,15 @@
     lib.pipe attrs [
       (mkConfigDocument [])
       (sortConfigDocument sortPred)
-      configDocumentToNestedLines
-      (compileNestedLines indentChars)
+      (compileConfigDocument indentChars)
     ];
 
   mkPathNameValue = path: name: value: {
     inherit name value;
     path = path ++ [name];
   };
+
+  # concatListsSep = sep: lib.foldl' (a: b: a ++ [sep] ++ b) [];
 
   mkConfigDocument = path: attrs: let
     # The first step is to break the attributes out into three
@@ -35,7 +36,8 @@
     # The first is for unique attribute names with distinct individual values.
     variables = lib.pipe attrs [
       (lib.filterAttrs (_: v: !(lib.isAttrs v || lib.isList v)))
-      (lib.mapAttrsToList (mkPathNameValue path))
+      (lib.mapAttrsToList (name: value:
+          {_type = "variable";} // (mkPathNameValue path name value)))
     ];
     # Repeats is for variables whose keys can occur multiple times.
     # Hyprland allows for a variable to have multiple values.
@@ -44,48 +46,46 @@
       (lib.filterAttrs (_: lib.isList))
       (lib.mapAttrsToList (name:
         map (value:
-          mkPathNameValue path name value)))
+          {_type = "repeat";} // (mkPathNameValue path name value))))
       lib.concatLists
     ];
     # Lastly comes the sections, attributes of more config variables.
     sections = lib.pipe attrs [
       (lib.filterAttrs (_: lib.isAttrs))
-      (lib.mapAttrsToList (name: value: {
-        inherit name;
-        path = path ++ [name];
-        value = mkConfigDocument (path ++ [name]) value;
-      }))
+      (lib.mapAttrsToList (name: value:
+        {_type = "section";}
+        // (mkPathNameValue path name (
+          mkConfigDocument (path ++ [name]) value
+        ))))
     ];
   in
     lib.concatLists [variables repeats sections];
 
   # Recursively sort lists of PathNameValue items.
-  sortConfigDocument = sortPred: config:
+  sortConfigDocument = sortPred: doc:
     map (it:
-      if lib.isList it.value
+      if it._type == "section"
       then it // {value = sortConfigDocument sortPred it.value;}
       else it)
-    (lib.sort (a: b: sortPred a.path b.path) config);
-
-  # Convert the
-  configDocumentToNestedLines = map (it:
-    if lib.isList it.value
-    then ["${it.name} {" (configDocumentToNestedLines it.value) "}"]
-    else "${it.name} = ${valueToString it.value}");
+    (lib.sort (a: b: sortPred a.path b.path) doc);
 
   # Creates a string with chars repeated N times.
   mkIndent = chars: level: lib.concatStrings (map (_: chars) (lib.range 1 level));
 
-  # Writes a string line by line. Input is a list of lists and strings.
-  # Each string at any nested level is a line. Nested level determines indentation.
-  compileNestedLines = indentChars: lines: let
-    recurse = level:
-      lib.foldl' (buf: it:
-        if lib.isList it
-        then recurse (level + 1) buf it
-        else buf + "\n" + (mkIndent indentChars level) + it);
+  compileConfigDocument = indentChars: let
+    recurse = lib.foldl' (buf: it: let
+      l = builtins.length it.path;
+      indent = mkIndent indentChars (l - 1);
+    in
+      if it._type == "string"
+      then "${buf}${it.value}"
+      else if it._type == "section"
+      then (recurse "${buf}\n${indent}${it.name} {" it.value) + "\n${indent}}"
+      else if it._type == "variable" || it._type == "repeat"
+      then "${buf}\n${indent}${it.name} = ${valueToString it.value}"
+      else abort "Unknown document node type");
   in
-    recurse 0 "" lines;
+    recurse "";
 
   # Converts a single value to a valid Hyprland config RHS
   valueToString = value:
