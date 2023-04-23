@@ -8,11 +8,7 @@ args @ {
   cfg = config.wayland.windowManager.hyprland;
   cfgPath = "config.wayland.windowManager.hyprland";
 
-  indexOf = x: default: xs: lib.pipe xs [
-    (lib.imap0 (i: v: if v == x then i else null))
-    (lib.findFirst (x: x != null) default)
-  ];
-
+  configRenames = import ./configRenames.nix args;
   configFormat = (import ./configFormat.nix args) {
     indentChars = "    ";
     sortPred = a: b: let
@@ -21,6 +17,20 @@ args @ {
     in
       ia < ib;
   };
+  toConfigString = attrs:
+    configFormat.toConfigString (
+      with configRenames;
+        renameAttrs renames.from renames.to attrs
+    );
+
+  indexOf = x: default: xs:
+    lib.pipe xs [
+      (lib.imap0 (i: v:
+        if v == x
+        then i
+        else null))
+      (lib.findFirst (x: x != null) default)
+    ];
 in {
   options = {
     wayland.windowManager.hyprland = {
@@ -99,11 +109,11 @@ in {
     })
     (lib.mkIf (cfg.extraInitConfig != null) {
       wayland.windowManager.hyprland.configLines =
-        lib.mkOrder 50 (configFormat.toConfigString cfg.extraInitConfig);
+        lib.mkOrder 50 (toConfigString cfg.extraInitConfig);
     })
     (lib.mkIf (cfg.config != null) {
       wayland.windowManager.hyprland.configLines =
-        lib.mkOrder 350 (configFormat.toConfigString cfg.config);
+        lib.mkOrder 350 (toConfigString cfg.config);
     })
     (lib.mkIf (cfg.extraConfig != null) {
       wayland.windowManager.hyprland.configLines =
