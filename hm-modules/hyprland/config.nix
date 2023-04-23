@@ -9,7 +9,7 @@ args @ {
   cfgPath = "config.wayland.windowManager.hyprland";
 
   configFormat = (import ./configFormat.nix args) {
-    renames = import ./renames.nix;
+    # renames = import ./renames.nix;
   };
 in {
   options = {
@@ -74,11 +74,11 @@ in {
     })
     (lib.mkIf (cfg.extraInitConfig != null) {
       wayland.windowManager.hyprland.configLines =
-        lib.mkOrder 50 (configFormat.stringify cfg.extraInitConfig);
+        lib.mkOrder 50 (configFormat.toConfigString cfg.extraInitConfig);
     })
     (lib.mkIf (cfg.config != null) {
       wayland.windowManager.hyprland.configLines =
-        lib.mkOrder 350 (configFormat.stringify cfg.config);
+        lib.mkOrder 350 (configFormat.toConfigString cfg.config);
     })
     (lib.mkIf (cfg.extraConfig != null) {
       wayland.windowManager.hyprland.configLines =
