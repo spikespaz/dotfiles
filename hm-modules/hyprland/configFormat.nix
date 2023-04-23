@@ -9,83 +9,98 @@
     {
       sortPred = _: _: false;
       indentChars = "    ";
+      spaceAroundEquals = true;
     }
     // configOpts;
 
   toConfigString = {
     sortPred,
     indentChars,
+    spaceAroundEquals,
   }: attrs:
     lib.pipe attrs [
-      (mkConfigDocument [])
-      (sortConfigDocument sortPred)
-      (compileConfigDocument indentChars)
+      (attrsToNodeList [])
+      (recursiveSortNodeList sortPred)
+      (renderNodeList {
+        inherit indentChars spaceAroundEquals;
+      })
     ];
 
-  mkPathNameValue = path: name: value: {
+  isNodeType = type: node: node._node_type == type;
+  mkNodeType = type: path: name: value: {
+    _node_type = type;
     inherit name value;
     path = path ++ [name];
   };
 
+  isStringNode = isNodeType "string";
+  isIndentNode = isNodeType "indent";
+  isVariableNode = isNodeType "variable";
+  isRepeatNode = isNodeType "repeatBlock";
+  isSectionNode = isNodeType "configDocument";
+
+  mkStringNode = mkNodeType "string";
+  mkIndentNode = mkNodeType "indent";
+  mkVariableNode = mkNodeType "variable";
+  mkRepeatNode = mkNodeType "repeatBlock";
+  mkSectionNode = mkNodeType "configDocument";
+
   # concatListsSep = sep: lib.foldl' (a: b: a ++ [sep] ++ b) [];
 
-  mkConfigDocument = path: attrs: let
-    # The first step is to break the attributes out into three
-    # distinct sections, which each get special treatment.
-    #
-    # The first is for unique attribute names with distinct individual values.
+  attrsToNodeList = path: attrs: let
     variables = lib.pipe attrs [
       (lib.filterAttrs (_: v: !(lib.isAttrs v || lib.isList v)))
-      (lib.mapAttrsToList (name: value:
-          {_type = "variable";} // (mkPathNameValue path name value)))
+      (lib.mapAttrsToList (mkVariableNode path))
     ];
-    # Repeats is for variables whose keys can occur multiple times.
-    # Hyprland allows for a variable to have multiple values.
-    # In Nix this is represented as an attribute with a list of values.
     repeats = lib.pipe attrs [
       (lib.filterAttrs (_: lib.isList))
-      (lib.mapAttrsToList (name:
-        map (value:
-          {_type = "repeat";} // (mkPathNameValue path name value))))
-      lib.concatLists
+      (lib.mapAttrsToList (name: values:
+        mkRepeatNode path name (
+          map (value: mkVariableNode path name value) values
+        )))
     ];
-    # Lastly comes the sections, attributes of more config variables.
     sections = lib.pipe attrs [
       (lib.filterAttrs (_: lib.isAttrs))
       (lib.mapAttrsToList (name: value:
-        {_type = "section";}
-        // (mkPathNameValue path name (
-          mkConfigDocument (path ++ [name]) value
-        ))))
+          mkSectionNode path name (attrsToNodeList (path ++ [name]) value)))
     ];
   in
     lib.concatLists [variables repeats sections];
 
-  # Recursively sort lists of PathNameValue items.
-  sortConfigDocument = sortPred: doc:
-    map (it:
-      if it._type == "section"
-      then it // {value = sortConfigDocument sortPred it.value;}
-      else it)
-    (lib.sort (a: b: sortPred a.path b.path) doc);
+  recursiveSortNodeList = sortPred: l:
+    lib.pipe l [
+      (map (node:
+        if isSectionNode node
+        then node // {value = recursiveSortNodeList sortPred node.value;}
+        else node))
+      (lib.sort (a: b: sortPred a.path b.path))
+    ];
 
   # Creates a string with chars repeated N times.
-  mkIndent = chars: level: lib.concatStrings (map (_: chars) (lib.range 1 level));
+  repeatChars = chars: level: lib.concatStrings (map (_: chars) (lib.range 1 level));
 
-  compileConfigDocument = indentChars: let
-    recurse = lib.foldl' (buf: it: let
-      l = builtins.length it.path;
-      indent = mkIndent indentChars (l - 1);
-    in
-      if it._type == "string"
-      then "${buf}${it.value}"
-      else if it._type == "section"
-      then (recurse "${buf}\n${indent}${it.name} {" it.value) + "\n${indent}}"
-      else if it._type == "variable" || it._type == "repeat"
-      then "${buf}\n${indent}${it.name} = ${valueToString it.value}"
-      else abort "Unknown document node type");
-  in
-    recurse "";
+  renderNode = opts @ {
+    indentChars,
+    spaceAroundEquals,
+  }: node:
+    if isStringNode node
+    then node.value
+    else if isIndentNode node
+    then repeatChars indentChars node.value
+    else if isVariableNode node
+    then let
+      equals =
+        if spaceAroundEquals
+        then " = "
+        else "=";
+    in "${node.name}${equals}${valueToString node.value}\n"
+    else if isRepeatNode node
+    then lib.concatStrings (map (renderNode opts) node.value)
+    else if isSectionNode node
+    then "${node.name} {\n${renderNodeList opts node.value}}\n"
+    else abort "Not a valid node";
+
+  renderNodeList = opts: l: lib.concatStrings (map (renderNode opts) l);
 
   # Converts a single value to a valid Hyprland config RHS
   valueToString = value:
