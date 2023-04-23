@@ -190,11 +190,6 @@ in {
       builtins.genList (_: "(.+)") (builtins.length vars)
     )}$";
 
-    # Given a function and a list, map each value with the given function.
-    # The function is expected to consume two arguments,
-    # the index of the value in the list, and the value itself.
-    enumerate = f: l: lib.zipListsWith f (lib.range 0 (builtins.length l)) l;
-
     # This script is used in a systemd service that is `PartOf`
     # `hyprland-session.target`.
     # It is itself the event listener. It opens the socket, and
@@ -211,7 +206,7 @@ in {
         ${lib.concatStrings (lib.mapAttrsToList (_: info: ''
           if [[ "$line" =~ ${mkEventRegex info} ]]; then
             ${lib.concatStringsSep "\n  " (
-            enumerate
+            lib.imap0
             (i: v: "export ${v}=\"\${BASH_REMATCH[${toString (i + 1)}]}\"")
             info.vars
           )}

@@ -8,18 +8,18 @@ args @ {
   cfg = config.wayland.windowManager.hyprland;
   cfgPath = "config.wayland.windowManager.hyprland";
 
-  configOrder = rec {
-    # order = [
-    #   ["animations" "bezier"]
-    #   ["animations" "animation"]
-    # ];
-    pred = a: b: false;
-    sortFn = lib.sort pred;
-  };
+  indexOf = x: default: xs: lib.pipe xs [
+    (lib.imap0 (i: v: if v == x then i else null))
+    (lib.findFirst (x: x != null) default)
+  ];
 
   configFormat = (import ./configFormat.nix args) {
     indentChars = "    ";
-    inherit (configOrder) sortFn;
+    sortPred = a: b: let
+      ia = indexOf a 0 cfg.configOrder;
+      ib = indexOf b 0 cfg.configOrder;
+    in
+      ia < ib;
   };
 in {
   options = {
@@ -70,6 +70,21 @@ in {
           Hyprland config attributes.
           These will be serialized to lines of text,
           included in `configLines`.
+        '';
+      };
+
+      configOrder = lib.mkOption {
+        type = types.listOf (types.listOf types.singleLineStr);
+        default = [
+          ["animations" "bezier"]
+          ["animations" "animation"]
+        ];
+        description = lib.mdDoc ''
+          An ordered list of attribute paths
+          to determine sorting order of config section lines.
+
+          This is necessary in some cases, namely where `bezier` must be defined
+          before it can be used in `animation`.
         '';
       };
     };

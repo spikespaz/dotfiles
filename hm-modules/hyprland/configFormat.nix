@@ -7,18 +7,18 @@
 }: configOpts: let
   configOpts' =
     {
-      sortFn = lib.sort (_: _: false);
+      sortPred = _: _: false;
       indentChars = "    ";
     }
     // configOpts;
 
   toConfigString = {
-    sortFn,
+    sortPred,
     indentChars,
   }: attrs:
     lib.pipe attrs [
       (mkConfigDocument [])
-      (sortConfigDocument sortFn)
+      (sortConfigDocument sortPred)
       configDocumentToNestedLines
       (compileNestedLines indentChars)
     ];
@@ -60,12 +60,12 @@
     lib.concatLists [variables repeats sections];
 
   # Recursively sort lists of PathNameValue items.
-  sortConfigDocument = sortFn: config:
+  sortConfigDocument = sortPred: config:
     map (it:
       if lib.isList it.value
-      then it // {value = sortConfigDocument sortFn it.value;}
+      then it // {value = sortConfigDocument sortPred it.value;}
       else it)
-    (sortFn config);
+    (lib.sort (a: b: sortPred a.path b.path) config);
 
   # Convert the
   configDocumentToNestedLines = map (it:
