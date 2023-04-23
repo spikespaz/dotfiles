@@ -46,6 +46,8 @@
   mkRepeatNode = mkNodeType "repeatBlock";
   mkSectionNode = mkNodeType "configDocument";
 
+  mapValue = fn: node: node // {value = fn node.value;};
+
   # concatListsSep = sep: lib.foldl' (a: b: a ++ [sep] ++ b) [];
 
   attrsToNodeList = path: attrs: let
@@ -77,19 +79,20 @@
       (lib.sort (a: b: sortPred a.path b.path))
     ];
 
-  insertIndentNodesRecursive = indentChars:
+  insertIndentNodesRecursive = indentChars: let
+    recurse = insertIndentNodesRecursive indentChars;
+  in
     lib.foldl' (
       nodes: next: let
-        l = builtins.length next.path - 1;
-        indent = mkIndentNode next.path null l;
-        nextVal = insertIndentNodesRecursive indentChars next.value;
+        level = builtins.length next.path - 1;
+        indent = mkIndentNode next.path null level;
       in
         if isVariableNode next
         then nodes ++ [indent] ++ [next]
         else if isRepeatNode next
-        then nodes ++ [(next // {value = nextVal;})]
+        then nodes ++ [(mapValue recurse next)]
         else if isSectionNode next
-        then nodes ++ [indent (next // {value = nextVal ++ [indent];})]
+        then nodes ++ [indent (mapValue (v: (recurse v) ++ [indent]) next)]
         else nodes ++ [next]
     ) [];
 
