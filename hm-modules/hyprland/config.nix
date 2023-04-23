@@ -10,7 +10,7 @@ args @ {
 
   configRenames = import ./configRenames.nix args;
   configFormat = (import ./configFormat.nix args) {
-    indentChars = "    ";
+    indentChars = "\t";
     sortPred = a: b: let
       ia = indexOf a 0 cfg.configOrder;
       ib = indexOf b 0 cfg.configOrder;
@@ -86,6 +86,27 @@ in {
       configOrder = lib.mkOption {
         type = types.listOf (types.listOf types.singleLineStr);
         default = [
+          ["exec-once"]
+          ["exec"]
+
+          ["monitor"]
+          ["wsbind"]
+
+          ["dwindle"]
+          ["master"]
+          ["general"]
+          ["input"]
+          ["binds"]
+          ["gestures"]
+          ["decoration"]
+          ["animations"]
+
+          ["blurls"]
+          ["windowrulev2"]
+
+          ["misc"]
+          ["debug"]
+
           ["animations" "bezier"]
           ["animations" "animation"]
         ];
