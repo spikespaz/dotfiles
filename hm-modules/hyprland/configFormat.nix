@@ -70,22 +70,23 @@
   in
     lib.concatLists [variables repeats sections];
 
-  sortNodeListRecursive = sortPred: l:
-    lib.pipe l [
-      (map (node:
-        if isSectionNode node
-        then node // {value = sortNodeListRecursive sortPred node.value;}
-        else node))
-      (lib.sort (a: b: sortPred a.path b.path))
-    ];
+  sortNodeListRecursive = sortPred: let
+    recurse = l:
+      lib.pipe l [
+        (map (node:
+          if isSectionNode node
+          then mapValue recurse node
+          else node))
+        (lib.sort (a: b: sortPred a.path b.path))
+      ];
+  in
+    recurse;
 
   insertIndentNodesRecursive = indentChars: let
-    recurse = insertIndentNodesRecursive indentChars;
-  in
-    lib.foldl' (
+    recurse = lib.foldl' (
       nodes: next: let
         level = builtins.length next.path - 1;
-        indent = mkIndentNode next.path null level;
+        indent = mkIndentNode next.path "indent" level;
       in
         if isVariableNode next
         then nodes ++ [indent] ++ [next]
@@ -95,6 +96,8 @@
         then nodes ++ [indent (mapValue (v: (recurse v) ++ [indent]) next)]
         else nodes ++ [next]
     ) [];
+  in
+    recurse;
 
   # Creates a string with chars repeated N times.
   repeatChars = chars: level: lib.concatStrings (map (_: chars) (lib.range 1 level));
