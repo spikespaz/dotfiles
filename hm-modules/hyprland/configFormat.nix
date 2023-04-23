@@ -19,6 +19,9 @@
     }
     // configOpts;
 
+  # toPretty = lib.generators.toPretty {multiline = false;};
+  toPrettyM = lib.generators.toPretty {multiline = true;};
+
   toConfigString = {
     sortPred,
     indentChars,
@@ -35,19 +38,19 @@
       })
     ];
 
-  isNodeType = type: node: node._node_type == type;
-  mkNodeType = type: path: name: value: {
-    _node_type = type;
-    inherit name value;
-    path = path ++ [name];
-  };
-
+  isNode = node: lib.isAttrs node && node ? _node_type;
+  isNodeType = type: node: isNode node && node._node_type == type;
   isStringNode = isNodeType "string";
   isIndentNode = isNodeType "indent";
   isVariableNode = isNodeType "variable";
   isRepeatNode = isNodeType "repeatBlock";
   isSectionNode = isNodeType "configDocument";
 
+  mkNodeType = type: path: name: value: {
+    _node_type = type;
+    inherit name value;
+    path = path ++ [name];
+  };
   mkStringNode = mkNodeType "string";
   mkIndentNode = mkNodeType "indent";
   mkVariableNode = mkNodeType "variable";
@@ -55,7 +58,6 @@
   mkSectionNode = mkNodeType "configDocument";
 
   nodeType = builtins.getAttr "_node_type";
-
   mapValue = fn: node: node // {value = fn node.value;};
 
   # concatListsSep = sep: lib.foldl' (a: b: a ++ [sep] ++ b) [];
@@ -151,7 +153,10 @@
     then lib.concatStrings (map (renderNode opts) node.value)
     else if isSectionNode node
     then "${node.name} {\n${renderNodeList opts node.value}}\n"
-    else abort "Not a valid node";
+    else abort ''
+      value is not of any known node type:
+      ${toPrettyM node}
+    '';
 
   renderNodeList = opts: l: lib.concatStrings (map (renderNode opts) l);
 
@@ -167,7 +172,10 @@
     then value
     else if lib.isList value
     then lib.concatMapStringsSep " " valueToString value
-    else abort (lib.traceSeqN 2 value "Invalid value, cannot convert '${builtins.typeOf value}' to Hyprland config string value");
+    else abort ''
+      could not convert value of type '${builtins.typeOf value}' to config string:
+      ${toPrettyM value}
+    '';
 in {
   # freeformType = types.attrsOf types.anything;
   type = with lib.types; let
