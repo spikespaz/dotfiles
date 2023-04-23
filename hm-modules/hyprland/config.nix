@@ -8,8 +8,18 @@ args @ {
   cfg = config.wayland.windowManager.hyprland;
   cfgPath = "config.wayland.windowManager.hyprland";
 
+  configOrder = rec {
+    # order = [
+    #   ["animations" "bezier"]
+    #   ["animations" "animation"]
+    # ];
+    pred = a: b: false;
+    sortFn = lib.sort pred;
+  };
+
   configFormat = (import ./configFormat.nix args) {
-    # renames = import ./renames.nix;
+    indentChars = "    ";
+    inherit (configOrder) sortFn;
   };
 in {
   options = {
