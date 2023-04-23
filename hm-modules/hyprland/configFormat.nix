@@ -20,7 +20,8 @@
   }: attrs:
     lib.pipe attrs [
       (attrsToNodeList [])
-      (recursiveSortNodeList sortPred)
+      (sortNodeListRecursive sortPred)
+      (insertIndentNodesRecursive indentChars)
       (renderNodeList {
         inherit indentChars spaceAroundEquals;
       })
@@ -67,14 +68,30 @@
   in
     lib.concatLists [variables repeats sections];
 
-  recursiveSortNodeList = sortPred: l:
+  sortNodeListRecursive = sortPred: l:
     lib.pipe l [
       (map (node:
         if isSectionNode node
-        then node // {value = recursiveSortNodeList sortPred node.value;}
+        then node // {value = sortNodeListRecursive sortPred node.value;}
         else node))
       (lib.sort (a: b: sortPred a.path b.path))
     ];
+
+  insertIndentNodesRecursive = indentChars:
+    lib.foldl' (
+      nodes: next: let
+        l = builtins.length next.path - 1;
+        indent = mkIndentNode next.path null l;
+        nextVal = insertIndentNodesRecursive indentChars next.value;
+      in
+        if isVariableNode next
+        then nodes ++ [indent] ++ [next]
+        else if isRepeatNode next
+        then nodes ++ [(next // {value = nextVal;})]
+        else if isSectionNode next
+        then nodes ++ [indent (next // {value = nextVal ++ [indent];})]
+        else nodes ++ [next]
+    ) [];
 
   # Creates a string with chars repeated N times.
   repeatChars = chars: level: lib.concatStrings (map (_: chars) (lib.range 1 level));
