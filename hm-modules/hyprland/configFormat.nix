@@ -12,12 +12,15 @@
     }
     // configOpts;
 
-  toConfigString = opts: attrs:
+  toConfigString = {
+    sortFn,
+    indentChars,
+  }: attrs:
     lib.pipe attrs [
       (mkConfigDocument [])
-      (sortConfigDocument opts.sortFn)
+      (sortConfigDocument sortFn)
       configDocumentToNestedLines
-      (compileNestedLines opts.indentChars)
+      (compileNestedLines indentChars)
     ];
 
   mkPathNameValue = path: name: value: {
@@ -97,48 +100,6 @@
     else if lib.isList value
     then lib.concatMapStringsSep " " valueToString value
     else abort (lib.traceSeqN 2 value "Invalid value, cannot convert '${builtins.typeOf value}' to Hyprland config string value");
-
-  # Turn a recursive attrset into a list of
-  # `{ path = [...]; value = ...; }` where `path` and `value` are analogous
-  # to a name value pair.
-  attrsToPathValueList = let
-    recurse = path: attrs:
-      lib.flatten (lib.mapAttrsToList (name: value:
-        if lib.isAttrs value
-        then (recurse (path ++ [name]) value)
-        else {
-          path = path ++ [name];
-          inherit value;
-        })
-      attrs);
-  in
-    recurse [];
-
-  # Inverse operation for `attrsToPathValueList`.
-  pathValueListToAttrs = lib.foldl' (
-    acc: attr:
-      lib.recursiveUpdate acc (lib.setAttrByPath attr.path attr.value)
-  ) {};
-
-  # Takes a list of renames and attrs for the hyprland config,
-  # and recursively renames attributes accordingly.
-  renameAll = renames: attrs:
-    lib.pipe attrs [
-      # get a list of `{ path = [...]; value = ...; }`
-      attrsToPathValueList
-      # rename the `path` of the attrs who need to be renamed
-      (map (attr: let
-        spec = lib.findFirst (spec: attr.path == spec.prefer) null renames;
-      in
-        if spec == null
-        then attr
-        else {
-          path = spec.original;
-          inherit (attr) value;
-        }))
-      # back to one attrset
-      pathValueListToAttrs
-    ];
 in {
   # freeformType = types.attrsOf types.anything;
   type = with lib.types; let
@@ -149,9 +110,5 @@ in {
     attrsOfValueTypes;
 
   toConfigString = toConfigString configOpts';
-
-  # generate = name: value: pkgs.writeText name (stringify value);
-
-  # Would have been much nicer to use this, but it causes infrec.
-  # imports = map (spec: lib.mkAliasOptionModule spec.prefer spec.original) renames;
+  generate = name: value: pkgs.writeText name (toConfigString configOpts' value);
 }
