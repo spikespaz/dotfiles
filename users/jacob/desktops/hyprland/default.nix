@@ -8,7 +8,6 @@
   ...
 }: {
   imports = [
-    inputs.hyprland.homeManagerModules.default
     self.homeManagerModules.desktop-portals
     self.homeManagerModules.hyprland
     ./config.nix
@@ -23,14 +22,12 @@
   home.packages = [
     # Screen Capture
     pkgs.prtsc
-
     # xwayland perm for pkexec
     pkgs.xorg.xhost
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
-    enableConfig = true;
     reloadConfig = true;
     systemdIntegration = true;
     recommendedEnvironment = true;
@@ -38,7 +35,7 @@
     xwayland.enable = true;
     xwayland.hidpi = false;
 
-    extraInitConfig.exec_once = [
+    config.exec_once = [
       # polkit agent, raises to root access with gui
       "${lib.getExe pkgs.lxqt.lxqt-policykit}"
       # allow apps with risen perms after agent to connect to local xwayland

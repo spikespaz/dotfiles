@@ -55,9 +55,9 @@
     in {
       disable_hyprland_logo = true; # false
       disable_splash_rendering = true; # false
-      no_vfr = false; # true
+      variable_framerate = true;
+      variable_refresh = FULLSCREEN_ONLY;
       disable_autoreload = true; # false # nix takes care of that
-      enable_swallow = true; # false
     };
 
     # <https://wiki.hyprland.org/Configuring/Dwindle-Layout/>
@@ -71,7 +71,6 @@
 
     # <https://wiki.hyprland.org/Configuring/Animations/#curves>
     animations = {
-      enable = true;
       animation = {
         # window creation
         windowsIn = {
