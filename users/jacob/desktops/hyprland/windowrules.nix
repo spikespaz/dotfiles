@@ -1,11 +1,17 @@
 # <https://wiki.hyprland.org/Configuring/Window-Rules/#window-rules-v2>
 {lib, ...}: let
   # I recommend using this factory function for creating window rules.
-  rule = rules: {
-    class ? null,
-    title ? null,
-  }: {inherit class title rules;};
+  rule = rules: attrs: attrs // {inherit rules;};
+  # not used because my layer rules aren't compl
+  layerRule = rules: namespace: rule rules {namespace = [namespace];};
 in {
+  wayland.windowManager.hyprland.layerRules = [
+    {
+      namespace = ["rofi" "notification"];
+      rules = ["blur" "ignorezero"];
+    }
+  ];
+
   wayland.windowManager.hyprland.windowRules = let
     ### SYSTEM CONTROL ###
     printerConfig.class = ["system-config-printer"];
