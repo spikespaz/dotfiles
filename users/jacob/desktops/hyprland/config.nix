@@ -7,6 +7,8 @@
       gaps_outside = 10;
       active_border_color = "rgba(BDAE93FF)";
       inactive_border_color = "rgba(665C54FF)";
+      active_group_border_color = "rgba(8EC07CFF)"; # aqua
+      inactive_group_border_color = "rgba(665C54FF)"; # bg3
       cursor_inactive_timeout = 10;
       no_cursor_warps = true;
     };
@@ -62,8 +64,6 @@
     config.dwindle = let
       ALWAYS_EAST = 2;
     in {
-      active_group_border_color = "0xFF8ec07c"; # aqua
-      inactive_group_border_color = "0xFF665c54"; # bg3
       force_split = ALWAYS_EAST; # 0
       preserve_split = true; # false
       no_gaps_when_only = true; # false
