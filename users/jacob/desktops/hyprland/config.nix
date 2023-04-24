@@ -25,9 +25,12 @@
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#input>
-    config.input = {
-      follow_mouse = "loose";
-      float_switch_override_focus = "disabled"; # float_to_float
+    config.input = let
+      DISABLED = 0;
+      LOOSE = 2;
+    in {
+      follow_mouse = LOOSE;
+      float_switch_override_focus = DISABLED;
 
       touchpad = {
         tap_to_click = false;
@@ -45,7 +48,9 @@
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#misc>
-    config.misc = {
+    config.misc = let
+      FULLSCREEN_ONLY = 2;
+    in {
       disable_hyprland_logo = true; # false
       disable_splash_rendering = true; # false
       no_vfr = false; # true
@@ -54,10 +59,12 @@
     };
 
     # <https://wiki.hyprland.org/Configuring/Dwindle-Layout/>
-    config.dwindle = {
+    config.dwindle = let
+      ALWAYS_EAST = 2;
+    in {
       active_group_border_color = "0xFF8ec07c"; # aqua
       inactive_group_border_color = "0xFF665c54"; # bg3
-      force_split = 2; # 0
+      force_split = ALWAYS_EAST; # 0
       preserve_split = true; # false
       no_gaps_when_only = true; # false
     };
