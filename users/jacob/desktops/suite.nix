@@ -1,5 +1,5 @@
 # desktop environment default programs
-{pkgs, ...}: {
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     # Utilities
     wl-clipboard

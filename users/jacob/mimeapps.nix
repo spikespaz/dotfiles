@@ -1,10 +1,7 @@
-{ulib, ...}:
+{ ulib, ... }:
 ulib.mkMimeApps {
   ### FILE BROWSER ###
-  "org.kde.dolphin" = [
-    "inode/directory"
-    "x-directory/normal"
-  ];
+  "org.kde.dolphin" = [ "inode/directory" "x-directory/normal" ];
 
   ### WEB BROWSER ###
   "firefox" = [
@@ -21,7 +18,5 @@ ulib.mkMimeApps {
   ];
 
   ### DISCORD ###
-  "webcord" = [
-    "x-scheme-handler/discord"
-  ];
+  "webcord" = [ "x-scheme-handler/discord" ];
 }

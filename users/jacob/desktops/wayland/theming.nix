@@ -1,16 +1,8 @@
-{
-  config,
-  pkgs,
-  hmModules,
-  ...
-}: {
-  imports = [
-    hmModules.randbg
-    hmModules.uniform-theme
-    hmModules.kvantum
-  ];
+{ config, pkgs, hmModules, ... }: {
+  imports = [ hmModules.randbg hmModules.uniform-theme hmModules.kvantum ];
 
-  home.sessionVariables.USER_WALLPAPERS_DIRECTORY = "${config.home.homeDirectory}/Pictures/Wallpapers";
+  home.sessionVariables.USER_WALLPAPERS_DIRECTORY =
+    "${config.home.homeDirectory}/Pictures/Wallpapers";
 
   # randomly cycle the wallpaper every hour with a 25% chance
   services.randbg = {

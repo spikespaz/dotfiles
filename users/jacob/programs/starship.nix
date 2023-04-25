@@ -1,8 +1,10 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   toStringRecur = x:
-    if builtins.isAttrs x
-    then builtins.mapAttrs (_: toStringRecur) x
-    else toString x;
+    if builtins.isAttrs x then
+      builtins.mapAttrs (_: toStringRecur) x
+    else
+      toString x;
 
   gruvbox = {
     normal = {
@@ -90,10 +92,7 @@ in {
     "$character"
   ];
 
-  right_format = lib.concatStrings [
-    "($cmd_duration)"
-    "($git_state)"
-  ];
+  right_format = lib.concatStrings [ "($cmd_duration)" "($git_state)" ];
 
   directory = {
     format = "([$read_only]($read_only_style) )[$path]($style) ";
@@ -110,9 +109,7 @@ in {
     tag_symbol = "";
   };
 
-  git_metrics = {
-    disabled = false;
-  };
+  git_metrics = { disabled = false; };
 
   git_status = {
     format = lib.concatStrings [

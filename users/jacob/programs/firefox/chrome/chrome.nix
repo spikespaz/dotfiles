@@ -1,4 +1,4 @@
-{...}: {
+{ ... }: {
   userConfig = {
     "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
     "browser.uidensity" = 1;
@@ -7,12 +7,7 @@
     "tabMinWidth" = 130;
   };
 
-  sources = {
-    "./" = ./.;
-  };
+  sources = { "./" = ./.; };
 
-  blacklistGlobs = [
-    "default.nix"
-    "chrome.nix"
-  ];
+  blacklistGlobs = [ "default.nix" "chrome.nix" ];
 }

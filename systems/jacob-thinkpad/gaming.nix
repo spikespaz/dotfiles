@@ -1,8 +1,5 @@
-{
-  lib,
-  pkgs,
-  ...
-}: let
+{ lib, pkgs, ... }:
+let
   runGameScriptBin = pkgs.writeShellScriptBin "run-game" ''
     set -eu
     if [ "$(id -u)" -eq 0 ]; then
@@ -16,21 +13,15 @@
     fi
   '';
 in {
-  environment.systemPackages = [
-    runGameScriptBin
-  ];
+  environment.systemPackages = [ runGameScriptBin ];
 
-  security.sudo.extraRules = [
-    {
-      users = ["jacob"];
-      commands = [
-        {
-          command = lib.getExe runGameScriptBin;
-          options = ["NOPASSWD"];
-        }
-      ];
-    }
-  ];
+  security.sudo.extraRules = [{
+    users = [ "jacob" ];
+    commands = [{
+      command = lib.getExe runGameScriptBin;
+      options = [ "NOPASSWD" ];
+    }];
+  }];
 
   programs.steam = {
     enable = true;

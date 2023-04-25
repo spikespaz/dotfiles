@@ -1,36 +1,11 @@
-{
-  maintainers,
-  lib,
-  stdenv,
-  cmake,
-  pkg-config,
-  fetchFromGitHub,
-  makeWrapper,
-  # hard deps
-  dbus,
-  dconf,
-  glib,
-  pciutils,
-  zlib,
-  # soft deps
-  enableChafa ? false,
-  chafa,
-  enableImageMagick ? false,
-  imagemagick_light,
-  enableOpenCLModule ? true,
-  ocl-icd,
-  opencl-headers,
-  enableOpenGLModule ? true,
-  libglvnd,
-  enableVulkanModule ? true,
-  vulkan-loader,
-  enableWayland ? true,
-  wayland,
-  enableX11 ? true,
-  xorg,
-  enableXFCE ? false,
-  xfce,
-}:
+{ maintainers, lib, stdenv, cmake, pkg-config, fetchFromGitHub, makeWrapper,
+# hard deps
+dbus, dconf, glib, pciutils, zlib,
+# soft deps
+enableChafa ? false, chafa, enableImageMagick ? false, imagemagick_light
+, enableOpenCLModule ? true, ocl-icd, opencl-headers, enableOpenGLModule ? true
+, libglvnd, enableVulkanModule ? true, vulkan-loader, enableWayland ? true
+, wayland, enableX11 ? true, xorg, enableXFCE ? false, xfce, }:
 stdenv.mkDerivation rec {
   pname = "fastfetch";
   version = "1.7.0";
@@ -42,27 +17,22 @@ stdenv.mkDerivation rec {
     hash = "sha256-sPCWsnBlAdEy8p/82myrPPUjkLqhybLppSJj3pxfLhQ=";
   };
 
-  nativeBuildInputs = [cmake makeWrapper pkg-config];
+  nativeBuildInputs = [ cmake makeWrapper pkg-config ];
 
-  runtimeDependencies =
-    [dbus dconf glib pciutils zlib]
+  runtimeDependencies = [ dbus dconf glib pciutils zlib ]
     ++ lib.optional enableChafa chafa
     ++ lib.optional enableImageMagick imagemagick_light
     ++ lib.optional enableOpenCLModule ocl-icd
     ++ lib.optional enableOpenGLModule libglvnd
     ++ lib.optional enableVulkanModule vulkan-loader
-    ++ lib.optional enableWayland wayland
-    ++ lib.optional enableX11 xorg.libxcb
+    ++ lib.optional enableWayland wayland ++ lib.optional enableX11 xorg.libxcb
     ++ lib.optional enableXFCE xfce.xfconf;
 
-  buildInputs =
-    runtimeDependencies
+  buildInputs = runtimeDependencies
     ++ lib.optional enableOpenCLModule opencl-headers
     ++ lib.optional enableX11 xorg.libX11;
 
-  cmakeFlags = [
-    "-DCMAKE_INSTALL_SYSCONFDIR=${placeholder "out"}/etc"
-  ];
+  cmakeFlags = [ "-DCMAKE_INSTALL_SYSCONFDIR=${placeholder "out"}/etc" ];
 
   ldLibraryPath = lib.makeLibraryPath runtimeDependencies;
 
@@ -78,6 +48,6 @@ stdenv.mkDerivation rec {
     inherit (src.meta) homepage;
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [spikespaz];
+    maintainers = with maintainers; [ spikespaz ];
   };
 }

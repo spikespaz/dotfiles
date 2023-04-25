@@ -1,12 +1,6 @@
-{
-  self,
-  config,
-  lib,
-  pkgs,
-  # hmModules,
-  inputs,
-  ...
-}: {
+{ self, config, lib, pkgs,
+# hmModules,
+inputs, ... }: {
   imports = [
     self.homeManagerModules.desktop-portals
     self.homeManagerModules.hyprland
@@ -45,12 +39,9 @@
 
   xdg.desktopPortals = {
     enable = true;
-    portals = let
-      useIn = ["Hyprland"];
+    portals = let useIn = [ "Hyprland" ];
     in [
-      {
-        package = pkgs.xdg-desktop-portal-hyprland;
-      }
+      { package = pkgs.xdg-desktop-portal-hyprland; }
       {
         package = pkgs.libsForQt5.xdg-desktop-portal-kde;
         interfaces = [

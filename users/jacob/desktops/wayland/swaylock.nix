@@ -1,9 +1,5 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config, pkgs, lib, ... }:
+let
   # package = pkgs.swaylock-effects.overrideAttrs (old: rec {
   #   version = "1.6.11";
   #   src = pkgs.fetchFromGitHub {

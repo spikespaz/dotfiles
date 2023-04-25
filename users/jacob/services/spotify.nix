@@ -1,11 +1,4 @@
-{
-  self,
-  config,
-  pkgs,
-  lib,
-  hmModules,
-  ...
-}: {
+{ self, config, pkgs, lib, hmModules, ... }: {
   homeage.file."jacob.spotifyd.age" = {
     source = "${self}/secrets/jacob.spotifyd.age";
   };
@@ -23,7 +16,8 @@
         bitrate = 320;
         use_mpris = true;
         username = "spikespaz@outlook.com";
-        password_cmd = "${pkgs.coreutils}/bin/cat '${config.homeage.mount}/jacob.spotifyd.age'";
+        password_cmd =
+          "${pkgs.coreutils}/bin/cat '${config.homeage.mount}/jacob.spotifyd.age'";
       };
     };
   };
@@ -34,9 +28,7 @@
     spotify-qt
   ];
 
-  xdg.configFile."spotifyd/spotifyd.conf".source = (
-    (pkgs.formats.toml {}).generate
-    "spotifyd.conf"
-    config.services.spotifyd.settings
-  );
+  xdg.configFile."spotifyd/spotifyd.conf".source =
+    ((pkgs.formats.toml { }).generate "spotifyd.conf"
+      config.services.spotifyd.settings);
 }

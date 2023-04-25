@@ -1,9 +1,5 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config, pkgs, lib, ... }:
+let
   inherit (lib) types;
   inherit (import ./common.nix) baseName version src;
   optionName = baseName;
@@ -11,24 +7,24 @@
 in {
   options = {
     programs.${optionName} = {
-      enable = lib.mkEnableOption (lib.mdDoc '''');
+      enable = lib.mkEnableOption (lib.mdDoc "");
       disableDevices = lib.mkOption {
         type = types.attrsOf types.attrs;
-        default = [];
-        description = lib.mdDoc '''';
-        example = lib.literalExpression '''';
+        default = [ ];
+        description = lib.mdDoc "";
+        example = lib.literalExpression "";
       };
       allowedUsers = lib.mkOption {
         type = types.listOf types.singleLineStr;
-        default = [];
-        description = lib.mdDoc '''';
-        example = lib.literalExpression '''';
+        default = [ ];
+        description = lib.mdDoc "";
+        example = lib.literalExpression "";
       };
       allowedGroups = lib.mkOption {
         type = types.listOf types.singleLineStr;
-        default = [];
-        description = lib.mdDoc '''';
-        example = lib.literalExpression '''';
+        default = [ ];
+        description = lib.mdDoc "";
+        example = lib.literalExpression "";
       };
     };
   };
@@ -38,10 +34,10 @@ in {
       inherit version src;
 
       strictDeps = true;
-      nativeBuildInputs = [pkgs.makeWrapper];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
 
       installPhase = let
-        scriptPath = lib.makeBinPath (with pkgs; [bash coreutils evtest]);
+        scriptPath = lib.makeBinPath (with pkgs; [ bash coreutils evtest ]);
         DISABLE_DEVICES = lib.pipe cfg.disableDevices [
           builtins.attrNames
           (map (name: "/dev/${name}"))
@@ -56,31 +52,20 @@ in {
       '';
     };
   in {
-    environment.systemPackages = [package];
+    environment.systemPackages = [ package ];
 
-    services.udev.extraRules = (
-      lib.concatStrings (
-        lib.mapAttrsToList (name: {
-          product,
-          vendor,
-        }: ''
-          SUBSYSTEMS=="input", ATTRS{id/product}=="${product}", ATTRS{id/vendor}=="${vendor}", SYMLINK+="${name}"
-        '')
-        cfg.disableDevices
-      )
-    );
+    services.udev.extraRules = (lib.concatStrings (lib.mapAttrsToList (name:
+      { product, vendor, }: ''
+        SUBSYSTEMS=="input", ATTRS{id/product}=="${product}", ATTRS{id/vendor}=="${vendor}", SYMLINK+="${name}"
+      '') cfg.disableDevices));
 
-    security.sudo.extraRules = [
-      {
-        users = cfg.allowedUsers;
-        groups = cfg.allowedGroups;
-        commands = [
-          {
-            command = lib.getExe package;
-            options = ["NOPASSWD"];
-          }
-        ];
-      }
-    ];
+    security.sudo.extraRules = [{
+      users = cfg.allowedUsers;
+      groups = cfg.allowedGroups;
+      commands = [{
+        command = lib.getExe package;
+        options = [ "NOPASSWD" ];
+      }];
+    }];
   });
 }

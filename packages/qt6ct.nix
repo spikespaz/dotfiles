@@ -1,14 +1,5 @@
-{
-  stdenv,
-  lib,
-  fetchFromGitHub,
-  wrapQtAppsHook,
-  qtbase,
-  qtsvg,
-  qttools,
-  qmake,
-  qtwayland,
-}:
+{ stdenv, lib, fetchFromGitHub, wrapQtAppsHook, qtbase, qtsvg, qttools, qmake
+, qtwayland, }:
 stdenv.mkDerivation rec {
   pname = "qt6ct";
   version = "0.7";
@@ -20,9 +11,9 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-7WuHdb7gmdC/YqrPDT7OYbD6BEm++EcIkmORW7cSPDE=";
   };
 
-  nativeBuildInputs = [qmake qttools qtwayland wrapQtAppsHook];
+  nativeBuildInputs = [ qmake qttools qtwayland wrapQtAppsHook ];
 
-  buildInputs = [qtbase qtsvg];
+  buildInputs = [ qtbase qtsvg ];
 
   qmakeFlags = [
     "LRELEASE_EXECUTABLE=${lib.getDev qttools}/bin/lrelease"

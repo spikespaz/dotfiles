@@ -1,7 +1,6 @@
-args @ {mkModuleIndex, ...}:
+args@{ mkModuleIndex, ... }:
 mkModuleIndex {
   path = ./.;
-  ignore = ["toplevel.nix"];
+  ignore = [ "toplevel.nix" ];
   include = import ./toplevel.nix args;
-}
-args
+} args

@@ -1,8 +1,4 @@
-args @ {
-  lib,
-  mkModuleIndex,
-  ...
-}:
+args@{ lib, mkModuleIndex, ... }:
 mkModuleIndex {
   path = ./.;
   # TODO doesn't work
@@ -11,5 +7,4 @@ mkModuleIndex {
   #       builtins.attrValues (mkModuleIndex {path = ./.;} args)
   #     );
   #   };
-}
-args
+} args

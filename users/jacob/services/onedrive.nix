@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{ config, pkgs, lib, ... }: {
   home.packages = [
     pkgs.onedrive # TODO: figure out how to start this with secrets
   ];
@@ -12,8 +7,8 @@
     Unit = {
       Description = pkgs.onedrive.meta.description;
       Documentation = "https://github.com/abraunegg/onedrive";
-      After = ["multi-user.target"];
-      Wants = ["network-online.target"];
+      After = [ "multi-user.target" ];
+      Wants = [ "network-online.target" ];
     };
 
     Service = {
@@ -40,8 +35,6 @@
       RestartPreventExitStatus = 3;
     };
 
-    Install = {
-      WantedBy = ["multi-user.target"];
-    };
+    Install = { WantedBy = [ "multi-user.target" ]; };
   };
 }

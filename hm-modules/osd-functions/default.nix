@@ -1,9 +1,5 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config, pkgs, lib, ... }:
+let
   inherit (lib) types;
 
   cfgPath = "utilities.osd-functions";
@@ -27,10 +23,7 @@
     inherit (types.float) merge;
   };
 
-  mkIconOption = {
-    actionName,
-    default,
-  }:
+  mkIconOption = { actionName, default, }:
     lib.mkOption {
       type = types.either types.singleLineStr types.path;
       inherit default;
@@ -103,7 +96,7 @@ in {
             '';
           };
           urgency = lib.mkOption {
-            type = types.enum ["low" "normal" "critical"];
+            type = types.enum [ "low" "normal" "critical" ];
             default = "normal";
             description = lib.mdDoc ''
               The urgency level to use for the notification.
@@ -111,18 +104,15 @@ in {
             '';
           };
           mainTextSize = lib.mkOption {
-            type =
-              types.either
-              (types.enum [
-                "xx-small"
-                "x-small"
-                "small"
-                "medium"
-                "large"
-                "x-large"
-                "xx-large"
-              ])
-              (types.strMatching rePatterns.fontSize);
+            type = types.either (types.enum [
+              "xx-small"
+              "x-small"
+              "small"
+              "medium"
+              "large"
+              "x-large"
+              "xx-large"
+            ]) (types.strMatching rePatterns.fontSize);
             default = "x-large";
             description = lib.mdDoc ''
               The font size of the main OSD text.
@@ -157,9 +147,7 @@ in {
 
         audioOutput = {
           deviceNode = lib.mkOption {
-            type =
-              types.either
-              types.ints.unsigned
+            type = types.either types.ints.unsigned
               (types.strMatching "^(@DEFAULT_AUDIO_SINK@)$");
             default = "@DEFAULT_AUDIO_SINK@";
             description = lib.mdDoc ''
@@ -212,9 +200,7 @@ in {
 
         audioInput = {
           deviceNode = lib.mkOption {
-            type =
-              types.either
-              types.ints.unsigned
+            type = types.either types.ints.unsigned
               (types.strMatching "^(@DEFAULT_AUDIO_SOURCE@)$");
             default = "@DEFAULT_AUDIO_SOURCE@";
             description = lib.mdDoc ''
@@ -276,19 +262,18 @@ in {
       };
     };
   in {
-    utilities.osd-functions.package =
-      if (cfg.exeName == null)
-      then scriptPackage
-      else
-        pkgs.symlinkJoin {
-          inherit (scriptPackage) pname name;
-          paths = [scriptPackage];
-          postBuild = ''
-            mv \
-              $out/bin/${baseNameOf (lib.getExe scriptPackage)} \
-              $out/bin/${cfg.exeName}
-          '';
-          meta.mainProgram = cfg.exeName;
-        };
+    utilities.osd-functions.package = if (cfg.exeName == null) then
+      scriptPackage
+    else
+      pkgs.symlinkJoin {
+        inherit (scriptPackage) pname name;
+        paths = [ scriptPackage ];
+        postBuild = ''
+          mv \
+            $out/bin/${baseNameOf (lib.getExe scriptPackage)} \
+            $out/bin/${cfg.exeName}
+        '';
+        meta.mainProgram = cfg.exeName;
+      };
   };
 }

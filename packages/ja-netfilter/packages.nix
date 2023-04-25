@@ -1,14 +1,10 @@
-{fetchgit, ...}: let
+{ fetchgit, ... }:
+let
   repoOwner = "ja-netfilter";
   baseName = "ja-netfilter";
 
   packageBase = import ./base.nix;
-  pluginBase = {
-    name,
-    version,
-    srcHash,
-    outputHash,
-  }:
+  pluginBase = { name, version, srcHash, outputHash, }:
     packageBase {
       pname = "${baseName}-plugin-${name}";
       src = fetchgit {

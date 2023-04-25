@@ -1,15 +1,5 @@
-{
-  maintainers,
-  lib,
-  stdenv,
-  makeWrapper,
-  coreutils,
-  perl,
-  wl-clipboard,
-  slurp,
-  grim,
-  ...
-}:
+{ maintainers, lib, stdenv, makeWrapper, coreutils, perl, wl-clipboard, slurp
+, grim, ... }:
 stdenv.mkDerivation {
   pname = "prtsc";
   version = "0.0.1";
@@ -18,7 +8,7 @@ stdenv.mkDerivation {
 
   src = ./.;
 
-  nativeBuildInputs = [makeWrapper];
+  nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
     runHook preInstall
@@ -32,13 +22,13 @@ stdenv.mkDerivation {
     makeWrapper ${lib.getExe perl} $out/bin/prtsc \
       --add-flags "$out/bin/prtsc.pl" \
       --set PATH \
-      "${lib.makeBinPath [coreutils wl-clipboard slurp grim]}"
+      "${lib.makeBinPath [ coreutils wl-clipboard slurp grim ]}"
   '';
 
   meta = {
     description = "Simple screenshot utility for Wayland";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [spikespaz];
+    maintainers = with maintainers; [ spikespaz ];
   };
 }

@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{ lib, pkgs, ... }: {
   programs.vscode.extensions = with pkgs.vscode-marketplace; [
     eww-yuck.yuck
     kress95.vscode-parinfer-kress95

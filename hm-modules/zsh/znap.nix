@@ -1,8 +1,5 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   description = ''
     A lightweight plugin manager for ZSH.
     <https://github.com/marlonrichert/zsh-snap>
@@ -93,26 +90,28 @@ in {
       '';
     })
     # automatic updates go at the end of init, so mkAfter
-    (lib.mkIf znap.autoUpdate (let
-      lastUpdateFile = "${znap.pluginsDir}/.last_update";
-    in {
-      programs.zsh.alt.zshrc.init = lib.mkAfter ''
-        ### AUTOMATIC UPDATE ZNAP PLUGINS ###
+    (lib.mkIf znap.autoUpdate
+      (let lastUpdateFile = "${znap.pluginsDir}/.last_update";
+      in {
+        programs.zsh.alt.zshrc.init = lib.mkAfter ''
+          ### AUTOMATIC UPDATE ZNAP PLUGINS ###
 
-        [[ ! -f '${lastUpdateFile}' ]] &&
-          echo 0 >'${lastUpdateFile}'
+          [[ ! -f '${lastUpdateFile}' ]] &&
+            echo 0 >'${lastUpdateFile}'
 
-        local time_last_update="$(cat '${lastUpdateFile}')"
-        local time_now="$(date '+%s')"
-        local time_next_update="$((last_update + ${toString znap.autoUpdateInterval}))"
+          local time_last_update="$(cat '${lastUpdateFile}')"
+          local time_now="$(date '+%s')"
+          local time_next_update="$((last_update + ${
+            toString znap.autoUpdateInterval
+          }))"
 
-        if [[ "$time_now" -ge "$time_next_update" ]]; then
-          znap pull
-          echo "$time_now" >'${lastUpdateFile}'
-        fi
+          if [[ "$time_now" -ge "$time_next_update" ]]; then
+            znap pull
+            echo "$time_now" >'${lastUpdateFile}'
+          fi
 
-        ### END ###
-      '';
-    }))
+          ### END ###
+        '';
+      }))
   ]);
 }

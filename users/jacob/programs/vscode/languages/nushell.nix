@@ -1,7 +1,6 @@
-{pkgs, ...}: {
-  home.packages = [pkgs.nushell];
+{ pkgs, ... }: {
+  home.packages = [ pkgs.nushell ];
 
-  programs.vscode.extensions = with pkgs.vscode-marketplace; [
-    thenuprojectcontributors.vscode-nushell-lang
-  ];
+  programs.vscode.extensions = with pkgs.vscode-marketplace;
+    [ thenuprojectcontributors.vscode-nushell-lang ];
 }

@@ -1,25 +1,16 @@
-{
-  self,
-  config,
-  lib,
-  pkgs,
-  nixpkgs,
-  ...
-}: let
+{ self, config, lib, pkgs, nixpkgs, ... }:
+let
   sessionData = config.services.xserver.displayManager.sessionData.desktops;
   sessionPath = lib.concatStringsSep ":" [
     "${sessionData}/share/xsessions"
     "${sessionData}/share/wayland-sessions"
   ];
 in {
-  imports = [
-    self.nixosModules.greetd
-  ];
+  imports = [ self.nixosModules.greetd ];
 
   # needed to get the .desktop file copied
-  services.xserver.displayManager.sessionPackages = [
-    config.services.greetd.sessionData
-  ];
+  services.xserver.displayManager.sessionPackages =
+    [ config.services.greetd.sessionData ];
 
   services.greetd.sessions = {
     hyprland = {

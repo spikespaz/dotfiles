@@ -1,9 +1,5 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config, pkgs, lib, ... }:
+let
   inherit (lib) types;
   cfg = config.services.swayidle.alt;
 
@@ -39,13 +35,12 @@ in {
         Whether to enable the swayidle systemd service.
       '');
 
-      package = lib.mkPackageOption pkgs "swayidle" {};
+      package = lib.mkPackageOption pkgs "swayidle" { };
 
       systemdTarget = lib.mkOption {
         type =
-          types.either types.singleLineStr
-          (types.listOf types.singleLineStr);
-        default = ["sway-session.target"];
+          types.either types.singleLineStr (types.listOf types.singleLineStr);
+        default = [ "sway-session.target" ];
         description = lib.mdDoc ''
           The target, or list of targets, to use for the
           systemd unit's `Install.WantedBy` option.
@@ -56,7 +51,7 @@ in {
 
       extraArgs = lib.mkOption {
         type = types.listOf types.singleLineStr;
-        default = ["-w"];
+        default = [ "-w" ];
         example = lib.literalExpression ''
           ["-w" "-d"]
         '';
@@ -82,7 +77,7 @@ in {
 
       events = lib.mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         example = lib.literalExpression ''
           let
             swaylock = lib.getExe pkgs.swaylock;
@@ -105,8 +100,8 @@ in {
 
       timeouts = lib.mkOption {
         type = types.attrsOf (types.submodule typeTimeout);
-        default = {};
-        example = lib.literalExpression '''';
+        default = { };
+        example = lib.literalExpression "";
         description = lib.mdDoc ''
           An attribute set of timeout definitions.
           The attribute name is the used internally to name
@@ -130,24 +125,16 @@ in {
       afterResume = "after-resume";
     };
     mkEventArgs = name: script: [
-      (
-        if eventNames ? ${name}
-        then eventNames.${name}
-        else name
-      )
+      (if eventNames ? ${name} then eventNames.${name} else name)
       (pkgs.writeShellScript "swayidle-${name}" script).outPath
     ];
-    mkTimeoutArgs = name: {
-      timeout,
-      script,
-      resumeScript ? null,
-    }:
+    mkTimeoutArgs = name:
+      { timeout, script, resumeScript ? null, }:
       [
         "timeout"
         (toString timeout)
         (pkgs.writeShellScript "swayidle-${name}" script).outPath
-      ]
-      ++ lib.optionals (resumeScript != null) [
+      ] ++ lib.optionals (resumeScript != null) [
         "resume"
         (pkgs.writeShellScript "swayidle-${name}-resume" resumeScript).outPath
       ];
@@ -155,25 +142,30 @@ in {
       (map lib.escapeShellArg cfg.extraArgs)
       (lib.mapAttrsToList mkEventArgs cfg.events)
       (lib.mapAttrsToList mkTimeoutArgs cfg.timeouts)
-      (lib.optionals (cfg.idleHint != null) ["idlehint" (toString cfg.idleHint)])
+      (lib.optionals (cfg.idleHint != null) [
+        "idlehint"
+        (toString cfg.idleHint)
+      ])
     ];
-    targets =
-      if lib.isList cfg.systemdTarget
-      then cfg.systemdTarget
-      else [cfg.systemdTarget];
+    targets = if lib.isList cfg.systemdTarget then
+      cfg.systemdTarget
+    else
+      [ cfg.systemdTarget ];
   in {
     systemd.user.services.swayidle = {
       Unit = {
         Description = "Idle daemon for Wayland";
         Documentation = "man:swayidle(1)";
-        PartOf = ["graphical-session.target"];
+        PartOf = [ "graphical-session.target" ];
       };
 
       Service = {
         Type = "simple";
         # swayidle executes commands using "sh -c", so the PATH needs to contain a shell.
-        Environment = ["PATH=${lib.makeBinPath [pkgs.bash pkgs.coreutils]}"];
-        ExecStart = "${cfg.package}/bin/swayidle ${lib.concatStringsSep " " args}";
+        Environment =
+          [ "PATH=${lib.makeBinPath [ pkgs.bash pkgs.coreutils ]}" ];
+        ExecStart =
+          "${cfg.package}/bin/swayidle ${lib.concatStringsSep " " args}";
       };
 
       Install.WantedBy = targets;

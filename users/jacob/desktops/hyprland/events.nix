@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{ config, pkgs, lib, ... }: {
   wayland.windowManager.hyprland = {
     eventListener.enable = true;
     eventListener.systemdService = true;
@@ -12,7 +7,7 @@
       hyprctl = "${pkgs.hyprland}/bin/hyprctl";
       testRe = against: patterns:
         lib.concatStringsSep " || "
-        (map (p: "[[ \"\$${against}\" =~ ^(${p})$ ]]") patterns);
+        (map (p: ''[[ "''$${against}" =~ ^(${p})$ ]]'') patterns);
     in {
       monitorAdd = ''
         ${hyprctl} dispatch moveworkspacetomonitor 2 $HL_MONITOR_NAME

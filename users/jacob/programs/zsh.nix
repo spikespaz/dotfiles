@@ -1,13 +1,7 @@
-args @ {
-  self,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
-  imports = [self.homeManagerModules.zsh];
+args@{ self, config, lib, pkgs, ... }: {
+  imports = [ self.homeManagerModules.zsh ];
 
-  home.packages = [pkgs.most];
+  home.packages = [ pkgs.most ];
 
   programs.starship = {
     enable = true;
@@ -42,7 +36,9 @@ args @ {
 
     zshrc.init = ''
       if ! tty | grep '/dev/tty[0-9]\?'; then
-        znap eval starship '${lib.getExe pkgs.starship} init zsh --print-full-init'
+        znap eval starship '${
+          lib.getExe pkgs.starship
+        } init zsh --print-full-init'
         # <https://github.com/starship/starship/issues/4358>
         # PROMPT="''${PROMPT//\$COLUMNS/\$((COLUMNS+2))}"
         ZLE_RPROMPT_INDENT=0

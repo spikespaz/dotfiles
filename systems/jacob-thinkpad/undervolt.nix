@@ -1,12 +1,9 @@
-{
-  lib,
-  pkgs,
-  ...
-}: let
+{ lib, pkgs, ... }:
+let
   amdctl = pkgs.stdenv.mkDerivation rec {
     name = "amdctl";
     version = "0.11";
-    nativeBuildInputs = [pkgs.gnumake];
+    nativeBuildInputs = [ pkgs.gnumake ];
     installPhase = ''
       runHook preInstall
 
@@ -24,12 +21,10 @@
   };
 in {
   # <https://github.com/kevinlekiller/amdctl/>
-  environment.systemPackages = [
-    amdctl
-  ];
+  environment.systemPackages = [ amdctl ];
 
-  boot.kernelModules = ["msr"];
-  boot.kernelParams = ["msr.allow_writes=on"];
+  boot.kernelModules = [ "msr" ];
+  boot.kernelParams = [ "msr.allow_writes=on" ];
 
   systemd.services.undervolt = let
     default = {
@@ -42,11 +37,11 @@ in {
       p1 = -100;
       p2 = -100;
     };
-    targets = ["multi-user.target" "post-resume.target"];
+    targets = [ "multi-user.target" "post-resume.target" ];
   in {
     serviceConfig.Type = "oneshot";
     description = "control undervolt with amdctl";
-    documentation = ["https://github.com/kevinlekiller/amdctl"];
+    documentation = [ "https://github.com/kevinlekiller/amdctl" ];
     after = targets;
     wantedBy = targets;
     script = ''

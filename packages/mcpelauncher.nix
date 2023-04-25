@@ -1,26 +1,7 @@
-{
-  lib,
-  tree,
-  clangStdenv,
-  fetchurl,
-  fetchFromGitHub,
-  wrapQtAppsHook,
-  symlinkJoin,
-  writeText,
-  qtbase,
-  qtwebengine,
-  cmake,
-  pkg-config,
-  nlohmann_json,
-  openssl,
-  curlMinimal,
-  zlib,
-  libzip,
-  pngpp,
-  libGL,
-  xorg,
-  libevdev,
-}: let
+{ lib, tree, clangStdenv, fetchurl, fetchFromGitHub, wrapQtAppsHook, symlinkJoin
+, writeText, qtbase, qtwebengine, cmake, pkg-config, nlohmann_json, openssl
+, curlMinimal, zlib, libzip, pngpp, libGL, xorg, libevdev, }:
+let
   organization = "minecraft-linux";
 
   jsonCMake = writeText "json.cmake" ''
@@ -28,10 +9,7 @@
   '';
 
   nlohmann_json' =
-    (nlohmann_json.override {
-      stdenv = clangStdenv;
-    })
-    .overrideAttrs (_: rec {
+    (nlohmann_json.override { stdenv = clangStdenv; }).overrideAttrs (_: rec {
       version = "3.7.3";
       src = fetchFromGitHub {
         owner = "nlohmann";
@@ -79,7 +57,7 @@
     postUnpack = ''
       cp ${jsonCMake} source/ext/json.cmake
     '';
-    nativeBuildInputs = [cmake pkg-config];
+    nativeBuildInputs = [ cmake pkg-config ];
     buildInputs = [
       nlohmann_json'
       curlMinimal
@@ -122,8 +100,8 @@
       fetchSubmodules = true;
     };
 
-    nativeBuildInputs = [cmake];
-    buildInputs = [mcpelauncher versiondb zlib libzip curlMinimal];
+    nativeBuildInputs = [ cmake ];
+    buildInputs = [ mcpelauncher versiondb zlib libzip curlMinimal ];
     cmakeFlags = [
       # "DGAME_LAUNCHER_PATH=."
       # "DQt5QuickCompiler_FOUND=OFF"
@@ -134,8 +112,7 @@
       # "DLAUNCHER_VERSIONDB_URL=https://raw.githubusercontent.com/minecraft-linux/mcpelauncher-versiondb/v0.1-beta-20/"
     ];
   };
-in
-  mcpelauncher-ui
+in mcpelauncher-ui
 # symlinkJoin {
 #   name = "mcpelauncher";
 #   paths = [

@@ -1,15 +1,6 @@
-{
-  self,
-  config,
-  lib,
-  pkgs,
-  hmModules,
-  ...
-}: {
-  imports = [
-    self.homeManagerModules.swayidle
-    self.homeManagerModules.idlehack
-  ];
+{ self, config, lib, pkgs, hmModules, ... }: {
+  imports =
+    [ self.homeManagerModules.swayidle self.homeManagerModules.idlehack ];
 
   # enable the idlehack deamon, it watches for inhibits
   # on dbus and sends them to swayidle/anything listening
@@ -27,9 +18,10 @@
     # macro to check if sfsTsBat state matches any states
     # <https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power>
     sysFsBat = "/sys/class/power_supply/BAT0";
-    batStatus = states: "${grep} -q -x -F ${
-      lib.concatMapStrings (s: " -e '${s}'") states
-    } ${sysFsBat}/status";
+    batStatus = states:
+      "${grep} -q -x -F ${
+        lib.concatMapStrings (s: " -e '${s}'") states
+      } ${sysFsBat}/status";
   in {
     enable = true;
     systemdTarget = "hyprland-session.target";
@@ -86,7 +78,7 @@
         timeout = 5 * 60;
         script = ''
           set -eu
-          if ! ${batStatus ["Charging" "Not charging"]}; then
+          if ! ${batStatus [ "Charging" "Not charging" ]}; then
             ${hyprctl} dispatch dpms off
             touch /tmp/.timeout_screen_off_bat
           fi
@@ -104,7 +96,7 @@
         timeout = 60 * 60;
         script = ''
           set -eu
-          if ${batStatus ["Charging" "Not charging"]}; then
+          if ${batStatus [ "Charging" "Not charging" ]}; then
             ${hyprctl} dispatch dpms off
             touch /tmp/.timeout_screen_off_ac
           fi

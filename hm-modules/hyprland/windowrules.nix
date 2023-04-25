@@ -1,8 +1,5 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   inherit (lib) types;
   cfg = config.wayland.windowManager.hyprland;
 in {
@@ -30,7 +27,7 @@ in {
           };
         });
 
-        default = [];
+        default = [ ];
 
         description = lib.mdDoc ''
           List of sets containing:
@@ -81,7 +78,7 @@ in {
           };
         });
 
-        default = [];
+        default = [ ];
 
         description = lib.mdDoc ''
           List of sets containing:
@@ -148,40 +145,31 @@ in {
     # Given a window rule (one with a `rules` list)
     # convert it into a list of first-form rules
     # (one with a single string value for the `rule` attr).
-    expandRuleToList = rule2: let
-      rule1 = removeAttrs rule2 ["rules"];
-    in
-      map (rule: rule1 // {inherit rule;}) rule2.rules;
+    expandRuleToList = rule2:
+      let rule1 = removeAttrs rule2 [ "rules" ];
+      in map (rule: rule1 // { inherit rule; }) rule2.rules;
     # Given a window rule in second- or first-form
     # (with `rule` or `rules` attr respectively),
     # turn the `class` and `title` list into regex patterns
     # matching any string in each list.
     compileWindowRulePatterns = rule:
-      rule
-      // {
-        class =
-          lib.mapNullable
-          (x: "class:^(${lib.concatStringsSep "|" x})$")
+      rule // {
+        class = lib.mapNullable (x: "class:^(${lib.concatStringsSep "|" x})$")
           rule.class;
-        title =
-          lib.mapNullable
-          (x: "title:^(${lib.concatStringsSep "|" x})$")
+        title = lib.mapNullable (x: "title:^(${lib.concatStringsSep "|" x})$")
           rule.title;
       };
     compileLayerRulePattern = rule:
-      rule
-      // {
+      rule // {
         namespace = "^(${lib.concatStringsSep "|" rule.namespace})";
       };
 
     # Convert a rule (first-form) into a valid string value for
     # a Hyprland config variable.
     windowRuleToString = rule:
-      lib.concatStringsSep ", " (
-        [rule.rule]
+      lib.concatStringsSep ", " ([ rule.rule ]
         ++ (lib.optional (rule.class != null) rule.class)
-        ++ (lib.optional (rule.title != null) rule.title)
-      );
+        ++ (lib.optional (rule.title != null) rule.title));
     layerRuleToString = rule: "${rule.rule}, ${rule.namespace}";
   in {
     wayland.windowManager.hyprland.config.layerrule = lib.pipe cfg.layerRules [
@@ -192,20 +180,21 @@ in {
       (map layerRuleToString)
     ];
 
-    wayland.windowManager.hyprland.config.windowrulev2 = lib.pipe cfg.windowRules [
-      # right now we have window rules in second-form,
-      # each "rule" has a `rules` attr which is a list of string-rules.
-      #
-      # the first step is to turn `class` and `title` into regex strings
-      # for each second-form rule.
-      (map compileWindowRulePatterns)
-      # then expand each into a list of rules in first-form,
-      # with `rule` instead of `rules`.
-      (map expandRuleToList)
-      # combine the intermediate lists to a single list of first-form rules.
-      lib.concatLists
-      # map each to a Hyprland config variable value string.
-      (map windowRuleToString)
-    ];
+    wayland.windowManager.hyprland.config.windowrulev2 =
+      lib.pipe cfg.windowRules [
+        # right now we have window rules in second-form,
+        # each "rule" has a `rules` attr which is a list of string-rules.
+        #
+        # the first step is to turn `class` and `title` into regex strings
+        # for each second-form rule.
+        (map compileWindowRulePatterns)
+        # then expand each into a list of rules in first-form,
+        # with `rule` instead of `rules`.
+        (map expandRuleToList)
+        # combine the intermediate lists to a single list of first-form rules.
+        lib.concatLists
+        # map each to a Hyprland config variable value string.
+        (map windowRuleToString)
+      ];
   };
 }

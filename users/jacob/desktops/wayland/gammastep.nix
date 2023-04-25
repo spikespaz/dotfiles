@@ -1,7 +1,5 @@
-{hmModules, ...}: {
-  imports = [
-    hmModules.gammastep-hook
-  ];
+{ hmModules, ... }: {
+  imports = [ hmModules.gammastep-hook ];
 
   services.gammastep = {
     enable = true;

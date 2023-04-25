@@ -1,10 +1,6 @@
-{
-  pkgs,
-  nixpkgs,
-  nixpkgs-stable,
-  ...
-}: let
-  inherit (pkgs.callPackage ./graalvm.nix {}) graalvm8-ce-jre;
+{ pkgs, nixpkgs, nixpkgs-stable, ... }:
+let
+  inherit (pkgs.callPackage ./graalvm.nix { }) graalvm8-ce-jre;
 
   javaPackages = [
     # Java 8
@@ -30,7 +26,7 @@
     run-game "$@"
   '';
 
-  cmd.postExit = '''';
+  cmd.postExit = "";
 in {
   home.packages = [
     # TODO make a pull request
@@ -44,9 +40,7 @@ in {
     # }))
 
     # Qt5 is supported by qt5ct, Qt6 is not
-    (pkgs.prismlauncher-qt5.override {
-      jdks = javaPackages;
-    })
+    (pkgs.prismlauncher-qt5.override { jdks = javaPackages; })
 
     # wrapperScript
   ];

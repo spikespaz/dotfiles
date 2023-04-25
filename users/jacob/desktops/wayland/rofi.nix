@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{ config, pkgs, lib, ... }: {
   # application launcher
   programs.rofi = {
     enable = true;
@@ -25,7 +20,7 @@
           chmod +x $out/share/rofi-emoji/clipboard-adapter.sh
           wrapProgram $out/share/rofi-emoji/clipboard-adapter.sh \
             --prefix PATH ':' \
-              ${lib.makeBinPath (with pkgs; [libnotify wl-clipboard wtype])}
+              ${lib.makeBinPath (with pkgs; [ libnotify wl-clipboard wtype ])}
         '';
       }))
     ];
@@ -89,13 +84,11 @@
 
       font = "Ubuntu Regular";
     in {
-      /*
-       ******************************************************************************
-      * MACOS SPOTLIGHT LIKE DARK THEME FOR ROFI
-      * User                 : LR-Tech
-      * Theme Repo           : https://github.com/lr-tech/rofi-themes-collection
-      ******************************************************************************
-      */
+      #*****************************************************************************
+      # MACOS SPOTLIGHT LIKE DARK THEME FOR ROFI
+      # User                 : LR-Tech
+      # Theme Repo           : https://github.com/lr-tech/rofi-themes-collection
+      #*****************************************************************************
 
       "*" = {
         font = "${font} 12";
@@ -147,9 +140,7 @@
         background-color = bg1;
       };
 
-      textbox = {
-        padding = mkLiteral "8px 24px";
-      };
+      textbox = { padding = mkLiteral "8px 24px"; };
 
       listview = {
         lines = mkLiteral "10";
@@ -166,22 +157,16 @@
         background-color = mkLiteral "transparent";
       };
 
-      "element normal active" = {
-        text-color = bg2;
-      };
+      "element normal active" = { text-color = bg2; };
 
       "element selected normal, element selected active" = {
         background-color = bg2;
         text-color = bg0;
       };
 
-      element-icon = {
-        size = mkLiteral "1em";
-      };
+      element-icon = { size = mkLiteral "1em"; };
 
-      element-text = {
-        text-color = mkLiteral "inherit";
-      };
+      element-text = { text-color = mkLiteral "inherit"; };
     };
   };
 }

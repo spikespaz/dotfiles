@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 with pkgs; [
   ##################
   ### ESSENTIALS ###
@@ -47,7 +47,8 @@ with pkgs; [
   ### STORAGE DEVICE TOOLS ###
   gparted
   gptfdisk
-  e2fsprogs
+  0.0
+  fsprogs
 
   ### HARDWARE DIAGNOSTICS ###
   cpu-x # cpu-z for linux

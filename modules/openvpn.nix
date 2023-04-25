@@ -1,85 +1,87 @@
 # Forked from
 # <https://github.com/NixOS/nixpkgs/blob/nixos-22.11/nixos/modules/services/networking/openvpn.nix>
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+let
   inherit (lib) types;
 
   cfg = config.services.openvpn.alt;
 
-  makeOpenVPNJob = server: name: let
-    path = lib.makeBinPath (builtins.getAttr "openvpn-${name}" config.systemd.services).path;
+  makeOpenVPNJob = server: name:
+    let
+      path = lib.makeBinPath
+        (builtins.getAttr "openvpn-${name}" config.systemd.services).path;
 
-    upScript = ''
-      #! /bin/sh
-      export PATH=${path}
+      upScript = ''
+        #! /bin/sh
+        export PATH=${path}
 
-      # For convenience in client scripts, extract the remote domain
-      # name and name server.
-      for var in ''${!foreign_option_*}; do
-        x=(''${!var})
-        if [ "''${x[0]}" = dhcp-option ]; then
-          if [ "''${x[1]}" = DOMAIN ]; then domain="''${x[2]}"
-          elif [ "''${x[1]}" = DNS ]; then nameserver="''${x[2]}"
+        # For convenience in client scripts, extract the remote domain
+        # name and name server.
+        for var in ''${!foreign_option_*}; do
+          x=(''${!var})
+          if [ "''${x[0]}" = dhcp-option ]; then
+            if [ "''${x[1]}" = DOMAIN ]; then domain="''${x[2]}"
+            elif [ "''${x[1]}" = DNS ]; then nameserver="''${x[2]}"
+            fi
           fi
-        fi
-      done
+        done
 
-      ${server.up}
-      ${lib.optionalString server.updateResolvConf
+        ${server.up}
+        ${lib.optionalString server.updateResolvConf
         "${pkgs.update-resolv-conf}/libexec/openvpn/update-resolv-conf"}
-    '';
+      '';
 
-    downScript = ''
-      #! /bin/sh
-      export PATH=${path}
-      ${lib.optionalString server.updateResolvConf
+      downScript = ''
+        #! /bin/sh
+        export PATH=${path}
+        ${lib.optionalString server.updateResolvConf
         "${pkgs.update-resolv-conf}/libexec/openvpn/update-resolv-conf"}
-      ${server.down}
-    '';
+        ${server.down}
+      '';
 
-    configFile = pkgs.writeText "openvpn-config-${name}" ''
-      errors-to-stderr
-      ${lib.optionalString (server.up != "" || server.down != "" || server.updateResolvConf) "script-security 2"}
-      ${server.config}
-      ${lib.optionalString (server.up != "" || server.updateResolvConf)
+      configFile = pkgs.writeText "openvpn-config-${name}" ''
+        errors-to-stderr
+        ${lib.optionalString
+        (server.up != "" || server.down != "" || server.updateResolvConf)
+        "script-security 2"}
+        ${server.config}
+        ${lib.optionalString (server.up != "" || server.updateResolvConf)
         "up ${pkgs.writeScript "openvpn-${name}-up" upScript}"}
-      ${lib.optionalString (server.down != "" || server.updateResolvConf)
+        ${lib.optionalString (server.down != "" || server.updateResolvConf)
         "down ${pkgs.writeScript "openvpn-${name}-down" downScript}"}
-      ${
-        if server.authUserPass == null
-        then ""
-        else if builtins.isAttrs server.authUserPass
-        then # it must be a string or path
-        "auth-user-pass ${pkgs.writeText "openvpn-credentials-${name}" ''
-          ${server.authUserPass.username}
-          ${server.authUserPass.password}
-        ''}"
-        else "auth-user-pass ${server.authUserPass}"
-      }
-    '';
-  in {
-    description = "OpenVPN instance ‘${name}’";
+        ${if server.authUserPass == null then
+          ""
+        else if builtins.isAttrs
+        server.authUserPass then # it must be a string or path
+          "auth-user-pass ${
+            pkgs.writeText "openvpn-credentials-${name}" ''
+              ${server.authUserPass.username}
+              ${server.authUserPass.password}
+            ''
+          }"
+        else
+          "auth-user-pass ${server.authUserPass}"}
+      '';
+    in {
+      description = "OpenVPN instance ‘${name}’";
 
-    wantedBy = lib.optional server.autoStart "multi-user.target";
-    after = ["network.target"];
+      wantedBy = lib.optional server.autoStart "multi-user.target";
+      after = [ "network.target" ];
 
-    path = [pkgs.iptables pkgs.iproute2 pkgs.nettools];
+      path = [ pkgs.iptables pkgs.iproute2 pkgs.nettools ];
 
-    serviceConfig.ExecStart = "@${cfg.package}/sbin/openvpn openvpn --suppress-timestamps --config ${configFile}";
-    serviceConfig.Restart = "always";
-    serviceConfig.Type = "notify";
-  };
+      serviceConfig.ExecStart =
+        "@${cfg.package}/sbin/openvpn openvpn --suppress-timestamps --config ${configFile}";
+      serviceConfig.Restart = "always";
+      serviceConfig.Type = "notify";
+    };
 in {
   ###### interface
 
   options = {
-    services.openvpn.alt.package = lib.mkPackageOption pkgs "openvpn" {};
+    services.openvpn.alt.package = lib.mkPackageOption pkgs "openvpn" { };
     services.openvpn.alt.servers = lib.mkOption {
-      default = {};
+      default = { };
 
       example = lib.literalExpression ''
         {
@@ -154,7 +156,8 @@ in {
           autoStart = lib.mkOption {
             default = true;
             type = types.bool;
-            description = lib.mdDoc "Whether this OpenVPN instance should be started automatically.";
+            description = lib.mdDoc
+              "Whether this OpenVPN instance should be started automatically.";
           };
 
           updateResolvConf = lib.mkOption {
@@ -183,12 +186,14 @@ in {
               (types.submodule {
                 options = {
                   username = lib.mkOption {
-                    description = lib.mdDoc "The username to store inside the credentials file.";
+                    description = lib.mdDoc
+                      "The username to store inside the credentials file.";
                     type = types.str;
                   };
 
                   password = lib.mkOption {
-                    description = lib.mdDoc "The password to store inside the credentials file.";
+                    description = lib.mdDoc
+                      "The password to store inside the credentials file.";
                     type = types.str;
                   };
                 };
@@ -202,14 +207,13 @@ in {
 
   ###### implementation
 
-  config = lib.mkIf (cfg.servers != {}) {
-    systemd.services = lib.listToAttrs (lib.mapAttrsFlatten (
-        name: value: lib.nameValuePair "openvpn-${name}" (makeOpenVPNJob value name)
-      )
+  config = lib.mkIf (cfg.servers != { }) {
+    systemd.services = lib.listToAttrs (lib.mapAttrsFlatten (name: value:
+      lib.nameValuePair "openvpn-${name}" (makeOpenVPNJob value name))
       cfg.servers);
 
-    environment.systemPackages = [cfg.package];
+    environment.systemPackages = [ cfg.package ];
 
-    boot.kernelModules = ["tun"];
+    boot.kernelModules = [ "tun" ];
   };
 }

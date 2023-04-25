@@ -1,20 +1,6 @@
-{
-  lib,
-  stdenv,
-  fetchFromGitHub,
-  wrapQtAppsHook,
-  cmake,
-  pkg-config,
-  obs-studio,
-  qtbase,
-  xorg,
-  procps,
-  curlMinimal,
-  asio,
-  websocketpp,
-  opencv,
-  withOpenCV ? true,
-}:
+{ lib, stdenv, fetchFromGitHub, wrapQtAppsHook, cmake, pkg-config, obs-studio
+, qtbase, xorg, procps, curlMinimal, asio, websocketpp, opencv
+, withOpenCV ? true, }:
 stdenv.mkDerivation rec {
   pname = "advanced-scene-switcher";
   version = "1.20.4";
@@ -26,17 +12,9 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-xGPTrqJZcKLK1fV+FbgWdVFdwyI/DC5F2QzUy8YbUHs=";
   };
 
-  nativeBuildInputs = [wrapQtAppsHook cmake];
+  nativeBuildInputs = [ wrapQtAppsHook cmake ];
   buildInputs =
-    [
-      obs-studio
-      qtbase
-      procps
-      curlMinimal
-      asio
-      websocketpp
-      xorg.libXScrnSaver
-    ]
+    [ obs-studio qtbase procps curlMinimal asio websocketpp xorg.libXScrnSaver ]
     ++ lib.optional withOpenCV opencv;
 
   postInstall = ''

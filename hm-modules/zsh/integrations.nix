@@ -1,9 +1,5 @@
-{
-  config,
-  lib,
-  ...
-}: let
-  cfg = config.programs.zsh.alt;
+{ config, lib, ... }:
+let cfg = config.programs.zsh.alt;
 in {
   options = {
     programs.zsh.alt = {
@@ -29,17 +25,18 @@ in {
     })
 
     (lib.mkIf cfg.enableAliases {
-      programs.zsh.alt.zshrc.main =
-        lib.mkAfter
-        (lib.concatStringsSep "\n" (builtins.concatLists [
-          (lib.singleton "### HOME MANAGER ALIASES ###\n")
-          (lib.mapAttrsToList
-            (k: v: "alias ${k}=${lib.escapeShellArg v}")
+      programs.zsh.alt.zshrc.main = lib.mkAfter (lib.concatStringsSep "\n"
+        (builtins.concatLists [
+          (lib.singleton ''
+            ### HOME MANAGER ALIASES ###
+          '')
+          (lib.mapAttrsToList (k: v: "alias ${k}=${lib.escapeShellArg v}")
             config.programs.zsh.shellAliases)
-          (lib.mapAttrsToList
-            (k: v: "alias -g ${k}=${lib.escapeShellArg v}")
+          (lib.mapAttrsToList (k: v: "alias -g ${k}=${lib.escapeShellArg v}")
             config.programs.zsh.shellGlobalAliases)
-          (lib.singleton "\n### END ###")
+          (lib.singleton ''
+
+            ### END ###'')
         ]));
     })
   ]);

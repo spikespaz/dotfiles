@@ -1,9 +1,5 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config, pkgs, lib, ... }:
+let
   inherit (lib) types;
   inherit (import ./common.nix) baseName version src;
   optionName = baseName;
@@ -11,7 +7,7 @@
 in {
   options = {
     programs.${optionName} = {
-      enable = lib.mkEnableOption (lib.mdDoc '''');
+      enable = lib.mkEnableOption (lib.mdDoc "");
       delay = lib.mkOption {
         type = types.ints.positive;
         default = 2000;
@@ -58,7 +54,7 @@ in {
             Pango markup `text_size` attribute:
             <https://docs.gtk.org/Pango/pango_markup.html#the-span-attributes>
           '';
-          example = lib.literalExpression "\"200%\"";
+          example = lib.literalExpression ''"200%"'';
         };
         iconCategory = lib.mkOption {
           type = types.nullOr types.singleLineStr;
@@ -67,20 +63,21 @@ in {
             The icon category to select `iconName` from for the current
             user session's icon theme.
           '';
-          example = lib.literalExpression "\"apps\"";
+          example = lib.literalExpression ''"apps"'';
         };
         iconName = lib.mkOption {
-          type = types.oneOf [types.singleLineStr types.path];
-          default = "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark/24x24/devices/keyboard-input.svg";
+          type = types.oneOf [ types.singleLineStr types.path ];
+          default =
+            "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark/24x24/devices/keyboard-input.svg";
           description = lib.mdDoc ''
             The name of the icon (in `iconCategory`) to use from
             the current user session's icon theme.
             This can also be a path to an icon if `iconCategory` is null.
           '';
-          example = lib.literalExpression "\"computerjanitor\"";
+          example = lib.literalExpression ''"computerjanitor"'';
         };
         urgency = lib.mkOption {
-          type = types.enum ["low" "normal" "critical"];
+          type = types.enum [ "low" "normal" "critical" ];
           default = "normal";
           description = lib.mdDoc ''
             The urgency of the notifications.
@@ -94,7 +91,7 @@ in {
           description = lib.mdDoc ''
             The title to use for all three norification types.
           '';
-          example = lib.literalExpression "\"Pause Device Input\"";
+          example = lib.literalExpression ''"Pause Device Input"'';
         };
       };
     };
@@ -105,13 +102,12 @@ in {
       inherit version src;
 
       strictDeps = true;
-      nativeBuildInputs = [pkgs.makeWrapper];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
 
       installPhase = let
         scriptName = "${baseName}-notify";
-        scriptPath =
-          "/run/wrappers/bin:"
-          + lib.makeBinPath (with pkgs; [bash coreutils bc dbus libnotify]);
+        scriptPath = "/run/wrappers/bin:"
+          + lib.makeBinPath (with pkgs; [ bash coreutils bc dbus libnotify ]);
       in ''
         install -Dm755 disable-devices-notify.sh $out/bin/${scriptName}
 
@@ -128,16 +124,18 @@ in {
         wrapProgram $out/bin/${old.pname} \
           --set DISABLE_DELAY '${toString cfg.delay}' \
           --set DISABLE_DURATION '${toString cfg.duration}' \
-          --set NOTIFICATION_COUNTDOWN '${toString cfg.notification.countdown}' \
+          --set NOTIFICATION_COUNTDOWN '${
+            toString cfg.notification.countdown
+          }' \
           --set NOTIFICATION_TIMEOUT '${toString cfg.notification.timeout}' \
           --set NOTIFICATION_TEXT_SIZE '${toString cfg.notification.textSize}' \
-          --set NOTIFICATION_ICON_CATEGORY '${toString cfg.notification.iconCategory}' \
+          --set NOTIFICATION_ICON_CATEGORY '${
+            toString cfg.notification.iconCategory
+          }' \
           --set NOTIFICATION_ICON_NAME '${toString cfg.notification.iconName}' \
           --set NOTIFICATION_URGENCY '${cfg.notification.urgency}' \
           --set NOTIFICATION_TITLE '${cfg.notification.title}'
       '';
     });
-  in {
-    home.packages = [wrappedPackage];
-  });
+  in { home.packages = [ wrappedPackage ]; });
 }

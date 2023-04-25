@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, pkgs, lib, ... }:
 ###########################
 ### PLYMOUTH & GRAPHICS ###
 ###########################
@@ -46,9 +41,7 @@
     theme = "hud_3";
   in {
     enable = true;
-    themePackages = [
-      (pkgs.plymouth-themes.override {inherit pack theme;})
-    ];
+    themePackages = [ (pkgs.plymouth-themes.override { inherit pack theme; }) ];
     inherit theme;
   };
 

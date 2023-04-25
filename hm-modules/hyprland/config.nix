@@ -1,10 +1,5 @@
-args @ {
-  inputs,
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+args@{ inputs, config, pkgs, lib, ... }:
+let
   inherit (lib) types;
 
   cfg = config.wayland.windowManager.hyprland;
@@ -18,25 +13,20 @@ args @ {
 
   configRenames = import ./configRenames.nix args;
   configFormat = (import ./configFormat.nix args) {
-    indentChars = "\t";
-    sortPred = a: b: let
-      ia = indexOf a 0 cfg.configOrder;
-      ib = indexOf b 0 cfg.configOrder;
-    in
-      ia < ib;
+    indentChars = "	";
+    sortPred = a: b:
+      let
+        ia = indexOf a 0 cfg.configOrder;
+        ib = indexOf b 0 cfg.configOrder;
+      in ia < ib;
   };
   toConfigString = attrs:
-    configFormat.toConfigString (
-      with configRenames;
-        renameAttrs renames.from renames.to attrs
-    );
+    configFormat.toConfigString
+    (with configRenames; renameAttrs renames.from renames.to attrs);
 
   indexOf = x: default: xs:
     lib.pipe xs [
-      (lib.imap0 (i: v:
-        if v == x
-        then i
-        else null))
+      (lib.imap0 (i: v: if v == x then i else null))
       (lib.findFirst (x: x != null) default)
     ];
 in {
@@ -134,7 +124,7 @@ in {
 
       config = lib.mkOption {
         type = configFormat.type;
-        default = {};
+        default = { };
         description = lib.mdDoc ''
           Hyprland config attributes.
           These will be serialized to lines of text,
@@ -161,29 +151,29 @@ in {
       configOrder = lib.mkOption {
         type = types.listOf (types.listOf types.singleLineStr);
         default = [
-          ["exec-once"]
-          ["exec"]
+          [ "exec-once" ]
+          [ "exec" ]
 
-          ["monitor"]
-          ["wsbind"]
+          [ "monitor" ]
+          [ "wsbind" ]
 
-          ["dwindle"]
-          ["master"]
-          ["general"]
-          ["input"]
-          ["binds"]
-          ["gestures"]
-          ["decoration"]
-          ["animations"]
+          [ "dwindle" ]
+          [ "master" ]
+          [ "general" ]
+          [ "input" ]
+          [ "binds" ]
+          [ "gestures" ]
+          [ "decoration" ]
+          [ "animations" ]
 
-          ["blurls"]
-          ["windowrulev2"]
+          [ "blurls" ]
+          [ "windowrulev2" ]
 
-          ["misc"]
-          ["debug"]
+          [ "misc" ]
+          [ "debug" ]
 
-          ["animations" "bezier"]
-          ["animations" "animation"]
+          [ "animations" "bezier" ]
+          [ "animations" "animation" ]
         ];
         description = lib.mdDoc ''
           An ordered list of attribute paths
@@ -198,12 +188,11 @@ in {
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
-      home.packages =
-        lib.optional (cfg.package != null) cfg.package
+      home.packages = lib.optional (cfg.package != null) cfg.package
         ++ lib.optional cfg.xwayland.enable pkgs.xwayland;
 
       home.sessionVariables =
-        lib.mkIf cfg.recommendedEnvironment {NIXOS_OZONE_WL = "1";};
+        lib.mkIf cfg.recommendedEnvironment { NIXOS_OZONE_WL = "1"; };
 
       xdg.configFile."hypr/hyprland.conf".text = cfg.configLines;
     }
@@ -211,10 +200,10 @@ in {
       systemd.user.targets.hyprland-session = {
         Unit = {
           Description = "hyprland compositor session";
-          Documentation = ["man:systemd.special(7)"];
-          BindsTo = ["graphical-session.target"];
-          Wants = ["graphical-session-pre.target"];
-          After = ["graphical-session-pre.target"];
+          Documentation = [ "man:systemd.special(7)" ];
+          BindsTo = [ "graphical-session.target" ];
+          Wants = [ "graphical-session-pre.target" ];
+          After = [ "graphical-session-pre.target" ];
         };
       };
 

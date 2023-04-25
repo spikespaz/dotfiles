@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{ lib, pkgs, ... }: {
   programs.vscode.extensions = with pkgs.vscode-marketplace; [
     rust-lang.rust-analyzer
     tamasfe.even-better-toml
@@ -44,7 +40,8 @@
     "rust-analyzer.imports.prefix" = "self";
 
     # show hints for elided lifetimes
-    "rust-analyzer.inlayHints.lifetimeElisionHints.enable" = "always"; # or 'skip_trivial'
+    "rust-analyzer.inlayHints.lifetimeElisionHints.enable" =
+      "always"; # or 'skip_trivial'
     # "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames" = true;
   };
 }

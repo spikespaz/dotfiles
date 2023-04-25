@@ -1,10 +1,6 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{ lib, pkgs, ... }: {
   # <https://wiki.archlinux.org/title/AMDGPU#Boot_parameter>
-  boot.kernelParams = ["amdgpu.ppfeaturemask=0xfff7ffff"];
+  boot.kernelParams = [ "amdgpu.ppfeaturemask=0xfff7ffff" ];
 
   programs.gamemode = {
     enable = true;
@@ -105,7 +101,7 @@
       custom = let
         title = "Game Mode";
         textSize = "x-large";
-        bodyText = text: "<b><span size=\"${textSize}\">${text}</span></b>";
+        bodyText = text: ''<b><span size="${textSize}">${text}</span></b>'';
         activatedText = bodyText "Activated";
         deactivatedText = bodyText "Deactivated";
         urgencyActivated = "critical";
@@ -116,31 +112,27 @@
         icon = "input-gaming";
       in {
         # Custom scripts (executed using the shell) when gamemode starts and ends
-        start = "${
-          pkgs.writeShellScript "gamemode-activate-notification" ''
-            ${pkgs.libnotify}/bin/notify-send \
-              '${title}' \
-              '${activatedText}' \
-              -u ${urgencyActivated} \
-              -t ${toString timeoutActivated} \
-              -c ${category} \
-              -i ${icon} \
-              -h 'string:synchronous:toggle-gamemode'
-          ''
-        }";
+        start = "${pkgs.writeShellScript "gamemode-activate-notification" ''
+          ${pkgs.libnotify}/bin/notify-send \
+            '${title}' \
+            '${activatedText}' \
+            -u ${urgencyActivated} \
+            -t ${toString timeoutActivated} \
+            -c ${category} \
+            -i ${icon} \
+            -h 'string:synchronous:toggle-gamemode'
+        ''}";
 
-        end = "${
-          pkgs.writeShellScript "gamemode-deactivate-notification" ''
-            ${pkgs.libnotify}/bin/notify-send \
-              '${title}' \
-              '${deactivatedText}' \
-              -u ${urgencyDeactivated} \
-              -t ${toString timeoutDeactivated} \
-              -c ${category} \
-              -i ${icon} \
-              -h 'string:synchronous:toggle-gamemode'
-          ''
-        }";
+        end = "${pkgs.writeShellScript "gamemode-deactivate-notification" ''
+          ${pkgs.libnotify}/bin/notify-send \
+            '${title}' \
+            '${deactivatedText}' \
+            -u ${urgencyDeactivated} \
+            -t ${toString timeoutDeactivated} \
+            -c ${category} \
+            -i ${icon} \
+            -h 'string:synchronous:toggle-gamemode'
+        ''}";
 
         # Timeout for scripts (seconds). Scripts will be killed if they do not complete within this time.
         script_timeout = 10;

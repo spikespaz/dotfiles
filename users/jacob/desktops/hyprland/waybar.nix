@@ -1,31 +1,27 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+let
   # package overridden for hyprland-specific patches
   # <https://wiki.hyprland.org/Useful-Utilities/Status-Bars/#clicking-on-a-workspace-icon-does-not-work>
   # TODO upstream this to the Hyprland flake!
   package = pkgs.waybar.overrideAttrs (old: {
-    mesonFlags = old.mesonFlags ++ ["-Dexperimental=true"];
+    mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ];
     # needs hyprctl for workspace switching
     # included in the systemd unit's Environment PATH
-    buildInputs = old.buildInputs ++ [pkgs.hyprland];
+    buildInputs = old.buildInputs ++ [ pkgs.hyprland ];
     postPatch = ''
       sed -i 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' src/modules/wlr/workspace_manager.cpp
     '';
   });
 
-  fontPackages = [
-    pkgs.ubuntu_font_family
-    pkgs.material-design-icons
-  ];
+  fontPackages = [ pkgs.ubuntu_font_family pkgs.material-design-icons ];
 
-  compileSCSS = name: source: "${pkgs.runCommandLocal name {} ''
-    mkdir -p $out
-    ${lib.getExe pkgs.sassc} -t expanded '${source}' > $out/${name}.css
-  ''}/${name}.css";
+  compileSCSS = name: source:
+    "${
+      pkgs.runCommandLocal name { } ''
+        mkdir -p $out
+        ${lib.getExe pkgs.sassc} -t expanded '${source}' > $out/${name}.css
+      ''
+    }/${name}.css";
 
   # TODO when using store paths to executables, they do not inherit the user's
   # environment (at least with systemd) and therefore GUIs use the default theme
@@ -52,7 +48,8 @@
     # inputVolumeUp = "${kbFns} input +0.05";
     # inputVolumeDown = "${kbFns} input -0.05";
     bluetoothSettings = blueman-manager;
-    bluetoothOn = "rfkill unblock bluetooth && sleep 5; ${bluetoothctl} power on";
+    bluetoothOn =
+      "rfkill unblock bluetooth && sleep 5; ${bluetoothctl} power on";
     bluetoothOff = "${bluetoothctl} power off";
     wirelessSettings = iwgtk;
     workspaceSwitchPrev = "${hyprctl} dispatch workspace m-1";
@@ -63,7 +60,7 @@ in {
 
   programs.waybar.package = pkgs.symlinkJoin {
     name = package.name;
-    paths = [package] ++ fontPackages;
+    paths = [ package ] ++ fontPackages;
   };
 
   programs.waybar.systemd.enable = true;
@@ -87,16 +84,9 @@ in {
       mode = "dock";
       height = 26;
 
-      modules-left = [
-        "wlr/workspaces"
-        "tray"
-        "hyprland/window"
-      ];
+      modules-left = [ "wlr/workspaces" "tray" "hyprland/window" ];
 
-      modules-center = [
-        "clock#time"
-        "clock#date"
-      ];
+      modules-center = [ "clock#time" "clock#date" ];
 
       modules-right = [
         "pulseaudio#output"
@@ -127,19 +117,13 @@ in {
         spacing = 16;
       };
 
-      "hyprland/window" = {
-        max-length = 50;
-      };
+      "hyprland/window" = { max-length = 50; };
 
       ## MODULES-CENTER ##
 
-      "clock#time" = {
-        format = "{:%I:%M %p}";
-      };
+      "clock#time" = { format = "{:%I:%M %p}"; };
 
-      "clock#date" = {
-        format = "{:%A, %B %d}";
-      };
+      "clock#date" = { format = "{:%A, %B %d}"; };
 
       ## MODULES-RIGHT ##
 
@@ -156,12 +140,10 @@ in {
           # car = "󰄋";
           # hifi = "󰓃";
           # phone = "󰏲";
-          default = ["󰕿" "󰖀" "󰕾"];
+          default = [ "󰕿" "󰖀" "󰕾" ];
         };
 
-        states = {
-          warning = 101;
-        };
+        states = { warning = 101; };
 
         on-click = commands.outputSoundSettings;
         on-click-right = commands.outputVolumeMute;
@@ -187,7 +169,7 @@ in {
         device = "amdgpu_bl0";
         format = "{icon} {percent}%";
         # format-icons = ["󰃜" "󰃛" "󰃝" "󰃟" "󰃠"];
-        format-icons = ["󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨"];
+        format-icons = [ "󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨" ];
 
         on-scroll-up = commands.backlightUp;
         on-scroll-down = commands.backlightDown;
@@ -207,11 +189,12 @@ in {
         interval = 5;
         hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
         input-filename = "temp1_input";
-        critical-threshold = 90; # 15C lower than Tjmax <https://www.amd.com/en/product/9686>
+        critical-threshold =
+          90; # 15C lower than Tjmax <https://www.amd.com/en/product/9686>
         format = "{icon} {temperatureC}°C";
         format-critical = "󰈸 {temperatureC}°C";
         # 4x low, 2x mid, 3x high, for 0-90
-        format-icons = ["󱃃" "󱃃" "󱃃" "󱃃" "󰔏" "󰔏" "󱃂" "󱃂" "󱃂"];
+        format-icons = [ "󱃃" "󱃃" "󱃃" "󱃃" "󰔏" "󰔏" "󱃂" "󱃂" "󱃂" ];
       };
 
       network = let
@@ -226,7 +209,7 @@ in {
         format-wifi = "{icon} {essid}";
         format-linked = "󱫱";
         format-disconnected = "󰲛";
-        format-icons = ["󰤟" "󰤢" "󰤥" "󰤨"];
+        format-icons = [ "󰤟" "󰤢" "󰤥" "󰤨" ];
 
         tooltip-format = ''
           <b>Interface</b>: {ifname}
@@ -249,7 +232,8 @@ in {
         format-off = "󰂲";
         format-disabled = "󰂲";
         format-connected = "󰂱 {num_connections}";
-        format-connected-battery = "󰂱 {device_alias} ({device_battery_percentage}%) ({num_connections})";
+        format-connected-battery =
+          "󰂱 {device_alias} ({device_battery_percentage}%) ({num_connections})";
 
         on-click = commands.bluetoothOn;
         on-click-middle = commands.bluetoothSettings;
@@ -261,7 +245,7 @@ in {
         bat = "BAT0";
         # full-at = 94;
         format = "{icon} {capacity}%";
-        format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+        format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
         states = {
           battery-10 = 10;
           battery-20 = 20;
@@ -296,8 +280,10 @@ in {
           activated = "󰈈";
           deactivated = "󱎫";
         };
-        tooltip-format-activated = "Idle timer inhibited, device will not sleep.";
-        tooltop-format-deactivated = "Idle timer enabled, device will sleep when not in use.";
+        tooltip-format-activated =
+          "Idle timer inhibited, device will not sleep.";
+        tooltop-format-deactivated =
+          "Idle timer enabled, device will sleep when not in use.";
       };
     };
   };

@@ -1,5 +1,4 @@
-{pkgs, ...}: {
-  programs.vscode.extensions = with pkgs.vscode-marketplace; [
-    marp-team.marp-vscode
-  ];
+{ pkgs, ... }: {
+  programs.vscode.extensions = with pkgs.vscode-marketplace;
+    [ marp-team.marp-vscode ];
 }

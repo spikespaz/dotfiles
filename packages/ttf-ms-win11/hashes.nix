@@ -1,7 +1,6 @@
 let
   splitNewlines = string:
-    builtins.filter
-    (x: builtins.isString x && x != "")
+    builtins.filter (x: builtins.isString x && x != "")
     (builtins.split "\n" string);
 in {
   fonts.base = [

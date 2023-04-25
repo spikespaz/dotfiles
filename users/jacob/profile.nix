@@ -2,16 +2,8 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-{
-  flake,
-  config,
-  lib,
-  ulib,
-  pkgs,
-  nixpkgs,
-  hmModules,
-  ...
-}: let
+{ flake, config, lib, ulib, pkgs, nixpkgs, hmModules, ... }:
+let
   username = "jacob";
   user = flake.users.${username};
 in {
@@ -44,9 +36,7 @@ in {
 
   # homeage.pkg = pkgs.ragenix;
   homeage.mount = "${config.home.homeDirectory}/.secrets";
-  homeage.identityPaths = [
-    "~/.ssh/id_ed25519"
-  ];
+  homeage.identityPaths = [ "~/.ssh/id_ed25519" ];
   # homeage.installationType = "activation";
 
   # should already be enabled at system level
@@ -64,8 +54,7 @@ in {
   ### PACKAGES & MODULES ###
   ##########################
 
-  imports = let
-    inherit (user) services programs;
+  imports = let inherit (user) services programs;
   in [
     ###############################
     ### MODULES & MISCELLANEOUS ###

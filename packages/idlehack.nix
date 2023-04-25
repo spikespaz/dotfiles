@@ -1,16 +1,5 @@
-{
-  maintainers,
-  lib,
-  stdenv,
-  fetchFromGitHub,
-  systemdSupport ? stdenv.isLinux,
-  pkg-config,
-  bash,
-  dbus,
-  systemd,
-  xorg,
-  ...
-}:
+{ maintainers, lib, stdenv, fetchFromGitHub, systemdSupport ? stdenv.isLinux
+, pkg-config, bash, dbus, systemd, xorg, ... }:
 stdenv.mkDerivation rec {
   pname = "idlehack";
   version = "unstable-2021-12-05";
@@ -23,10 +12,9 @@ stdenv.mkDerivation rec {
   };
 
   strictDeps = true;
-  nativeBuildInputs = [pkg-config];
-  buildInputs =
-    [bash dbus xorg.libX11]
-    ++ lib.optionals systemdSupport [systemd];
+  nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ bash dbus xorg.libX11 ]
+    ++ lib.optionals systemdSupport [ systemd ];
 
   installPhase = ''
     runHook preInstall
@@ -39,7 +27,8 @@ stdenv.mkDerivation rec {
   '';
 
   meta = {
-    description = "Monitor dbus and inhibit swayidle when Firefox or Chromium request it";
+    description =
+      "Monitor dbus and inhibit swayidle when Firefox or Chromium request it";
     longDescription = ''
       Listen for Firefox/Chromium dbus messages that request screensaver inhibit,
       typically because the user is watching video.  Sway doesn't currently listen
@@ -50,6 +39,6 @@ stdenv.mkDerivation rec {
     inherit (src.meta) homepage;
     license = lib.licenses.isc;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [spikespaz];
+    maintainers = with maintainers; [ spikespaz ];
   };
 }

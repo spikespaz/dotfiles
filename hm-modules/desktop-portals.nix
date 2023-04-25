@@ -1,38 +1,33 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ config, pkgs, lib, ... }:
+let
   inherit (lib) types;
   cfg = config.xdg.desktopPortals;
 in {
   options = {
     xdg.desktopPortals = {
-      enable = lib.mkEnableOption (lib.mdDoc '''');
+      enable = lib.mkEnableOption (lib.mdDoc "");
       portals = lib.mkOption {
         type = types.listOf types.attrs;
         default = null;
-        description = lib.mdDoc '''';
+        description = lib.mdDoc "";
         example = lib.literalExpression'''';
       };
     };
   };
   config = lib.mkIf cfg.enable (let
-    modifyPortal = {
-      package,
-      interfaces ? null,
-      useIn ? null,
+    modifyPortal = { package, interfaces ? null, useIn ? null,
       # environment ? null,
-    }:
+      }:
       pkgs.symlinkJoin {
         inherit (package) name;
-        paths = [package];
+        paths = [ package ];
         # nativeBuildInputs = [pkgs.makeWrapper];
         postBuild = ''
           ${lib.optionalString (interfaces != null) ''
             sed -i \
-              's@Interfaces=.\+@Interfaces=${lib.concatStringsSep ";" interfaces};@' \
+              's@Interfaces=.\+@Interfaces=${
+                lib.concatStringsSep ";" interfaces
+              };@' \
               $out/share/xdg-desktop-portal/portals/*.portal
           ''}
           ${lib.optionalString (useIn != null) ''
@@ -49,17 +44,19 @@ in {
         # ''}
       };
     modifiedPortals = map modifyPortal cfg.portals;
-    packages = [pkgs.xdg-desktop-portal] ++ modifiedPortals;
+    packages = [ pkgs.xdg-desktop-portal ] ++ modifiedPortals;
     joinedPortals = pkgs.buildEnv {
       name = "xdg-desktop-portals";
       paths = packages;
-      pathsToLink = ["/share/xdg-desktop-portal/portals" "/share/applications"];
+      pathsToLink =
+        [ "/share/xdg-desktop-portal/portals" "/share/applications" ];
     };
   in {
     home.packages = packages;
     home.sessionVariables = {
       # GTK_USE_PORTAL = mkIf cfg.gtkUsePortal "1";
-      XDG_DESKTOP_PORTAL_DIR = "${joinedPortals}/share/xdg-desktop-portal/portals";
+      XDG_DESKTOP_PORTAL_DIR =
+        "${joinedPortals}/share/xdg-desktop-portal/portals";
     };
   });
 }

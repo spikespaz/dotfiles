@@ -1,9 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+let
   inherit (lib) types;
   cfg = config.programs.firefox.pwa;
 in {
@@ -13,8 +9,8 @@ in {
       package = lib.mkOption {
         type = types.package;
         default = pkgs.firefox-pwa;
-        description = lib.mdDoc '''';
-        example = lib.literalExpression '''';
+        description = lib.mdDoc "";
+        example = lib.literalExpression "";
       };
       firefoxPackage = lib.mkOption {
         type = types.package;
@@ -36,21 +32,21 @@ in {
         type = types.path;
         readOnly = true;
         default = "${cfg.package}/bin";
-        description = lib.mdDoc '''';
-        example = lib.literalExpression '''';
+        description = lib.mdDoc "";
+        example = lib.literalExpression "";
       };
       sysData = lib.mkOption {
         type = types.path;
         readOnly = true;
         default = "${cfg.package}/share/firefoxpwa";
-        description = lib.mdDoc '''';
-        example = lib.literalExpression '''';
+        description = lib.mdDoc "";
+        example = lib.literalExpression "";
       };
       userData = lib.mkOption {
         type = types.path;
         default = "${config.xdg.dataHome}/firefoxpwa";
-        description = lib.mdDoc '''';
-        example = lib.literalExpression '''';
+        description = lib.mdDoc "";
+        example = lib.literalExpression "";
       };
     };
   };
@@ -61,7 +57,8 @@ in {
       FFPWA_USERDATA = cfg.userData;
     };
     programs.firefox.package = cfg.firefoxPackage.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pkgs.makeWrapper];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ])
+        ++ [ pkgs.makeWrapper ];
       postFixup = ''
         wrapProgram ${lib.getExe cfg.firefoxPackage} \
           --set FFPWA_EXECUTABLES '${cfg.executables}' \
@@ -69,7 +66,8 @@ in {
           --set FFPWA_USERDATA '${cfg.userData}'
       '';
     });
-    home.file.".mozilla/native-messaging-hosts/firefoxpwa.json".source = "${cfg.package}/lib/mozilla/native-messaging-hosts/firefoxpwa.json";
-    home.packages = [cfg.package];
+    home.file.".mozilla/native-messaging-hosts/firefoxpwa.json".source =
+      "${cfg.package}/lib/mozilla/native-messaging-hosts/firefoxpwa.json";
+    home.packages = [ cfg.package ];
   };
 }

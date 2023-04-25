@@ -54,124 +54,105 @@
     ragenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    nixpkgs-stable,
-    home-manager,
-    ...
-  }: let
-    system = "x86_64-linux";
+  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, ... }:
+    let
+      system = "x86_64-linux";
 
-    inherit (nixpkgs) lib;
-    flib = import ./lib.nix {inherit lib pkgs;};
+      inherit (nixpkgs) lib;
+      flib = import ./lib.nix { inherit lib pkgs; };
 
-    # get directory structure as nested attrsets of modules
-    flake = flib.evalIndices {
-      expr = import ./.;
-      pass = {inherit lib pkgs flake flib;};
-    };
+      # get directory structure as nested attrsets of modules
+      flake = flib.evalIndices {
+        expr = import ./.;
+        pass = { inherit lib pkgs flake flib; };
+      };
 
-    pkgs = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-      overlays = [
-        self.overlays.default
-        self.overlays.oraclejdk
-        self.overlays.handbrake
-        self.overlays.nushell
-        self.overlays.allowUnfree
-        inputs.nur.overlay
-        inputs.hyprland.overlays.default
-        inputs.slight.overlays.default
-        inputs.vscode-extensions.overlays.default
-        # inputs.alejandra.overlays.default
-        inputs.nil.overlays.default
-        inputs.prism-launcher.overlays.default
-        # inputs.webcord.overlays.default
-        inputs.ragenix.overlays.default
-      ];
-    };
-    pkgs-stable = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-    };
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [
+          self.overlays.default
+          self.overlays.oraclejdk
+          self.overlays.handbrake
+          self.overlays.nushell
+          self.overlays.allowUnfree
+          inputs.nur.overlay
+          inputs.hyprland.overlays.default
+          inputs.slight.overlays.default
+          inputs.vscode-extensions.overlays.default
+          # inputs.alejandra.overlays.default
+          inputs.nil.overlays.default
+          inputs.prism-launcher.overlays.default
+          # inputs.webcord.overlays.default
+          inputs.ragenix.overlays.default
+        ];
+      };
+      pkgs-stable = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
 
-    nixosModules = flib.joinNixosModules inputs;
-    homeModules = flib.joinHomeModules inputs;
-  in {
-    overlays =
-      flake.overlays
-      // {
+      nixosModules = flib.joinNixosModules inputs;
+      homeModules = flib.joinHomeModules inputs;
+    in {
+      overlays = flake.overlays // {
         default = _: flake.packages;
-        allowUnfree = _: prev:
-          flib.mkUnfreeOverlay prev [
-            "ttf-ms-win11"
+        allowUnfree = _: prev: flib.mkUnfreeOverlay prev [ "ttf-ms-win11" ];
+      };
+      packages = lib.genAttrs [ "x86_64-linux" ]
+        (system: flake.packages nixpkgs.legacyPackages.${system});
+
+      nixosModules = flake.modules;
+      homeManagerModules = flake.hm-modules;
+
+      nixosConfigurations = {
+        jacob-thinkpad = lib.nixosSystem {
+          system = "x86_64-linux";
+          inherit pkgs;
+
+          specialArgs = {
+            inherit self flake;
+            modules = nixosModules;
+            enableUnstableZfs = false;
+          };
+
+          modules = with flake.systems.jacob-thinkpad; [
+            bootloader
+            filesystems
+            plymouth
+            configuration
+            powersave
+            undervolt
+            touchpad
+            greeter
+            # gamemode
+            gaming
+            pia-openvpn
           ];
-      };
-    packages = lib.genAttrs ["x86_64-linux"] (
-      system:
-        flake.packages nixpkgs.legacyPackages.${system}
-    );
-
-    nixosModules = flake.modules;
-    homeManagerModules = flake.hm-modules;
-
-    nixosConfigurations = {
-      jacob-thinkpad = lib.nixosSystem {
-        system = "x86_64-linux";
-        inherit pkgs;
-
-        specialArgs = {
-          inherit self flake;
-          modules = nixosModules;
-          enableUnstableZfs = false;
         };
-
-        modules = with flake.systems.jacob-thinkpad; [
-          bootloader
-          filesystems
-          plymouth
-          configuration
-          powersave
-          undervolt
-          touchpad
-          greeter
-          # gamemode
-          gaming
-          pia-openvpn
-        ];
       };
-    };
 
-    homeConfigurations = {
-      jacob = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+      homeConfigurations = {
+        jacob = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
 
-        extraSpecialArgs = {
-          inherit
-            self
-            inputs
-            flake
-            nixpkgs
-            nixpkgs-stable
-            pkgs-stable
-            ;
-          hmModules = homeModules;
-          ulib = flake.users.lib;
+          extraSpecialArgs = {
+            inherit self inputs flake nixpkgs nixpkgs-stable pkgs-stable;
+            hmModules = homeModules;
+            ulib = flake.users.lib;
+          };
+
+          modules = with flake.users.jacob; [
+            profile
+            mimeapps
+            desktops.wayland
+            desktops.hyprland
+            desktops.suite
+            desktops.mimeapps
+          ];
         };
-
-        modules = with flake.users.jacob; [
-          profile
-          mimeapps
-          desktops.wayland
-          desktops.hyprland
-          desktops.suite
-          desktops.mimeapps
-        ];
       };
-    };
 
-    formatter.${system} = inputs.nixfmt.packages.${system}.default;
-  };
+      formatter.${system} = inputs.nixfmt.packages.${system}.default;
+    };
 }

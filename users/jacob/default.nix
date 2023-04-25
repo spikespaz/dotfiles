@@ -1,2 +1,1 @@
-args @ {mkModuleIndex, ...}:
-mkModuleIndex {path = ./.;} args
+args@{ mkModuleIndex, ... }: mkModuleIndex { path = ./.; } args

@@ -1,7 +1,8 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   ja-netfilter = pkgs.ja-netfilter.override {
     programName = "jetbrains";
-    enabledPlugins = ["dns" "url" "hideme" "power"];
+    enabledPlugins = [ "dns" "url" "hideme" "power" ];
     pluginConfigs = {
       dns = ''
         [DNS]
@@ -31,38 +32,20 @@
   '';
 in {
   clion = {
-    home.packages = [
-      (pkgs.jetbrains.clion.override {
-        inherit vmopts;
-      })
-    ];
+    home.packages = [ (pkgs.jetbrains.clion.override { inherit vmopts; }) ];
   };
   goland = {
-    home.packages = [
-      (pkgs.jetbrains.goland.override {
-        inherit vmopts;
-      })
-    ];
+    home.packages = [ (pkgs.jetbrains.goland.override { inherit vmopts; }) ];
   };
   webstorm = {
-    home.packages = [
-      (pkgs.jetbrains.webstorm.override {
-        inherit vmopts;
-      })
-    ];
+    home.packages = [ (pkgs.jetbrains.webstorm.override { inherit vmopts; }) ];
   };
   idea = {
-    home.packages = [
-      (pkgs.jetbrains.idea-ultimate.override {
-        inherit vmopts;
-      })
-    ];
+    home.packages =
+      [ (pkgs.jetbrains.idea-ultimate.override { inherit vmopts; }) ];
   };
   pycharm = {
-    home.packages = [
-      (pkgs.jetbrains.pycharm-professional.override {
-        inherit vmopts;
-      })
-    ];
+    home.packages =
+      [ (pkgs.jetbrains.pycharm-professional.override { inherit vmopts; }) ];
   };
 }

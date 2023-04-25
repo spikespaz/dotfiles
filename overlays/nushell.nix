@@ -16,6 +16,6 @@ final: prev: {
       inherit src;
       outputHash = "sha256-FZM9KcwUart+xXeSXUTo8iv2IkwM8LQ/vAltk9SqdUE=";
     });
-    buildInputs = old.buildInputs or [] ++ [final.procps];
+    buildInputs = old.buildInputs or [ ] ++ [ final.procps ];
   });
 }

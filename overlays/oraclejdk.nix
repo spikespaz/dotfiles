@@ -23,7 +23,8 @@ final: prev: {
       productVersion = "8";
       patchVersion = "361";
       # for <cfdownload.adobe.com>
-      sha256.x86_64-linux = "sha256-JYWpJLuNLDFdj+RL+lNPYV94knlliWPTD/4Un9dB2W4=";
+      sha256.x86_64-linux =
+        "sha256-JYWpJLuNLDFdj+RL+lNPYV94knlliWPTD/4Un9dB2W4=";
       # for <nadwey.eu.org>
       # sha256.x86_64-linux = "sha256-YeP0CZqZp3pweFOAizps+ofSuCsZt8dtzGxdPu37O50=";
       jceName = null;
@@ -32,24 +33,24 @@ final: prev: {
     version = "${product.productVersion}u${product.patchVersion}";
     tarballName = "jdk-${version}-${platformName}.tar.gz";
     src = final.fetchzip {
-      url = "https://cfdownload.adobe.com/pub/adobe/coldfusion/java/java${product.productVersion}/java${version}/jdk/${tarballName}";
+      url =
+        "https://cfdownload.adobe.com/pub/adobe/coldfusion/java/java${product.productVersion}/java${version}/jdk/${tarballName}";
       # url = "https://nadwey.eu.org/java/${product.productVersion}/jdk-${version}/${tarballName}";
       sha256 = product.sha256.${final.system};
     };
-    package = import "${final.path}/pkgs/development/compilers/oraclejdk/jdk-linux-base.nix" product;
+    package = import
+      "${final.path}/pkgs/development/compilers/oraclejdk/jdk-linux-base.nix"
+      product;
     platformName = builtins.getAttr final.system {
       i686-linux = "linux-i586";
       x86_64-linux = "linux-x64";
       armv7l-linux = "linux-arm32-vfp-hflt";
       aarch64-linux = "linux-aarch64";
     };
-  in
-    final.callPackage package {
-      installjdk = true;
-      pluginSupport = false;
-      requireFile = args @ {name, ...}:
-        if name == tarballName
-        then src
-        else final.requireFile args;
-    };
+  in final.callPackage package {
+    installjdk = true;
+    pluginSupport = false;
+    requireFile = args@{ name, ... }:
+      if name == tarballName then src else final.requireFile args;
+  };
 }

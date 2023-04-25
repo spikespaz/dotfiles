@@ -1,18 +1,10 @@
-{
-  self,
-  lib,
-  pkgs,
-  ...
-}: let
+{ self, lib, pkgs, ... }:
+let
   profile = "jacob.default";
   profileName = "jacob-default";
 
   # things to do for every user
-  prefab = {
-    settings = {
-      "trailhead.firstrun.didSeeAboutWelcome" = true;
-    };
-  };
+  prefab = { settings = { "trailhead.firstrun.didSeeAboutWelcome" = true; }; };
 
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;

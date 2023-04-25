@@ -1,10 +1,4 @@
-{
-  self,
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ self, config, lib, pkgs, ... }: {
   imports = [
     self.homeManagerModules.osd-functions
     self.homeManagerModules.disable-input
@@ -21,9 +15,7 @@
       maxVolume = 1.25;
       notification.title = "Audio Output";
     };
-    audioInput = {
-      notification.title = "Audio Input";
-    };
+    audioInput = { notification.title = "Audio Input"; };
   };
 
   programs.disable-input-devices = {

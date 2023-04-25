@@ -34,9 +34,7 @@
       follow_mouse = LOOSE;
       float_switch_override_focus = DISABLED;
 
-      touchpad = {
-        tap_to_click = false;
-      };
+      touchpad = { tap_to_click = false; };
     };
 
     config.gestures = {
@@ -50,8 +48,7 @@
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#misc>
-    config.misc = let
-      FULLSCREEN_ONLY = 2;
+    config.misc = let FULLSCREEN_ONLY = 2;
     in {
       disable_hyprland_logo = true; # false
       disable_splash_rendering = true; # false
@@ -61,8 +58,7 @@
     };
 
     # <https://wiki.hyprland.org/Configuring/Dwindle-Layout/>
-    config.dwindle = let
-      ALWAYS_EAST = 2;
+    config.dwindle = let ALWAYS_EAST = 2;
     in {
       force_split = ALWAYS_EAST; # 0
       preserve_split = true; # false

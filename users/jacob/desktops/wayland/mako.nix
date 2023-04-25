@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{ config, lib, pkgs, ... }: {
   home.packages = [
     # Notification API
     pkgs.libnotify
@@ -39,26 +34,24 @@
   };
 
   # <https://github.com/emersion/mako/blob/master/contrib/systemd/mako.service>
-  systemd.user.services.mako = let
-    package = config.programs.mako.package;
+  systemd.user.services.mako = let package = config.programs.mako.package;
   in {
     Unit = {
       Description = "Lightweight Wayland notification daemon";
       Documentation = "man:mako(1)";
-      PartOf = ["graphical-session.target"];
-      After = ["graphical-session.target"];
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
     };
     Service = {
       Type = "dbus";
       BusName = "org.freedesktop.Notifications";
-      ExecCondition = "${lib.getExe pkgs.bash} -c '[ -n \"$WAYLAND_DISPLAY\" ]'";
+      ExecCondition =
+        "${lib.getExe pkgs.bash} -c '[ -n \"$WAYLAND_DISPLAY\" ]'";
       ExecStart = lib.getExe package;
       ExecReload = "${package}/bin/makoctl reload";
       Restart = "on-failure";
       RestartSec = 5;
     };
-    Install = {
-      WantedBy = ["graphical-session.target"];
-    };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
   };
 }

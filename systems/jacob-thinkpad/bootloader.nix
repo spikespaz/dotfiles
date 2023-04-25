@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 ##########################
 ### BOOT CONFIGURATION ###
 ##########################
@@ -13,14 +9,12 @@
   systemd.shutdownRamfs.enable = false;
 
   boot = {
-    kernelModules = ["kvm-amd" "acpi_call"];
-    extraModulePackages = with config.boot.kernelPackages; [
-      acpi_call
-    ];
+    kernelModules = [ "kvm-amd" "acpi_call" ];
+    extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
-    kernelParams = [];
+    kernelParams = [ ];
 
-    initrd.kernelModules = ["amdgpu" "nvme"];
+    initrd.kernelModules = [ "amdgpu" "nvme" ];
     initrd.availableKernelModules = [
       "ehci_pci"
       "xhci_pci"

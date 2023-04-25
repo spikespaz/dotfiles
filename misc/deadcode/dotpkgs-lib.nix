@@ -34,16 +34,14 @@ lib: rec {
       }))
       builtins.listToAttrs
       (builtins.mapAttrs (_: package:
-        package.overrideAttrs (
-          old:
-            lib.recursiveUpdate old {
-              meta.license = (
-                if builtins.isList old.meta.license
-                then map (_: {free = true;}) old.meta.license
-                else {free = true;}
-              );
-            }
-        )))
+        package.overrideAttrs (old:
+          lib.recursiveUpdate old {
+            meta.license = (if builtins.isList old.meta.license then
+              map (_: { free = true; }) old.meta.license
+            else {
+              free = true;
+            });
+          })))
       (overrides: _: _: overrides)
     ];
 }

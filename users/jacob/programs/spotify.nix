@@ -1,9 +1,5 @@
-{
-  pkgs,
-  lib,
-  hmModules,
-  ...
-}: let
+{ pkgs, lib, hmModules, ... }:
+let
   officialThemes = pkgs.fetchFromGitHub {
     owner = "spicetify";
     repo = "spicetify-themes";
@@ -51,7 +47,7 @@
   blackish = "141414";
   slighter = "1e1e1e";
 in {
-  imports = [hmModules.spicetify];
+  imports = [ hmModules.spicetify ];
 
   programs.spicetify = {
     enable = true;

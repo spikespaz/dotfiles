@@ -1,18 +1,14 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{ lib, pkgs, ... }: {
   programs.vscode.enable = true;
   programs.vscode.package = let
     editorPackage = pkgs.vscode;
     fontPackages = with pkgs; [
-      (nerdfonts.override {fonts = ["JetBrainsMono"];})
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
       material-design-icons
     ];
   in (pkgs.symlinkJoin {
     inherit (editorPackage) name pname version;
-    paths = [editorPackage] ++ fontPackages;
+    paths = [ editorPackage ] ++ fontPackages;
   });
 
   programs.vscode.extensions = with pkgs.vscode-marketplace; [
@@ -78,9 +74,7 @@
         "editorInlayHint.foreground" = "#69676c";
         "editorInlayHint.background" = "#222222";
       };
-      "[Sonokai Espresso]" = {
-        "editor.background" = "#211e1d";
-      };
+      "[Sonokai Espresso]" = { "editor.background" = "#211e1d"; };
     };
 
     # icons
@@ -158,7 +152,7 @@
     # unsaved files will be "untitled"
     "workbench.editor.untitled.labelFormat" = "name";
     # default hard and soft rulers
-    "editor.rulers" = [80 120];
+    "editor.rulers" = [ 80 120 ];
     # files can be recovered with undo
     "explorer.confirmDelete" = false;
     # set the integrated terminal to use zsh
@@ -200,10 +194,8 @@
       key = "ctrl+s";
       command = "extension.multiCommand.execute";
       args = {
-        sequence = [
-          "editor.action.formatDocument"
-          "workbench.action.files.save"
-        ];
+        sequence =
+          [ "editor.action.formatDocument" "workbench.action.files.save" ];
       };
       when = formatOnManualSaveOnlyCondition;
     }
@@ -225,7 +217,7 @@
     {
       key = "ctrl+k tab";
       command = "type";
-      args = {text = "	";};
+      args = { text = "	"; };
       when = "editorTextFocus && !editorReadonly";
     }
 

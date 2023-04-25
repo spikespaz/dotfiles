@@ -1,9 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+let
   description = ''
     Consistent theming between Qt and GTK on Wayland with a custom compositor
     is really not an easy feat. This module contains setup to handle that.
@@ -153,9 +149,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     # specify packages that are required for some stuff below
-    home.packages = [
-      cfg.fonts.monospace.package
-    ];
+    home.packages = [ cfg.fonts.monospace.package ];
 
     # specify packages to use for gtk theming
     gtk = {
@@ -175,10 +169,7 @@ in {
     dconf.settings."org/gnome/desktop/interface" = {
       monospace-font-name = cfg.fonts.monospace.name;
       # required for libadwaita
-      color-scheme =
-        if cfg.dark
-        then "prefer-dark"
-        else "prefer-light";
+      color-scheme = if cfg.dark then "prefer-dark" else "prefer-light";
       # don't know if this is needed
       # cursor-size = 24;
     };
@@ -192,8 +183,6 @@ in {
     };
 
     # should cover any other bases
-    home.sessionVariables = {
-      XCURSOR_SIZE = "${toString cfg.cursor.size}";
-    };
+    home.sessionVariables = { XCURSOR_SIZE = "${toString cfg.cursor.size}"; };
   };
 }

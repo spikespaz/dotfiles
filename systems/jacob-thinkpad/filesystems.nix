@@ -7,13 +7,8 @@
 # Further reading:
 # - <https://grahamc.com/blog/erase-your-darlings>
 # - <https://github.com/nix-community/impermanence>
-{
-  config,
-  lib,
-  pkgs,
-  enableUnstableZfs,
-  ...
-}: let
+{ config, lib, pkgs, enableUnstableZfs, ... }:
+let
   rootPool = "ospool";
   bootLabel = "BOOT";
 
@@ -21,7 +16,7 @@
   zfsAuto = device: {
     inherit device;
     fsType = "zfs";
-    options = ["zfsutil" "X-mount.mkdir"];
+    options = [ "zfsutil" "X-mount.mkdir" ];
   };
 in {
   # we never want to allow nix to create hard-links
@@ -42,7 +37,7 @@ in {
     };
   };
 
-  swapDevices = [{label = "swap";}];
+  swapDevices = [{ label = "swap"; }];
 
   # Only configure the necessary prerequisite boot parameters.
   boot = {
@@ -50,19 +45,16 @@ in {
     # docs say this should be set auto when ""
     resumeDevice = "/dev/disk/by-label/swap";
 
-    supportedFilesystems = ["zfs"];
-    kernelModules = ["zfs"];
+    supportedFilesystems = [ "zfs" ];
+    kernelModules = [ "zfs" ];
 
-    kernelPackages = lib.mkForce (
-      if enableUnstableZfs
-      then
-        (pkgs.linuxPackages_latest.extend (_: prev: {
-          zfsUnstable = prev.zfsUnstable.overrideAttrs (self: {
-            meta = self.meta // {broken = false;};
-          });
-        }))
-      else config.boot.zfs.package.latestCompatibleLinuxPackages
-    );
+    kernelPackages = lib.mkForce (if enableUnstableZfs then
+      (pkgs.linuxPackages_latest.extend (_: prev: {
+        zfsUnstable = prev.zfsUnstable.overrideAttrs
+          (self: { meta = self.meta // { broken = false; }; });
+      }))
+    else
+      config.boot.zfs.package.latestCompatibleLinuxPackages);
 
     zfs = {
       enableUnstable = enableUnstableZfs;
@@ -79,7 +71,7 @@ in {
     trim.interval = "weekly";
 
     autoScrub.enable = true;
-    autoScrub.pools = ["ospool"];
+    autoScrub.pools = [ "ospool" ];
     autoScrub.interval = "weekly";
   };
 }

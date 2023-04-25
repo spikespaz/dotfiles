@@ -1,8 +1,5 @@
-{
-  lib,
-  pkgs,
-  ...
-}: let
+{ lib, pkgs, ... }:
+let
   gruvbox_dark = {
     primary = {
       background = "0x282828";
@@ -29,22 +26,19 @@
       white = "0xebdbb2";
     };
   };
-  gruvbox_dark_custom =
-    gruvbox_dark
-    // {
-      primary.background = "0x121212";
-      normal.black = "0x5c5c5c";
-    };
+  gruvbox_dark_custom = gruvbox_dark // {
+    primary.background = "0x121212";
+    normal.black = "0x5c5c5c";
+  };
 in {
   programs.alacritty.enable = true;
 
-  home.packages = [
-    (pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];})
-  ];
+  home.packages =
+    [ (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; }) ];
 
   programs.alacritty.settings.shell = {
     program = "${lib.getExe pkgs.zsh}";
-    args = ["--login"];
+    args = [ "--login" ];
   };
 
   programs.alacritty.settings = {

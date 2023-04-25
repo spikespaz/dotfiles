@@ -1,22 +1,15 @@
-{
-  pkgs,
-  lib,
-  flib,
-  ...
-}: {
+{ pkgs, lib, flib, ... }: {
   ####################
   ### WEB BROWSERS ###
   ####################
 
-  chromium = {
-    programs.chromium.enable = true;
-  };
+  chromium = { programs.chromium.enable = true; };
 
   microsoft-edge = {
     home.packages = [
       # TODO pull-request
       (pkgs.microsoft-edge.overrideAttrs (old: {
-        nativeBuildInputs = [pkgs.makeWrapper];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
         postFixup = ''
           wrapProgram $out/opt/microsoft/msedge/microsoft-edge \
             --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
@@ -29,9 +22,7 @@
   ### COMMUNICATION & MESSAGING ###
   #################################
 
-  mailspring = {
-    home.packages = [pkgs.mailspring];
-  };
+  mailspring = { home.packages = [ pkgs.mailspring ]; };
 
   # bluemail = {
   #   home.packages = [pkgs.bluemail];
@@ -49,9 +40,7 @@
     };
   };
 
-  telegram = {
-    home.packages = [pkgs.tdesktop];
-  };
+  telegram = { home.packages = [ pkgs.tdesktop ]; };
 
   ######################
   ### MEDIA CREATION ###
@@ -64,23 +53,14 @@
       obs-move-transition
     ];
     # needed for screen selection on wayland
-    home.packages = [pkgs.slurp];
+    home.packages = [ pkgs.slurp ];
   };
 
   tools.video-editing = {
-    home.packages = with pkgs; [
-      libsForQt5.kdenlive
-      handbrake
-      ffmpeg
-    ];
+    home.packages = with pkgs; [ libsForQt5.kdenlive handbrake ffmpeg ];
   };
 
-  tools.image-editing = {
-    home.packages = with pkgs; [
-      pinta
-      gimp
-    ];
-  };
+  tools.image-editing = { home.packages = with pkgs; [ pinta gimp ]; };
 
   #########################
   ### MEDIA CONSUMPTION ###
@@ -90,12 +70,8 @@
   ### OFFICE & WRITING SOFTWARE ###
   #################################
 
-  onlyoffice = {
-    home.packages = [pkgs.onlyoffice-bin];
-  };
-  apostrophe = {
-    home.packages = [pkgs.apostrophe];
-  };
+  onlyoffice = { home.packages = [ pkgs.onlyoffice-bin ]; };
+  apostrophe = { home.packages = [ pkgs.apostrophe ]; };
 
   ##########################
   ### TERMINAL EMULATORS ###
@@ -107,30 +83,24 @@
 
   neovim = {
     programs.neovim.enable = true;
-    home.packages = [pkgs.neovide];
+    home.packages = [ pkgs.neovide ];
   };
-  helix = {
-    programs.helix.enable = true;
-  };
-  lapce = {
-    home.packages = [pkgs.lapce];
-  };
+  helix = { programs.helix.enable = true; };
+  lapce = { home.packages = [ pkgs.lapce ]; };
 
   #########################
   ### DEVELOPMENT TOOLS ###
   #########################
 
   git = let
-    package =
-      (pkgs.git.override {
-        withLibsecret = true;
-        # withSvnSupport = true;
-      })
-      .overrideAttrs (old: {
-        # not sure why this is failing
-        # <https://github.com/NixOS/nixpkgs/issues/195891>
-        doInstallCheck = false;
-      });
+    package = (pkgs.git.override {
+      withLibsecret = true;
+      # withSvnSupport = true;
+    }).overrideAttrs (old: {
+      # not sure why this is failing
+      # <https://github.com/NixOS/nixpkgs/issues/195891>
+      doInstallCheck = false;
+    });
   in {
     programs.git = {
       enable = true;
@@ -155,28 +125,29 @@
     # IntelliJ likes to see a `~/.jdks` directory,
     # so we will use that convention for now.
     home.file = builtins.listToAttrs (map (package: {
-        name = ".jdks/${package.name}";
-        value = {source = "${package.home}";};
-      }) [
-        pkgs.jdk8
-        pkgs.jdk11
-        pkgs.jdk17
-        pkgs.jdk # latest
-        pkgs.temurin-bin-8
-        pkgs.temurin-bin-11
-        pkgs.temurin-bin-16
-        pkgs.temurin-bin-17
-        pkgs.temurin-bin-18
-        pkgs.temurin-bin # latest
-      ]);
+      name = ".jdks/${package.name}";
+      value = { source = "${package.home}"; };
+    }) [
+      pkgs.jdk8
+      pkgs.jdk11
+      pkgs.jdk17
+      pkgs.jdk # latest
+      pkgs.temurin-bin-8
+      pkgs.temurin-bin-11
+      pkgs.temurin-bin-16
+      pkgs.temurin-bin-17
+      pkgs.temurin-bin-18
+      pkgs.temurin-bin # latest
+    ]);
   };
 
   rustup = {
-    home.packages = [pkgs.rustup pkgs.gcc];
+    home.packages = [ pkgs.rustup pkgs.gcc ];
     home.file.".cargo/config.toml".source = flib.toTOMLFile "cargo-config" {
       "target.x86_64-unknown-linux-gnu" = {
         linker = lib.getExe pkgs.clang;
-        rustFlags = ["-C" "link-arg=--ld-path=${lib.makeBinPath [pkgs.mold]}"];
+        rustFlags =
+          [ "-C" "link-arg=--ld-path=${lib.makeBinPath [ pkgs.mold ]}" ];
       };
     };
   };
@@ -186,16 +157,16 @@
   ##########################
 
   bash = {
-    home.packages = [pkgs.blesh];
+    home.packages = [ pkgs.blesh ];
     programs.bash = {
       enable = true;
       bashrcExtra = "source '${pkgs.blesh}/share/ble.sh'";
-      historyIgnore = ["reboot" "exit"];
+      historyIgnore = [ "reboot" "exit" ];
     };
     programs.starship.enableBashIntegration = true;
   };
   zsh = {
-    imports = [./zsh.nix];
+    imports = [ ./zsh.nix ];
     programs.zsh.alt.enable = true;
   };
 
@@ -207,26 +178,16 @@
     programs.bat.enable = true;
     programs.bat.config.theme = "gruvbox-dark";
   };
-  lsd = {
-    programs.lsd.enable = true;
-  };
-  fzf = {
-    programs.fzf.enable = true;
-  };
-  gallery-dl = {
-    home.packages = [pkgs.gallery-dl];
-  };
+  lsd = { programs.lsd.enable = true; };
+  fzf = { programs.fzf.enable = true; };
+  gallery-dl = { home.packages = [ pkgs.gallery-dl ]; };
 
   ###########################################
   ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
   ###########################################
 
-  neofetch = {
-    home.packages = [pkgs.neofetch];
-  };
-  nix-index = {
-    programs.nix-index.enable = true;
-  };
+  neofetch = { home.packages = [ pkgs.neofetch ]; };
+  nix-index = { programs.nix-index.enable = true; };
 
   ###################
   ### VIDEO GAMES ###
@@ -240,8 +201,8 @@
     home.packages = [
       (pkgs.symlinkJoin {
         inherit (pkgs.keepassxc) name;
-        paths = [pkgs.keepassxc];
-        nativeBuildInputs = [pkgs.makeWrapper];
+        paths = [ pkgs.keepassxc ];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
         postBuild = ''
           wrapProgram $out/bin/keepassxc \
             --set QT_QPA_PLATFORMTHEME ""
@@ -254,32 +215,19 @@
   ### FILE SHARING ###
   ####################
 
-  transmission = {
-    home.packages = [pkgs.transmission-qt];
-  };
-  qbittorrent = {
-    home.packages = [pkgs.qbittorrent];
-  };
-  filezilla = {
-    home.packages = [pkgs.filezilla];
-  };
+  transmission = { home.packages = [ pkgs.transmission-qt ]; };
+  qbittorrent = { home.packages = [ pkgs.qbittorrent ]; };
+  filezilla = { home.packages = [ pkgs.filezilla ]; };
 
   ###################
   ### 3D PRINTING ###
   ###################
 
-  printing-3d = {
-    home.packages = with pkgs; [
-      super-slicer-latest
-      cura
-    ];
-  };
+  printing-3d = { home.packages = with pkgs; [ super-slicer-latest cura ]; };
 
   ################
   ### HARDWARE ###
   ################
 
-  hardware.razer = {
-    home.packages = [pkgs.polychromatic];
-  };
+  hardware.razer = { home.packages = [ pkgs.polychromatic ]; };
 }

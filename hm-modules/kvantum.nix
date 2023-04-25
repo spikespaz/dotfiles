@@ -1,9 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config, lib, pkgs, ... }:
+let
   description = "Home Manager module for the Kvantum Theme Engine";
   inherit (lib) types generators;
   cfg = config.programs.kvantum;
@@ -80,16 +76,14 @@ in {
 
       theme.overrides = lib.mkOption {
         type = types.attrs;
-        apply = lib.mapAttrs' (
-          name: value:
-            if name == "General"
-            then {
-              name = "%General";
-              inherit value;
-            }
-            else {inherit name value;}
-        );
-        default = {};
+        apply = lib.mapAttrs' (name: value:
+          if name == "General" then {
+            name = "%General";
+            inherit value;
+          } else {
+            inherit name value;
+          });
+        default = { };
         example = lib.literalExpression ''
           {
             General = {
@@ -124,58 +118,40 @@ in {
       "${cfg.theme.name}.kvconfig"
     ];
     newThemePath = "${cfg.theme.name}#/${cfg.theme.name}#.kvconfig";
-    oldTheme =
-      lib.pipe (
-        pkgs.runCommandLocal
-        "convert-kvantum-${cfg.theme.name}-to-json"
-        {}
-        ''
-          mkdir $out
-          cat '${oldThemePath}' \
-            | '${lib.getExe pkgs.jc}' --ini \
-            > "$out/${cfg.theme.name}.json"
-        ''
-      ) [
+    oldTheme = lib.pipe
+      (pkgs.runCommandLocal "convert-kvantum-${cfg.theme.name}-to-json" { } ''
+        mkdir $out
+        cat '${oldThemePath}' \
+          | '${lib.getExe pkgs.jc}' --ini \
+          > "$out/${cfg.theme.name}.json"
+      '') [
         (drv: "${drv}/${cfg.theme.name}.json")
         builtins.readFile
         builtins.fromJSON
       ];
     newTheme = lib.recursiveUpdate oldTheme cfg.theme.overrides;
-  in
-    lib.mkMerge [
-      (lib.mkIf cfg.enable {
-        home.packages = [
-          cfg.package
-          cfg.theme.package
-        ];
+  in lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      home.packages = [ cfg.package cfg.theme.package ];
 
-        xdg.configFile."Kvantum/kvantum.kvconfig".text = generators.toINI {} {
-          General.theme = "${cfg.theme.name}#";
-        };
+      xdg.configFile."Kvantum/kvantum.kvconfig".text =
+        generators.toINI { } { General.theme = "${cfg.theme.name}#"; };
 
-        # todo: fix incorrect casing on some keys,
-        # jc does not respect this when the INI parser is used.
-        # <https://github.com/kellyjonbrazil/jc/issues/285>
-        xdg.configFile."Kvantum/${newThemePath}".text =
-          generators.toINI {} newTheme;
-      })
-      (lib.mkIf cfg.qt5ct.enable {
-        home.packages = [
-          cfg.qt5ct.package
-        ];
+      # todo: fix incorrect casing on some keys,
+      # jc does not respect this when the INI parser is used.
+      # <https://github.com/kellyjonbrazil/jc/issues/285>
+      xdg.configFile."Kvantum/${newThemePath}".text =
+        generators.toINI { } newTheme;
+    })
+    (lib.mkIf cfg.qt5ct.enable {
+      home.packages = [ cfg.qt5ct.package ];
 
-        home.sessionVariables = {
-          QT_QPA_PLATFORMTHEME = "qt5ct";
-        };
-      })
-      (lib.mkIf cfg.qt6ct.enable {
-        home.packages = [
-          cfg.qt6ct.package
-        ];
+      home.sessionVariables = { QT_QPA_PLATFORMTHEME = "qt5ct"; };
+    })
+    (lib.mkIf cfg.qt6ct.enable {
+      home.packages = [ cfg.qt6ct.package ];
 
-        home.sessionVariables = {
-          QT_QPA_PLATFORMTHEME = "qt6ct";
-        };
-      })
-    ];
+      home.sessionVariables = { QT_QPA_PLATFORMTHEME = "qt6ct"; };
+    })
+  ];
 }

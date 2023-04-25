@@ -1,12 +1,5 @@
-args @ {
-  self,
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-(xs: {imports = xs;})
-[
+args@{ self, config, pkgs, lib, ... }:
+(xs: { imports = xs; }) [
   #################
   ### NIX SETUP ###
   #################
@@ -28,14 +21,11 @@ args @ {
       # use four cores for enableParallelBuilding
       cores = 4;
       # allow sudo users to mark the following values as trusted
-      trusted-users = ["root" "@wheel"];
+      trusted-users = [ "root" "@wheel" ];
       # only allow sudo users to manage the nix store
-      allowed-users = ["@wheel"];
+      allowed-users = [ "@wheel" ];
       # enable new nix command and flakes
-      extra-experimental-features = [
-        "flakes"
-        "nix-command"
-      ];
+      extra-experimental-features = [ "flakes" "nix-command" ];
 
       # TODO: Make this Flake nixConfig
       # continue building derivations if one fails
@@ -63,21 +53,16 @@ args @ {
   {
     networking = {
       hostName = "jacob-thinkpad";
-      hostId = builtins.substring 0 8 (
-        builtins.hashString "md5" config.networking.hostName
-      );
+      hostId = builtins.substring 0 8
+        (builtins.hashString "md5" config.networking.hostName);
 
       # CloudFlare nameservers
-      nameservers = [
-        "1.1.1.1"
-        "1.0.0.1"
-        "2606:4700:4700::1111"
-        "2606:4700:4700::1001"
-      ];
+      nameservers =
+        [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
 
       firewall = {
         enable = true;
-        allowedTCPPorts = [80 443 8096 8920];
+        allowedTCPPorts = [ 80 443 8096 8920 ];
         # allowedUDPPortRanges = [
         #   { from = 4000; to = 4007; }
         #   { from = 8000; to = 8010; }
@@ -141,7 +126,7 @@ args @ {
     # I do not want ssh to be easily sniffable
     # <https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/services/networking/ssh/sshd.nix>
     services.openssh.enable = true;
-    services.openssh.ports = [1948];
+    services.openssh.ports = [ 1948 ];
     # TODO understand what exactly this is
     services.openssh.startWhenNeeded = true;
     # TODO perhaps set After and X-Restart-Triggers to []?
@@ -177,10 +162,7 @@ args @ {
     # enable cups and add some drivers for common printers
     services.printing = {
       enable = true;
-      drivers = with pkgs; [
-        gutenprint
-        hplip
-      ];
+      drivers = with pkgs; [ gutenprint hplip ];
     };
 
     # required for network discovery of printers
@@ -235,7 +217,7 @@ args @ {
       # handled by filesystem
       fontDir.decompressFonts = true;
       fonts = with pkgs; [
-        (pkgs.ttf-ms-win11.override {acceptEula = true;})
+        (pkgs.ttf-ms-win11.override { acceptEula = true; })
         noto-fonts
         noto-fonts-extra
         noto-fonts-cjk-sans
@@ -251,9 +233,7 @@ args @ {
   ### DESKTOP ENVIRONMENT: WAYLAND ###
   ####################################
   {
-    imports = [
-      self.nixosModules.disable-input
-    ];
+    imports = [ self.nixosModules.disable-input ];
 
     # <https://github.com/swaywm/swaylock/issues/61>
     security.pam.services.swaylock.text = ''
@@ -268,12 +248,12 @@ args @ {
     # '';
 
     # backlight brightness control (and keyboard, etc)
-    environment.systemPackages = [pkgs.slight];
-    services.udev.packages = [pkgs.slight];
+    environment.systemPackages = [ pkgs.slight ];
+    services.udev.packages = [ pkgs.slight ];
 
     programs.disable-input-devices = {
       enable = true;
-      allowedUsers = ["jacob"];
+      allowedUsers = [ "jacob" ];
       # Show all event devices:
       # $ sudo evtest
       # Get information about a device:
@@ -326,20 +306,17 @@ args @ {
   #####################
   {
     # enable completions for system packages
-    environment.pathsToLink = ["/share/zsh" "/share/bash-completion"];
+    environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
 
     # users.mutableUsers = false;
 
-    users.users = let
-      initialPassword = "password";
+    users.users = let initialPassword = "password";
     in {
-      root = {
-        inherit initialPassword;
-      };
+      root = { inherit initialPassword; };
       jacob = {
         description = "Jacob Birkett";
         isNormalUser = true;
-        extraGroups = ["audio" "video" "wheel" "libvirtd"];
+        extraGroups = [ "audio" "video" "wheel" "libvirtd" ];
         inherit initialPassword;
       };
       guest = {
@@ -356,7 +333,7 @@ args @ {
   {
     hardware.openrazer = {
       enable = true;
-      users = ["jacob"];
+      users = [ "jacob" ];
       devicesOffOnScreensaver = false;
     };
   }
@@ -370,7 +347,7 @@ args @ {
       enable = true;
       onBoot = "ignore";
       qemu.swtpm.enable = true;
-      qemu.ovmf.packages = [pkgs.OVMFFull.fd];
+      qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
     };
   }
 ]
