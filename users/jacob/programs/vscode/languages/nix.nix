@@ -20,7 +20,7 @@ in {
     "nix.enableLanguageServer" = true;
     "nix.serverPath" = lib.getExe pkgs.nil;
     "nix.serverSettings".nil = {
-      formatting.command = [(lib.getExe pkgs.alejandra)];
+      formatting.command = [(lib.getExe pkgs.nixfmt)];
     };
     # "nix.formatterPath" = lib.getExe pkgs.alejandra;
     # "alejandra.program" = lib.getExe pkgs.alejandra;

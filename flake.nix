@@ -24,8 +24,10 @@
     nil.url = "github:oxalica/nil";
     nil.inputs.nixpkgs.follows = "nixpkgs";
 
-    alejandra.url = "github:kamadorueda/alejandra";
-    alejandra.inputs.nixpkgs.follows = "nixpkgs";
+    # alejandra.url = "github:kamadorueda/alejandra";
+    # alejandra.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixfmt.url = "github:serokell/nixfmt";
 
     # use the package from nixpkgs, probably better-kept
     # but this flake provides the module (which I contribute to)
@@ -83,7 +85,7 @@
         inputs.hyprland.overlays.default
         inputs.slight.overlays.default
         inputs.vscode-extensions.overlays.default
-        inputs.alejandra.overlays.default
+        # inputs.alejandra.overlays.default
         inputs.nil.overlays.default
         inputs.prism-launcher.overlays.default
         # inputs.webcord.overlays.default
@@ -169,5 +171,7 @@
         ];
       };
     };
+
+    formatter.${system} = inputs.nixfmt.packages.${system}.default;
   };
 }
