@@ -1,0 +1,159 @@
+/*** Proton Tabs Tweaks ***/
+
+/* Adjust tab corner shape, optionally remove space below tabs */
+
+#tabbrowser-tabs {
+    --user-tab-rounding: 0px;
+}
+
+.tab-background {
+    border-radius: var(--user-tab-rounding) var(--user-tab-rounding) 0px 0px !important;
+    /* Connected */
+    margin-block: 1px 0 !important;
+    /* Connected */
+}
+
+#scrollbutton-up, #scrollbutton-down {
+    /* 6/10/2021 */
+    border-top-width: 1px !important;
+    border-bottom-width: 0 !important;
+}
+
+/* 1/16/2022 Tone down the Fx96 tab border with add-on themes in certain fallback situations */
+.tab-background:is([selected], [multiselected]):-moz-lwtheme {
+    --lwt-tabs-border-color: rgba(0, 0, 0, 0.5) !important;
+    border-bottom-color: transparent !important;
+}
+
+[brighttext="true"] .tab-background:is([selected], [multiselected]):-moz-lwtheme {
+    --lwt-tabs-border-color: rgba(255, 255, 255, 0.5) !important;
+    border-bottom-color: transparent !important;
+}
+
+/* Container color bar visibility */
+.tabbrowser-tab[usercontextid]>.tab-stack>.tab-background>.tab-context-line {
+    margin: 0px max(calc(var(--user-tab-rounding) - 3px), 0px) !important;
+}
+
+/* Override Normal Density height to Compact Density height only for tabs */
+
+#TabsToolbar, #tabbrowser-tabs {
+    --tab-min-height: 29px !important;
+}
+
+/* Tweak for covering a line at the bottom of the active tab on some themes 8/11/2021 */
+#main-window[sizemode="normal"] #toolbar-menubar[autohide="true"]+#TabsToolbar,
+#main-window[sizemode="normal"] #toolbar-menubar[autohide="true"]+#TabsToolbar #tabbrowser-tabs {
+    --tab-min-height: 30px !important;
+}
+
+#scrollbutton-up,
+#scrollbutton-down {
+    border-top-width: 0 !important;
+    border-bottom-width: 0 !important;
+}
+
+/* [Connected Tabs] Set a max height based on min-height plus margin-block: 1px 0 */
+#TabsToolbar, #TabsToolbar>hbox, #TabsToolbar-customization-target, #tabbrowser-arrowscrollbox {
+    max-height: calc(var(--tab-min-height) + 1px) !important;
+}
+
+/* [Connected Tabs] Adjust padding around icons on buttons to avoid crushed images */
+#TabsToolbar-customization-target toolbarbutton>.toolbarbutton-icon,
+#TabsToolbar-customization-target .toolbarbutton-text,
+#TabsToolbar-customization-target .toolbarbutton-badge-stack,
+#scrollbutton-up, #scrollbutton-down {
+    padding-top: 7px !important;
+    padding-bottom: 6px !important;
+}
+
+/* [Connected Tabs] Make sure tab attention dot isn't too high - 10 Dec 2022 */
+.tabbrowser-tab:is([image], [pinned])>.tab-stack>.tab-content[attention]:not([selected="true"]),
+.tabbrowser-tab>.tab-stack>.tab-content[pinned][titlechanged]:not([selected="true"]),
+#firefox-view-button[attention], .webextension-browser-action[attention="true"] {
+    background-position-y: bottom 2px !important;
+}
+
+/* Inactive tabs: Separator line style */
+
+.tabbrowser-tab:not([selected=true]):not([multiselected=true]):not([beforeselected-visible="true"]) .tab-background {
+    border-right: 1px solid var(--lwt-background-tab-separator-color, rgba(0, 0, 0, .20)) !important;
+}
+
+/* For dark backgrounds */
+[brighttext="true"] .tabbrowser-tab:not([selected=true]):not([multiselected=true]):not([beforeselected-visible="true"]) .tab-background {
+    border-right: 1px solid var(--lwt-background-tab-separator-color, var(--lwt-selected-tab-background-color, rgba(255, 255, 255, .20))) !important;
+}
+
+.tabbrowser-tab:not([selected=true]):not([multiselected=true]) .tab-background {
+    border-radius: 0 !important;
+}
+
+/* Remove padding between tabs */
+.tabbrowser-tab {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Move container color bar to bottom of tab - updated 1/16/2022 */
+
+.tab-background {
+    --context-line-margin-adjust: 3px;
+    /* 1/16/2022 */
+    --context-line-active-adjust: 1px;
+    /* 1/16/2022 */
+}
+
+.tabbrowser-tab[usercontextid]:is([selected=true], [visuallyselected="true"], [multiselected]) .tab-background {
+    border-top: 1px solid transparent;
+    /* 1/16/2022 Default border for consistency */
+}
+
+.tabbrowser-tab[usercontextid]>.tab-stack>.tab-background>.tab-context-line {
+    margin-top: calc(var(--tab-min-height) - var(--context-line-margin-adjust) - 2px) !important;
+}
+
+.tabbrowser-tab[usercontextid]:is([selected=true], [visuallyselected="true"], [multiselected])>.tab-stack>.tab-background>.tab-context-line {
+    margin-top: calc(var(--tab-min-height) - var(--context-line-margin-adjust) - var(--context-line-active-adjust) - 2px) !important;
+}
+
+/* Emulate blue tab line from Photon 57-88 UI */
+
+/* Set size and position of the bar relative to background */
+.tab-background::before {
+    content: "";
+    display: block;
+    height: 3px;
+    margin: -1px var(--user-tab-rounding) 0;
+}
+
+/* Set color for active tab */
+.tabbrowser-tab[selected] .tab-background::before {
+    background-color: #0a84ff;
+}
+
+/* Set color for other selected tabs */
+.tabbrowser-tab[multiselected]:not([selected]) .tab-background::before {
+    background-color: color-mix(in srgb, #0a84ff 66%, transparent);
+}
+
+/* Set color for hovering on non-active/non-selected tabs */
+.tabbrowser-tab:not([selected], [multiselected]):hover .tab-background::before {
+    background-color: color-mix(in srgb, currentColor 33%, transparent);
+    transform: none;
+}
+
+/* [Optional] Animation when hovering non-active/non-selected tabs */
+/*
+.tabbrowser-tab:not([selected], [multiselected]) .tab-background::before {
+  transform: scaleX(.8);
+  transition: transform 100ms linear;
+}
+*/
+
+/* Adjust margin on blue tab line for squared background tabs */
+.tabbrowser-tab:not([selected], [multiselected]) .tab-background::before {
+    margin: -1px 0 0 !important;
+}
+
+/* Tweak Options as of 12/10/2022; Generated Tue Apr 04 2023 23:37:42 GMT-0700 (Mountain Standard Time) */
