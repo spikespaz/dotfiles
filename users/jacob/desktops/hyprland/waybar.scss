@@ -120,6 +120,7 @@ window.popup {
 #workspaces {
   button {
     min-width: 26px;
+    padding: 6px;
 
     @include indicate-active(#f38019, "&.active");
 
