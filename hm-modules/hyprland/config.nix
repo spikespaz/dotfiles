@@ -128,7 +128,7 @@ in {
         description = lib.mdDoc ''
           Hyprland config attributes.
           These will be serialized to lines of text,
-          included in `configLines`.
+          included in {path}`$XDG_CONFIG_HOME/hypr/hyprland.conf`.
         '';
       };
 
@@ -138,13 +138,6 @@ in {
         description = lib.mdDoc ''
           Extra configuration lines to append to the bottom of
           `~/.config/hypr/hyprland.conf`.
-        '';
-      };
-
-      configLines = lib.mkOption {
-        type = types.lines;
-        description = lib.mdDoc ''
-          Lines of the hyprland config to write.
         '';
       };
 
@@ -193,8 +186,6 @@ in {
 
       home.sessionVariables =
         lib.mkIf cfg.recommendedEnvironment { NIXOS_OZONE_WL = "1"; };
-
-      xdg.configFile."hypr/hyprland.conf".text = cfg.configLines;
     }
     (lib.mkIf cfg.systemdIntegration {
       systemd.user.targets.hyprland-session = {

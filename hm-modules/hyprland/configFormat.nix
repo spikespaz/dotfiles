@@ -1,9 +1,9 @@
 # This file copies the style of:
 # <https://github.com/NixOS/nixpkgs/blob/55bf31e28e1b11574b56926d8c80f45271d696d5/pkgs/pkgs-lib/formats.nix>
 { lib, pkgs, ... }:
-configOpts:
+formatOptions:
 let
-  configOpts' = {
+  fmtOpts' = {
     sortPred = _: _: false;
     indentChars = "    ";
     spaceAroundEquals = true;
@@ -14,20 +14,26 @@ let
         betweenSections = isSectionNode prev && isSectionNode next;
       in prev != null
       && (betweenDifferent || betweenRepeats || betweenSections);
-  } // configOpts;
+  } // formatOptions;
 
   # toPretty = lib.generators.toPretty {multiline = false;};
   toPrettyM = lib.generators.toPretty { multiline = true; };
 
-  toConfigString = { sortPred, indentChars, spaceAroundEquals, lineBreakPred, }:
-    attrs:
+  toConfigString = opts: attrs:
     lib.pipe attrs [
       (attrsToNodeList [ ])
-      (sortNodeListRecursive sortPred)
-      (insertLineBreakNodesRecursive lineBreakPred)
-      (insertIndentNodesRecursive indentChars)
-      (renderNodeList { inherit indentChars spaceAroundEquals; })
+      (formatNodeList opts)
+      (renderNodeList opts)
     ];
+
+  formatNodeList = opts: nodes:
+    lib.pipe nodes [
+      (sortNodeListRecursive opts.sortPred)
+      (insertLineBreakNodesRecursive opts.lineBreakPred)
+      (insertIndentNodesRecursive opts.indentChars)
+    ];
+
+  renderNodeList = opts: nodes: lib.concatStrings (map (renderNode opts) nodes);
 
   isNode = node: lib.isAttrs node && node ? _node_type;
   isNodeType = type: node: isNode node && node._node_type == type;
@@ -121,14 +127,13 @@ let
   repeatChars = chars: level:
     lib.concatStrings (map (_: chars) (lib.range 1 level));
 
-  renderNode = opts@{ indentChars, spaceAroundEquals, }:
-    node:
+  renderNode = opts: node:
     if isStringNode node then
       node.value
     else if isIndentNode node then
-      repeatChars indentChars node.value
+      repeatChars opts.indentChars node.value
     else if isVariableNode node then
-      let equals = if spaceAroundEquals then " = " else "=";
+      let equals = if opts.spaceAroundEquals then " = " else "=";
       in ''
         ${node.name}${equals}${valueToString node.value}
       ''
@@ -142,8 +147,6 @@ let
         value is not of any known node type:
         ${toPrettyM node}
       '';
-
-  renderNodeList = opts: l: lib.concatStrings (map (renderNode opts) l);
 
   # Converts a single value to a valid Hyprland config RHS
   valueToString = value:
@@ -174,7 +177,20 @@ in {
       listOfValueTypes = listOf valueType;
     in attrsOfValueTypes;
 
-  toConfigString = toConfigString configOpts';
-  generate = name: value:
-    pkgs.writeText name (toConfigString configOpts' value);
+  formatOptions = formatOptions;
+  lib = {
+    inherit
+    # Transforms
+      toConfigString attrsToNodeList formatNodeList renderNodeList
+      # Checks
+      nodeType isNode isNodeType isStringNode isIndentNode isVariableNode
+      isRepeatNode isSectionNode
+      # Node Factories
+      mkStringNode mkIndentNode mkVariableNode mkRepeatNode mkSectionNode
+      # Utilities
+      mapValue renderNode valueToString;
+  };
+
+  toConfigString = toConfigString fmtOpts';
+  generate = name: value: pkgs.writeText name (toConfigString fmtOpts' value);
 }
