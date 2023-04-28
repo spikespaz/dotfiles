@@ -47,8 +47,7 @@ with pkgs; [
   ### STORAGE DEVICE TOOLS ###
   gparted
   gptfdisk
-  0.0
-  fsprogs
+  e2fsprogs
 
   ### HARDWARE DIAGNOSTICS ###
   cpu-x # cpu-z for linux
