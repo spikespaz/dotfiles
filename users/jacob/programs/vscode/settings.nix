@@ -27,6 +27,10 @@
     christian-kohler.path-intellisense
     streetsidesoftware.code-spell-checker
 
+    ## Version Control ##
+    waderyan.gitblame
+    mhutchie.git-graph
+
     ## Editor Extension ##
     ryuta46.multi-command
   ];
@@ -225,10 +229,10 @@
 
     ### FOCUS THE TERMINAL ###
 
-    {
-      key = "shift+`";
-      command = "workbench.action.terminal.focus";
-    }
+    # {
+    #   key = "shift+`";
+    #   command = "workbench.action.terminal.focus";
+    # }
 
     ### END ###
   ];
