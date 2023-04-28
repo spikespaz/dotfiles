@@ -140,10 +140,10 @@ in {
       configOrder = lib.mkOption {
         type = types.listOf (types.listOf types.singleLineStr);
         default = [
-          [ "source" ]
-
           [ "exec-once" ]
           [ "exec" ]
+
+          [ "source" ]
 
           [ "monitor" ]
           [ "wsbind" ]
@@ -158,6 +158,8 @@ in {
           [ "animations" ]
 
           [ "blurls" ]
+          [ "windowrule" ]
+          [ "layerrule" ]
           [ "windowrulev2" ]
 
           [ "misc" ]
