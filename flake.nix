@@ -121,8 +121,7 @@
             filesystems
             plymouth
             configuration
-            powersave
-            undervolt
+            powerplan
             touchpad
             greeter
             # gamemode
