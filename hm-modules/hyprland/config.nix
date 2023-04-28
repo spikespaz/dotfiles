@@ -11,18 +11,14 @@ let
     inherit (cfg) nvidiaPatches;
   };
 
+  configFormat = (import ./configFormat.nix args) cfg.configFormatOptions;
   configRenames = import ./configRenames.nix args;
-  configFormat = (import ./configFormat.nix args) {
-    indentChars = "	";
-    sortPred = a: b:
-      let
-        ia = indexOf a 0 cfg.configOrder;
-        ib = indexOf b 0 cfg.configOrder;
-      in ia < ib;
-  };
+
   toConfigString = attrs:
-    configFormat.toConfigString
-    (with configRenames; renameAttrs renames.from renames.to attrs);
+    lib.pipe attrs [
+      (with configRenames; renameAttrs renames.from renames.to)
+      configFormat.toConfigString
+    ];
 
   indexOf = x: default: xs:
     lib.pipe xs [
@@ -133,7 +129,7 @@ in {
       };
 
       extraConfig = lib.mkOption {
-        type = types.nullOr types.lines;
+        type = with types; nullOr lines;
         default = null;
         description = lib.mdDoc ''
           Extra configuration lines to append to the bottom of
@@ -144,6 +140,8 @@ in {
       configOrder = lib.mkOption {
         type = types.listOf (types.listOf types.singleLineStr);
         default = [
+          [ "source" ]
+
           [ "exec-once" ]
           [ "exec" ]
 
@@ -175,6 +173,66 @@ in {
           This is necessary in some cases, namely where `bezier` must be defined
           before it can be used in `animation`.
         '';
+      };
+
+      configFormatOptions = {
+        sortPred = lib.mkOption {
+          type = types.anything;
+          # type = with types; functionTo (functionTo bool);
+          default = a: b:
+            let
+              ia = indexOf a 0 cfg.configOrder;
+              ib = indexOf b 0 cfg.configOrder;
+            in ia < ib;
+          description = lib.mdDoc ''
+            The predicate with which to sort nodes recursively.
+            Given two node paths, `prev` and `next`,
+            return `true` for "ascend" and `false` for descend.
+          '';
+        };
+        indentChars = lib.mkOption {
+          type = types.strMatching "([ \\t]+)";
+          default = "    ";
+          description = lib.mdDoc ''
+            Characters to use for each indent level,
+          '';
+        };
+        spaceAroundEquals = lib.mkOption {
+          type = types.bool;
+          default = true;
+          description = lib.mdDoc ''
+            Whether to have spaces before and after an equals `=` operator.
+          '';
+        };
+        lineBreakPred = lib.mkOption {
+          type = types.anything;
+          # type = with types; functionTo (functionTo bool);
+          default = prev: next:
+            let
+              inherit (configFormat.lib) nodeType isRepeatNode isSectionNode;
+              betweenDifferent = nodeType prev != nodeType next;
+              betweenRepeats = isRepeatNode prev && isRepeatNode next;
+              betweenSections = isSectionNode prev && isSectionNode next;
+            in prev != null
+            && (betweenDifferent || betweenRepeats || betweenSections);
+          description = lib.mdDoc ''
+            The predicate with which to determine where to insert line breaks.
+            Return `true` to add a break, `false` to continue.
+
+            Use functions from {path}`configFormat.nix` to test node types.
+          '';
+          defaultText = lib.literalExpression ''
+            prev: next:
+              let
+                configFormat = (import ./configFormat.nix args) cfg.configFormatOptions;
+                inherit (configFormat.lib) nodeType isRepeatNode isSectionNode;
+                betweenDifferent = nodeType prev != nodeType next;
+                betweenRepeats = isRepeatNode prev && isRepeatNode next;
+                betweenSections = isSectionNode prev && isSectionNode next;
+              in prev != null
+              && (betweenDifferent || betweenRepeats || betweenSections)
+          '';
+        };
       };
     };
   };
