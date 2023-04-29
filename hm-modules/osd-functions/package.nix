@@ -1,6 +1,4 @@
-{
-# maintainers,
-lib, stdenv, makeWrapper, bash, coreutils, gawk, gnugrep, bc, libnotify
+{ lib, stdenv, makeWrapper, bash, coreutils, gawk, gnugrep, bc, libnotify
 , wireplumber, scriptOptions ? { }, }:
 let
   scriptOptions' = (lib.recursiveUpdate {
@@ -87,15 +85,13 @@ in stdenv.mkDerivation {
         '${lib.makeBinPath [ coreutils gawk gnugrep bc libnotify wireplumber ]}'
   '';
 
-  meta.mainProgram = "functions";
-
-  # meta = {
-  #   description = ''
-  #     Shell script to execute actions when function keys are triggered
-  #   '';
-  #   license = lib.licenses.mit;
-  #   platforms = lib.platforms.linux;
-  #   mainProgram = "functions";
-  #   maintainers = with maintainers; [spikespaz];
-  # };
+  meta = {
+    description = lib.mdDoc ''
+      Shell script to execute actions when function keys are triggered
+    '';
+    license = lib.licenses.mit;
+    platforms = lib.platforms.linux;
+    mainProgram = "functions";
+    maintainers = with lib.maintainers; [ spikespaz ];
+  };
 }

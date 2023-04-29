@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   inherit (lib) types;
-  inherit (import ./common.nix) baseName version src;
+  inherit (import ./common.nix null) baseName version src;
   optionName = baseName;
   cfg = config.programs.${optionName};
 in {

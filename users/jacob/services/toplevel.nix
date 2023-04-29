@@ -1,5 +1,5 @@
 { ... }: {
-  udiskie = {...}: {
+  udiskie = { ... }: {
     # service that auto-mounts storage devices with udisks2
     services.udiskie = {
       enable = true;

@@ -1,4 +1,4 @@
-{ maintainers, lib, stdenv, cmake, pkg-config, fetchFromGitHub, makeWrapper,
+{ lib, stdenv, cmake, pkg-config, fetchFromGitHub, makeWrapper,
 # hard deps
 dbus, dconf, glib, pciutils, zlib,
 # soft deps
@@ -48,6 +48,6 @@ stdenv.mkDerivation rec {
     inherit (src.meta) homepage;
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [ spikespaz ];
+    maintainers = with lib.maintainers; [ spikespaz ];
   };
 }

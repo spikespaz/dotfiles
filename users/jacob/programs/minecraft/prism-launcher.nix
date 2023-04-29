@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs, nixpkgs-stable, ... }:
+{ pkgs, ... }:
 let
   inherit (pkgs.callPackage ./graalvm.nix { }) graalvm8-ce-jre;
 

@@ -13,7 +13,6 @@ let
     lib.pipe keyBinds [
       (keyBindsToNodeList [ ])
       (formatNodeList null)
-      (lib.traceValSeqN 10)
       (renderNodeList opts)
     ];
 
@@ -122,7 +121,7 @@ in {
     xdg.configFile."hypr/keybinds.conf".text =
       toConfigString cfg.configFormatOptions cfg.keyBinds;
 
-       wayland.windowManager.hyprland.config.source =
-         [ "${config.xdg.configHome}/hypr/keybinds.conf" ];
+    wayland.windowManager.hyprland.config.source =
+      [ "${config.xdg.configHome}/hypr/keybinds.conf" ];
   };
 }

@@ -25,4 +25,10 @@ in prev // prelude // {
     inherit prelude;
     inherit (lib.builders) mkFlakeTree mkFlakeSystems mkHost mkHome;
   };
+  maintainers.spikespaz = {
+    email = "jacob@birkett.dev";
+    github = "spikespaz";
+    githubId = "MDQ6VXNlcjEyNTAyOTg4";
+    name = 12502988;
+  };
 }

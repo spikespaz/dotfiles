@@ -4,6 +4,56 @@
     Jacob Birkett's personal computers.
   '';
 
+  outputs = inputs@{ self, nixpkgs, ... }:
+    let inherit (self) lib tree systems;
+    in {
+      # any of aarch64, arm, x86_64, linux and darwin.
+      # other platforms may be negotiable.
+      systems = with lib.systems.doubles;
+        lib.birdos.mkFlakeSystems [
+          [ x86_64 linux ]
+          [ arm linux ]
+          [ aarch64 linux ]
+          [ arm darwin ]
+          [ aarch64 darwin ]
+        ];
+
+      lib = nixpkgs.lib.extend (import ./lib);
+
+      # The purpose of `mkFlakeTree` is to recurse the project files,
+      # importing any folders with `default.nix` or files themselves.
+      # This forms a structure of nested attrsets that somewhat resembles the
+      # directory structure of the flake, very much like the `tree` command.
+      tree = lib.birdos.mkFlakeTree ./.;
+
+      formatter =
+        lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);
+
+      overlays = removeAttrs tree.overlays [ "unfree" ] // {
+        default = _: tree.packages.default;
+        allowUnfree = _: tree.overlays.unfree lib [ [ "ttf-ms-win11" ] ];
+      };
+      packages = lib.genAttrs systems
+        (system: tree.packages.default nixpkgs.legacyPackages.${system});
+
+      # since `tree` closely represents the file tree of the flake,
+      # there are `default` attrs in some of the "folders".
+      # `mapThruAttr` will take an attrs of attrs and transparently get the
+      # `default` attributes for the second-level sets that have them.
+      nixosModules = lib.mapThruAttr "default" tree.modules;
+      homeManagerModules = lib.mapThruAttr "default" tree.hm-modules;
+
+      # for more information about the host configurations,
+      # see ./hosts/default.nix
+      nixosConfigurations =
+        tree.hosts.default { inherit self lib tree inputs nixpkgs; };
+
+      # for more information aboyt user configurations,
+      # see ./users/default.nix
+      homeConfigurations =
+        tree.users.default { inherit self lib tree inputs nixpkgs; };
+    };
+
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -50,46 +100,4 @@
     ragenix.url = "github:yaxitech/ragenix";
     ragenix.inputs.nixpkgs.follows = "nixpkgs";
   };
-
-  outputs = inputs@{ self, nixpkgs, ... }:
-    let inherit (self) lib tree systems;
-    in {
-      # any of aarch64, arm, x86_64, linux and darwin.
-      # other platforms may be negotiable.
-      systems = with lib.systems.doubles;
-        lib.birdos.mkFlakeSystems [
-          [ x86_64 linux ]
-          [ arm linux ]
-          [ aarch64 linux ]
-          [ arm darwin ]
-          [ aarch64 darwin ]
-        ];
-
-      lib = nixpkgs.lib.extend (import ./lib);
-
-      # The purpose of `mkFlakeTree` is to recurse the project files,
-      # importing any folders with `default.nix` or files themselves.
-      # This forms a structure of nested attrsets that somewhat resembles the
-      # directory structure of the flake, very much like the `tree` command.
-      tree = lib.birdos.mkFlakeTree ./.;
-
-      formatter =
-        lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);
-
-      overlays = removeAttrs tree.overlays [ "unfree" ] // {
-        default = _: tree.packages.default;
-        allowUnfree = _: tree.overlays.unfree lib [ [ "ttf-ms-win11" ] ];
-      };
-      packages = lib.genAttrs systems
-        (system: tree.packages.default nixpkgs.legacyPackages.${system});
-
-      nixosModules = lib.mapThruAttr "default" tree.modules;
-      homeManagerModules = lib.mapThruAttr "default" tree.hm-modules;
-
-      nixosConfigurations =
-        tree.hosts.default { inherit self lib tree inputs nixpkgs; };
-
-      homeConfigurations =
-        tree.users.default { inherit self lib tree inputs nixpkgs; };
-    };
 }

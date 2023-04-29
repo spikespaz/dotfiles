@@ -1,5 +1,5 @@
-{ maintainers, lib, stdenv, fetchFromGitHub, systemdSupport ? stdenv.isLinux
-, pkg-config, bash, dbus, systemd, xorg, ... }:
+{ lib, stdenv, fetchFromGitHub, systemdSupport ? stdenv.isLinux, pkg-config
+, bash, dbus, systemd, xorg, ... }:
 stdenv.mkDerivation rec {
   pname = "idlehack";
   version = "unstable-2021-12-05";
@@ -39,6 +39,6 @@ stdenv.mkDerivation rec {
     inherit (src.meta) homepage;
     license = lib.licenses.isc;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [ spikespaz ];
+    maintainers = with lib.maintainers; [ spikespaz ];
   };
 }

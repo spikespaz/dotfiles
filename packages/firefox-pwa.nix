@@ -1,5 +1,5 @@
 # <https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=firefox-pwa>
-{ stdenv, rustPlatform, fetchFromGitHub, openssl, pkg-config, maintainers, }:
+{ stdenv, rustPlatform, fetchFromGitHub, openssl, pkg-config, }:
 let
   version = "2.4.1";
 

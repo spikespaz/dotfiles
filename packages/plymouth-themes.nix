@@ -1,5 +1,4 @@
-{ maintainers, lib, stdenv, fetchFromGitHub, pack ? 2, theme ? "green_blocks"
-, ... }:
+{ lib, stdenv, fetchFromGitHub, pack ? 2, theme ? "green_blocks", ... }:
 stdenv.mkDerivation rec {
   pname = "adi1090x-plymouth-themes";
   version = "1.0.0";
@@ -36,6 +35,6 @@ stdenv.mkDerivation rec {
     inherit (src.meta) homepage;
     license = lib.licenses.gpl3;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [ spikespaz ];
+    maintainers = with lib.maintainers; [ spikespaz ];
   };
 }

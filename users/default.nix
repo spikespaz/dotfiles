@@ -11,15 +11,12 @@ args@{ self, tree, lib, inputs, ... }: {
     ];
     overlays = [
       self.overlays.default
-      self.overlays.oraclejdk
-      self.overlays.handbrake
-      self.overlays.nushell
       self.overlays.allowUnfree
+      self.overlays.oraclejdk
       inputs.nur.overlay
       inputs.hyprland.overlays.default
       inputs.slight.overlays.default
       inputs.vscode-extensions.overlays.default
-      # inputs.alejandra.overlays.default
       inputs.nil.overlays.default
       inputs.prism-launcher.overlays.default
       # inputs.webcord.overlays.default

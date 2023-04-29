@@ -1,4 +1,4 @@
-{ lib, maintainers, stdenv, fetchFromGitHub, }:
+{ lib, stdenv, fetchFromGitHub, }:
 stdenv.mkDerivation rec {
   pname = "adi1090x-rofi-themes";
   version = "1";
@@ -36,6 +36,6 @@ stdenv.mkDerivation rec {
     inherit (src) hostname;
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
-    maintainers = with maintainers; [ spikespaz ];
+    maintainers = with lib.maintainers; [ spikespaz ];
   };
 }

@@ -1,8 +1,7 @@
-{ maintainers, lib, stdenv, fetchurl, p7zip, acceptEula ? false
-, enableBaseFonts ? true, enableJapaneseFonts ? true, enableKoreanFonts ? true
-, enableSeaFonts ? true, enableThaiFonts ? true
-, enableChineseSimplifiedFonts ? true, enableChineseTraditionalFonts ? true
-, enableOtherFonts ? true, }:
+{ lib, stdenv, fetchurl, p7zip, acceptEula ? false, enableBaseFonts ? true
+, enableJapaneseFonts ? true, enableKoreanFonts ? true, enableSeaFonts ? true
+, enableThaiFonts ? true, enableChineseSimplifiedFonts ? true
+, enableChineseTraditionalFonts ? true, enableOtherFonts ? true, }:
 let inherit (import ./hashes.nix { }) fonts sha256Hashes;
 in stdenv.mkDerivation rec {
   pname = "ttf-ms-win11";
@@ -135,6 +134,6 @@ in stdenv.mkDerivation rec {
       "https://www.microsoft.com/typography/fonts/product.aspx?PID=164";
     platforms = lib.platforms.all;
     license = lib.licenses.unfreeRedistributable;
-    maintainers = with maintainers; [ spikespaz ];
+    maintainers = with lib.maintainers; [ spikespaz ];
   };
 }

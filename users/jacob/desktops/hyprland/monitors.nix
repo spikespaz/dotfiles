@@ -1,3 +1,4 @@
+{ ... }:
 let
   internalMon = "eDP-1";
   hotplugMon = "HDMI-A-1";

@@ -1,6 +1,3 @@
 [submodule "inputs/spicetify"]
 	path = inputs/spicetify
 	url = https://github.com/spikespaz/spicetify-nix
-[submodule "inputs/vscode-extensions"]
-	path = inputs/vscode-extensions
-	url = https://github.com/spikespaz/nix-vscode-extensions
