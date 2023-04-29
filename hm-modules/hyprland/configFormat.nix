@@ -182,6 +182,7 @@ in {
     inherit
     # Transforms
       toConfigString attrsToNodeList formatNodeList renderNodeList
+      insertLineBreakNodesRecursive insertIndentNodesRecursive
       # Checks
       nodeType isNode isNodeType isStringNode isIndentNode isVariableNode
       isRepeatNode isSectionNode
