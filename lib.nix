@@ -54,6 +54,28 @@ let
   thruAttr = attr: it:
     if lib.isAttrs it && it ? ${attr} then it.${attr} else it;
   mapThruAttr = attr: lib.mapAttrs (name: thruAttr attr);
+
+  mkHost = args@{ inputs, ... }:
+    setup@{
+    # the system to use for the host platform
+    system ? "x86_64-linux",
+    # the branch of nixpkgs to use for the host
+    nixpkgs ? inputs.nixpkgs,
+    # arguments to be given to
+    # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/top-level/impure.nix>
+    nixpkgsArgs ? { }, overlays ? [ ],
+    # additional specialArgs (overwrites args attrs)
+    specialArgs ? { },
+    # host component modules
+    modules ? [ ] }:
+    let
+      setupStripped =
+        removeAttrs setup [ "nixpkgs" "nixpkgsArgs" "overlays" "specialArgs" ];
+    in lib.nixosSystem (setupStripped // {
+      pkgs = import nixpkgs ({ inherit system overlays; } // nixpkgsArgs);
+      specialArgs = args // specialArgs // { inherit nixpkgs system; };
+    });
+
   # TODO cannot handle scoped packages
   mkUnfreeOverlay = pkgs: names:
     lib.pipe names [
@@ -180,7 +202,7 @@ in {
     # List Comprehension
     indicesOf split lsplit rsplit
     # Flake Utilities
-    mkFlakeTree mkUnfreeOverlay
+    mkFlakeTree mkHost mkUnfreeOverlay
     # Formats
     toTOMLFile toTOML;
 }

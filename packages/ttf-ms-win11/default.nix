@@ -3,7 +3,7 @@
 , enableSeaFonts ? true, enableThaiFonts ? true
 , enableChineseSimplifiedFonts ? true, enableChineseTraditionalFonts ? true
 , enableOtherFonts ? true, }:
-let inherit (import ./hashes.nix) fonts sha256Hashes;
+let inherit (import ./hashes.nix { }) fonts sha256Hashes;
 in stdenv.mkDerivation rec {
   pname = "ttf-ms-win11";
   version = "1";

@@ -54,9 +54,8 @@
     ragenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, ... }:
     let
-      system = "x86_64-linux";
       lib = nixpkgs.lib.extend (final: prev: prev // import ./lib.nix final);
       # The purpose of `mkFlakeTree` is to recurse the project files,
       # importing any folders with `default.nix` or files themselves.
@@ -64,33 +63,18 @@
       # directory structure of the flake, very much like the `tree` command.
       tree = lib.mkFlakeTree ./.;
 
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        overlays = [
-          self.overlays.default
-          self.overlays.oraclejdk
-          self.overlays.handbrake
-          self.overlays.nushell
-          self.overlays.allowUnfree
-          inputs.nur.overlay
-          inputs.hyprland.overlays.default
-          inputs.slight.overlays.default
-          inputs.vscode-extensions.overlays.default
-          # inputs.alejandra.overlays.default
-          inputs.nil.overlays.default
-          inputs.prism-launcher.overlays.default
-          # inputs.webcord.overlays.default
-          inputs.ragenix.overlays.default
-        ];
-      };
-
-      pkgs-stable = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
+      systems = tree.lib.systems;
+      pkgsFor = builtins.listToAttrs (map (system: {
+        name = system;
+        value = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      }) systems);
+      mapSystems = fn: builtins.mapAttrs fn pkgsFor;
     in {
-      formatter.${system} = inputs.nixfmt.packages.${system}.default;
+      formatter =
+        lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);
 
       overlays = tree.overlays // {
         default = _: tree.packages.default;
@@ -102,40 +86,18 @@
       nixosModules = lib.mapThruAttr "default" tree.modules;
       homeManagerModules = lib.mapThruAttr "default" tree.hm-modules;
 
-      nixosConfigurations = {
-        jacob-thinkpad = lib.nixosSystem {
-          system = "x86_64-linux";
-          inherit pkgs;
-
-          specialArgs = {
-            inherit self lib tree inputs nixpkgs nixpkgs-stable pkgs-stable;
-            enableUnstableZfs = false;
-          };
-
-          modules = with tree.systems.jacob-thinkpad; [
-            bootloader
-            filesystems
-            plymouth
-            configuration
-            powerplan
-            touchpad
-            greeter
-            # gamemode
-            gaming
-            pia-openvpn
-          ];
-        };
-      };
+      nixosConfigurations =
+        tree.hosts.default { inherit self lib tree inputs nixpkgs; };
 
       homeConfigurations = {
-        jacob = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+        jacob = inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = pkgsFor.x86_64-linux;
 
           extraSpecialArgs = {
             lib = lib.extend (final: _: {
-              hm = import "${home-manager}/modules/lib" { lib = final; };
+              hm = import "${inputs.home-manager}/modules/lib" { lib = final; };
             });
-            inherit self tree inputs nixpkgs nixpkgs-stable pkgs-stable;
+            inherit self tree inputs nixpkgs;
           };
 
           modules = with tree.users.jacob; [
