@@ -52,17 +52,26 @@
   };
 
   outputs = inputs@{ self, nixpkgs, ... }:
-    let
-      inherit (self) lib;
+    let inherit (self) lib tree systems;
+    in {
+      # any of aarch64, arm, x86_64, linux and darwin.
+      # other platforms may be negotiable.
+      systems = with lib.systems.doubles;
+        lib.birdos.mkFlakeSystems [
+          [ x86_64 linux ]
+          [ arm linux ]
+          [ aarch64 linux ]
+          [ arm darwin ]
+          [ aarch64 darwin ]
+        ];
+
+      lib = nixpkgs.lib.extend (import ./lib);
+
       # The purpose of `mkFlakeTree` is to recurse the project files,
       # importing any folders with `default.nix` or files themselves.
       # This forms a structure of nested attrsets that somewhat resembles the
       # directory structure of the flake, very much like the `tree` command.
       tree = lib.birdos.mkFlakeTree ./.;
-      systems = lib.foldl' lib.intersectLists [ ]
-        (with lib.systems.doubles; [ aarch64 arm x86_64 linux ]);
-    in {
-      lib = nixpkgs.lib.extend (import ./lib);
 
       formatter =
         lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);

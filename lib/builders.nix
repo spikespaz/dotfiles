@@ -25,6 +25,12 @@ let
       builtins.listToAttrs
     ];
 
+  mkFlakeSystems = matrix:
+    lib.pipe matrix [
+      (map (lib.applyArgs lib.intersectLists))
+      lib.concatLists
+    ];
+
   mkHost = args@{ inputs, ... }:
     setup@{
     # the system to use for the host platform
@@ -102,5 +108,5 @@ let
   };
 in {
   #
-  inherit mkFlakeTree mkHost mkHome mkDirEntry;
+  inherit mkFlakeTree mkFlakeSystems mkHost mkHome mkDirEntry;
 }

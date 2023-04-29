@@ -23,6 +23,6 @@ let
 in prev // prelude // {
   birdos = {
     inherit prelude;
-    inherit (lib.builders) mkFlakeTree mkHost mkHome;
+    inherit (lib.builders) mkFlakeTree mkFlakeSystems mkHost mkHome;
   };
 }
