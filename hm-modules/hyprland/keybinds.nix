@@ -4,23 +4,29 @@ let
 
   inherit (lib) types;
 
-  inherit (configFormat.lib)
-    mkVariableNode mkRepeatNode formatNodeList renderNodeList;
-
   configFormat = (import ./configFormat.nix args) cfg.configFormatOptions;
 
-  sublist = idx: j: l:
-    let adv = j - idx;
-    in lib.foldl' (l': i: l' ++ [ builtins.elemAt i l ]) [ ]
-    (lib.range idx adv);
+  inherit (configFormat.lib)
+    mkVariableNode mkRepeatNode insertLineBreakNodesRecursive renderNodeList;
 
   toConfigString = opts: keyBinds:
     lib.pipe keyBinds [
       (keyBindsToNodeList [ ])
+      (formatNodeList null)
       (lib.traceValSeqN 10)
-      (formatNodeList opts)
       (renderNodeList opts)
     ];
+
+  breakPred = prev: next:
+    let
+      inherit (configFormat.lib) nodeType isRepeatNode;
+      isSubmap = node: isRepeatNode prev && node.name == "submap";
+      betweenSubmaps = isSubmap prev && isSubmap next;
+      betweenRepeats = isRepeatNode prev && isRepeatNode next;
+    in prev != null && (betweenRepeats || betweenSubmaps);
+
+  formatNodeList = _: nodes:
+    lib.pipe nodes [ (insertLineBreakNodesRecursive breakPred) ];
 
   keyBindsToNodeList = path: attrs:
     let
@@ -29,10 +35,17 @@ let
           if attrs ? submap then removeAttrs attrs [ "submap" ] else attrs)
         (bindAttrsToNodeList [ ])
       ];
-      # submaps = lib.pipe attrs [
-      #   (attrs: if attrs ? submap then attrs.submap else { })
-      # ];
-    in lib.concatLists [ default ];
+      submaps = lib.pipe attrs [
+        (attrs: if attrs ? submap then attrs.submap else { })
+        (lib.mapAttrs (name: bindAttrsToNodeList [ "submap" ]))
+        (lib.mapAttrsToList (name: nodes:
+          let
+            nameNode = mkVariableNode [ "submap" name ] "submap" name;
+            resetNode = mkVariableNode [ "submap" name ] "submap" "reset";
+            nodes' = [ nameNode ] ++ nodes ++ [ resetNode ];
+          in mkRepeatNode [ "submap" ] "submap" nodes'))
+      ];
+    in lib.concatLists [ default submaps ];
 
   bindAttrsToNodeList = path:
     (lib.mapAttrsToList (bindKw: chordAttrs:
@@ -109,7 +122,7 @@ in {
     xdg.configFile."hypr/keybinds.conf".text =
       toConfigString cfg.configFormatOptions cfg.keyBinds;
 
-    #    wayland.windowManager.hyprland.config.source =
-    #      [ "${config.xdg.configHome}/hypr/keybinds.conf" ];
+       wayland.windowManager.hyprland.config.source =
+         [ "${config.xdg.configHome}/hypr/keybinds.conf" ];
   };
 }

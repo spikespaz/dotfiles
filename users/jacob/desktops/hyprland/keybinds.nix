@@ -4,7 +4,8 @@
 
 { config, pkgs, lib, ... }: {
   # for now until I get the module working
-  xdg.configFile."hypr/hyprland.conf".text = lib.mkOrder 1200 (builtins.readFile ./keybinds.conf);
+  # xdg.configFile."hypr/hyprland.conf".text =
+  #   lib.mkOrder 1200 (builtins.readFile ./keybinds.conf);
 
   # <https://wiki.hyprland.org/Configuring/Dispatchers/>
   wayland.windowManager.hyprland.keyBinds = let
