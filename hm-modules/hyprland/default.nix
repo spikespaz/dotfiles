@@ -4,5 +4,6 @@
     ./config.nix
     ./windowrules.nix # includes layerrules
     ./animations.nix
+    ./keybinds.nix
   ];
 }
