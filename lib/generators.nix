@@ -1,7 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib }:
 let
   # This is a bad solution
-  toTOMLFile = name: attrs:
+  toTOMLFile = pkgs: name: attrs:
     (pkgs.runCommandLocal "nix-to-toml_${name}" { } ''
       mkdir $out
       cat "${pkgs.writeText "nix-to-json-${name}" (builtins.toJSON attrs)}" \
@@ -9,4 +9,7 @@ let
     '').outPath + "/${name}.toml";
 
   toTOML = attrs: builtins.readFile (toTOMLFile "unknown" attrs);
-in { inherit toTOMLFile toTOML; }
+in {
+  #
+  inherit toTOMLFile toTOML;
+}

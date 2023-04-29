@@ -143,13 +143,14 @@
 
   rustup = {
     home.packages = [ pkgs.rustup pkgs.gcc ];
-    home.file.".cargo/config.toml".source = lib.toTOMLFile pkgs "cargo-config" {
-      "target.x86_64-unknown-linux-gnu" = {
-        linker = lib.getExe pkgs.clang;
-        rustFlags =
-          [ "-C" "link-arg=--ld-path=${lib.makeBinPath [ pkgs.mold ]}" ];
+    home.file.".cargo/config.toml".source =
+      (pkgs.formats.toml { }).generate "cargo-config" {
+        "target.x86_64-unknown-linux-gnu" = {
+          linker = lib.getExe pkgs.clang;
+          rustFlags =
+            [ "-C" "link-arg=--ld-path=${lib.makeBinPath [ pkgs.mold ]}" ];
+        };
       };
-    };
   };
 
   ##########################

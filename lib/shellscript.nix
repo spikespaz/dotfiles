@@ -1,14 +1,18 @@
-final: prev: rec {
-  writeShellScriptShebang = package: name: text:
-    final.writeTextFile {
+{ lib }:
+let
+  writeShellScriptShebang = pkgs: package: name: text:
+    pkgs.writeTextFile {
       inherit name;
       executable = true;
       text = ''
-        #!${prev.lib.getExe package}
+        #!${lib.getExe package}
         ${text}
       '';
     };
 
-  writeNuScript = name: text:
-    writeShellScriptShebang final.nushell "${name}.nu" text;
+  writeNuScript = pkgs: name: text:
+    writeShellScriptShebang pkgs pkgs.nushell "${name}.nu" text;
+in {
+  #
+  inherit writeShellScriptShebang writeNuScript;
 }

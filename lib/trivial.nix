@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib }:
 let
   # logical implication,
   # compates c to falsy values, if falsy
@@ -10,4 +10,7 @@ let
       d
     else
       v;
-in { inherit imply implyDefault; }
+in {
+  #
+  inherit imply implyDefault;
+}

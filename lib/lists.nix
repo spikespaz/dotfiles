@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib }:
 let
   # find indices of item needle in list haystack
   indicesOf = _wrapSplitFn (needle: haystack:
@@ -11,6 +11,18 @@ let
   # get element at n if present, null otherwise
   getElemAt = xs: n:
     if builtins.length xs > n then builtins.elemAt xs n else null;
+
+  removeElems = xs: remove:
+    lib.pipe xs [
+      (lib.mapListToAttrs (x: lib.nameValuePair x null))
+      (xs: removeAttrs xs remove)
+      (builtins.listToAttrs)
+    ];
+
+  sublist = idx: j: l:
+    let adv = j - idx;
+    in lib.foldl' (l': i: l' ++ [ builtins.elemAt i l ]) [ ]
+    (lib.range idx adv);
 
   # split a list-compatible haystack
   # at every occurrence and return
@@ -66,4 +78,7 @@ let
         map lib.concatStrings v
     else
       fn n h;
-in { inherit indicesOf getElemAt split lsplit rsplit; }
+in {
+  #
+  inherit indicesOf getElemAt removeElems sublist split lsplit rsplit;
+}

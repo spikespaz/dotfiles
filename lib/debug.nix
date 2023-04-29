@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib }:
 let
   _traceMsgVal = msg: val: ''
     ${msg}
@@ -6,4 +6,7 @@ let
 
   traceM = m: v: builtins.trace (_traceMsgVal m v);
   traceValM = m: v: builtins.trace (_traceMsgVal m v) v;
-in { inherit traceM traceValM; }
+in {
+  #
+  inherit traceM traceValM;
+}
