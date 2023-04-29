@@ -1,4 +1,4 @@
-{ pkgs, lib, flib, ... }: {
+{ pkgs, lib, ... }: {
   ####################
   ### WEB BROWSERS ###
   ####################
@@ -143,7 +143,7 @@
 
   rustup = {
     home.packages = [ pkgs.rustup pkgs.gcc ];
-    home.file.".cargo/config.toml".source = flib.toTOMLFile "cargo-config" {
+    home.file.".cargo/config.toml".source = lib.toTOMLFile pkgs "cargo-config" {
       "target.x86_64-unknown-linux-gnu" = {
         linker = lib.getExe pkgs.clang;
         rustFlags =

@@ -1,6 +1,4 @@
-{ self, config, lib, pkgs,
-# hmModules,
-inputs, ... }: {
+{ self, config, lib, pkgs, inputs, ... }: {
   imports = [
     self.homeManagerModules.desktop-portals
     self.homeManagerModules.hyprland

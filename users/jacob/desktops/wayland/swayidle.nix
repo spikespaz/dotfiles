@@ -1,4 +1,4 @@
-{ self, config, lib, pkgs, hmModules, ... }: {
+{ self, config, lib, pkgs, ... }: {
   imports =
     [ self.homeManagerModules.swayidle self.homeManagerModules.idlehack ];
 

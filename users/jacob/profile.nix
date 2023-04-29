@@ -2,10 +2,8 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-{ flake, config, lib, ulib, pkgs, nixpkgs, hmModules, ... }:
-let
-  username = "jacob";
-  user = flake.users.${username};
+args@{ tree, config, lib, inputs, pkgs, ... }:
+let username = "jacob";
 in {
   ################
   ### PREAMBLE ###
@@ -54,13 +52,16 @@ in {
   ### PACKAGES & MODULES ###
   ##########################
 
-  imports = let inherit (user) services programs;
+  imports = let
+    user = tree.users.${username};
+    services = user.services // user.services.toplevel args;
+    programs = user.programs // user.programs.toplevel args;
   in [
     ###############################
     ### MODULES & MISCELLANEOUS ###
     ###############################
 
-    hmModules.homeage
+    inputs.homeage.homeManagerModules.homeage
 
     ### DEFAULT PROGRAMS ###
     user.mimeApps
@@ -77,7 +78,7 @@ in {
     ### COMMUNICATION & MESSAGING ###
     programs.mailspring
     # programs.discord.canary
-    programs.discord.webcord
+    (programs.discord args).webcord
     programs.hexchat
     programs.telegram
 
@@ -109,10 +110,10 @@ in {
     programs.vscode.other.marp
     # TODO broken idk why
     # programs.vscode.languages.all
-    programs.jetbrains.clion
-    programs.jetbrains.goland
-    programs.jetbrains.idea
-    programs.jetbrains.pycharm
+    (programs.jetbrains args).clion
+    (programs.jetbrains args).goland
+    (programs.jetbrains args).idea
+    (programs.jetbrains args).pycharm
     programs.neovim
     programs.helix
     programs.lapce
@@ -161,7 +162,7 @@ in {
     services.onedrive
 
     ### DEVICE MANAGEMENT ###
-    services.udiskie
+    # services.udiskie
 
     ### SECRET MANAGEMENT ###
     services.keepassxc

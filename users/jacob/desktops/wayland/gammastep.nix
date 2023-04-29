@@ -1,5 +1,5 @@
-{ hmModules, ... }: {
-  imports = [ hmModules.gammastep-hook ];
+{ inputs, ... }: {
+  imports = [ inputs.slight.homeManagerModules.gammastep-hook ];
 
   services.gammastep = {
     enable = true;

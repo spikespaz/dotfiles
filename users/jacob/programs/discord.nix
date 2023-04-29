@@ -39,8 +39,8 @@ in {
       trayBalloonShown = false;
     };
   };
-  webcord = { hmModules, ... }: {
-    imports = [ hmModules.webcord ];
+  webcord = { inputs, ... }: {
+    imports = [ inputs.webcord.homeManagerModules.default ];
 
     programs.webcord = {
       enable = true;

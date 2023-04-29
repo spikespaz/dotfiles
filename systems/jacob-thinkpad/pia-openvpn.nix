@@ -1,4 +1,4 @@
-{ self, config, pkgs, lib, modules, ... }:
+{ self, config, pkgs, lib, inputs, ... }:
 let
   authUserPass = config.age.secrets."root.pia.age".path;
   updateResolvConf = true;
@@ -24,7 +24,7 @@ let
         null;
     in { inherit name value; }) (builtins.readDir src.outPath)) [ "_" ];
 in {
-  imports = [ modules.openvpn modules.age ];
+  imports = [ self.nixosModules.openvpn inputs.ragenix.nixosModules.age ];
   age.secrets."root.pia.age".file = "${self}/secrets/root.pia.age";
   services.openvpn.alt.servers = configs;
 }

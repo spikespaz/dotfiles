@@ -1,4 +1,4 @@
-{ self, config, pkgs, lib, hmModules, ... }: {
+{ self, config, pkgs, lib, ... }: {
   homeage.file."jacob.spotifyd.age" = {
     source = "${self}/secrets/jacob.spotifyd.age";
   };

@@ -1,5 +1,9 @@
-{ config, pkgs, hmModules, ... }: {
-  imports = [ hmModules.randbg hmModules.uniform-theme hmModules.kvantum ];
+{ self, config, pkgs, ... }: {
+  imports = [
+    self.homeManagerModules.randbg
+    self.homeManagerModules.uniform-theme
+    self.homeManagerModules.kvantum
+  ];
 
   home.sessionVariables.USER_WALLPAPERS_DIRECTORY =
     "${config.home.homeDirectory}/Pictures/Wallpapers";

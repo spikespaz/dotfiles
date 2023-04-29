@@ -57,15 +57,12 @@
   outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, ... }:
     let
       system = "x86_64-linux";
-
-      inherit (nixpkgs) lib;
-      flib = import ./lib.nix { inherit lib pkgs; };
-
-      # get directory structure as nested attrsets of modules
-      flake = flib.evalIndices {
-        expr = import ./.;
-        pass = { inherit lib pkgs flake flib; };
-      };
+      lib = nixpkgs.lib.extend (final: prev: prev // import ./lib.nix final);
+      # The purpose of `mkFlakeTree` is to recurse the project files,
+      # importing any folders with `default.nix` or files themselves.
+      # This forms a structure of nested attrsets that somewhat resembles the
+      # directory structure of the flake, very much like the `tree` command.
+      tree = lib.mkFlakeTree ./.;
 
       pkgs = import nixpkgs {
         inherit system;
@@ -87,23 +84,23 @@
           inputs.ragenix.overlays.default
         ];
       };
+
       pkgs-stable = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
-
-      nixosModules = flib.joinNixosModules inputs;
-      homeModules = flib.joinHomeModules inputs;
     in {
-      overlays = flake.overlays // {
-        default = _: flake.packages;
-        allowUnfree = _: prev: flib.mkUnfreeOverlay prev [ "ttf-ms-win11" ];
+      formatter.${system} = inputs.nixfmt.packages.${system}.default;
+
+      overlays = tree.overlays // {
+        default = _: tree.packages;
+        allowUnfree = _: prev: lib.mkUnfreeOverlay prev [ "ttf-ms-win11" ];
       };
       packages = lib.genAttrs [ "x86_64-linux" ]
-        (system: flake.packages nixpkgs.legacyPackages.${system});
+        (system: tree.packages nixpkgs.legacyPackages.${system});
 
-      nixosModules = flake.modules;
-      homeManagerModules = flake.hm-modules;
+      nixosModules = tree.modules;
+      homeManagerModules = tree.hm-modules;
 
       nixosConfigurations = {
         jacob-thinkpad = lib.nixosSystem {
@@ -111,12 +108,11 @@
           inherit pkgs;
 
           specialArgs = {
-            inherit self flake;
-            modules = nixosModules;
+            inherit self lib tree inputs nixpkgs nixpkgs-stable pkgs-stable;
             enableUnstableZfs = false;
           };
 
-          modules = with flake.systems.jacob-thinkpad; [
+          modules = with tree.systems.jacob-thinkpad; [
             bootloader
             filesystems
             plymouth
@@ -136,12 +132,13 @@
           inherit pkgs;
 
           extraSpecialArgs = {
-            inherit self inputs flake nixpkgs nixpkgs-stable pkgs-stable;
-            hmModules = homeModules;
-            ulib = flake.users.lib;
+            lib = lib.extend (final: _: {
+              hm = import "${home-manager}/modules/lib" { lib = final; };
+            });
+            inherit self tree inputs nixpkgs nixpkgs-stable pkgs-stable;
           };
 
-          modules = with flake.users.jacob; [
+          modules = with tree.users.jacob; [
             profile
             desktops.wayland
             desktops.hyprland
@@ -149,7 +146,5 @@
           ];
         };
       };
-
-      formatter.${system} = inputs.nixfmt.packages.${system}.default;
     };
 }
