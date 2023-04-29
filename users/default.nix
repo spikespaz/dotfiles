@@ -1,5 +1,5 @@
 args@{ self, tree, lib, inputs, ... }: {
-  jacob = lib.birdos.mkHome args {
+  jacob = lib.birdos.mkHome args rec {
     system = "x86_64-linux";
     nixpkgs = inputs.nixpkgs-unstable;
     nixpkgsArgs.config.allowUnfree = true;
@@ -22,5 +22,11 @@ args@{ self, tree, lib, inputs, ... }: {
       # inputs.webcord.overlays.default
       inputs.ragenix.overlays.default
     ];
+    extraSpecialArgs = {
+      pkgs-stable = import inputs.nixpkgs-stable {
+        inherit system overlays;
+        inherit (nixpkgsArgs) config;
+      };
+    };
   };
 }
