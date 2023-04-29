@@ -63,7 +63,7 @@ in {
     hmModules.homeage
 
     ### DEFAULT PROGRAMS ###
-    user.mimeapps
+    user.mimeApps
 
     ##############################
     ### USER-SPECIFIC PROGRAMS ###

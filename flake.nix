@@ -143,11 +143,9 @@
 
           modules = with flake.users.jacob; [
             profile
-            mimeapps
             desktops.wayland
             desktops.hyprland
             desktops.suite
-            desktops.mimeapps
           ];
         };
       };
