@@ -2,5 +2,9 @@
     "cSpell.enableFiletypes": [
         "nix"
     ],
-    "nixEnvSelector.nixFile": "${workspaceRoot}/flake.nix"
+    "nixEnvSelector.nixFile": "${workspaceRoot}/flake.nix",
+    "cSpell.words": [
+        "attrsets",
+        "birdos"
+    ]
 }
