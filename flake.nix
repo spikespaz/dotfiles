@@ -93,14 +93,14 @@
       formatter.${system} = inputs.nixfmt.packages.${system}.default;
 
       overlays = tree.overlays // {
-        default = _: tree.packages;
+        default = _: tree.packages.default;
         allowUnfree = _: prev: lib.mkUnfreeOverlay prev [ "ttf-ms-win11" ];
       };
-      packages = lib.genAttrs [ "x86_64-linux" ]
-        (system: tree.packages nixpkgs.legacyPackages.${system});
+      packages = lib.genAttrs systems
+        (system: tree.packages.default nixpkgs.legacyPackages.${system});
 
-      nixosModules = tree.modules;
-      homeManagerModules = tree.hm-modules;
+      nixosModules = lib.mapThruAttr "default" tree.modules;
+      homeManagerModules = lib.mapThruAttr "default" tree.hm-modules;
 
       nixosConfigurations = {
         jacob-thinkpad = lib.nixosSystem {

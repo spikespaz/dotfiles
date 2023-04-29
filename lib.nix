@@ -37,8 +37,12 @@ let
       (map (it: {
         name =
           if it.isNixFile then lib.removeSuffix ".nix" it.name else it.name;
-        value = if it.isNixFile || (it.isDir && it.hasDefault) then
+        value = if it.isNixFile then
           import it.path
+          ## commented out to fallthrough, will expose
+          ## `default.nix` as `default` attr
+          # else if it.isDir && it.hasDefault then
+          #   import it.path
         else if it.isDir && it.hasNixFiles then
           mkFlakeTree it.path
         else
@@ -47,6 +51,9 @@ let
       builtins.listToAttrs
     ];
 
+  thruAttr = attr: it:
+    if lib.isAttrs it && it ? ${attr} then it.${attr} else it;
+  mapThruAttr = attr: lib.mapAttrs (name: thruAttr attr);
   # TODO cannot handle scoped packages
   mkUnfreeOverlay = pkgs: names:
     lib.pipe names [
@@ -167,7 +174,7 @@ in {
   # Tracing
     traceM traceValM updates
     # Attribute Sets
-    deepMergeAttrs
+    deepMergeAttrs thruAttr mapThruAttr
     # Boolean Logic
     imply implyDefault
     # List Comprehension
