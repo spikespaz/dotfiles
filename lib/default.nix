@@ -18,7 +18,7 @@ let
     inherit (lib.lists)
       indicesOf getElemAt removeElems sublist split lsplit rsplit;
     inherit (lib.shellscript) writeShellScriptShebang writeNuScript;
-    inherit (lib.trivial) imply implyDefault;
+    inherit (lib.trivial) imply implyDefault applyArgs;
   };
 in prev // prelude // {
   birdos = {

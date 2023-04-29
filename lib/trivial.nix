@@ -10,7 +10,9 @@ let
       d
     else
       v;
+
+  applyArgs = lib.foldl' (fn': arg: fn' arg);
 in {
   #
-  inherit imply implyDefault;
+  inherit imply implyDefault applyArgs;
 }
