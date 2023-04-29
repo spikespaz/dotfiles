@@ -78,9 +78,9 @@
       formatter =
         lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);
 
-      overlays = tree.overlays // {
+      overlays = removeAttrs tree.overlays [ "unfree" ] // {
         default = _: tree.packages.default;
-        allowUnfree = _: prev: lib.mkUnfreeOverlay prev [ "ttf-ms-win11" ];
+        allowUnfree = _: tree.overlays.unfree lib [ [ "ttf-ms-win11" ] ];
       };
       packages = lib.genAttrs systems
         (system: tree.packages.default nixpkgs.legacyPackages.${system});

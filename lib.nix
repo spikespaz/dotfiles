@@ -113,25 +113,6 @@ let
       } // extraSpecialArgs;
     });
 
-  # TODO cannot handle scoped packages
-  mkUnfreeOverlay = pkgs: names:
-    lib.pipe names [
-      (map (name: {
-        inherit name;
-        value = pkgs.${name};
-      }))
-      builtins.listToAttrs
-      (builtins.mapAttrs (_: package:
-        package.overrideAttrs (old:
-          lib.recursiveUpdate old {
-            meta.license = (if builtins.isList old.meta.license then
-              map (_: { free = true; }) old.meta.license
-            else {
-              free = true;
-            });
-          })))
-    ];
-
   deepMergeAttrs = attrList:
     let
       recurse = attrPath:
@@ -239,7 +220,7 @@ in {
     # List Comprehension
     indicesOf split lsplit rsplit
     # Flake Utilities
-    mkFlakeTree mkHost mkHome mkUnfreeOverlay
+    mkFlakeTree mkHost mkHome
     # Formats
     toTOMLFile toTOML;
 }
