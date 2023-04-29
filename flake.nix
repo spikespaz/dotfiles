@@ -24,9 +24,6 @@
     nil.url = "github:oxalica/nil";
     nil.inputs.nixpkgs.follows = "nixpkgs";
 
-    # alejandra.url = "github:kamadorueda/alejandra";
-    # alejandra.inputs.nixpkgs.follows = "nixpkgs";
-
     nixfmt.url = "github:serokell/nixfmt";
 
     # use the package from nixpkgs, probably better-kept
@@ -62,16 +59,7 @@
       # This forms a structure of nested attrsets that somewhat resembles the
       # directory structure of the flake, very much like the `tree` command.
       tree = lib.mkFlakeTree ./.;
-
       systems = tree.lib.systems;
-      pkgsFor = builtins.listToAttrs (map (system: {
-        name = system;
-        value = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-      }) systems);
-      mapSystems = fn: builtins.mapAttrs fn pkgsFor;
     in {
       tree = lib.generators.toPretty { multiline = true; } tree;
 
