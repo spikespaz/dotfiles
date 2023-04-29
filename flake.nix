@@ -73,6 +73,8 @@
       }) systems);
       mapSystems = fn: builtins.mapAttrs fn pkgsFor;
     in {
+      tree = lib.generators.toPretty { multiline = true; } tree;
+
       formatter =
         lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);
 
@@ -89,24 +91,7 @@
       nixosConfigurations =
         tree.hosts.default { inherit self lib tree inputs nixpkgs; };
 
-      homeConfigurations = {
-        jacob = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = pkgsFor.x86_64-linux;
-
-          extraSpecialArgs = {
-            lib = lib.extend (final: _: {
-              hm = import "${inputs.home-manager}/modules/lib" { lib = final; };
-            });
-            inherit self tree inputs nixpkgs;
-          };
-
-          modules = with tree.users.jacob; [
-            profile
-            desktops.wayland
-            desktops.hyprland
-            desktops.suite
-          ];
-        };
-      };
+      homeConfigurations =
+        tree.users.default { inherit self lib tree inputs nixpkgs; };
     };
 }

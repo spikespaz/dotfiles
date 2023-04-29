@@ -76,6 +76,43 @@ let
       specialArgs = args // specialArgs // { inherit nixpkgs system; };
     });
 
+  mkHome = args@{ inputs, lib, ... }:
+    setup@{
+    # the system to use for the host platform
+    system ? "x86_64-linux",
+    # the branch of nixpkgs to use for the environment
+    nixpkgs ? inputs.nixpkgs,
+    # arguments to be given to
+    # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/top-level/impure.nix>
+    nixpkgsArgs ? { }, overlays ? [ ],
+    # home manager flake
+    homeManager ? inputs.home-manager,
+    # additional specialArgs (overwrites args attrs)
+    extraSpecialArgs ? { },
+    # host component modules
+    modules ? [ ] }:
+    let
+      lib' = lib.extend (final: _: {
+        hm = import "${homeManager}/modules/lib" { lib = final; };
+        inherit (homeManager.lib) homeManagerConfiguration;
+      });
+      setupStripped = removeAttrs setup [
+        "system"
+        "nixpkgs"
+        "nixpkgsArgs"
+        "overlays"
+        "homeManager"
+        "extraSpecialArgs"
+      ];
+    in lib'.homeManagerConfiguration (setupStripped // {
+      pkgs = import nixpkgs ({ inherit system overlays; } // nixpkgsArgs);
+
+      extraSpecialArgs = args // {
+        inherit nixpkgs system;
+        lib = lib';
+      } // extraSpecialArgs;
+    });
+
   # TODO cannot handle scoped packages
   mkUnfreeOverlay = pkgs: names:
     lib.pipe names [
@@ -202,7 +239,7 @@ in {
     # List Comprehension
     indicesOf split lsplit rsplit
     # Flake Utilities
-    mkFlakeTree mkHost mkUnfreeOverlay
+    mkFlakeTree mkHost mkHome mkUnfreeOverlay
     # Formats
     toTOMLFile toTOML;
 }
