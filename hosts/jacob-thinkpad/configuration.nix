@@ -1,4 +1,4 @@
-args@{ self, config, pkgs, lib, ... }:
+{ self, config, pkgs, lib, ... }:
 (xs: { imports = xs; }) [
   #################
   ### NIX SETUP ###
@@ -202,9 +202,6 @@ args@{ self, config, pkgs, lib, ... }:
     # locale and timezone
     time.timeZone = "America/Phoenix";
     i18n.defaultLocale = "en_US.UTF-8";
-
-    # default packages that are good to have on any system
-    environment.systemPackages = import ./packages.nix args;
 
     # allow users to mount fuse filesystems with allow_other
     programs.fuse.userAllowOther = true;

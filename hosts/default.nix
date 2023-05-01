@@ -10,6 +10,7 @@ args@{ self, tree, lib, inputs, ... }: {
       filesystems
       plymouth
       configuration
+      packages
       powerplan
       touchpad
       greeter
