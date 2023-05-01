@@ -30,11 +30,12 @@
         lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);
 
       overlays = removeAttrs tree.overlays [ "unfree" ] // {
-        default = _: tree.packages.default;
+        default = tree.packages.default;
         allowUnfree = _: tree.overlays.unfree lib [ [ "ttf-ms-win11" ] ];
       };
-      packages = lib.genAttrs systems
-        (system: tree.packages.default nixpkgs.legacyPackages.${system});
+      packages = lib.genAttrs systems (system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in tree.packages.default pkgs pkgs);
 
       # since `tree` closely represents the file tree of the flake,
       # there are `default` attrs in some of the "folders".
