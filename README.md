@@ -1,9 +1,9 @@
 # BirdOS
 
-Welcome. This repository houses my personal configuration files
-for my computers running NixOS.
+Welcome, this repository houses my personal configuration files
+for my computers running [NixOS].
 
-There are also may modules and packages that some people may find useful to
+There are may modules and packages that some people may find useful to
 utilize in their own NixOS or Home Manager environments.
 
 ## Usage
@@ -12,14 +12,16 @@ To use modules from my flake in your own configurations,
 add it as an input in `flake.nix`:
 
 ```nix
-inputs.birdos.url = "github:spikespaz/dotfiles";
-inputs.birdos.nixpkgs.follows = "nixpkgs";
+{
+  inputs.birdos.url = "github:spikespaz/dotfiles/master";
+  inputs.birdos.nixpkgs.follows = "nixpkgs";
+}
 ```
 
 ### Library
 
 If you want to use the extended `lib` provided by this flake, you can either
-use the `inputs.birdos.lib` attribute (assuming `birdos` is what you named
+use `inputs.birdos.lib` (assuming `birdos` is what you named
 the input), or you can extend [nixpkgs]' lib with `lib.extend`.
 
 For example, in a `let` block before your flake's output attributes:
@@ -27,7 +29,7 @@ For example, in a `let` block before your flake's output attributes:
 ```nix
 let
   lib = nixpkgs.lib.extend (import "${inputs.birdos}/lib");
-  tree = lib.birdos.mkFlakeTree ./.; # for example
+  tree = lib.birdos.mkFlakeTree ./.; # example usage of lib
   # ...
 in
 ```
@@ -44,22 +46,25 @@ by printing out `lib.birdos.prelude`.
 For packages, you have two options. Either use the flake's `packages` output
 or the `overlays` output.
 
-Make sure you have added `inputs` to `specialArgs` or `extraSpecialArgs`
-in your `lib.nixos.nixosSystem` or `home-manager.lib.nixosConfiguration`:
+Make sure you have added `inputs` to `specialArgs` in the attribute set passed
+to `lib.nixos.nixosSystem`, or `extraSpecialArgs` for `home-manager.lib.homeManagerConfiguration`:
 
 ```nix
-outputs = inputs@{ nixpkgs, home-manager, ... }:
-  let
-  # ...
-  in {
-    homeConfigurations = {
-      jacob = home-manager.lib.homeManagerConfiguration = {
-        pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = { inherit nixpkgs inputs; };
+{
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
+    let
+      # ...
+    in {
+      homeConfigurations = {
+        jacob = home-manager.lib.homeManagerConfiguration {
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit nixpkgs inputs; };
+        };
       };
+      # ...
     };
-    # ...
-  }
+  # ...
+}
 ```
 
 Then you can use it in modules which take `inputs` as an attribute argument,
@@ -154,6 +159,8 @@ basis for your own setup, and need help understanding something, don't
 hesitate to ask for my help, but if you attempt to use a large section of
 code without studying it, just know that I don't fish for charity.
 
+===
+
 ## References
 
 It would have been an impossibility to set everything and learn how this crazy
@@ -174,11 +181,14 @@ personal configurations for me to read and learn from.
 - <https://github.com/viperML/dotfiles>
 - <https://github.com/hlissner/dotfiles>
 
-If you came here on your own, and would like to find help with Nix or NixOS, I encourage you to join [this small Discord server](https://discord.gg/8ydgceUJDm), led by [@Nobbz].
+If you came here on your own, and would like to find help with Nix or NixOS,
+I encourage you to join [this small Discord server](https://discord.gg/8ydgceUJDm), mostly led by [@NobbZ].
 
 ---
 
+[NixOS]: https://nixos.org/
 [nixpkgs]: https://github.com/nixos/nixpkgs
+[home-manager]: https://github.com/nix-community/home-manager
 
 [@NobbZ]: https://github.com/NobbZ/
 [@tejing1]: https://github.com/tejing1
