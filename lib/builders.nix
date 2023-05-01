@@ -1,7 +1,5 @@
 { lib }:
 let
-  inherit (lib.birdos) traceValM;
-
   mkFlakeTree = path:
     lib.pipe (builtins.readDir path) [
       (lib.mapAttrsToList (name: type:
@@ -20,7 +18,7 @@ let
         else if it.isDir && it.hasNixFiles then
           mkFlakeTree it.path
         else
-          abort traceValM "unchecked direntry:" it;
+          abort lib.traceValM "unchecked direntry:" it;
       }))
       builtins.listToAttrs
     ];
@@ -47,12 +45,12 @@ let
     let
       setupStripped =
         removeAttrs setup [ "nixpkgs" "nixpkgsArgs" "overlays" "specialArgs" ];
-    in lib.nixosSystem (setupStripped // {
+    in nixpkgs.lib.nixosSystem (setupStripped // {
       pkgs = import nixpkgs ({ inherit system overlays; } // nixpkgsArgs);
       specialArgs = args // specialArgs // { inherit nixpkgs system; };
     });
 
-  mkHome = args@{ inputs, lib, ... }:
+  mkHome = args@{ inputs, ... }:
     setup@{
     # the system to use for the host platform
     system ? "x86_64-linux",
@@ -68,10 +66,6 @@ let
     # host component modules
     modules ? [ ] }:
     let
-      lib' = lib.extend (final: _: {
-        hm = import "${homeManager}/modules/lib" { lib = final; };
-        inherit (homeManager.lib) homeManagerConfiguration;
-      });
       setupStripped = removeAttrs setup [
         "system"
         "nixpkgs"
@@ -80,13 +74,14 @@ let
         "homeManager"
         "extraSpecialArgs"
       ];
-    in lib'.homeManagerConfiguration (setupStripped // {
+      lib = (if args ? lib then args.lib else nixpkgs.lib).extend (final: _: {
+        hm = import "${homeManager}/modules/lib" { lib = final; };
+      });
+    in homeManager.lib.homeManagerConfiguration (setupStripped // {
       pkgs = import nixpkgs ({ inherit system overlays; } // nixpkgsArgs);
-
-      extraSpecialArgs = args // {
-        inherit nixpkgs system;
-        lib = lib';
-      } // extraSpecialArgs;
+      extraSpecialArgs = args // extraSpecialArgs // {
+        inherit nixpkgs system lib;
+      };
     });
 
   mkDirEntry = dirname: basename: type: rec {
