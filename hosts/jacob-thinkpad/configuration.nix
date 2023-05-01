@@ -111,10 +111,10 @@ args@{ self, config, pkgs, lib, ... }:
       trackpoint.speed = 85;
     };
 
-    # gui tool for processor management
-    programs.corectrl.enable = true;
-    # sets the overdrive bit in amdgpu.ppfeaturemask
-    programs.corectrl.gpuOverclock.enable = true;
+    # # gui tool for processor management
+    # programs.corectrl.enable = true;
+    # # sets the overdrive bit in amdgpu.ppfeaturemask
+    # programs.corectrl.gpuOverclock.enable = true;
   }
 
   ################
