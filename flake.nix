@@ -100,10 +100,6 @@
     # polymc.inputs.nixpkgs.follows = "nixpkgs";
 
     prism-launcher.url = "github:PrismLauncher/PrismLauncher";
-    prism-launcher.inputs.nixpkgs.follows = "nixpkgs";
-
-    homeage.url = "github:jordanisaacs/homeage";
-    homeage.inputs.nixpkgs.follows = "nixpkgs";
 
     slight.url = "github:spikespaz/slight";
     slight.inputs.nixpkgs.follows = "nixpkgs";
@@ -111,5 +107,8 @@
     # TODO patch homeage
     ragenix.url = "github:yaxitech/ragenix";
     ragenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    homeage.url = "github:jordanisaacs/homeage";
+    homeage.inputs.nixpkgs.follows = "nixpkgs";
   };
 }
