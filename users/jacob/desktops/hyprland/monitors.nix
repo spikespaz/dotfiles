@@ -1,8 +1,10 @@
-{ ... }:
+{ config, ... }:
 let
   internalMon = "eDP-1";
   hotplugMon = "HDMI-A-1";
   dockMon = "DP-1";
+
+  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
 in {
   wayland.windowManager.hyprland = {
     # <https://wiki.hyprland.org/Configuring/Monitors/>
@@ -44,5 +46,13 @@ in {
       "8, ${dockMon}"
       "10, ${dockMon}"
     ];
+
+    eventListener.handler.monitorAdd = ''
+      ${hyprctl} dispatch moveworkspacetomonitor 2 $HL_MONITOR_NAME
+      ${hyprctl} dispatch moveworkspacetomonitor 4 $HL_MONITOR_NAME
+      ${hyprctl} dispatch moveworkspacetomonitor 6 $HL_MONITOR_NAME
+      ${hyprctl} dispatch moveworkspacetomonitor 8 $HL_MONITOR_NAME
+      ${hyprctl} dispatch moveworkspacetomonitor 10 $HL_MONITOR_NAME
+    '';
   };
 }

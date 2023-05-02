@@ -4,11 +4,9 @@
     self.homeManagerModules.hyprland
     ./config.nix
     ./monitors.nix
-    ./events.nix
     ./windowrules.nix
     ./keybinds.nix
     ./waybar.nix
-    # ./eww
   ];
 
   home.packages = [
@@ -39,7 +37,10 @@
     enable = true;
     portals = let useIn = [ "Hyprland" ];
     in [
-      { package = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland; }
+      {
+        package =
+          inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+      }
       {
         package = pkgs.libsForQt5.xdg-desktop-portal-kde;
         interfaces = [
