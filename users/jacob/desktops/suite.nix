@@ -32,6 +32,7 @@
     libsForQt5.kimageformats # Proprieary Image Formats
     resvg # SVG Thumbnails
     taglib # Audio File Tags
+    libsForQt5.kfind # File Search
     libsForQt5.ark # Archive GUI
 
     # KDE Utilities
