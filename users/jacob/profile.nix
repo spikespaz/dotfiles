@@ -54,10 +54,8 @@ in {
 
   imports = let
     user = tree.users.${username};
-    services = (lib.mapThruAttr "default" user.services)
-      // user.services.toplevel args;
-    programs = (lib.mapThruAttr "default" user.programs)
-      // user.programs.toplevel args;
+    programs = user.programs.default args;
+    services = user.services.default args;
   in [
     ###############################
     ### MODULES & MISCELLANEOUS ###
