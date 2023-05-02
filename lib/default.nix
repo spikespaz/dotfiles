@@ -17,7 +17,8 @@ let
     inherit (lib.debug) traceM traceValM;
     inherit (lib.lists)
       indicesOf getElemAt removeElems sublist split lsplit rsplit;
-    inherit (lib.shellscript) writeShellScriptShebang writeNuScript;
+    inherit (lib.shellscript)
+      wrapShellScript writeShellScriptShebang writeNuScript;
     inherit (lib.trivial) imply implyDefault applyArgs;
   };
 in prev // prelude // {
