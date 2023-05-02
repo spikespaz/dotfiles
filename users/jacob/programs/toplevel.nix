@@ -142,7 +142,7 @@
   };
 
   rustup = {
-    home.packages = [ pkgs.rustup pkgs.gcc ];
+    home.packages = with pkgs; [ rustup gcc ];
     home.file.".cargo/config.toml".source =
       (pkgs.formats.toml { }).generate "cargo-config" {
         "target.x86_64-unknown-linux-gnu" = {
@@ -170,6 +170,7 @@
     imports = [ ./zsh.nix ];
     programs.zsh.alt.enable = true;
   };
+  nushell = { programs.nushell.enable = true; };
 
   #####################
   ### CLI UTILITIES ###
@@ -189,6 +190,7 @@
 
   neofetch = { home.packages = [ pkgs.neofetch ]; };
   nix-index = { programs.nix-index.enable = true; };
+  virt-manager = { home.packages = [ pkgs.virt-manager ]; };
 
   ###################
   ### VIDEO GAMES ###

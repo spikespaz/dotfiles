@@ -1,18 +1,13 @@
 { pkgs, ... }: {
+  # NO GUI PACKAGES
   environment.systemPackages = with pkgs; [
     ##################
     ### ESSENTIALS ###
     ##################
 
-    ### SHELLS ###
-    nushell
-
     ### MISSING ###
     bc
     tree
-
-    ### APPIMAGE ###
-    appimage-run
 
     ### CLI UTILITIES ###
     fastfetch # neofetch but made in c
@@ -45,20 +40,17 @@
     exfatprogs
 
     ### STORAGE DEVICE TOOLS ###
-    gparted
     gptfdisk
     e2fsprogs
 
     ### HARDWARE DIAGNOSTICS ###
-    cpu-x # cpu-z for linux
     btop # system process monitor
+    bottom # not top
     procs # process viewer
     du-dust # du but rust
-    bottom # not top
     bandwhich # network monitor
 
     ### VIRTUALIZATION ###
-    virt-manager # gui for managing libvirt
     libguestfs # filesystem driver for vm images
   ];
 }

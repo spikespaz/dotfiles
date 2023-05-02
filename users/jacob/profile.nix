@@ -128,6 +128,7 @@ in {
     ### SHELL ENVIRONMENTS ###
     programs.bash
     programs.zsh
+    programs.nushell
 
     ### CLI UTILITIES ###
     programs.bat
@@ -138,6 +139,7 @@ in {
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
     programs.neofetch
     programs.nix-index
+    programs.virt-manager
 
     ### VIDEO GAMES ###
     programs.minecraft.prism-launcher

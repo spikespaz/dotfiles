@@ -1,13 +1,15 @@
 # desktop environment default programs
 { pkgs, ... }: {
   home.packages = with pkgs; [
-    # Utilities
+    # CLI Utilities
     wl-clipboard
     xdg-utils
 
-    # Diagnostics
+    # Diagnostics & System Tools
+    cpu-x
     wev
     qdirstat
+    gparted
 
     # Device Configuration
     lxqt.pavucontrol-qt # Pulse Audio Volume Control
@@ -53,5 +55,8 @@
     # Generic Utilities
     qalculate-gtk
     font-manager
+
+    # Compatibility
+    appimage-run
   ];
 }
