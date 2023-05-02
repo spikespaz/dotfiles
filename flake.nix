@@ -5,7 +5,10 @@
   '';
 
   outputs = inputs@{ self, nixpkgs, ... }:
-    let inherit (self) lib tree systems;
+    let
+      inherit (self) lib tree systems;
+      pkgsFor = lib.genAttrs systems
+        (system: import nixpkgs { overlays = [ self.overlays.default ]; });
     in {
       # any of aarch64, arm, x86_64, linux and darwin.
       # other platforms may be negotiable.
@@ -33,9 +36,8 @@
         default = tree.packages.default;
         allowUnfree = _: tree.overlays.unfree lib [ [ "ttf-ms-win11" ] ];
       };
-      packages = lib.genAttrs systems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in tree.packages.default pkgs pkgs);
+      packages =
+        builtins.mapAttrs (_: pkgs: tree.packages.default pkgs pkgs) pkgsFor;
 
       # since `tree` closely represents the file tree of the flake,
       # there are `default` attrs in some of the "folders".
