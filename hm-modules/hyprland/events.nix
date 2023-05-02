@@ -101,17 +101,21 @@ let
 in {
   options = {
     wayland.windowManager.hyprland.eventListener = {
-      enable = lib.mkEnableOption (lib.mdDoc ''
-        Enable the Hyprland IPC listener & handlers configuration.
+      enable = lib.mkOption {
+        type = types.bool;
+        default = true;
+        description = lib.mdDoc ''
+          Enable the Hyprland IPC listener & handlers configuration.
 
-        See the documentation for each event on the Hyprland wiki:
-        <https://wiki.hyprland.org/IPC/>.
+          See the documentation for each event on the Hyprland wiki:
+          <https://wiki.hyprland.org/IPC/>.
 
-        Events and variables have been renamed
-        to satisfy your mental disorders.
+          Events and variables have been renamed
+          to satisfy your mental disorders.
 
-        ${description}
-      '');
+          ${description}
+        '';
+      };
 
       systemdService = lib.mkOption {
         type = types.bool;
@@ -215,7 +219,7 @@ in {
         echo "INFO: unhandled event: $line"
       done || echo "ERROR: main pipeline failed, exit: $?"
     '';
-  in lib.mkIf cfg.enable (lib.mkMerge [
+  in lib.mkIf (cfg.enable && cfg.handler != { }) (lib.mkMerge [
     # If it is a systemd service,
     (lib.mkIf cfg.systemdService {
       systemd.user.services.hyprland-event-listener = {
