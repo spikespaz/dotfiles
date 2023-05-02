@@ -2,17 +2,8 @@
 let
   # package overridden for hyprland-specific patches
   # <https://wiki.hyprland.org/Useful-Utilities/Status-Bars/#clicking-on-a-workspace-icon-does-not-work>
-  # TODO upstream this to the Hyprland flake!
-  package = pkgs.waybar.overrideAttrs (old: {
-    mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ];
-    # needs hyprctl for workspace switching
-    # included in the systemd unit's Environment PATH
-    buildInputs = old.buildInputs ++ [ pkgs.hyprland ];
-    postPatch = ''
-      sed -i 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' src/modules/wlr/workspace_manager.cpp
-    '';
-  });
-
+  package = pkgs.waybar-hyprland;
+  # the fonts that will be included with the waybar package
   fontPackages = [ pkgs.ubuntu_font_family pkgs.material-design-icons ];
 
   compileSCSS = name: source:
@@ -27,7 +18,7 @@ let
   # environment (at least with systemd) and therefore GUIs use the default theme
   commands = let
     slight = "${lib.getExe pkgs.slight}";
-    hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
     # TODO this is duplicated from the hyprland config, make it a module
     kbFns = lib.getExe config.utilities.osd-functions.package;
     pavucontrol = lib.getExe pkgs.lxqt.pavucontrol-qt;
