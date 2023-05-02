@@ -2,13 +2,14 @@
 let
   description = "Customizable wallpaper randomization service";
   cfg = config.services.randbg;
+  inherit (lib) types;
 in {
   options = {
     services.randbg = {
       enable = lib.mkEnableOption description;
 
       directory = lib.mkOption {
-        type = lib.types.str;
+        type = types.str;
         default = "${config.home.homeDirectory}/Pictures/Wallpapers";
         defaultText = lib.literalExpression ''
           ${config.home.homeDirectory}/Pictures/Wallpapers
@@ -21,7 +22,7 @@ in {
       };
 
       interval = lib.mkOption {
-        type = lib.types.ints.positive;
+        type = types.ints.positive;
         default = 30 * 60;
         defaultText = lib.mdDoc "`30 * 60` seconds";
         description = ''
@@ -30,7 +31,7 @@ in {
       };
 
       chance = lib.mkOption {
-        type = lib.types.ints.between 1 100;
+        type = types.ints.between 1 100;
         default = 25;
         defaultText = lib.mdDoc "`25` percent chance";
         description = ''
@@ -39,9 +40,28 @@ in {
         '';
       };
 
+      swaybg.color = lib.mkOption {
+        type = types.strMatching "^(#[a-fA-F0-9]{6})";
+        default = "#121212";
+        description = lib.mdDoc ''
+          The RGBA color value to use as a background color (behind the mage).
+        '';
+      };
+
+      swaybg.mode = lib.mkOption {
+        type =
+          types.enum [ "stretch" "fill" "fit" "center" "tile" "solid_color" ];
+        default = "fit";
+        description = lib.mdDoc ''
+          The mode to use when fitting the image to the display.
+
+          See `swaybg(1)` for more information.
+        '';
+      };
+
       wantedBy = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [ "hyprland-session.target" ];
+        type = types.listOf types.str;
+        default = [ "sway-session.target" "hyprland-session.target" ];
         defaultText = lib.literalExpression ''
           [ "hyprland-session.target" ]
         '';
@@ -63,16 +83,16 @@ in {
       Service = {
         Type = "notify";
         NotifyAccess = "all"; # because of a bug?
-        Environment = ''
-          PATH=${
-            with pkgs;
-            lib.makeBinPath [ systemd coreutils procps findutils swaybg ]
-          }
-        '';
-        ExecStart = ''
-          ${./wallpaper.sh} \
-            ${toString cfg.interval} ${toString cfg.chance} '${cfg.directory}'
-        '';
+        ExecStart = lib.concatStringsSep " " [
+          (lib.wrapShellScript pkgs ./wallpaper.sh
+            (with pkgs; [ systemd coreutils procps findutils swaybg ]))
+          "-i ${toString cfg.interval}"
+          "-c ${toString cfg.chance}"
+          "-d '${cfg.directory}'"
+          "--"
+          "-c ${cfg.swaybg.color}"
+          "-m ${cfg.swaybg.mode}"
+        ];
         Restart = "on-failure";
         RestartSec = 5;
       };

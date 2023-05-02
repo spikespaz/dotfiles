@@ -14,6 +14,7 @@
     interval = 60 * 60;
     chance = 25;
     directory = config.home.sessionVariables.USER_WALLPAPERS_DIRECTORY;
+    swaybg.mode = "fill";
   };
 
   home.uniformTheme = {

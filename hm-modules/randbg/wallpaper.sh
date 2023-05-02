@@ -1,27 +1,54 @@
-#! /bin/sh
+# shellcheck shell=bash
 set -eu
 
-interval="$1"
-chance="$2"
-img_dir="$3"
+interval=
+chance=
+img_dir=
+passthru_args=()
 
-if [ "$interval" -ne "$interval" ]; then
-  echo 'Error: argument 1 was not a number!'
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -i)
+      interval="$2"
+      shift 2
+      ;;
+    -c)
+      chance="$2"
+      shift 2
+      ;;
+    -d)
+      img_dir="$2"
+      shift 2
+      ;;
+    --)
+      shift
+      passthru_args=("$@")
+      break
+      ;;
+    *)
+      echo "Error: unknown argument: $1"
+      exit 99
+  esac
+done
+
+if [ -z "$interval" ] || [ "$interval" -ne "$interval" ]; then
+  echo 'Error: value for argument -i was not a number!'
   exit 10
 fi
-if [ "$chance" -ne "$chance" ]; then
-  echo 'Error: argument 2 was not a number!'
+if [ -z "$chance" ] || [ "$chance" -ne "$chance" ]; then
+  echo 'Error: value for argument -c was not a number!'
   exit 11
 fi
 if [ ! -d "$img_dir" ]; then
-  echo 'Error: argument 3 was not a directory!'
+  echo 'Error: value for argument -d was not a directory!'
   exit 12
 fi
 
-echo "(\$1) Interval = $interval"
-echo "(\$2) Chance = $chance"
-echo "(\$3) Image Directory = $img_dir"
+echo "Interval = $interval"
+echo "Chance = $chance"
+echo "Image Directory = $img_dir"
 echo "User = $USER"
+echo "Passthrough Argments = ${passthru_args[*]}"
 
 set_img() {
   old_pids="$(pgrep -U "$USER" -x 'swaybg' || :)"
@@ -47,7 +74,7 @@ set_img() {
     set_img
   else
     echo 'Setting the selected image...'
-    swaybg -i "$new_img" -m fill &
+    swaybg "${passthru_args[@]}" -i "$new_img" -m fill &
 
     if [ -n "${old_pids-}" ]; then
       sleep 10 # this is huge because of huge images
