@@ -29,6 +29,9 @@ let
       lib.concatLists
     ];
 
+  mkJoinedOverlays = overlays: final: prev:
+    lib.foldl' (attrs: overlay: attrs // (overlay final prev)) { } overlays;
+
   mkHost = args@{ inputs, ... }:
     setup@{
     # the system to use for the host platform
@@ -103,5 +106,5 @@ let
   };
 in {
   #
-  inherit mkFlakeTree mkFlakeSystems mkHost mkHome mkDirEntry;
+  inherit mkFlakeTree mkFlakeSystems mkJoinedOverlays mkHost mkHome mkDirEntry;
 }
