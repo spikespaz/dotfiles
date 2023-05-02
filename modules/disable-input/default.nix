@@ -7,10 +7,35 @@ let
 in {
   options = {
     programs.${optionName} = {
-      enable = lib.mkEnableOption (lib.mdDoc "");
+      enable = lib.mkEnableOption (lib.mdDoc ''
+        Installs a script to `PATH` that when executed either enables or
+        disables  all of the devices specified by {option}`disableDevices`.
+
+        The script takes a single positional argument
+        that is either `enable` or `disable`.
+      '');
       disableDevices = lib.mkOption {
-        type = types.attrsOf types.attrs;
-        default = [ ];
+        type = types.attrsOf (types.submodule ({ name, ... }: {
+          options = {
+            name = lib.mkOption {
+              type = types.strMatching "^([a-z0-9_-]+)(/[a-z0-9_-]+)*$";
+              default = name;
+              description = lib.mdDoc "";
+              example = lib.literalExpression "";
+            };
+            product = lib.mkOption {
+              type = types.strMatching "^([a-z0-9]{4})$";
+              description = lib.mdDoc "";
+              example = lib.literalExpression "";
+            };
+            vendor = lib.mkOption {
+              type = types.strMatching "^([a-z0-9]{4})$";
+              description = lib.mdDoc "";
+              example = lib.literalExpression "";
+            };
+          };
+        }));
+        default = { };
         description = lib.mdDoc "";
         example = lib.literalExpression "";
       };
@@ -54,10 +79,13 @@ in {
   in {
     environment.systemPackages = [ package ];
 
-    services.udev.extraRules = (lib.concatStrings (lib.mapAttrsToList (name:
-      { product, vendor, }: ''
+    services.udev.extraRules = lib.pipe cfg.disableDevices [
+      builtins.attrValues
+      (map ({ name, product, vendor, }: ''
         SUBSYSTEMS=="input", ATTRS{id/product}=="${product}", ATTRS{id/vendor}=="${vendor}", SYMLINK+="${name}"
-      '') cfg.disableDevices));
+      ''))
+      lib.concatStrings
+    ];
 
     security.sudo.extraRules = [{
       users = cfg.allowedUsers;
