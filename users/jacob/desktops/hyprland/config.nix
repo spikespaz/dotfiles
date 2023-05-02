@@ -62,7 +62,7 @@
     in {
       force_split = ALWAYS_EAST; # 0
       preserve_split = true; # false
-      no_gaps_when_only = true; # false
+      # no_gaps_when_only = true;
     };
 
     # <https://wiki.hyprland.org/Configuring/Animations/#curves>
