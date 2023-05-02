@@ -1,3 +1,6 @@
+# This file defines all users' Home Manager configurations
+# as seen in the flake's `homeConfigurations` output.
+
 args@{ self, tree, lib, inputs, ... }: {
   jacob = lib.birdos.mkHome args rec {
     system = "x86_64-linux";
@@ -10,12 +13,17 @@ args@{ self, tree, lib, inputs, ... }: {
       desktops.suite
     ];
     overlays = [
+      # flake packages
       self.overlays.default
+      # override packages with an unfree license
       self.overlays.allowUnfree
+      # skip the manual download for oracle's jdk
       self.overlays.oraclejdk
+      # nix user repo packages
       inputs.nur.overlay
-      # inputs.hyprland.overlays.default
+      # packages for window manager
       inputs.hyprland.overlays.hyprland-extras
+      # other packages
       inputs.slight.overlays.default
       inputs.vscode-extensions.overlays.default
       inputs.nil.overlays.default
