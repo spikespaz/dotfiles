@@ -5,11 +5,7 @@ let
   cfg = config.wayland.windowManager.hyprland;
   cfgPath = "config.wayland.windowManager.hyprland";
 
-  defaultPackage = inputs.hyprland.packages.${pkgs.system}.default.override {
-    enableXWayland = cfg.xwayland.enable;
-    hidpiXWayland = cfg.xwayland.hidpi;
-    inherit (cfg) nvidiaPatches;
-  };
+  defaultPackage = inputs.hyprland.packages.${pkgs.system}.hyprland;
 
   configFormat = (import ./configFormat.nix args) cfg.configFormatOptions;
   configRenames = import ./configRenames.nix args;
@@ -31,23 +27,20 @@ in {
       enable = lib.mkEnableOption (lib.mdDoc ''
         Whether to install the Hyprland package and generate configuration files.
 
-        ${cfg.package.meta.description}
+        ${defaultPackage.meta.description}
 
-        See <${cfg.package.meta.homepage}> for more information.
+        See <${defaultPackage.meta.homepage}> for more information.
       '');
       package = lib.mkOption {
         type = with lib.types; nullOr package;
         default = defaultPackage;
-        defaultText = lib.literalExpression ''
-          hyprland.packages.''${pkgs.stdenv.hostPlatform.system}.default.override {
-            enableXWayland = config.wayland.windowManager.hyprland.xwayland.enable;
-            hidpiXWayland = config.wayland.windowManager.hyprland.xwayland.hidpi;
-            inherit (config.wayland.windowManager.hyprland) nvidiaPatches;
-          }
+        example = lib.literalExpression ''
+          pkgs.hyprland # if you use the overlay
         '';
         description = lib.mdDoc ''
-          Hyprland package to use. Will override the 'xwayland' and
-          'nvidiaPatches' options.
+          Hyprland package to use. The options in {option}`xwayland` and
+          {option}`nvidiaPatches` will be applied to the package
+          specified here via an override.
 
           Defaults to the one provided by the flake. Set it to
           {package}`pkgs.hyprland` to use the one provided by nixpkgs or
@@ -240,13 +233,19 @@ in {
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
-    {
-      home.packages = lib.optional (cfg.package != null) cfg.package
+    (let
+      package' = cfg.package.override {
+        enableXWayland = cfg.xwayland.enable;
+        hidpiXWayland = cfg.xwayland.hidpi;
+        inherit (cfg) nvidiaPatches;
+      };
+    in {
+      home.packages = lib.optional (cfg.package != null) package'
         ++ lib.optional cfg.xwayland.enable pkgs.xwayland;
 
       home.sessionVariables =
         lib.mkIf cfg.recommendedEnvironment { NIXOS_OZONE_WL = "1"; };
-    }
+    })
     (lib.mkIf cfg.systemdIntegration {
       systemd.user.targets.hyprland-session = {
         Unit = {
