@@ -2,7 +2,7 @@
   imports = [
     ./swayidle.nix
     ./swaylock.nix
-    ./theming.nix
+    ./gui-theme.nix
     ./dunst.nix
     ./rofi.nix
     ./utilities.nix

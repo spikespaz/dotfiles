@@ -1,9 +1,11 @@
 { self, config, pkgs, ... }: {
   imports = [
+    #
     self.homeManagerModules.randbg
-    self.homeManagerModules.uniform-theme
     self.homeManagerModules.kvantum
   ];
+
+  ## WALLPAPER ##
 
   home.sessionVariables.USER_WALLPAPERS_DIRECTORY =
     "${config.home.homeDirectory}/Pictures/Wallpapers";
@@ -17,33 +19,37 @@
     swaybg.mode = "fill";
   };
 
-  home.uniformTheme = {
+  ## CURSOR, ICONS, GTK THEME, DEFAULT FONTS ##
+
+  gtk = {
     enable = true;
-    dark = true;
-    cursor = {
-      package = pkgs.quintom-cursor-theme;
-      name = "Quintom_Ink";
-      size = 24;
-    };
-    icons = {
-      package = pkgs.papirus-icon-theme;
-      name = "Papirus-Dark";
-    };
-    gtk = {
-      package = pkgs.materia-theme;
-      name = "Materia-dark-compact";
-    };
-    fonts = {
-      default = {
-        package = pkgs.ubuntu_font_family;
-        name = "Ubuntu";
-      };
-      monospace = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans Mono";
-      };
-    };
+    iconTheme.package = pkgs.papirus-icon-theme;
+    iconTheme.name = "Papirus-Dark";
+    theme.package = pkgs.materia-theme;
+    theme.name = "Materia-dark-compact";
+    font.package = pkgs.ubuntu_font_family;
+    font.name = "Ubuntu";
   };
+
+  home.packages = [ pkgs.dejavu_fonts ];
+
+  dconf.settings."org/gnome/desktop/interface" = {
+    monospace-font-name = "DejaVu Sans Mono";
+    color-scheme = "prefer-dark";
+    # cursor-size = 24;
+  };
+
+  home.pointerCursor = {
+    package = pkgs.quintom-cursor-theme;
+    name = "Quintom_Ink";
+    size = 24;
+    gtk.enable = true;
+    x11.enable = true;
+  };
+
+  home.sessionVariables.XCURSOR_SIZE = toString 24;
+
+  ## KDE THEME ##
 
   programs.kvantum = {
     enable = true;
