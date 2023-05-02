@@ -12,7 +12,7 @@
   services.swayidle.alt = let
     grep = lib.getExe pkgs.gnugrep;
     slight = lib.getExe pkgs.slight;
-    hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+    hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
     swaylock = lib.getExe config.programs.swaylock.package;
 
     # macro to check if sfsTsBat state matches any states

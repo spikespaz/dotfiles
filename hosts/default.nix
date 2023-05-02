@@ -22,7 +22,7 @@ args@{ self, tree, lib, inputs, ... }: {
       self.overlays.default
       self.overlays.allowUnfree
       # inputs.nur.overlay
-      inputs.hyprland.overlays.default
+      # inputs.hyprland.overlays.default
       inputs.slight.overlays.default
       inputs.ragenix.overlays.default
     ];

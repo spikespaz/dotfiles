@@ -1,10 +1,11 @@
-{ self, config, lib, pkgs, nixpkgs, ... }:
+{ self, config, lib, pkgs, inputs, ... }:
 let
   sessionData = config.services.xserver.displayManager.sessionData.desktops;
   sessionPath = lib.concatStringsSep ":" [
     "${sessionData}/share/xsessions"
     "${sessionData}/share/wayland-sessions"
   ];
+  hyprlandPackage = inputs.hyprland.packages.${pkgs.system}.hyprland;
 in {
   imports = [ self.nixosModules.greetd ];
 
@@ -17,7 +18,7 @@ in {
       name = "Hyprland Compositor";
       comment = "Wayland tiling compositor that doesn't sacrifice on looks.";
       script = ''
-        ${lib.getExe pkgs.hyprland} &> /dev/null
+        ${lib.getExe hyprlandPackage} &> /dev/null
       '';
     };
   };

@@ -4,7 +4,7 @@
     eventListener.systemdService = true;
 
     eventListener.handler = let
-      hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+      hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
       testRe = against: patterns:
         lib.concatStringsSep " || "
         (map (p: ''[[ "''$${against}" =~ ^(${p})$ ]]'') patterns);

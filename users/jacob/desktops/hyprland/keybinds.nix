@@ -22,15 +22,15 @@
     slightExe = lib.getExe pkgs.slight;
     osdfnsExe = lib.getExe config.utilities.osd-functions.package;
     cleanModeExe = "disable-input-devices-notify";
-    smartPinExe = (pkgs.writeShellScript "pin-window"
-      (let hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-      in ''
-        if ${hyprctl} activewindow | grep 'floating: 0'; then
-        	${hyprctl} dispatch togglefloating active;
-        fi
+    smartPinExe = (pkgs.writeShellScript "pin-window" (let
+      hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+    in ''
+      if ${hyprctl} activewindow | grep 'floating: 0'; then
+      	${hyprctl} dispatch togglefloating active;
+      fi
 
-        ${hyprctl} dispatch pin active
-      '')).outPath;
+      ${hyprctl} dispatch pin active
+    '')).outPath;
   in {
     #########################
     ### PROGRAM LAUNCHING ###

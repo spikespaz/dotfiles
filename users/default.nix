@@ -14,7 +14,8 @@ args@{ self, tree, lib, inputs, ... }: {
       self.overlays.allowUnfree
       self.overlays.oraclejdk
       inputs.nur.overlay
-      inputs.hyprland.overlays.default
+      # inputs.hyprland.overlays.default
+      inputs.hyprland.overlays.hyprland-extras
       inputs.slight.overlays.default
       inputs.vscode-extensions.overlays.default
       inputs.nil.overlays.default
