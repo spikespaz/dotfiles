@@ -164,7 +164,7 @@ in {
     services.onedrive
 
     ### DEVICE MANAGEMENT ###
-    # services.udiskie
+    services.udiskie
 
     ### SECRET MANAGEMENT ###
     services.keepassxc
