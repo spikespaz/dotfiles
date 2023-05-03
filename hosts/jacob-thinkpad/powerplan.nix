@@ -4,8 +4,8 @@
 # - `man logind.conf`
 { self, ... }:
 let
-  idleAfter = 5 * 60;
-  hibernateDelay = 1.5 * 60;
+  idleAfter = 5 * 60; # seconds
+  hibernateDelay = 1.5 * 60 * 60; # seconds
   MHz = x: x * 1000;
 in {
   imports = [ self.nixosModules.amdctl ];
