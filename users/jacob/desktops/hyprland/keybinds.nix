@@ -192,7 +192,7 @@
     #####################
 
     # Swap the two active workspaces
-    bind."SUPER_SHIFT, S" = "swapactiveworkspaces, $INTERNAL_MON ${DOCK_MON}";
+    bind."SUPER_SHIFT, S" = "swapactiveworkspaces, ${INTERNAL_MON} ${DOCK_MON}";
 
     # Dismiss all dunst notifications
     bind."SUPER_ALT, N" = "exec, dunstctl close-all";
