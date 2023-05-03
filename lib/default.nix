@@ -25,7 +25,7 @@ in prev // prelude // {
   birdos = {
     inherit prelude;
     inherit (lib.builders)
-      mkFlakeTree mkFlakeSystems mkJoinedOverlays mkHost mkHome;
+      mkFlakeTree mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay mkHost mkHome;
   };
   maintainers.spikespaz = {
     email = "jacob@birkett.dev";

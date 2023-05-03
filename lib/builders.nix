@@ -32,6 +32,24 @@ let
   mkJoinedOverlays = overlays: final: prev:
     lib.foldl' (attrs: overlay: attrs // (overlay final prev)) { } overlays;
 
+  mkUnfreeOverlay = prev: paths:
+    lib.pipe paths [
+      (map (path: {
+        inherit path;
+        value = lib.getAttrFromPath path prev;
+      }))
+      (map (it:
+        lib.setAttrByPath it.path (it.value.overrideAttrs (old:
+          lib.recursiveUpdate old {
+            meta.license = (if builtins.isList old.meta.license then
+              map (_: { free = true; }) old.meta.license
+            else {
+              free = true;
+            });
+          }))))
+      (lib.foldl' lib.recursiveUpdate { })
+    ];
+
   mkHost = args@{ inputs, ... }:
     setup@{
     # the system to use for the host platform
@@ -106,5 +124,6 @@ let
   };
 in {
   #
-  inherit mkFlakeTree mkFlakeSystems mkJoinedOverlays mkHost mkHome mkDirEntry;
+  inherit mkFlakeTree mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay mkHost
+    mkHome mkDirEntry;
 }

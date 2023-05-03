@@ -34,7 +34,8 @@
 
       overlays = removeAttrs tree.overlays [ "unfree" ] // {
         default = tree.packages.default;
-        allowUnfree = _: tree.overlays.unfree lib [ [ "ttf-ms-win11" ] ];
+        allowUnfree = _: prev:
+          lib.birdos.mkUnfreeOverlay prev [ [ "ttf-ms-win11" ] ];
       };
       packages =
         builtins.mapAttrs (_: pkgs: tree.packages.default pkgs pkgs) pkgsFor;
