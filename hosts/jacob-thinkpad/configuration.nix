@@ -324,6 +324,17 @@
         inherit initialPassword;
       };
     };
+
+    systemd.tmpfiles.rules = let publicDir = "/home/public/share";
+    in lib.pipe config.users.users [
+      lib.attrValues
+      (builtins.filter (user: user.createHome && user.isNormalUser))
+      # if changed fix alignment with \t
+      #             Type   Path            Mode User Group Age Argument
+      (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
+      lib.concatLists
+      (links: [ "d	${publicDir}		0666	root	users	10d		-" ] ++ links)
+    ];
   }
 
   ###################
