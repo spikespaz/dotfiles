@@ -73,7 +73,7 @@ in {
         # rycee.ipfs-companion
 
         ### FIXES ###
-        rycee.open-in-browser
+        # rycee.open-in-browser
         # rycee.no-pdf-download
         # rycee.don-t-fuck-with-paste
 
