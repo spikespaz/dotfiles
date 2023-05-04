@@ -57,7 +57,7 @@ in {
         # rycee.libredirect
 
         ### GITHUB ###
-        bandithedoge.gitako
+        # bandithedoge.gitako
         # rycee.enhanced-github
         # rycee.refined-github
         rycee.lovely-forks
