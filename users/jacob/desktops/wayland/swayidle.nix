@@ -31,7 +31,6 @@
     events = {
       beforeSleep = ''
         ${swaylock} -f
-        ${hyprctl} dispatch dpms off
       '';
       afterResume = ''
         ${hyprctl} dispatch dpms on
