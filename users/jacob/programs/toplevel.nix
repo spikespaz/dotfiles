@@ -97,6 +97,24 @@
   ### CODE EDITORS ###
   ####################
 
+  rstudio = {
+    home.packages = [
+      (pkgs.rstudioWrapper.override {
+        packages = with pkgs.rPackages; [
+          # ggplot2
+          # dplyr
+          # xts
+          tinytex
+          latexpdf
+          # knitLatex
+          quarto
+          pkgs.texlive.combined.scheme-tetex
+        ];
+      })
+      pkgs.pandoc
+    ];
+  };
+
   neovim = {
     programs.neovim.enable = true;
     home.packages = [ pkgs.neovide ];

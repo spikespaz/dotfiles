@@ -115,6 +115,7 @@ in {
     (programs.jetbrains args).goland
     (programs.jetbrains args).idea
     (programs.jetbrains args).pycharm
+    programs.rstudio
     programs.neovim
     programs.helix
     programs.lapce
