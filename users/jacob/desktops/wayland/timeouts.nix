@@ -5,9 +5,6 @@ let
 
   idleHint = minutes 2;
 
-  lockEventGrace = seconds 5;
-  autoLockGrace = seconds 30;
-
   screenDimTimeoutBAT = minutes 1 + seconds 30;
   autoLockTimeoutBAT = minutes 2;
   screenOffTimeoutBAT = minutes 5;
@@ -15,6 +12,9 @@ let
   screenDimTimeoutAC = minutes 3 + seconds 30;
   autoLockTimeoutAC = minutes 4;
   screenOffTimeoutAC = hours 1;
+
+  lockEventGrace = seconds 5;
+  autoLockGrace = seconds 30;
 
   screenDimTargetBAT = 15; # percent
   screenDimTargetAC = 15; # percent
@@ -147,7 +147,8 @@ in {
         '';
       };
 
-      screenOffBAT = let lockName = ".timeout_screen_off_bat"; in {
+      screenOffBAT = let lockName = ".timeout_screen_off_bat";
+      in {
         timeout = screenOffTimeoutBAT;
         script = ''
           set -eu
@@ -165,7 +166,8 @@ in {
         '';
       };
 
-      screenOffAC = let lockName = ".timeout_screen_off_ac"; in {
+      screenOffAC = let lockName = ".timeout_screen_off_ac";
+      in {
         timeout = screenOffTimeoutAC;
         script = ''
           set -eu

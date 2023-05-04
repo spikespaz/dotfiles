@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
   imports = [
-    ./swayidle.nix
+    ./timeouts.nix
     ./swaylock.nix
     ./gui-theme.nix
     ./dunst.nix
