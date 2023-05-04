@@ -37,6 +37,9 @@
       touchpad = { tap_to_click = false; };
     };
 
+    # <https://wiki.hyprland.org/Configuring/Variables/#binds>
+    config.binds = { pass_mouse_when_bound = false; };
+
     config.gestures = {
       workspace_swipe = {
         enable = true;
