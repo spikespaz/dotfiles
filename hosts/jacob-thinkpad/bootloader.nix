@@ -9,10 +9,13 @@
   systemd.shutdownRamfs.enable = false;
 
   boot = {
-    kernelModules = [ "kvm-amd" "acpi_call" ];
+    kernelModules = [ "acpi_call" ];
     extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
-    kernelParams = [ ];
+    kernelParams = [
+      # ensures that amdgpu is loaded over radeon
+      "amdgpu"
+    ];
 
     initrd.kernelModules = [ "amdgpu" "nvme" ];
     initrd.availableKernelModules = [

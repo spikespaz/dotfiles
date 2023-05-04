@@ -15,10 +15,6 @@
   boot.initrd.verbose = false;
 
   boot.kernelParams = [
-    # ensures that amdgpu is loaded over radeon
-    "amdgpu"
-    # allows the backlight to be controlled via software
-    "amdgpu.backlight=0"
     # prevent the kernel from blanking plymouth out of the fb
     "fbcon=nodefer"
     # disable boot logo if any

@@ -245,6 +245,8 @@
     # '';
 
     # backlight brightness control (and keyboard, etc)
+    # allows the backlight to be controlled via software
+    boot.kernelParams = [ "amdgpu.backlight=0" ];
     environment.systemPackages = [ pkgs.slight ];
     services.udev.packages = [ pkgs.slight ];
 
@@ -339,6 +341,8 @@
   ### VIRTUALIZATION ###
   ######################
   {
+    boot.kernelModules = [ "kvm-amd" ];
+
     # virtualisation.spiceUSBRedirection.enable = true;
     virtualisation.libvirtd = {
       enable = true;
