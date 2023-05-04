@@ -1,4 +1,30 @@
-{ self, config, lib, pkgs, ... }: {
+{ self, config, lib, pkgs, ... }:
+let
+  # <https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power>
+  battery = "/sys/class/power_supply/BAT0";
+
+  idleHint = minutes 2;
+
+  lockEventGrace = seconds 5;
+  autoLockGrace = seconds 30;
+
+  screenDimTimeoutBAT = minutes 1 + seconds 30;
+  autoLockTimeoutBAT = minutes 2;
+  screenOffTimeoutBAT = minutes 5;
+
+  screenDimTimeoutAC = minutes 3 + seconds 30;
+  autoLockTimeoutAC = minutes 4;
+  screenOffTimeoutAC = hours 1;
+
+  screenDimTargetBAT = 15; # percent
+  screenDimTargetAC = 15; # percent
+  screenDimEnterDuration = "2s";
+  screenDimLeaveDuration = "500ms";
+
+  hours = x: x * 60 * 60;
+  minutes = x: x * 60;
+  seconds = x: x;
+in {
   imports =
     [ self.homeManagerModules.swayidle self.homeManagerModules.idlehack ];
 
@@ -15,18 +41,32 @@
     hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
     swaylock = lib.getExe config.programs.swaylock.package;
 
-    # macro to check if sfsTsBat state matches any states
-    # <https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power>
-    sysFsBat = "/sys/class/power_supply/BAT0";
     batStatus = states:
       "${grep} -q -x -F ${
         lib.concatMapStrings (s: " -e '${s}'") states
-      } ${sysFsBat}/status";
+      } ${battery}/status";
+    pluggedInAC = batStatus [ "Charging" "Not charging" ];
+
+    screenDimEnter = { target, duration, lockName }: ''
+      brightness="$(${slight} get -p)"
+      brightness="''${brightness/\%/}"
+      if [[ "$brightness" -gt ${toString target} ]]; then
+        printf '%s' "$brightness" > /tmp/${lockName}
+        ${slight} set -D ${toString target} -t ${duration} &
+        printf '%s' "$!" > /tmp/${lockName}.pid
+      fi
+    '';
+    screenDimLeave = { duration, lockName }: ''
+      brightness="$(cat /tmp/${lockName})"
+      kill "$(cat /tmp/${lockName}.pid)" || true
+      ${slight} set -I "$brightness%" -t ${screenDimLeaveDuration}
+      rm -f /tmp/${lockName}{,.pid}
+    '';
   in {
     enable = true;
     systemdTarget = "hyprland-session.target";
 
-    idleHint = 2 * 60;
+    inherit idleHint;
 
     events = {
       beforeSleep = ''
@@ -36,75 +76,109 @@
         ${hyprctl} dispatch dpms on
       '';
       lock = ''
-        ${swaylock} -f --grace-no-mouse --grace 5
+        ${swaylock} -f --grace-no-mouse --grace ${toString lockEventGrace}
       '';
     };
 
     timeouts = {
-      dimScreen = let
-        dimTarget = 15;
-        dimDuration = "2s";
-        undimDuration = "500ms";
+      screenDimBAT = let lockName = ".screen_dim_brightness_bat";
       in {
-        timeout = 60;
+        timeout = screenDimTimeoutBAT;
         script = ''
           set -eu
-          brightness="$(${slight} get -p)"
-          brightness="''${brightness/\%/}"
-          if [[ "$brightness" -gt ${toString dimTarget} ]]; then
-            printf '%s' "$brightness" > /tmp/.slight_saved_brightness
-            ${slight} set -D ${toString dimTarget}% -t ${dimDuration} &
-            printf '%s' "$!" > /tmp/.slight_saved_brightness.pid
+          if ! ${pluggedInAC}; then
+            ${
+              screenDimEnter {
+                target = screenDimTargetBAT;
+                duration = screenDimEnterDuration;
+                inherit lockName;
+              }
+            }
           fi
         '';
         resumeScript = ''
           set -eu
-          brightness="$(cat /tmp/.slight_saved_brightness)"
-          kill "$(cat /tmp/.slight_saved_brightness.pid)" || true
-          ${slight} set -I "$brightness%" -t ${undimDuration}
-          rm -f /tmp/.slight_saved_brightness{,.pid}
+          ${screenDimLeave {
+            duration = screenDimLeaveDuration;
+            inherit lockName;
+          }}
         '';
       };
 
-      autoLock = {
-        timeout = 2 * 60;
-        script = ''
-          ${swaylock} -f --grace 30
-        '';
-      };
-
-      screenOffBat = {
-        timeout = 5 * 60;
+      screenDimAC = let lockName = ".screen_dim_saved_brightness_ac";
+      in {
+        timeout = screenDimTimeoutAC;
         script = ''
           set -eu
-          if ! ${batStatus [ "Charging" "Not charging" ]}; then
+          if ${pluggedInAC}; then
+            ${
+              screenDimEnter {
+                target = screenDimTargetAC;
+                duration = screenDimEnterDuration;
+                inherit lockName;
+              }
+            }
+          fi
+        '';
+        resumeScript = ''
+          set -eu
+          ${screenDimLeave {
+            duration = screenDimLeaveDuration;
+            inherit lockName;
+          }}
+        '';
+      };
+
+      autoLockBAT = {
+        timeout = autoLockTimeoutBAT;
+        script = ''
+          if ! ${pluggedInAC}; then
+            ${swaylock} -f --grace ${toString autoLockGrace}
+          fi
+        '';
+      };
+
+      autoLockAC = {
+        timeout = autoLockTimeoutAC;
+        script = ''
+          if ${pluggedInAC}; then
+            ${swaylock} -f --grace ${toString autoLockGrace}
+          fi
+        '';
+      };
+
+      screenOffBAT = let lockName = ".timeout_screen_off_bat"; in {
+        timeout = screenOffTimeoutBAT;
+        script = ''
+          set -eu
+          if ! ${pluggedInAC}; then
             ${hyprctl} dispatch dpms off
-            touch /tmp/.timeout_screen_off_bat
+            touch /tmp/${lockName}
           fi
         '';
         resumeScript = ''
           set -eu
-          if [ -f /tmp/.timeout_screen_off_bat ]; then
+          if [ -f /tmp/${lockName} ]; then
             ${hyprctl} dispatch dpms on
-            rm /tmp/.timeout_screen_off_bat
+            rm /tmp/${lockName}
           fi
         '';
       };
 
-      screenOffAC = {
-        timeout = 60 * 60;
+      screenOffAC = let lockName = ".timeout_screen_off_ac"; in {
+        timeout = screenOffTimeoutAC;
         script = ''
           set -eu
-          if ${batStatus [ "Charging" "Not charging" ]}; then
+          if ${pluggedInAC}; then
             ${hyprctl} dispatch dpms off
-            touch /tmp/.timeout_screen_off_ac
+            touch /tmp/${lockName}
           fi
         '';
         resumeScript = ''
           set -eu
-          if [ -f /tmp/.timeout_screen_off_ac ]; then
+          if [ -f /tmp/${lockName} ]; then
             ${hyprctl} dispatch dpms on
-            rm /tmp/.timeout_screen_off_ac
+            rm /tmp/${lockName}
           fi
         '';
       };
