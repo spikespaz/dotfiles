@@ -24,6 +24,22 @@
 
   mailspring = { home.packages = [ pkgs.mailspring ]; };
 
+  thunderbird = {
+    programs.thunderbird = {
+      enable = true;
+
+      settings = {
+        # "app.donation.eoy.version.viewed" = 1;
+        "mail.openpgp.allow_external_gnupg" = false;
+      };
+
+      profiles."jacob.default" = {
+        isDefault = true;
+        # name = "jacob-default";
+      };
+    };
+  };
+
   # bluemail = {
   #   home.packages = [pkgs.bluemail];
   # };

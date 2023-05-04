@@ -77,6 +77,7 @@ in {
 
     ### COMMUNICATION & MESSAGING ###
     programs.mailspring
+    programs.thunderbird
     # programs.discord.canary
     (programs.discord args).webcord
     programs.hexchat
