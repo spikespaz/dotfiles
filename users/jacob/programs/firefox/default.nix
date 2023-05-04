@@ -58,6 +58,7 @@ in {
 
         ### GITHUB ###
         # bandithedoge.gitako
+        bandithedoge.sourcegraph
         # rycee.enhanced-github
         # rycee.refined-github
         rycee.lovely-forks
