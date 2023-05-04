@@ -137,6 +137,8 @@ in {
     programs.gallery-dl
 
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
+    programs.anydesk
+    programs.rustdesk
     programs.neofetch
     programs.nix-index
     programs.virt-manager

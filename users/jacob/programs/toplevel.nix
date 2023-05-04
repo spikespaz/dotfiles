@@ -222,6 +222,8 @@
   ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
   ###########################################
 
+  anydesk = { home.packages = [ pkgs.anydesk ]; };
+  rustdesk = { home.packages = [ pkgs.rustdesk ]; };
   neofetch = { home.packages = [ pkgs.neofetch ]; };
   nix-index = { programs.nix-index.enable = true; };
   virt-manager = { home.packages = [ pkgs.virt-manager ]; };
