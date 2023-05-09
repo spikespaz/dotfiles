@@ -84,7 +84,7 @@ in {
         # rycee.markdownload
         # rycee.flagfox
         rycee.keepassxc-browser
-        slaier.dictionary-anyvhere
+        # slaier.dictionary-anywhere
       ];
     }
   ];
