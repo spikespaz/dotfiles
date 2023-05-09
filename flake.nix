@@ -58,6 +58,15 @@
         tree.users.default { inherit self lib tree inputs nixpkgs; };
     };
 
+  # Do not use `<input>.inputs.*.follows` unless there is a good reason.
+  # Changing which inputs follow others also determines the derivations
+  # to use as package dependencies, and will cause derivations (with new hashes)
+  # to miss the binary caches.
+  #
+  # If it is truly desired to use input's packages built with different
+  # packages from what is specified in the input's `flake.lock` file,
+  # you should probably be using overlays and accessing packages from
+  # `pkgs` passed to your module's arguments.
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-22.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -72,7 +81,6 @@
     vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     # hyprland.url = "github:hyprwm/hyprland";
-    # hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     # The Hyprland input and its dependencies are overridden until
     # <https://github.com/hyprwm/Hyprland/pull/2210>
@@ -85,31 +93,24 @@
     hyprland.inputs.xdph.follows = "xdph";
 
     nil.url = "github:oxalica/nil";
-    nil.inputs.nixpkgs.follows = "nixpkgs";
 
     nixfmt.url = "github:serokell/nixfmt";
 
     # use the package from nixpkgs, probably better-kept
     # but this flake provides the module (which I contribute to)
     webcord.url = "github:fufexan/webcord-flake";
-    webcord.inputs.nixpkgs.follows = "nixpkgs";
 
     spicetify.url = "github:the-argus/spicetify-nix";
-    spicetify.inputs.nixpkgs.follows = "nixpkgs";
 
     # polymc.url = "github:PolyMC/PolyMC";
-    # polymc.inputs.nixpkgs.follows = "nixpkgs";
 
     prism-launcher.url = "github:PrismLauncher/PrismLauncher";
 
     slight.url = "github:spikespaz/slight";
-    slight.inputs.nixpkgs.follows = "nixpkgs";
 
     # TODO patch homeage
     ragenix.url = "github:yaxitech/ragenix";
-    ragenix.inputs.nixpkgs.follows = "nixpkgs";
 
     homeage.url = "github:jordanisaacs/homeage";
-    homeage.inputs.nixpkgs.follows = "nixpkgs";
   };
 }
