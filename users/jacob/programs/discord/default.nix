@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
   bdAddons = pkgs.fetchFromGitHub {
     owner = "mwittrien";
@@ -46,12 +46,16 @@ in {
       enable = true;
       # use the one from nixpkgs,
       # probably more correct with dependencies & stuff
-      package = pkgs.webcord;
+      package = pkgs.webcord-vencord;
       themes = {
         DiscordRecolor =
           "${bdAddons}/Themes/DiscordRecolor/DiscordRecolor.theme.css";
         # SettingsModal = "${bdAddons}/Themes/SettingsModal/SettingsModal.theme.css";
       };
     };
+
+    xdg.configFile."WebCord/config.json".source =
+      config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/Documents/dotfiles/users/jacob/programs/discord/webcord-config.json";
   };
 }
