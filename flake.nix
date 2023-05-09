@@ -32,11 +32,16 @@
       formatter =
         lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);
 
-      overlays = removeAttrs tree.overlays [ "unfree" ] // {
-        default = tree.packages.default;
-        allowUnfree = _: prev:
-          lib.birdos.mkUnfreeOverlay prev [ [ "ttf-ms-win11" ] ];
-      };
+      overlays = lib.pipe tree.overlays [
+        (attrs: removeAttrs attrs [ "unfree" ])
+        (lib.mapThruAttr "default")
+        (attrs:
+          attrs // {
+            default = tree.packages.default;
+            allowUnfree = _: prev:
+              lib.birdos.mkUnfreeOverlay prev [ [ "ttf-ms-win11" ] ];
+          })
+      ];
       packages =
         builtins.mapAttrs (_: pkgs: tree.packages.default pkgs pkgs) pkgsFor;
 
