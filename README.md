@@ -148,6 +148,64 @@ For example, installing `fastfetch` as a system package:
 }
 ```
 
+## Building Configurations
+
+This section is mostly for my personal reference,
+but it is also good for the newbies so I will make it extensive.
+Some of these are untested because I am writing them down when I feel clever,
+if any are wrong, please open an issue.
+
+All commands assume that you are at the root of the cloned repository.
+
+### Install a system configuration
+
+Prepare the disk for installation.
+
+1. Partition the disk.
+2. Format the disk partitions.
+3. Mount partitions relative to `/mnt`. Ensure that volumes are mounted
+   with the same options you want to use even after your installation.
+
+Install the configuration by hostname.
+
+Usage of `--no-root-password` assumes
+that you are using a configuration that specifies
+`user.users.root.hashedPassword = "!"`, which effectively disables root login.
+Do not use this option if you have no users configured.
+
+> The following command tells nix to run four jobs at a time,
+> each job with access to a quarter of your CPU cores.
+> For example, with a 6-core, 12-thread CPU, each job would be allocated 3 threads,
+> and with an 8-core, 16-thread CPU each job gets 4 threads.
+
+```sh
+nixos-install --flake "path:.#$(hostname)" --no-root-password --cores "$(($(nproc)/4))" -j 4
+```
+
+### Activate a user configuration
+
+This requires that the user in question is logged in and has an active shell.
+
+```sh
+home-manager switch --flake "path:.#$USER"
+```
+
+Or perhaps more explicitly,
+
+```sh
+nix --extra-experimental-features nix-command --extra-experimental-features flakes \
+run 'github:nix-community/home-manager/master' -- switch --flake "path:.#$USER"
+```
+
+### Activate a system configuration
+
+This assumes that the hostname of the system matches with the name of the system
+configuration that you would like to switch to.
+
+```sh
+nixos-rebuild switch --flake "path:.#$(hostname)"
+```
+
 ## Troubleshooting
 
 If you have a problem with any of the modules or packages provided by this
@@ -159,7 +217,7 @@ basis for your own setup, and need help understanding something, don't
 hesitate to ask for my help, but if you attempt to use a large section of
 code without studying it, just know that I don't fish for charity.
 
-===
+---
 
 ## References
 
