@@ -139,7 +139,7 @@ in {
           [ "source" ]
 
           [ "monitor" ]
-          [ "wsbind" ]
+          [ "workspace" ]
 
           [ "dwindle" ]
           [ "master" ]
@@ -269,6 +269,23 @@ in {
     (lib.mkIf (cfg.extraConfig != null) {
       xdg.configFile."hypr/hyprland.conf".text =
         lib.mkOrder 900 cfg.extraConfig;
+    })
+    (lib.mkIf cfg.reloadConfig {
+      wayland.windowManager.hyprland.config.misc.disable_autoreload =
+        lib.mkDefault true;
+
+      xdg.configFile."hypr/hyprland.conf".onChange = ''
+        (
+          shopt -s nullglob
+          for instance in /tmp/hypr/*; do
+            HYPRLAND_INSTANCE_SIGNATURE=''${instance##*/}
+            response="$(${cfg.package}/bin/hyprctl reload config-only 2>&1)"
+            echo "$response"
+            [[ response =~ ^ok ]] && \
+              echo "Hyprland instance reloaded: $HYPRLAND_INSTANCE_SIGNATURE"
+          done
+        )
+      '';
     })
     # (lib.mkIf cfg.enableConfig {
     #   xdg.configFile."hypr/hyprland.conf" = lib.mkForce {

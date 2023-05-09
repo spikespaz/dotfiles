@@ -2,7 +2,7 @@
   imports = [
     ./events.nix
     ./config.nix
-    ./windowrules.nix # includes layerrules
+    ./rules.nix # windowrulev2, layerrule, workspace
     ./animations.nix
     ./keybinds.nix
   ];

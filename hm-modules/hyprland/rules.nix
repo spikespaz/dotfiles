@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+args@{ config, lib, pkgs, ... }:
 let
   inherit (lib) types;
   cfg = config.wayland.windowManager.hyprland;
@@ -138,6 +138,26 @@ in {
           ]
         '';
       };
+
+      ### WORKSPACE RULES ###
+      workspaceRules = lib.mkOption {
+        type = with types; attrsOf (attrsOf (oneOf [ singleLineStr bool int ]));
+        default = { };
+        description = lib.mdDoc ''
+          Attribute set of workspace rules.
+          The name of the attribute must be a valid workspace identifier
+          as specified on the [Dispatchers: Workspace wiki page].
+
+          The value of a workspace rule is an attribute set of rule names
+          and values.
+
+          Valid rule names are listed in the
+          [Rules section of the Workspace Rules wiki page].
+
+          [Dispatchers: Workspace wiki page]: https://wiki.hyprland.org/Configuring/Dispatchers/#workspaces
+          [Rules section of the Workspace Rules wiki page]: https://wiki.hyprland.org/Configuring/Workspace-Rules/#rules
+        '';
+      };
     };
   };
 
@@ -171,6 +191,14 @@ in {
         ++ (lib.optional (rule.class != null) rule.class)
         ++ (lib.optional (rule.title != null) rule.title));
     layerRuleToString = rule: "${rule.rule}, ${rule.namespace}";
+
+    configFormat = (import ./configFormat.nix args) { };
+    inherit (configFormat.lib) valueToString;
+
+    compileWorkspaceRules = rules:
+      lib.concatStringsSep ", "
+      (lib.mapAttrsToList (rule: value: "${rule}:${valueToString value}")
+        rules);
   in {
     wayland.windowManager.hyprland.config.layerrule = lib.pipe cfg.layerRules [
       # very similar to windowrulev2
@@ -195,6 +223,12 @@ in {
         lib.concatLists
         # map each to a Hyprland config variable value string.
         (map windowRuleToString)
+      ];
+
+    wayland.windowManager.hyprland.config.workspace =
+      lib.pipe cfg.workspaceRules [
+        (builtins.mapAttrs (_: compileWorkspaceRules))
+        (lib.mapAttrsToList (workspace: rules: "${workspace}, ${rules}"))
       ];
   };
 }
