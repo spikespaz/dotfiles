@@ -7,7 +7,7 @@ let
 
   screenDimTimeoutBAT = minutes 1 + seconds 30;
   autoLockTimeoutBAT = minutes 2;
-  screenOffTimeoutBAT = minutes 5;
+  screenOffTimeoutBAT = minutes 7;
 
   screenDimTimeoutAC = minutes 3 + seconds 30;
   autoLockTimeoutAC = minutes 4;
