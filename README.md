@@ -6,6 +6,47 @@ for my computers running [NixOS].
 There are may modules and packages that some people may find useful to
 utilize in their own NixOS or Home Manager environments.
 
+### License
+
+All of the source code in this repository is licensed under the
+[Creative Commons Attribution 4.0 International (CC BY 4.0)][license]
+legalcode, which can be found in the `LICENSE` file at the root of the cloned
+source. This file is to be distributed with major portions of derived code.
+
+[license]: https://creativecommons.org/licenses/by/4.0/
+
+<table>
+  <tr>
+    <th>&#x1F7E2; Permissions</th>
+    <th>&#x1F7E1; Conditions</th>
+    <th>&#x1F534; Limitations</th>
+  </tr>
+  <tr>
+    <td>
+      <ul>
+        <li>Commercial use</li>
+        <li>Distribution</li>
+        <li>Modification</li>
+        <li>Patent use</li>
+        <li>Private use</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Appropriate credit</li>
+        <li>State changes</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Liability</li>
+        <li>Trademark use</li>
+        <li>Warranty</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 ## Usage
 
 To use modules from my flake in your own configurations,
