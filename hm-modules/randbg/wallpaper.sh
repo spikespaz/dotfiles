@@ -90,14 +90,12 @@ set_img() {
 echo 'Setting the first image!'
 set_img
 if [ -n "${NOTIFY_SOCKET-}" ]; then
-  systemd-notify --ready
-  ## systemd-notify always returns nonzero, but the message is sent anyway
-  # if [ "$(systemd-notify --ready)" ]; then
-  #   echo "Notified systemd that this unit is ready."
-  # else
-  #   echo 'Error: failed to notify systemd that we are ready!'
-  #   exit 30
-  # fi
+  if systemd-notify --ready; then
+    echo "Notified systemd that this unit is ready."
+  else
+    echo 'Error: failed to notify systemd that we are ready!'
+    exit 30
+  fi
 fi
 sleep "$interval"
 
