@@ -280,32 +280,11 @@ in {
           for instance in /tmp/hypr/*; do
             HYPRLAND_INSTANCE_SIGNATURE=''${instance##*/}
             response="$(${cfg.package}/bin/hyprctl reload config-only 2>&1)"
-            echo "$response"
-            [[ response =~ ^ok ]] && \
+            [[ $response =~ ^ok ]] && \
               echo "Hyprland instance reloaded: $HYPRLAND_INSTANCE_SIGNATURE"
           done
         )
       '';
     })
-    # (lib.mkIf cfg.enableConfig {
-    #   xdg.configFile."hypr/hyprland.conf" = lib.mkForce {
-    #     text = cfg.configLines;
-    #     onChange = lib.mkIf (cfg.reloadConfig) ''
-    #       (
-    #         shopt -s nullglob
-    #         for socket in /tmp/hypr/_*/.socket.sock; do
-    #           response="$(
-    #             printf 'reload config-only' \
-    #               | ${pkgs.netcat}/bin/nc -U $socket 2>/dev/null || true
-    #           )"
-    #           if [[ "$response" == 'ok' ]]; then
-    #             instance="$(egrep -o '_[0-9]+' <<< $socket)"
-    #             echo "Reloading Hyprland instance $instance"
-    #           fi
-    #         done
-    #       )
-    #     '';
-    #   };
-    # })
   ]);
 }
