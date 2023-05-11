@@ -95,6 +95,10 @@ in {
       original = [ "input" "touchpad" "tap-to-click" ];
     }
     {
+      prefer = [ "input" "touchpad" "tap_and_drag" ];
+      original = [ "input" "touchpad" "tap-and-drag" ];
+    }
+    {
       prefer = [ "gestures" "workspace_swipe" "enable" ];
       original = [ "gestures" "workspace_swipe" ];
     }
