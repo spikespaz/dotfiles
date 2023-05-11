@@ -24,6 +24,7 @@ let
     pavucontrol = lib.getExe pkgs.lxqt.pavucontrol-qt;
     blueman-manager = "${pkgs.blueman}/bin/blueman-manager";
     bluetoothctl = "${pkgs.bluez}/bin/bluetoothctl";
+    systemctl = "${pkgs.systemd}/bin/systemctl";
     iwgtk = lib.getExe pkgs.iwgtk;
   in {
     backlightUp = "${slight} inc 5% -t 150ms";
@@ -39,8 +40,25 @@ let
     # inputVolumeUp = "${kbFns} input +0.05";
     # inputVolumeDown = "${kbFns} input -0.05";
     bluetoothSettings = blueman-manager;
-    bluetoothOn =
-      "rfkill unblock bluetooth && sleep 5; ${bluetoothctl} power on";
+    bluetoothToggle = (pkgs.writeShellScript "waybar-bluetooth-toggle" ''
+      set -eux
+      export PATH="${
+        lib.makeBinPath
+        (with pkgs; [ coreutils gawk util-linux bluez nettools ])
+      }:$PATH"
+      is_powered_on="$(
+        bluetoothctl show | \
+        awk '/Name: '"$(hostname)"'$/{p=1} p && /Powered: yes/{print "true"; exit} END{if(!NR || !p) print "false"}'
+      )"
+      if [[ $is_powered_on == 'true' ]]; then
+        bluetoothctl power off
+      else
+        rfkill unblock bluetooth && sleep 1 || true
+        bluetoothctl power on
+      fi
+    '').outPath;
+    bluetoothKill =
+      "rfkill blick bluetooth && ${systemctl} restart bluetooth.service";
     bluetoothOff = "${bluetoothctl} power off";
     wirelessSettings = iwgtk;
     workspaceSwitchPrev = "${hyprctl} dispatch workspace m-1";
@@ -226,9 +244,9 @@ in {
         format-connected-battery =
           "󰂱 {device_alias} ({device_battery_percentage}%) ({num_connections})";
 
-        on-click = commands.bluetoothOn;
-        on-click-middle = commands.bluetoothSettings;
-        on-click-right = commands.bluetoothOff;
+        on-click = commands.bluetoothSettings;
+        on-click-middle = commands.bluetoothKill;
+        on-click-right = commands.bluetoothToggle;
       };
 
       battery = {
