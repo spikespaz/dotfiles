@@ -15,11 +15,16 @@
       options = "--delete-older-than 7d";
     };
 
-    nix.settings = {
+    nix.settings = rec {
       # allow the flake settings
       # accept-flake-config = true;
       # use four cores for enableParallelBuilding
-      cores = 4;
+      cores = let
+        nproc = lib.toInt (builtins.readFile
+          (pkgs.runCommand "assess-core-count" { } "nproc > $out").outPath);
+      in nproc / max-jobs;
+      #
+      max-jobs = 4;
       # allow sudo users to mark the following values as trusted
       trusted-users = [ "root" "@wheel" ];
       # only allow sudo users to manage the nix store
