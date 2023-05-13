@@ -229,9 +229,8 @@
   ####################################
   ### DESKTOP ENVIRONMENT: WAYLAND ###
   ####################################
+  self.nixosModules.disable-input
   {
-    imports = [ self.nixosModules.disable-input ];
-
     # <https://github.com/swaywm/swaylock/issues/61>
     security.pam.services.swaylock.text = ''
       auth sufficient pam_unix.so try_first_pass nullok
@@ -300,15 +299,47 @@
     };
   }
 
+  #########################
+  ### SHARED USER FILES ###
+  #########################
+  # enable shell completions for system packages
+  {
+    environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
+  }
+  # very useful /usr/share/dict/words and $WORDLIST
+  # <https://en.wikipedia.org/wiki/Words_(Unix)>
+  {
+    environment.wordlist.enable = true;
+    systemd.tmpfiles.rules = [
+      "L /usr/share/dict/words - - - - ${
+        lib.pipe config.environment.wordlist.lists.WORDLIST [
+          (map builtins.readFile)
+          (lib.concatStringsSep "\n")
+          (pkgs.writeText "system-words")
+        ]
+      }"
+    ];
+  }
+  # public shared directory for users of the users group
+  {
+
+    systemd.tmpfiles.rules = let publicDir = "/home/public/share";
+    in lib.pipe config.users.users [
+      lib.attrValues
+      (builtins.filter (user: user.createHome && user.isNormalUser))
+      # if changed fix alignment with \t
+      #             Type   Path            Mode User Group Age Argument
+      (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
+      lib.concatLists
+      (links: [ "d	${publicDir}		0666	root	users	10d		-" ] ++ links)
+    ];
+  }
+
   #####################
   ### USERS CONFIGS ###
   #####################
   {
-    # enable completions for system packages
-    environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
-
     # users.mutableUsers = false;
-
     users.users = let initialPassword = "password";
     in {
       root = { inherit initialPassword; };
@@ -324,17 +355,6 @@
         inherit initialPassword;
       };
     };
-
-    systemd.tmpfiles.rules = let publicDir = "/home/public/share";
-    in lib.pipe config.users.users [
-      lib.attrValues
-      (builtins.filter (user: user.createHome && user.isNormalUser))
-      # if changed fix alignment with \t
-      #             Type   Path            Mode User Group Age Argument
-      (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
-      lib.concatLists
-      (links: [ "d	${publicDir}		0666	root	users	10d		-" ] ++ links)
-    ];
   }
 
   ###################
