@@ -52,23 +52,35 @@ let
 
   mkHost = args@{ inputs, ... }:
     setup@{
-    # the system to use for the host platform
-    system ? "x86_64-linux",
-    # the branch of nixpkgs to use for the host
+    # The platform on which packages will be run (built for).
+    # Will be used as the default platform for the other two settings.
+    # Will be used for `targetPlatform`.
+    hostPlatform,
+    # The platform on which to build packages.
+    # This is different from `localPlatform`.
+    buildPlatform ? hostPlatform,
+    # The platform of the hardware running the build.
+    localPlatform ? buildPlatform,
+    # The input of nixpkgs to use for the host.
     nixpkgs ? inputs.nixpkgs,
-    # arguments to be given to
+    # Arguments to be given to nixpkgs instantiation.
     # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/top-level/impure.nix>
     nixpkgsArgs ? { }, overlays ? [ ],
-    # additional specialArgs (overwrites args attrs)
+    # Additional `specialArgs` (overwrites `args` attributes).
     specialArgs ? { },
-    # host component modules
+    # Most component modules to merge.
     modules ? [ ] }:
-    let
-      setupStripped =
-        removeAttrs setup [ "nixpkgs" "nixpkgsArgs" "overlays" "specialArgs" ];
-    in nixpkgs.lib.nixosSystem (setupStripped // {
-      pkgs = import nixpkgs ({ inherit system overlays; } // nixpkgsArgs);
-      specialArgs = args // specialArgs // { inherit nixpkgs system; };
+
+    let ownArgs = builtins.attrNames (builtins.functionArgs (mkHost args));
+    in nixpkgs.lib.nixosSystem ((removeAttrs setup ownArgs) // {
+      modules = setup.modules
+        ++ [{ config.nixpkgs.hostPlatform = hostPlatform; }];
+      pkgs = import nixpkgs ({
+        inherit overlays;
+        localSystem = localPlatform;
+        crossSystem = hostPlatform;
+      } // nixpkgsArgs);
+      specialArgs = args // specialArgs // { inherit nixpkgs; };
     });
 
   mkHome = args@{ inputs, ... }:
