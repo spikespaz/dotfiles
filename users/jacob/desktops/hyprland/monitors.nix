@@ -27,25 +27,19 @@ in {
       # "${DOCK_MON}, preferred, 1920x0, 1"
     ];
 
-    config.wsbind = [
-      "1, ${internalMon}"
-      "3, ${internalMon}"
-      "5, ${internalMon}"
-      "7, ${internalMon}"
-      "9, ${internalMon}"
+    workspaceRules = {
+      "1".monitor = internalMon;
+      "3".monitor = internalMon;
+      "5".monitor = internalMon;
+      "7".monitor = internalMon;
+      "9".monitor = internalMon;
 
-      "2, ${hotplugMon}"
-      "4, ${hotplugMon}"
-      "6, ${hotplugMon}"
-      "8, ${hotplugMon}"
-      "10, ${hotplugMon}"
-
-      "2, ${dockMon}"
-      "4, ${dockMon}"
-      "6, ${dockMon}"
-      "8, ${dockMon}"
-      "10, ${dockMon}"
-    ];
+      "2".monitor = [ hotplugMon dockMon ];
+      "4".monitor = [ hotplugMon dockMon ];
+      "6".monitor = [ hotplugMon dockMon ];
+      "8".monitor = [ hotplugMon dockMon ];
+      "10".monitor = [ hotplugMon dockMon ];
+    };
 
     eventListener.handler.monitorAdd = ''
       ${hyprctl} dispatch moveworkspacetomonitor 2 $HL_MONITOR_NAME
