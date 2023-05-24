@@ -157,6 +157,20 @@ if any are wrong, please open an issue.
 
 All commands assume that you are at the root of the cloned repository.
 
+### Build activation packages
+
+NixOS system package for the current hostname:
+
+```
+nix build "path:.#nixosConfigurations.$(hostname).config.system.build.toplevel"
+```
+
+Home Manager package for the current user:
+
+```
+nix build "path:.#homeConfigurations.$USER.activationPackage"
+```
+
 ### Install a system configuration
 
 Prepare the disk for installation.
