@@ -141,7 +141,9 @@ in {
 
       ### WORKSPACE RULES ###
       workspaceRules = lib.mkOption {
-        type = with types; attrsOf (attrsOf (oneOf [ singleLineStr bool int ]));
+        type = with types;
+          let unitType = oneOf [ singleLineStr bool int ];
+          in attrsOf (attrsOf (either unitType (listOf unitType)));
         default = { };
         description = lib.mdDoc ''
           Attribute set of workspace rules.
@@ -196,9 +198,12 @@ in {
     inherit (configFormat.lib) valueToString;
 
     compileWorkspaceRules = rules:
-      lib.concatStringsSep ", "
-      (lib.mapAttrsToList (rule: value: "${rule}:${valueToString value}")
-        rules);
+      lib.concatStringsSep ", " (lib.mapAttrsToList (rule: value:
+        if lib.isList value then
+          (lib.concatStringsSep ", "
+            (map (it: "${rule}:${valueToString it}") value))
+        else
+          "${rule}:${valueToString value}") rules);
   in {
     wayland.windowManager.hyprland.config.layerrule = lib.pipe cfg.layerRules [
       # very similar to windowrulev2
