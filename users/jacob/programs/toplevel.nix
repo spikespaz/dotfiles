@@ -262,7 +262,10 @@
   ### 3D PRINTING ###
   ###################
 
-  printing-3d = { home.packages = with pkgs; [ super-slicer-latest cura ]; };
+  openscad = { home.packages = [ pkgs.openscad ]; };
+  prusa-slicer = { home.packages = [ pkgs.prusa-slicer ]; };
+  super-slicer = { home.packages = [ pkgs.super-slicer-latest ]; };
+  cura = { home.packages = [ pkgs.cura ]; };
 
   ################
   ### HARDWARE ###

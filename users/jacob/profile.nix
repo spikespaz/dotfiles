@@ -154,6 +154,12 @@ in {
     programs.qbittorrent
     programs.filezilla
 
+    ### 3D PRINTING ###
+    programs.openscad
+    programs.prusa-slicer
+    programs.super-slicer
+    programs.cura
+
     ### HARDWARE ###
     # programs.hardware.razer
 
