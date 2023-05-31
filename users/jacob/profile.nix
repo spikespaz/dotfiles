@@ -169,6 +169,7 @@ in {
 
     ### DEVICE MANAGEMENT ###
     services.udiskie
+    services.easyeffects
 
     ### SECRET MANAGEMENT ###
     services.keepassxc

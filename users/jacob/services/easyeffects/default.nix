@@ -1,5 +1,7 @@
 { lib, ... }:
-let laptop-unsuck = lib.importJSON ./laptop_unsuck.json;
+let
+  # <https://gist.github.com/sebastian-de/648555c1233fdc6688c0a224fc2fca7e>
+  laptop-unsuck = lib.importJSON ./laptop_unsuck.json;
 in {
   services.easyeffects.enable = true;
 
