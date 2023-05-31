@@ -8,13 +8,13 @@ enableChafa ? false, chafa, enableImageMagick ? false, imagemagick_light
 , wayland, enableX11 ? true, xorg, enableXFCE ? false, xfce, }:
 stdenv.mkDerivation rec {
   pname = "fastfetch";
-  version = "1.7.0";
+  version = "1.11.1";
 
   src = fetchFromGitHub {
     owner = "LinusDierheimer";
     repo = pname;
     rev = version;
-    hash = "sha256-sPCWsnBlAdEy8p/82myrPPUjkLqhybLppSJj3pxfLhQ=";
+    hash = "sha256-glC6zYnZ3L8YGLAIc16jWbSdRBIWyTWd8XTSjtR4G88=";
   };
 
   nativeBuildInputs = [ cmake makeWrapper pkg-config ];
