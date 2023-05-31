@@ -11,6 +11,8 @@
       inactive_group_border_color = "rgba(665C54FF)"; # bg3
       cursor_inactive_timeout = 10;
       no_cursor_warps = true;
+      resize_on_border = true;
+      extend_border_grab_area = 10;
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#decoration>
