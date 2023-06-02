@@ -96,13 +96,13 @@ in {
     datestr = "%a, %b %-d, %Y";
     indicator-idle-visible = true;
     indicator-caps-lock = true;
-    indicator-radius = 80;
+    indicator-radius = 100;
     indicator-thickness = 6;
 
     ### Text ###
 
     font = "Ubuntu";
-    font-size = 22;
+    font-size = 28;
     text-color = text_color;
     text-clear-color = text_color;
     text-caps-lock-color = text_color;
