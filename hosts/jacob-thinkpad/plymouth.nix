@@ -1,8 +1,10 @@
 { config, pkgs, lib, ... }:
-###########################
-### PLYMOUTH & GRAPHICS ###
-###########################
-{
+let
+  # I don't know if this is really needed, but I extrapolated this
+  # package override from the nixpkgs config.
+  plymouth =
+    pkgs.plymouth.override { systemd = config.boot.initrd.systemd.package; };
+in {
   # font for log text & tty
   console = {
     keyMap = "us";
@@ -43,9 +45,9 @@
 
   # make it work with sleep
   powerManagement.powerDownCommands = ''
-    ${pkgs.plymouth} --show-splash
+    ${lib.getExe plymouth} --show-splash
   '';
   powerManagement.resumeCommands = ''
-    ${pkgs.plymouth} --quit
+    ${lib.getExe plymouth} --quit
   '';
 }
