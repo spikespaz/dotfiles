@@ -9,12 +9,12 @@ let
   autoLockTimeoutBAT = minutes 2;
   screenOffTimeoutBAT = minutes 7;
 
-  screenDimTimeoutAC = minutes 3 + seconds 30;
-  autoLockTimeoutAC = minutes 4;
+  screenDimTimeoutAC = minutes 4 + seconds 30;
+  autoLockTimeoutAC = minutes 5;
   screenOffTimeoutAC = hours 1;
 
   lockEventGrace = seconds 5;
-  autoLockGrace = seconds 30;
+  autoLockGrace = seconds 15;
 
   screenDimTargetBAT = 15; # percent
   screenDimTargetAC = 15; # percent
@@ -105,7 +105,7 @@ in {
         '';
       };
 
-      screenDimAC = let lockName = ".screen_dim_saved_brightness_ac";
+      screenDimAC = let lockName = ".screen_dim_brightness_ac";
       in {
         timeout = screenDimTimeoutAC;
         script = ''
