@@ -1,9 +1,10 @@
 { lib, pkgs, ... }: {
-  programs.vscode.extensions = with pkgs.vscode-marketplace; [
-    mads-hartmann.bash-ide-vscode
-    timonwong.shellcheck
-    foxundermoon.shell-format
-  ];
+  programs.vscode.extensions = with pkgs.vscode-marketplace;
+    with pkgs.vscode-marketplace-release; [
+      mads-hartmann.bash-ide-vscode
+      timonwong.shellcheck
+      foxundermoon.shell-format
+    ];
 
   programs.vscode.userSettings = {
     "[shellscript]" = {

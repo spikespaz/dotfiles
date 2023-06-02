@@ -1,8 +1,9 @@
 { lib, pkgs, ... }: {
-  programs.vscode.extensions = with pkgs.vscode-marketplace; [
-    eww-yuck.yuck
-    kress95.vscode-parinfer-kress95
-  ];
+  programs.vscode.extensions = with pkgs.vscode-marketplace;
+    with pkgs.vscode-marketplace-release; [
+      eww-yuck.yuck
+      kress95.vscode-parinfer-kress95
+    ];
 
   # programs.vscode.userSettings = {
   #   "[css]" = {

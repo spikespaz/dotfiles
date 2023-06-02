@@ -1,13 +1,14 @@
 { lib, pkgs, ... }: {
-  programs.vscode.extensions = with pkgs.vscode-marketplace; [
-    rust-lang.rust-analyzer
-    tamasfe.even-better-toml
-    # these guys are sort of inconsiderate and not even designing
-    # the extension properly, I should be able to provide
-    # the binaries it wants and disable the auto download thing
-    # <https://github.com/vadimcn/vscode-lldb/issues/310>
-    pkgs.vscode-extensions.vadimcn.vscode-lldb
-  ];
+  programs.vscode.extensions = with pkgs.vscode-marketplace;
+    with pkgs.vscode-marketplace-release; [
+      rust-lang.rust-analyzer
+      tamasfe.even-better-toml
+      # these guys are sort of inconsiderate and not even designing
+      # the extension properly, I should be able to provide
+      # the binaries it wants and disable the auto download thing
+      # <https://github.com/vadimcn/vscode-lldb/issues/310>
+      pkgs.vscode-extensions.vadimcn.vscode-lldb
+    ];
 
   programs.vscode.userSettings = {
     "[rust]" = {

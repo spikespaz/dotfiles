@@ -11,29 +11,30 @@
     paths = [ editorPackage ] ++ fontPackages;
   });
 
-  programs.vscode.extensions = with pkgs.vscode-marketplace; [
-    ## Appearances ##
-    # jdinhlife.gruvbox
-    monokai.theme-monokai-pro-vscode
-    # teeseal.ayu-legacy
-    # be5invis.theme-railgun
-    # origamid.origamid-next
-    # sainnhe.sonokai
-    # dimitarnonov.jellybeans-theme
+  programs.vscode.extensions = with pkgs.vscode-marketplace;
+    with pkgs.vscode-marketplace-release; [
+      ## Appearances ##
+      # jdinhlife.gruvbox
+      monokai.theme-monokai-pro-vscode
+      # teeseal.ayu-legacy
+      # be5invis.theme-railgun
+      # origamid.origamid-next
+      # sainnhe.sonokai
+      # dimitarnonov.jellybeans-theme
 
-    pkief.material-icon-theme
+      pkief.material-icon-theme
 
-    ## Intelligence ##
-    christian-kohler.path-intellisense
-    streetsidesoftware.code-spell-checker
+      ## Intelligence ##
+      christian-kohler.path-intellisense
+      streetsidesoftware.code-spell-checker
 
-    ## Version Control ##
-    waderyan.gitblame
-    mhutchie.git-graph
+      ## Version Control ##
+      waderyan.gitblame
+      mhutchie.git-graph
 
-    ## Editor Extension ##
-    ryuta46.multi-command
-  ];
+      ## Editor Extension ##
+      ryuta46.multi-command
+    ];
 
   ## Gruvbox Dark Hard
   #
