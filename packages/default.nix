@@ -21,4 +21,5 @@ final: prev: {
   kvantum-qt6 = final.callPackage ./kvantum-qt6.nix { };
   proton-ge-custom = final.callPackage ./proton-ge-custom.nix { };
   qt6ct = final.qt6.callPackage ./qt6ct.nix { };
+  nerdfonts-symbols-only = final.callPackage ./nerdfonts.nix { };
 }
