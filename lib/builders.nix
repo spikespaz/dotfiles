@@ -85,8 +85,15 @@ let
 
   mkHome = args@{ inputs, ... }:
     setup@{
-    # the system to use for the host platform
-    system ? "x86_64-linux",
+    # The platform on which packages will be run (built for).
+    # Will be used as the default platform for the other two settings.
+    # Will be used for `targetPlatform`.
+    hostPlatform,
+    # The platform on which to build packages.
+    # This is different from `localPlatform`.
+    buildPlatform ? hostPlatform,
+    # The platform of the hardware running the build.
+    localPlatform ? buildPlatform,
     # the branch of nixpkgs to use for the environment
     nixpkgs ? inputs.nixpkgs,
     # arguments to be given to
@@ -99,23 +106,20 @@ let
     # host component modules
     modules ? [ ] }:
     let
-      setupStripped = removeAttrs setup [
-        "system"
-        "nixpkgs"
-        "nixpkgsArgs"
-        "overlays"
-        "homeManager"
-        "extraSpecialArgs"
-      ];
+      ownArgs = builtins.attrNames (builtins.functionArgs (mkHome args));
       lib = (if args ? lib then args.lib else nixpkgs.lib).extend (final: _: {
         hm = import "${homeManager}/modules/lib" { lib = final; };
       });
-    in homeManager.lib.homeManagerConfiguration (setupStripped // {
-      pkgs = import nixpkgs ({ inherit system overlays; } // nixpkgsArgs);
-      extraSpecialArgs = args // extraSpecialArgs // {
-        inherit nixpkgs system lib;
-      };
-    });
+    in homeManager.lib.homeManagerConfiguration ((removeAttrs setup ownArgs)
+      // {
+        inherit modules;
+        pkgs = import nixpkgs ({
+          inherit overlays;
+          localSystem = localPlatform;
+          crossSystem = hostPlatform;
+        } // nixpkgsArgs);
+        extraSpecialArgs = args // extraSpecialArgs // { inherit nixpkgs lib; };
+      });
 
   mkDirEntry = dirname: basename: type: rec {
     inherit type;

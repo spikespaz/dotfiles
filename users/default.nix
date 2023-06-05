@@ -3,7 +3,7 @@
 
 args@{ self, tree, lib, inputs, ... }: {
   jacob = lib.birdos.mkHome args rec {
-    system = "x86_64-linux";
+    hostPlatform.system = "x86_64-linux";
     nixpkgs = inputs.nixpkgs-unstable;
     nixpkgsArgs.config.allowUnfree = true;
     modules = with tree.users.jacob; [
@@ -33,7 +33,8 @@ args@{ self, tree, lib, inputs, ... }: {
     ];
     extraSpecialArgs = {
       pkgs-stable = import inputs.nixpkgs-stable {
-        inherit system overlays;
+        localSystem = hostPlatform;
+        inherit overlays;
         inherit (nixpkgsArgs) config;
       };
     };
