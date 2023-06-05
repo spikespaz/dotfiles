@@ -66,9 +66,13 @@ in {
         '';
       };
 
-      recommendedEnvironment = lib.mkEnableOption (lib.mdDoc ''
-        Whether to set the recommended environment variables.
-      '');
+      recommendedEnvironment = lib.mkOption {
+        type = types.bool;
+        default = pkgs.stdenv.isLinux;
+        description = lib.mdDoc ''
+          Whether to set the recommended environment variables.
+        '';
+      };
 
       xwayland.enable = lib.mkOption {
         type = types.bool;
