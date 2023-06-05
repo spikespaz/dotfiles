@@ -19,8 +19,6 @@ args@{ self, tree, lib, inputs, ... }: {
       self.overlays.allowUnfree
       # skip the manual download for oracle's jdk
       self.overlays.oraclejdk
-      # override bad hashes for extensions from nix-vscode-extensions
-      self.overlays.vscode-marketplace
       # nix user repo packages
       inputs.nur.overlay
       # packages for window manager
