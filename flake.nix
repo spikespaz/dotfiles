@@ -7,8 +7,11 @@
   outputs = inputs@{ self, nixpkgs, ... }:
     let
       inherit (self) lib tree systems;
-      pkgsFor = lib.genAttrs systems
-        (system: import nixpkgs { overlays = [ self.overlays.default ]; });
+      pkgsFor = lib.genAttrs systems (system:
+        import nixpkgs {
+          localSystem = system;
+          overlays = [ self.overlays.default ];
+        });
     in {
       # any of aarch64, arm, x86_64, linux and darwin.
       # other platforms may be negotiable.
