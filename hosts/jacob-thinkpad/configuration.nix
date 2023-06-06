@@ -15,6 +15,11 @@
       options = "--delete-older-than 7d";
     };
 
+    # use a lower priority for builds
+    # so that the system is still usable with the following (extreme) settings
+    nix.daemonCPUSchedPolicy = "batch";
+    nix.daemonIOSchedClass = "idle";
+
     nix.settings = rec {
       # allow the flake settings
       # accept-flake-config = true;
@@ -22,7 +27,7 @@
       cores = let
         nproc = lib.toInt (builtins.readFile
           (pkgs.runCommand "assess-core-count" { } "nproc > $out").outPath);
-      in nproc / max-jobs;
+      in (nproc - 2) / max-jobs;
       #
       max-jobs = 4;
       # allow sudo users to mark the following values as trusted
