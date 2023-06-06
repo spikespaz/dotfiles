@@ -13,7 +13,8 @@ let
   };
   prelude = {
     inherit (lib.attrsets)
-      updates recursiveUpdates deepMergeAttrs thruAttr mapThruAttr;
+      updates recursiveUpdates deepMergeAttrs thruAttr mapThruAttr
+      mapListToAttrs;
     inherit (lib.debug) traceM traceValM;
     inherit (lib.lists)
       indicesOf getElemAt removeElems sublist split lsplit rsplit;

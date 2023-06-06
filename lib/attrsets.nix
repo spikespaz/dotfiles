@@ -23,7 +23,10 @@ let
   thruAttr = attr: it:
     if lib.isAttrs it && it ? ${attr} then it.${attr} else it;
   mapThruAttr = attr: lib.mapAttrs (name: thruAttr attr);
+
+  mapListToAttrs = fn: xs: builtins.listToAttrs (map fn xs);
 in {
   #
-  inherit updates recursiveUpdates deepMergeAttrs thruAttr mapThruAttr;
+  inherit updates recursiveUpdates deepMergeAttrs thruAttr mapThruAttr
+    mapListToAttrs;
 }
