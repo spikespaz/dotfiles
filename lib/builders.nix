@@ -69,12 +69,13 @@ let
     # Additional `specialArgs` (overwrites `args` attributes).
     specialArgs ? { },
     # Most component modules to merge.
-    modules ? [ ] }:
+    modules ? [ ],
+    # additional arguments are passed through
+    ... }:
 
     let ownArgs = builtins.attrNames (builtins.functionArgs (mkHost args));
     in nixpkgs.lib.nixosSystem ((removeAttrs setup ownArgs) // {
-      modules = setup.modules
-        ++ [{ config.nixpkgs.hostPlatform = hostPlatform; }];
+      modules = modules ++ [{ config.nixpkgs.hostPlatform = hostPlatform; }];
       pkgs = import nixpkgs ({
         inherit overlays;
         localSystem = localPlatform;
@@ -104,7 +105,9 @@ let
     # additional specialArgs (overwrites args attrs)
     extraSpecialArgs ? { },
     # host component modules
-    modules ? [ ] }:
+    modules ? [ ],
+    # additional arguments are passed through
+    ... }:
     let
       ownArgs = builtins.attrNames (builtins.functionArgs (mkHome args));
       lib = (if args ? lib then args.lib else nixpkgs.lib).extend (final: _: {
