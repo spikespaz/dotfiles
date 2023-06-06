@@ -25,6 +25,7 @@
       pkief.material-icon-theme
 
       ## Intelligence ##
+      usernamehw.errorlens
       christian-kohler.path-intellisense
       streetsidesoftware.code-spell-checker
 
@@ -151,6 +152,14 @@
     "workbench.tree.indent" = 16;
 
     ## Intelligence Features ##
+
+    # do not show error messages on lines in merge conflict blocks
+    "errorLens.enabledInMergeConflict" = false;
+    # diagnostic levels to show, removed "info"
+    "errorLens.enabledDiagnosticLevels" = [ "error" "warning" ];
+    # font to use for errors
+    "errorLens.fontFamily" = "'Ubuntu'";
+    "errorLens.fontSize" = 12;
 
     # prompt for completions after the last path segment is accepted
     "path-intellisense.autoTriggerNextSuggestion" = true;
