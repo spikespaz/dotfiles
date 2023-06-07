@@ -82,6 +82,7 @@ in {
     (programs.discord args).webcord
     programs.hexchat
     programs.telegram
+    programs.matrix
 
     ### MEDIA CREATION ###
     programs.obs-studio

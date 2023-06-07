@@ -58,6 +58,8 @@
 
   telegram = { home.packages = [ pkgs.tdesktop ]; };
 
+  matrix = { home.packages = [ pkgs.libsForQt5.neochat ]; };
+
   ######################
   ### MEDIA CREATION ###
   ######################
