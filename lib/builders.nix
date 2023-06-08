@@ -54,13 +54,11 @@ let
     setup@{
     # The platform on which packages will be run (built for).
     # Will be used as the default platform for the other two settings.
-    # Will be used for `targetPlatform`.
+    # Will also be used for `targetPlatform`.
     hostPlatform,
     # The platform on which to build packages.
     # This is different from `localPlatform`.
     buildPlatform ? hostPlatform,
-    # The platform of the hardware running the build.
-    localPlatform ? buildPlatform,
     # The input of nixpkgs to use for the host.
     nixpkgs ? inputs.nixpkgs,
     # Arguments to be given to nixpkgs instantiation.
@@ -78,7 +76,7 @@ let
       modules = modules ++ [{ config.nixpkgs.hostPlatform = hostPlatform; }];
       pkgs = import nixpkgs ({
         inherit overlays;
-        localSystem = localPlatform;
+        localSystem = buildPlatform;
         crossSystem = hostPlatform;
       } // nixpkgsArgs);
       specialArgs = args // specialArgs // { inherit nixpkgs; };
@@ -88,13 +86,11 @@ let
     setup@{
     # The platform on which packages will be run (built for).
     # Will be used as the default platform for the other two settings.
-    # Will be used for `targetPlatform`.
+    # Will also be used for `targetPlatform`.
     hostPlatform,
     # The platform on which to build packages.
     # This is different from `localPlatform`.
     buildPlatform ? hostPlatform,
-    # The platform of the hardware running the build.
-    localPlatform ? buildPlatform,
     # the branch of nixpkgs to use for the environment
     nixpkgs ? inputs.nixpkgs,
     # arguments to be given to
@@ -118,7 +114,7 @@ let
         inherit modules;
         pkgs = import nixpkgs ({
           inherit overlays;
-          localSystem = localPlatform;
+          localSystem = buildPlatform;
           crossSystem = hostPlatform;
         } // nixpkgsArgs);
         extraSpecialArgs = args // extraSpecialArgs // { inherit nixpkgs lib; };
