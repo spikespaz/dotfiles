@@ -1,7 +1,7 @@
 { self, config, lib, pkgs, ... }:
 let
   # <https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power>
-  battery = "/sys/class/power_supply/BAT0";
+  batteryDevice = "/sys/class/power_supply/BAT0";
   # <https://docs.kernel.org/leds/leds-class.html>
   kbdLightDevice = "/sys/class/leds/tpacpi::kbd_backlight";
 
@@ -55,7 +55,7 @@ in {
     batStatus = states:
       "${grep} -q -x -F ${
         lib.concatMapStrings (s: " -e '${s}'") states
-      } ${battery}/status";
+      } ${batteryDevice}/status";
     pluggedInAC = batStatus [ "Charging" "Not charging" ];
 
     screenDimEnter = { target, duration, lockName }: ''
