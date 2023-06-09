@@ -46,20 +46,20 @@
     # <https://github.com/xkbcommon/libxkbcommon/blob/master/include/xkbcommon/xkbcommon-keysyms.h>
 
     # toggle mute default sink
-    bind.", XF86AudioMute" = "exec, ${osdfnsExe} output mute";
+    bindl.", XF86AudioMute" = "exec, ${osdfnsExe} output mute";
 
     # raise and lower default sink
     bindel.", XF86AudioRaiseVolume" = "exec, ${osdfnsExe} output +0.05";
     bindel.", XF86AudioLowerVolume" = "exec, ${osdfnsExe} output -0.05";
 
     # mute default source
-    bind.", XF86AudioMicMute" = "exec, ${osdfnsExe} input mute";
+    bindl.", XF86AudioMicMute" = "exec, ${osdfnsExe} input mute";
 
     # raise and lower display brightness
     bindel.", XF86MonBrightnessUp" = "exec, ${slightExe} inc 10 -t 300ms";
     bindel.", XF86MonBrightnessDown" = "exec, ${slightExe} dec 10 -t 300ms";
 
-    bind.", XF86Display" = "exec, hyprctl dispatch dpms toggle";
+    bindrl.", XF86Display" = "exec, hyprctl dispatch dpms toggle";
 
     ##########################
     ### ESSENTIAL PROGRAMS ###
