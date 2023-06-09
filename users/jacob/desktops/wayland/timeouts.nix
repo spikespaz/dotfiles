@@ -70,7 +70,7 @@ in {
     screenDimLeave = { duration, lockName }: ''
       brightness="$(cat /tmp/${lockName})"
       kill "$(cat /tmp/${lockName}.pid)" || true
-      ${slight} set -I "$brightness%" -t ${screenDimLeaveDuration}
+      ${slight} set -I "$brightness%" -t ${duration}
       rm -f /tmp/${lockName}{,.pid}
     '';
 
