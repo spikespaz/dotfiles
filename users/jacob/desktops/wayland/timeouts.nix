@@ -2,24 +2,35 @@
 let
   # <https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power>
   battery = "/sys/class/power_supply/BAT0";
+  # <https://docs.kernel.org/leds/leds-class.html>
+  kbdLightDevice = "/sys/class/leds/tpacpi::kbd_backlight";
 
   idleHint = minutes 2;
 
+  # Options for timeouts on battery
   screenDimTimeoutBAT = minutes 1 + seconds 30;
   autoLockTimeoutBAT = minutes 2;
   screenOffTimeoutBAT = minutes 7;
+  kbdLightOffTimeoutBAT = seconds 45;
 
+  # Options for timeouts on AC
   screenDimTimeoutAC = minutes 4 + seconds 30;
   autoLockTimeoutAC = minutes 5;
   screenOffTimeoutAC = hours 1;
+  kbdLightOffTimeoutAC = minutes 2;
 
+  # Lock screen settings
   lockEventGrace = seconds 5;
   autoLockGrace = seconds 15;
 
+  # Screen dimming settings
   screenDimTargetBAT = 15; # percent
   screenDimTargetAC = 15; # percent
   screenDimEnterDuration = "2s";
   screenDimLeaveDuration = "500ms";
+
+  # Keyboard backlight settings
+  kbdLightOffValue = 0;
 
   hours = x: x * 60 * 60;
   minutes = x: x * 60;
@@ -28,7 +39,7 @@ in {
   imports =
     [ self.homeManagerModules.swayidle self.homeManagerModules.idlehack ];
 
-  # enable the idlehack deamon, it watches for inhibits
+  # enable the idlehack daemon, it watches for inhibits
   # on dbus and sends them to swayidle/anything listening
   services.idlehack.enable = true;
 
@@ -60,6 +71,21 @@ in {
       brightness="$(cat /tmp/${lockName})"
       kill "$(cat /tmp/${lockName}.pid)" || true
       ${slight} set -I "$brightness%" -t ${screenDimLeaveDuration}
+      rm -f /tmp/${lockName}{,.pid}
+    '';
+
+    # no real PID lock file (just saved brightness) because
+    # this is basically instant with no duration.
+    kbdLightOffEnter = { device, target, lockName }: ''
+      brightness="$(${slight} -D ${kbdLightDevice} get)"
+      if [[ "$brightness" -gt ${toString target} ]]; then
+        printf '%s' "$brightness" > /tmp/${lockName}
+        ${slight} -D ${device} set -D ${toString target}
+      fi
+    '';
+    kbdLightOffLeave = { device, lockName }: ''
+      brightness="$(cat /tmp/${lockName})"
+      ${slight} -D ${device} set -I "$brightness"
       rm -f /tmp/${lockName}{,.pid}
     '';
   in {
@@ -189,6 +215,62 @@ in {
           if [[ -f /tmp/${lockName} ]]; then
             ${hyprctl} dispatch dpms on
             rm /tmp/${lockName}
+          fi
+        '';
+      };
+
+      kbdLightOffBAT = let lockName = ".timeout_kbd_light_off_bat";
+      in {
+        timeout = kbdLightOffTimeoutBAT;
+        script = ''
+          set -eu
+          if ! ${pluggedInAC}; then
+            ${
+              kbdLightOffEnter {
+                device = kbdLightDevice;
+                target = kbdLightOffValue;
+                inherit lockName;
+              }
+            }
+          fi
+        '';
+        resumeScript = ''
+          set -eu
+            if [[ -f /tmp/${lockName} ]]; then
+              ${
+                kbdLightOffLeave {
+                  device = kbdLightDevice;
+                  inherit lockName;
+                }
+              }
+            fi
+        '';
+      };
+
+      kbdLightOffAC = let lockName = ".timeout_kbd_light_off_ac";
+      in {
+        timeout = kbdLightOffTimeoutAC;
+        script = ''
+          set -eu
+          if ${pluggedInAC}; then
+            ${
+              kbdLightOffEnter {
+                device = kbdLightDevice;
+                target = kbdLightOffValue;
+                inherit lockName;
+              }
+            }
+          fi
+        '';
+        resumeScript = ''
+          set -eu
+          if [[ -f /tmp/${lockName} ]]; then
+            ${
+              kbdLightOffLeave {
+                device = kbdLightDevice;
+                inherit lockName;
+              }
+            }
           fi
         '';
       };
