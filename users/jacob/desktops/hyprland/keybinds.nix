@@ -59,7 +59,13 @@
     bindel.", XF86MonBrightnessUp" = "exec, ${slightExe} inc 10 -t 300ms";
     bindel.", XF86MonBrightnessDown" = "exec, ${slightExe} dec 10 -t 300ms";
 
-    bindrl.", XF86Display" = "exec, hyprctl dispatch dpms toggle";
+    # lock the screen and then turn off dpms (actually toggle for emergency usage)
+    # does not work because (r)elease only works for individual keys, not combos
+    # issue when using Fn + XF96Display
+    # sleep is added to compensate, but not perfect solution
+    # Fn is XF86WakeUp
+    bindrl.", XF86Display" =
+      "exec, loginctl lock-session && sleep 5 && hyprctl dispatch dpms toggle";
 
     ##########################
     ### ESSENTIAL PROGRAMS ###
