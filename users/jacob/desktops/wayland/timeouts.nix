@@ -98,10 +98,14 @@ in {
         '';
         resumeScript = ''
           set -eu
-          ${screenDimLeave {
-            duration = screenDimLeaveDuration;
-            inherit lockName;
-          }}
+          if [[ -f /tmp/${lockName} ]]; then
+            ${
+              screenDimLeave {
+                duration = screenDimLeaveDuration;
+                inherit lockName;
+              }
+            }
+          fi
         '';
       };
 
@@ -122,10 +126,14 @@ in {
         '';
         resumeScript = ''
           set -eu
-          ${screenDimLeave {
-            duration = screenDimLeaveDuration;
-            inherit lockName;
-          }}
+          if [[ -f /tmp/${lockName} ]]; then
+            ${
+              screenDimLeave {
+                duration = screenDimLeaveDuration;
+                inherit lockName;
+              }
+            }
+          fi
         '';
       };
 
@@ -159,7 +167,7 @@ in {
         '';
         resumeScript = ''
           set -eu
-          if [ -f /tmp/${lockName} ]; then
+          if [[ -f /tmp/${lockName} ]]; then
             ${hyprctl} dispatch dpms on
             rm /tmp/${lockName}
           fi
@@ -178,7 +186,7 @@ in {
         '';
         resumeScript = ''
           set -eu
-          if [ -f /tmp/${lockName} ]; then
+          if [[ -f /tmp/${lockName} ]]; then
             ${hyprctl} dispatch dpms on
             rm /tmp/${lockName}
           fi
