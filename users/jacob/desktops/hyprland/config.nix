@@ -70,6 +70,10 @@
       groupbar_titles_font_size = 9;
       groupbar_gradients = false;
       groupbar_text_color = "rgba(FBF1C7FF)"; # fg0
+
+      # works well with swayidle
+      key_press_enables_dpms = true;
+      mouse_move_enables_dpms = true;
     };
 
     # <https://wiki.hyprland.org/Configuring/Dwindle-Layout/>
