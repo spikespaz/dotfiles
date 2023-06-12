@@ -23,12 +23,14 @@
     nix.settings = rec {
       # allow the flake settings
       # accept-flake-config = true;
-      # use four cores for enableParallelBuilding
+      # divide cores between jobs and reserve some for the system
       cores = let
-        nproc = lib.toInt (builtins.readFile
-          (pkgs.runCommand "assess-core-count" { } "nproc > $out").outPath);
-      in (nproc - 2) / max-jobs;
-      #
+        # number of logical processors on the host (nproc)
+        hostCores = 16;
+        # number of logical cores to reserve for other processes
+        reserveCores = 2;
+      in (hostCores - reserveCores) / max-jobs;
+      # max concurrent jobs
       max-jobs = 4;
       # allow sudo users to mark the following values as trusted
       trusted-users = [ "root" "@wheel" ];
