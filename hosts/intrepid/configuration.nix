@@ -64,7 +64,7 @@
   #############################
   {
     networking = {
-      hostName = "jacob-thinkpad";
+      hostName = "intrepid";
       hostId = builtins.substring 0 8
         (builtins.hashString "md5" config.networking.hostName);
 

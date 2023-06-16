@@ -1,13 +1,13 @@
 let
-  jacob-thinkpad = {
+  intrepid = {
     root =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKtXAJRcYBrVT8qAoc+bq6ZoPr3ehypwx0BohKv8HWMF root@jacob-thinkpad";
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKtXAJRcYBrVT8qAoc+bq6ZoPr3ehypwx0BohKv8HWMF root@intrepid";
     jacob =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHK69yW51FZuJB9MuLY/qzcVp/yXK/7DaFliqjYN/Ad7 jacob@jacob-thinkpad";
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHK69yW51FZuJB9MuLY/qzcVp/yXK/7DaFliqjYN/Ad7 jacob@intrepid";
   };
 
-  root = [ jacob-thinkpad.root ];
-  users = [ jacob-thinkpad.jacob ];
+  root = [ intrepid.root ];
+  users = [ intrepid.jacob ];
 in {
   "root.pia.age".publicKeys = root;
   "jacob.spotifyd.age".publicKeys = users;
