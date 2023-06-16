@@ -71,14 +71,15 @@ let
     # additional arguments are passed through
     ... }:
 
-    let ownArgs = builtins.attrNames (builtins.functionArgs (mkHost args));
-    in nixpkgs.lib.nixosSystem ((removeAttrs setup ownArgs) // {
-      modules = modules ++ [{ config.nixpkgs.hostPlatform = hostPlatform; }];
+    let
+      ownArgs = builtins.attrNames (builtins.functionArgs (mkHost args));
       pkgs = import nixpkgs ({
         inherit overlays;
         localSystem = buildPlatform;
         crossSystem = hostPlatform;
       } // nixpkgsArgs);
+    in nixpkgs.lib.nixosSystem ((removeAttrs setup ownArgs) // {
+      modules = [{ nixpkgs.pkgs = pkgs; }] ++ modules;
       specialArgs = args // specialArgs // { inherit nixpkgs; };
     });
 
