@@ -104,10 +104,6 @@
 
     nixfmt.url = "github:serokell/nixfmt";
 
-    # use the package from nixpkgs, probably better-kept
-    # but this flake provides the module (which I contribute to)
-    webcord.url = "github:fufexan/webcord-flake";
-
     spicetify.url = "github:the-argus/spicetify-nix";
 
     # polymc.url = "github:PolyMC/PolyMC";
