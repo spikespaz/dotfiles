@@ -1,5 +1,5 @@
 { self, config, pkgs, lib, ... }:
-(xs: { imports = xs; }) [
+lib.mkMerge [
   #################
   ### NIX SETUP ###
   #################
