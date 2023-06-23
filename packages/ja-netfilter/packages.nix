@@ -1,4 +1,4 @@
-{ fetchgit, ... }:
+{ fetchgit, }:
 let
   repoOwner = "ja-netfilter";
   baseName = "ja-netfilter";

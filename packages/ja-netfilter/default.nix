@@ -1,9 +1,9 @@
-args@{ lib, fetchgit, writeTextDir, callPackage, symlinkJoin, programName ? null
+{ lib, writeTextDir, callPackage, symlinkJoin, programName ? null
 , enabledPlugins ? null, pluginConfigs ? null, }:
 let
-  ja-netfilter = callPackage (import ./packages.nix args).ja-netfilter { };
-  callPlugin = name:
-    callPackage (import ./packages.nix args)."plugin-${name}" { };
+  packages = callPackage ./packages.nix { };
+  ja-netfilter = callPackage packages.ja-netfilter { };
+  callPlugin = name: callPackage packages."plugin-${name}" { };
   pluginPackages =
     lib.optionals (enabledPlugins != null) (map callPlugin enabledPlugins);
   configFiles = lib.optionals (pluginConfigs != null) (lib.mapAttrsToList

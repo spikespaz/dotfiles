@@ -2,7 +2,7 @@
 # <https://sourcegraph.com/github.com/NixOS/nixpkgs/-/blob/pkgs/development/tools/database/schemaspy/default.nix>
 # <https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/maven.section.md>
 { pname, version, src, outputHash, targetJar, renameJar, }:
-{ lib, stdenv, fetchgit, callPackage, maven, oraclejdk, buildMaven, }:
+{ lib, stdenv, callPackage, maven, oraclejdk, buildMaven, }:
 let
   inherit pname version src;
 
