@@ -26,7 +26,7 @@ in {
       rev = version;
       sha256 = "sha256-jlRJ2r9EnbaqG7tGhJduFCchORdraZL3aTBa1btgMIU=";
     };
-    outputHash = "sha256-x3c552sFCVY2LmirT5NqFIR7ajRzpy0hPL6wpt+oQOQ=";
+    outputHash = "sha256-umVO8sRx9bcdN0MelbITshqlsmgfMqvVbCTPEPDfg4Y=";
     targetJar = "ja-netfilter-jar-with-dependencies.jar";
     renameJar = "share/${baseName}/ja-netfilter.jar";
   };
@@ -34,19 +34,19 @@ in {
     name = "dns";
     version = "v1.1.0";
     srcHash = "sha256-JSBGjQY7KmO7pcrATY5Ql9eg+hQUHqy9869uINLz+Fo=";
-    outputHash = "sha256-x3c552sFCVY2LmirT5NqFIR7ajRzpy0hPL6wpt+oQOQ=";
+    outputHash = "sha256-umVO8sRx9bcdN0MelbITshqlsmgfMqvVbCTPEPDfg4Y=";
   };
   plugin-url = pluginBase {
     name = "url";
     version = "v1.1.0";
     srcHash = "sha256-7YiiPDjQr6vN933svHwz1yK3PdWTsY2SeJsw+PBv+zY=";
-    outputHash = "sha256-x3c552sFCVY2LmirT5NqFIR7ajRzpy0hPL6wpt+oQOQ=";
+    outputHash = "sha256-umVO8sRx9bcdN0MelbITshqlsmgfMqvVbCTPEPDfg4Y=";
   };
   plugin-hideme = pluginBase {
     name = "hideme";
     version = "v1.1.0";
     srcHash = "sha256-tGAesHIGmdlp2PCTfX5zrikqjD9ZiQ+0tLsJFGiWwPQ=";
-    outputHash = "sha256-x3c552sFCVY2LmirT5NqFIR7ajRzpy0hPL6wpt+oQOQ=";
+    outputHash = "sha256-umVO8sRx9bcdN0MelbITshqlsmgfMqvVbCTPEPDfg4Y=";
   };
   plugin-dump = pluginBase {
     name = "dump";
@@ -64,6 +64,6 @@ in {
     name = "power";
     version = "v1.1.0";
     srcHash = "sha256-sTjHvpQYF6soRIDhPspCdLYqLfZwPCjERq1EhIvX9z0=";
-    outputHash = "sha256-8CAQCifUQVcT2CDzzrfrhK2WqqrKlLoZl2/Yx77/qT0=";
+    outputHash = "sha256-/np7n3+PET47yGK4cRax3w08IxX75sBoHVMF1DA0fF8=";
   };
 }
