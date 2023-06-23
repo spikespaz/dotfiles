@@ -76,8 +76,14 @@ let
       pkgs = import nixpkgs ({
         inherit overlays;
         localSystem = buildPlatform;
+        # This does not work due to a litany of problems with platform comparisons
+        # <https://github.com/NixOS/nixpkgs/pull/237512>
+        # <https://github.com/NixOS/nixpkgs/pull/238136>
+        # <https://github.com/NixOS/nixpkgs/pull/238331>
+        # crossSystem = hostPlatform;
+      } // (lib.optionalAttrs (!lib.systems.equals hostPlatform buildPlatform) {
         crossSystem = hostPlatform;
-      } // nixpkgsArgs);
+      }) // nixpkgsArgs);
     in nixpkgs.lib.nixosSystem ((removeAttrs setup ownArgs) // {
       modules = [{ nixpkgs.pkgs = pkgs; }] ++ modules;
       specialArgs = args // specialArgs // { inherit nixpkgs; };
