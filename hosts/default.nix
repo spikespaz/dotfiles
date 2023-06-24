@@ -15,6 +15,7 @@ args@{ self, tree, lib, inputs, ... }: {
       plymouth
       configuration
       packages
+      registry
       powerplan
       touchpad
       greeter
