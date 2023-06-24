@@ -170,6 +170,8 @@
     "update.mode" = "none";
     # don't re-open everything on start
     "window.restoreWindows" = "none";
+    # don't show the welcome page
+    "workbench.startupEditor" = "none";
     # unsaved files will be "untitled"
     "workbench.editor.untitled.labelFormat" = "name";
     # default hard and soft rulers
