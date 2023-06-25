@@ -74,11 +74,22 @@
 
       firewall = {
         enable = true;
-        allowedTCPPorts = [ 80 443 8096 8920 ];
-        # allowedUDPPortRanges = [
-        #   { from = 4000; to = 4007; }
-        #   { from = 8000; to = 8010; }
-        # ];
+        allowedTCPPorts = [
+          # Web Servers
+          80
+          443
+          # Jellyfin
+          8096
+          8920
+          # Minecraft
+          25565
+          25572
+        ];
+        allowedUDPPorts = [
+          # Minecraft
+          25565
+          25572
+        ];
       };
 
       # networkmanager.enable = true;
