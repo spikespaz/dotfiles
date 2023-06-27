@@ -7,6 +7,7 @@ let
     debug = callLibs ./debug.nix;
     # generators = callLibs ./generators.nix;
     lists = callLibs ./lists.nix;
+    math = callLibs ./math.nix;
     strings = { inherit (lib.lists) indicesOf split lsplit rsplit; };
     shellscript = callLibs ./shellscript.nix;
     trivial = callLibs ./trivial.nix;
@@ -18,6 +19,7 @@ let
     inherit (lib.debug) traceM traceValM;
     inherit (lib.lists)
       indicesOf getElemAt removeElems sublist split lsplit rsplit;
+    inherit (lib.math) pow powi;
     inherit (lib.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;
     inherit (lib.trivial) imply implyDefault applyArgs;
