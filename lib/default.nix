@@ -11,6 +11,7 @@ let
     strings = { inherit (lib.lists) indicesOf split lsplit rsplit; };
     shellscript = callLibs ./shellscript.nix;
     trivial = callLibs ./trivial.nix;
+    units = callLibs ./units.nix;
   };
   prelude = {
     inherit (lib.attrsets)
@@ -23,6 +24,7 @@ let
     inherit (lib.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;
     inherit (lib.trivial) imply implyDefault applyArgs;
+    inherit (lib.units) bytes kbytes;
   };
 in prev // prelude // {
   birdos = {
