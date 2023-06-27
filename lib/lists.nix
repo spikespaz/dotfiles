@@ -8,6 +8,13 @@ let
       (map (x: x.i))
     ]);
 
+  indexOf = default:
+    _wrapSplitFn (x: xs:
+      lib.pipe xs [
+        (lib.imap0 (i: v: if v == x then i else null))
+        (lib.findFirst (x: x != null) default)
+      ]);
+
   # get element at n if present, null otherwise
   getElemAt = xs: n:
     if builtins.length xs > n then builtins.elemAt xs n else null;
@@ -80,5 +87,5 @@ let
       fn n h;
 in {
   #
-  inherit indicesOf getElemAt removeElems sublist split lsplit rsplit;
+  inherit indicesOf indexOf getElemAt removeElems sublist split lsplit rsplit;
 }

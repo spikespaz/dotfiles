@@ -1,11 +1,5 @@
 { lib, ... }:
 let
-  indexOf = x: default: xs:
-    lib.pipe xs [
-      (lib.imap0 (i: v: if v == x then i else null))
-      (lib.findFirst (x: x != null) default)
-    ];
-
   mkPathValue = path: name: value: {
     path = path ++ [ name ];
     inherit value;
@@ -38,7 +32,7 @@ let
     '' (lib.pipe attrs [
       attrsToPathValueList
       (map (attr:
-        let idx = indexOf attr.path null from;
+        let idx = lib.indexOf null attr.path from;
         in if idx == null then
           attr
         else {

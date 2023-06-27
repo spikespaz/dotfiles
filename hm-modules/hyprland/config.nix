@@ -15,12 +15,6 @@ let
       (with configRenames; renameAttrs renames.from renames.to)
       configFormat.toConfigString
     ];
-
-  indexOf = x: default: xs:
-    lib.pipe xs [
-      (lib.imap0 (i: v: if v == x then i else null))
-      (lib.findFirst (x: x != null) default)
-    ];
 in {
   options = {
     wayland.windowManager.hyprland = {
@@ -180,8 +174,8 @@ in {
           # type = with types; functionTo (functionTo bool);
           default = a: b:
             let
-              ia = indexOf a 0 cfg.configOrder;
-              ib = indexOf b 0 cfg.configOrder;
+              ia = lib.indexOf (-1) a cfg.configOrder;
+              ib = lib.indexOf (-1) b cfg.configOrder;
             in ia < ib;
           description = lib.mdDoc ''
             The predicate with which to sort nodes recursively.

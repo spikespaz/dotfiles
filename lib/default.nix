@@ -18,7 +18,7 @@ let
       mapListToAttrs;
     inherit (lib.debug) traceM traceValM;
     inherit (lib.lists)
-      indicesOf getElemAt removeElems sublist split lsplit rsplit;
+      indexOf indicesOf getElemAt removeElems sublist split lsplit rsplit;
     inherit (lib.math) pow powi;
     inherit (lib.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;
