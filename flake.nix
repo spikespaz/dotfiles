@@ -89,6 +89,7 @@
     vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     hyprland.url = "github:hyprwm/hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # The Hyprland input and its dependencies are overridden until
     # <https://github.com/hyprwm/Hyprland/pull/2210>
@@ -109,6 +110,7 @@
     # polymc.url = "github:PolyMC/PolyMC";
 
     prism-launcher.url = "github:PrismLauncher/PrismLauncher";
+    prism-launcher.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     slight.url = "github:spikespaz/slight";
 
