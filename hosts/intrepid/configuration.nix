@@ -23,6 +23,9 @@
     nix.settings = rec {
       # allow the flake settings
       # accept-flake-config = true;
+      # set a minimum free space so that garbage collection
+      # runs more aggressively during a build
+      min-free = lib.bytes.GiB 30;
       # divide cores between jobs and reserve some for the system
       cores = let
         # number of logical processors on the host (nproc)
