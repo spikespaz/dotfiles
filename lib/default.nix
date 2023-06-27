@@ -26,7 +26,7 @@ let
   };
 in prev // prelude // {
   birdos = {
-    inherit prelude;
+    inherit lib prelude;
     inherit (lib.builders)
       mkFlakeTree mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay mkHost mkHome;
   };
