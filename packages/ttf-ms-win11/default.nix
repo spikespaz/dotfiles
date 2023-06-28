@@ -9,6 +9,11 @@ in stdenv.mkDerivation rec {
 
   strictDeps = true;
   doCheck = true;
+  # Because this must download a very large ISO file, and the actual "build"
+  # is just unpacking it, it is best to avoid remote builds.
+  # On nixbuild.net especially, building this derivation
+  # is likely to fail by running out of memory.
+  preferLocalBuild = true;
 
   eula = assert lib.assertMsg acceptEula ''
     You must override this package and accept the EULA. (ttf-ms-win11)
