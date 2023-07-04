@@ -3,6 +3,7 @@ final: prev: {
   prtsc = final.callPackage ./prtsc { };
   ttf-ms-win11 = final.callPackage ./ttf-ms-win11 { };
   fastfetch = final.callPackage ./fastfetch.nix { };
+  fork-awesome = final.callPackage ./fork-awesome.nix { };
   firefox-pwa = final.callPackage ./firefox-pwa.nix { };
   idlehack = final.callPackage ./idlehack.nix { };
   mcpelauncher = final.qt6.callPackage ./mcpelauncher.nix { };
