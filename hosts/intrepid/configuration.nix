@@ -13,6 +13,7 @@
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 7d";
+      persistent = true;
     };
 
     # use a lower priority for builds
@@ -26,6 +27,11 @@
       # set a minimum free space so that garbage collection
       # runs more aggressively during a build
       min-free = lib.bytes.GiB 30;
+      # keep the derivations from which active store paths are built
+      keep-derivations = true;
+      # keep the outputs (source files for example) of
+      # derivations which are associated with active store paths
+      keep-outputs = true;
       # divide cores between jobs and reserve some for the system
       cores = let
         # number of logical processors on the host (nproc)
