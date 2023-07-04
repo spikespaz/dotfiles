@@ -94,6 +94,7 @@ in {
 
     ### OFFICE & WRITING SOFTWARE ###
     programs.onlyoffice
+    programs.libreoffice
     # TODO doesn't work
     # programs.apostrophe
 

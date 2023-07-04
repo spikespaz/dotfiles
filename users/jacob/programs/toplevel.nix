@@ -89,6 +89,7 @@
   #################################
 
   onlyoffice = { home.packages = [ pkgs.onlyoffice-bin ]; };
+  libreoffice = { home.packages = [ pkgs.libreoffice-qt ]; };
   apostrophe = { home.packages = [ pkgs.apostrophe ]; };
 
   ##########################
