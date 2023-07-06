@@ -5,9 +5,16 @@ let
 in {
   services.easyeffects.enable = true;
 
-  xdg.configFile."easyeffects/output/empty.json".text = "{}";
+  xdg.configFile."easyeffects/output/empty.json".text = builtins.toJSON {
+    output = {
+      blocklist = [ ];
+      plugins_order = [ ];
+    };
+  };
+
   xdg.configFile."easyeffects/output/laptop_unsuck.json".text =
     builtins.toJSON laptop-unsuck;
+
   xdg.configFile."easyeffects/autoload/output/alsa_output.pci-0000_08_00.6.HiFi__hw_Generic_1__sink:[Out] Speaker.json".text =
     builtins.toJSON {
       device = "alsa_output.pci-0000_08_00.6.HiFi__hw_Generic_1__sink";
