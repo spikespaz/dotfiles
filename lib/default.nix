@@ -14,6 +14,7 @@ let
     shellscript = callLibs ./shellscript.nix;
     trivial = callLibs ./trivial.nix;
     units = callLibs ./units.nix;
+    colors = callLibs ./colors;
   };
 
   prelude = {
@@ -35,6 +36,7 @@ in prev // prelude // {
     inherit lib prelude;
     inherit (lib.builders)
       mkFlakeTree mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay mkHost mkHome;
+    inherit (lib) colors;
   };
 
   maintainers.spikespaz = {
