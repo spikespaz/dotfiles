@@ -46,18 +46,22 @@ let
       }) (lib.zipLists idxs0 idxs1);
     in map ({ i, l, }: lib.sublist i l haystack) pairs;
 
-  # split a list-compatible haystack
-  # at the leftmost occurrence of needle
-  # returns attrs l and r, each being the respective
-  # left or right side of the occurrence of needle
+  # Split a list haystack into separate left and right lists
+  # at the position of the first occurrence of element needle.
+  #
+  # Returns an attribute set with left and right lists as
+  # names `r` and `l` respectively.
+  #
+  # If element needle is not in list, return `null`.
   lsplit = needle: haystack:
     let
-      idxs = indicesOf needle haystack;
-      idx = lib.imply idxs ((builtins.head idxs) + 1);
+      idx = lib.indexOf null needle haystack;
       len = builtins.length haystack;
-    in lib.imply len {
-      l = lib.sublist 0 (idx - 1) haystack;
-      r = lib.sublist idx (len - 1) haystack;
+    in if idx == null then
+      null
+    else {
+      l = sublist 0 idx haystack;
+      r = sublist (idx + 1) len haystack;
     };
 
   # split a list-compatible haystack
