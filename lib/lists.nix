@@ -26,10 +26,12 @@ let
       (builtins.listToAttrs)
     ];
 
-  sublist = idx: j: l:
-    let adv = j - idx;
-    in lib.foldl' (l': i: l' ++ [ builtins.elemAt i l ]) [ ]
-    (lib.range idx adv);
+  # Takes a starting index and an ending index and returns
+  # a new list with the items between that range from `list`.
+  # The result is not inclusive of the item at `end`.
+  sublist = start: end: list:
+    lib.foldl' (acc: i: acc ++ [ (builtins.elemAt list i) ]) [ ]
+    (lib.range start (end - 1));
 
   # split a list-compatible haystack
   # at every occurrence and return
