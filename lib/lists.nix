@@ -34,11 +34,12 @@ let
   # Same as `lastIndexOfDefault` but using `null` as the default.
   lastIndexOf = lastIndexOfDefault null;
 
-  # Same as `builtins.elemAt` but takes a default value as the first argument,
+  # Same as `builtins.elemAt` but with the `index` and `list`
+  # arguments reversed, and the first argument is `default`
   # which will be returned if the index is invalid.
   #
   # This assumes that the index is an integer.
-  elemAtDefault = default: list: index:
+  elemAtDefault = default: index: list:
     if index > 0 && index < builtins.length list then
       builtins.elemAt list index
     else
