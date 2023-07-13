@@ -10,7 +10,7 @@ let
     lists = callLibs ./lists.nix;
     math = callLibs ./math.nix;
     radix = callLibs ./radix.nix;
-    strings = { inherit (lib.lists) indicesOf split lsplit rsplit; };
+    strings = callLibs ./strings.nix;
     shellscript = callLibs ./shellscript.nix;
     trivial = callLibs ./trivial.nix;
     units = callLibs ./units.nix;
@@ -25,6 +25,10 @@ let
     inherit (lib.lists)
       indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
       elemAtDefault elemAt removeElems sublist split lsplit rsplit;
+    inherit (lib.strings)
+      indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
+      lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
+      rsplitString;
     inherit (lib.math) pow powi abs;
     inherit (lib.radix) intToHex;
     inherit (lib.shellscript)
