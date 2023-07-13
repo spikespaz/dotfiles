@@ -102,8 +102,25 @@ let
       l = sublist 0 idx haystack;
       r = sublist (idx + 1) len haystack;
     };
+
+  # Given a value `fillElem`, a desired length `totalLen`, and a `list`,
+  # return a fixed-width list prepended with `fillElem` as many times
+  # as necessary to satisfy `totalLen`.
+  lpad = fillElem: totalLen: list:
+    let
+      padLen = totalLen - (builtins.length list);
+      padElems = lib.replicate padLen fillElem;
+    in padElems ++ list;
+
+  # Same as `lpad` but appends the fill elements to the list
+  # rather than prepending.
+  rpad = fillElem: totalLen: list:
+    let
+      padLen = totalLen - (builtins.length list);
+      padElems = lib.replicate padLen fillElem;
+    in list ++ padElems;
 in {
   #
   inherit indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
-    elemAtDefault elemAt removeElems sublist split lsplit rsplit;
+    elemAtDefault elemAt removeElems sublist split lsplit rsplit lpad rpad;
 }
