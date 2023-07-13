@@ -75,7 +75,7 @@ let
   # If element needle is not in list, return `null`.
   lsplit = needle: haystack:
     let
-      idx = lib.indexOf null needle haystack;
+      idx = indexOf needle haystack;
       len = builtins.length haystack;
     in if idx == null then
       null

@@ -174,8 +174,8 @@ in {
           # type = with types; functionTo (functionTo bool);
           default = a: b:
             let
-              ia = lib.indexOf (-1) a cfg.configOrder;
-              ib = lib.indexOf (-1) b cfg.configOrder;
+              ia = lib.indexOfDefault (-1) a cfg.configOrder;
+              ib = lib.indexOfDefault (-1) b cfg.configOrder;
             in ia < ib;
           description = lib.mdDoc ''
             The predicate with which to sort nodes recursively.

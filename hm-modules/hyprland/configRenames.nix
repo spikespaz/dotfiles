@@ -32,7 +32,7 @@ let
     '' (lib.pipe attrs [
       attrsToPathValueList
       (map (attr:
-        let idx = lib.indexOf null attr.path from;
+        let idx = lib.indexOf attr.path from;
         in if idx == null then
           attr
         else {
