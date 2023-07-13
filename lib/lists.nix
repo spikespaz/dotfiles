@@ -1,7 +1,7 @@
 { lib }:
 let
-  # Return a list of indices where element needle
-  # occurs in list haystack.
+  # Return a list of indices where element `needle`
+  # occurs in list `haystack`.
   indicesOf = needle: haystack:
     lib.pipe haystack [
       (lib.imap0 (i: v: { inherit i v; }))
@@ -9,10 +9,10 @@ let
       (map (x: x.i))
     ];
 
-  # Return the index of the first occurrence of element needle
-  # found in the list haystack.
+  # Return the index of the first occurrence of element `needle`
+  # found in the list `haystack`.
   #
-  # If element needle is not found in list, return default.
+  # If element needle is not found in list, return `default`.
   indexOfDefault = default: needle: haystack:
     let
       idx = lib.foldl'
@@ -24,7 +24,7 @@ let
   indexOf = indexOfDefault null;
 
   # Same as `indexOfDefault` but returns the index of the last occurrence
-  # of element needle rather than the first.
+  # of element `needle` rather than the first.
   #
   # This function is more expensive than `indexOfDefault`.
   lastIndexOfDefault = default: needle: haystack:
@@ -48,22 +48,26 @@ let
   # Same as `elemAtDefault` but using `null` as the default.
   #
   # Note that this is not the same as `builtins.elemAt`.
+  # The builtin function will halt if the index is out of bounds,
+  # whereas this is a bounds-checked alternative.
   elemAt = elemAtDefault null;
 
-  # Removes every occurrence of each element from the list provided as
-  # the second argument.
+  # Given a list of elements `elems` and a list to operate on,
+  # remove each occurrence of every element in `elems` from the
+  # provided list.
   removeElems = elems: builtins.filter (el: indexOf el elems == null);
 
-  # Takes a starting index and an ending index and returns
+  # Takes a `start` index and an `end` index and returns
   # a new list with the items between that range from `list`.
-  # The result is not inclusive of the item at `end`.
+  #
+  # The result is exclusive of the item at `end`.
   sublist = start: end: list:
     lib.foldl' (acc: i: acc ++ [ (builtins.elemAt list i) ]) [ ]
     (lib.range start (end - 1));
 
-  # Split a list haystack at every occurrence of element needle,
+  # Split a list `haystack` at every occurrence of element `needle`,
   # returning a list of lists where every inner list is section
-  # of haystack.
+  # of haystack between the needles, not inclusive.
   split = needle: haystack:
     let
       idxs = indicesOf needle haystack;
@@ -72,8 +76,8 @@ let
       idxPairs = lib.zipLists idxs0 idxs1;
     in map ({ fst, snd }: sublist (fst + 1) snd haystack) idxPairs;
 
-  # Split a list haystack into separate left and right lists
-  # at the position of the first occurrence of element needle.
+  # Split a list `haystack` into separate left and right lists
+  # at the position of the first occurrence of element `needle`.
   #
   # Returns an attribute set with left and right lists as
   # names `r` and `l` respectively.
