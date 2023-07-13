@@ -4,20 +4,6 @@ let
   updates = builtins.foldl' (a: b: a // b) { };
   recursiveUpdates = builtins.foldl' (lib.recursiveUpdate) { };
 
-  deepMergeAttrs = attrList:
-    let
-      recurse = attrPath:
-        lib.zipAttrsWith (n: values:
-          (if lib.tail values == [ ] then
-            lib.head values
-          else if lib.all lib.isList values then
-            lib.unique (lib.concatLists values)
-          else if lib.all lib.isAttrs values then
-            recurse (attrPath ++ [ n ]) values
-          else
-            lib.last values));
-    in recurse [ ] attrList;
-
   # map reduce one level of key by name, returning original values
   # if it is not an attrset or doesn't have the key
   thruAttr = attr: it:
@@ -27,6 +13,5 @@ let
   mapListToAttrs = fn: xs: builtins.listToAttrs (map fn xs);
 in {
   #
-  inherit updates recursiveUpdates deepMergeAttrs thruAttr mapThruAttr
-    mapListToAttrs;
+  inherit updates recursiveUpdates thruAttr mapThruAttr mapListToAttrs;
 }
