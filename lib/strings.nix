@@ -69,9 +69,35 @@ let
       l = lib.concatStrings l;
       r = lib.concatStrings r;
     };
+
+  # The string equivalent of `lib.lists.lpad`.
+  #
+  # The argument `fillChar` must be a string containing at most
+  # a single character; anything else is considered undefined behavior
+  # (the resultant string will be longer than expected).
+  # This is not checked in favor of keeping cycles down.
+  #
+  # This is similar to `lib.fixedWidthString` but the arguments
+  # for the total desired string length and the character to fill with
+  # are reversed.
+  lpadString = fillChar: totalLen: str:
+    let
+      padLen = totalLen - (builtins.stringLength str);
+      padChars = lib.replicate padLen fillChar;
+    in lib.concatStrings (padChars ++ [ str ]);
+
+  # The string equivalent of `lib.lists.rpad`.
+  #
+  # Same as `lpadString` but appends fill characters to the right
+  # instead of the left.
+  rpadString = fillChar: totalLen: str:
+    let
+      padLen = totalLen - (builtins.stringLength str);
+      padChars = lib.replicate padLen fillChar;
+    in lib.concatStrings ([ str ] ++ padChars);
 in {
   #
   inherit indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
     lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
-    rsplitString;
+    rsplitString lpadString rpadString;
 }

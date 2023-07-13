@@ -27,7 +27,7 @@ let
     inherit (lib.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
       lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
-      rsplitString;
+      rsplitString lpadString rpadString;
     inherit (lib.math) pow powi abs;
     inherit (lib.radix) intToHex;
     inherit (lib.shellscript)
