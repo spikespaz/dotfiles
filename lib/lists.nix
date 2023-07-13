@@ -8,11 +8,19 @@ let
       (map (x: x.i))
     ];
 
-  indexOf = default: needle: haystack:
-    lib.pipe haystack [
-      (lib.imap0 (i: v: if v == needle then i else null))
-      (lib.findFirst (x: x != null) default)
-    ];
+  # Return the index of the first occurrence of element needle
+  # found in the list haystack.
+  #
+  # If element needle is not found in list, return default.
+  indexOfDefault = default: needle: haystack:
+    let
+      idx = lib.foldl'
+        (i: el: if i < 0 then if el == needle then -i - 1 else i - 1 else i)
+        (-1) haystack;
+    in if idx < 0 then default else idx;
+
+  # Same as `indexOfDefault` but using `null` as the default.
+  indexOf = indexOfDefault null;
 
   # get element at n if present, null otherwise
   getElemAt = xs: n:
@@ -79,5 +87,6 @@ let
     };
 in {
   #
-  inherit indicesOf indexOf getElemAt removeElems sublist split lsplit rsplit;
+  inherit indicesOf indexOfDefault indexOf getElemAt removeElems sublist split
+    lsplit rsplit;
 }
