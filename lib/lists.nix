@@ -52,19 +52,16 @@ let
     lib.foldl' (acc: i: acc ++ [ (builtins.elemAt list i) ]) [ ]
     (lib.range start (end - 1));
 
-  # split a list-compatible haystack
-  # at every occurrence and return
-  # a list of slices between occurrences
+  # Split a list haystack at every occurrence of element needle,
+  # returning a list of lists where every inner list is section
+  # of haystack.
   split = needle: haystack:
     let
       idxs = indicesOf needle haystack;
-      idxs0 = [ 0 ] ++ map (x: x + 1) idxs;
+      idxs0 = [ 0 ] ++ idxs;
       idxs1 = idxs ++ [ (builtins.length haystack) ];
-      pairs = map ({ fst, snd, }: {
-        i = fst;
-        l = snd - fst;
-      }) (lib.zipLists idxs0 idxs1);
-    in map ({ i, l, }: lib.sublist i l haystack) pairs;
+      idxPairs = lib.zipLists idxs0 idxs1;
+    in map ({ fst, snd }: sublist (fst + 1) snd haystack) idxPairs;
 
   # Split a list haystack into separate left and right lists
   # at the position of the first occurrence of element needle.
