@@ -84,18 +84,17 @@ let
       r = sublist (idx + 1) len haystack;
     };
 
-  # split a list-compatible haystack
-  # at the rightmost occurrence of needle
-  # returns attrs l and r, each being the respective
-  # left or right side of the occurrence of needle
+  # Same as `lsplit` but splits at the last occurrence
+  # of element needle rather than the first.
   rsplit = needle: haystack:
     let
-      idxs = indicesOf needle haystack;
-      idx = lib.imply idxs ((lib.last idxs) + 1);
+      idx = lastIndexOf needle haystack;
       len = builtins.length haystack;
-    in lib.imply len {
-      l = lib.sublist 0 (idx - 1) haystack;
-      r = lib.sublist idx (len - 1) haystack;
+    in if idx == null then
+      null
+    else {
+      l = sublist 0 idx haystack;
+      r = sublist (idx + 1) len haystack;
     };
 in {
   #
