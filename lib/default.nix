@@ -23,8 +23,8 @@ let
       mapListToAttrs;
     inherit (lib.debug) traceM traceValM;
     inherit (lib.lists)
-      indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf getElemAt
-      removeElems sublist split lsplit rsplit;
+      indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
+      elemAtDefault removeElems sublist split lsplit rsplit;
     inherit (lib.math) pow powi abs;
     inherit (lib.radix) intToHex;
     inherit (lib.shellscript)

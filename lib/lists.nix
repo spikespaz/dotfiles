@@ -34,9 +34,15 @@ let
   # Same as `lastIndexOfDefault` but using `null` as the default.
   lastIndexOf = lastIndexOfDefault null;
 
-  # get element at n if present, null otherwise
-  getElemAt = xs: n:
-    if builtins.length xs > n then builtins.elemAt xs n else null;
+  # Same as `builtins.elemAt` but takes a default value as the first argument,
+  # which will be returned if the index is invalid.
+  #
+  # This assumes that the index is an integer.
+  elemAtDefault = default: list: index:
+    if index > 0 && index < builtins.length list then
+      builtins.elemAt list index
+    else
+      default;
 
   # Removes every occurrence of each element from the list provided as
   # the second argument.
@@ -93,5 +99,5 @@ let
 in {
   #
   inherit indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
-    getElemAt removeElems sublist split lsplit rsplit;
+    elemAtDefault removeElems sublist split lsplit rsplit;
 }
