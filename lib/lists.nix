@@ -38,12 +38,9 @@ let
   getElemAt = xs: n:
     if builtins.length xs > n then builtins.elemAt xs n else null;
 
-  removeElems = xs: remove:
-    lib.pipe xs [
-      (lib.mapListToAttrs (x: lib.nameValuePair x null))
-      (xs: removeAttrs xs remove)
-      (builtins.listToAttrs)
-    ];
+  # Removes every occurrence of each element from the list provided as
+  # the second argument.
+  removeElems = elems: builtins.filter (el: indexOf el elems == null);
 
   # Takes a starting index and an ending index and returns
   # a new list with the items between that range from `list`.
