@@ -44,6 +44,11 @@ let
     else
       default;
 
+  # Same as `elemAtDefault` but using `null` as the default.
+  #
+  # Note that this is not the same as `builtins.elemAt`.
+  elemAt = elemAtDefault null;
+
   # Removes every occurrence of each element from the list provided as
   # the second argument.
   removeElems = elems: builtins.filter (el: indexOf el elems == null);
@@ -99,5 +104,5 @@ let
 in {
   #
   inherit indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
-    elemAtDefault removeElems sublist split lsplit rsplit;
+    elemAtDefault elemAt removeElems sublist split lsplit rsplit;
 }
