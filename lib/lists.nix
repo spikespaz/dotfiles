@@ -1,6 +1,7 @@
 { lib }:
 let
-  # find indices of item needle in list haystack
+  # Return a list of indices where element needle
+  # occurs in list haystack.
   indicesOf = needle: haystack:
     lib.pipe haystack [
       (lib.imap0 (i: v: { inherit i v; }))
@@ -21,6 +22,17 @@ let
 
   # Same as `indexOfDefault` but using `null` as the default.
   indexOf = indexOfDefault null;
+
+  # Same as `indexOfDefault` but returns the index of the last occurrence
+  # of element needle rather than the first.
+  #
+  # This function is more expensive than `indexOfDefault`.
+  lastIndexOfDefault = default: needle: haystack:
+    let indices = indicesOf needle haystack;
+    in if indices == [ ] then default else lib.last indices;
+
+  # Same as `lastIndexOfDefault` but using `null` as the default.
+  lastIndexOf = lastIndexOfDefault null;
 
   # get element at n if present, null otherwise
   getElemAt = xs: n:
@@ -87,6 +99,6 @@ let
     };
 in {
   #
-  inherit indicesOf indexOfDefault indexOf getElemAt removeElems sublist split
-    lsplit rsplit;
+  inherit indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
+    getElemAt removeElems sublist split lsplit rsplit;
 }
