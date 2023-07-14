@@ -32,7 +32,7 @@ let
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
       lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
       rsplitString lpadString rpadString;
-    inherit (lib.tests) mkTests runTestsRecursive;
+    inherit (lib.tests) mkTests mkTestSuite runTestsRecursive;
     inherit (lib.radix) intToHex;
     inherit (lib.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;

@@ -13,10 +13,23 @@ let
         tests = builtins.attrNames tests;
       };
 
+  mkTestSuite = args:
+    let
+      args' = if args ? lib then args else args // { inherit lib; };
+      coerce = expr:
+        if lib.isPath expr then
+          coerce (import expr)
+        else if lib.isFunction expr then
+          let fnArgs = builtins.functionArgs expr;
+          in expr (builtins.intersectAttrs fnArgs args')
+        else
+          expr;
+    in lib.mapAttrsRecursive (_: coerce);
+
   runTestsRecursive = recursiveTests:
     lib.mapAttrsRecursiveCond (attrs: (lib.getAttr "_type" attrs) != "tests")
     (path: tests: lib.runTests tests) recursiveTests;
 in {
   #
-  inherit mkTests runTestsRecursive;
+  inherit mkTests mkTestSuite runTestsRecursive;
 }
