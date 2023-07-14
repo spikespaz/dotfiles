@@ -1,17 +1,50 @@
 { lib }:
 let
-  # accept a list of attrs, update into one attrs
+  # Take a list of attribute sets, flatly updating them all into one.
   updates = builtins.foldl' (a: b: a // b) { };
+
+  # Take a list of attribute sets, recursively updating them into one.
   recursiveUpdates = builtins.foldl' (lib.recursiveUpdate) { };
 
-  # map reduce one level of key by name, returning original values
-  # if it is not an attrset or doesn't have the key
-  thruAttr = attr: it:
-    if lib.isAttrs it && it ? ${attr} then it.${attr} else it;
-  mapThruAttr = attr: lib.mapAttrs (name: thruAttr attr);
+  # TODO doc or remove
+  thruAttr = attrName: attrs:
+    if lib.isAttrs attrs && attrs ? ${attrName} then
+      attrs.${attrName}
+    else
+      attrs;
 
-  mapListToAttrs = fn: xs: builtins.listToAttrs (map fn xs);
+  # TODO doc or remove
+  mapThruAttr = attrName: lib.mapAttrs (name: thruAttr attrName);
+
+  # TODO doc or remove
+  mapListToAttrs = fn: attrsList: builtins.listToAttrs (map fn attrsList);
+
+  # Return a list of attribute paths of every deepest non-attriibute-set value.
+  attrPaths = attrs:
+    let
+      recursePaths = path:
+        builtins.mapAttrs (name: value:
+          if lib.isAttrs value then
+            recursePaths (path ++ [ name ]) value
+          else
+            path ++ [ name ]);
+      reduceValues = val:
+        if lib.isList val then
+          map (it:
+            if lib.isAttrs it then
+              reduceValues (builtins.attrValues it)
+            else
+              it) val
+        else
+          val;
+    in lib.pipe attrs [
+      (recursePaths [ ])
+      lib.toList
+      reduceValues
+      (lib.flattenCond (builtins.any lib.isList))
+    ];
 in {
   #
-  inherit updates recursiveUpdates thruAttr mapThruAttr mapListToAttrs;
+  inherit updates recursiveUpdates thruAttr mapThruAttr mapListToAttrs
+    attrPaths;
 }
