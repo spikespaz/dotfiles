@@ -23,7 +23,8 @@ let
     inherit (lib.debug) traceM traceValM;
     inherit (lib.lists)
       indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
-      elemAtDefault elemAt removeElems sublist split lsplit rsplit lpad rpad;
+      elemAtDefault elemAt removeElems sublist split lsplit rsplit lpad rpad
+      flattenCond;
     inherit (lib.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
       lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
