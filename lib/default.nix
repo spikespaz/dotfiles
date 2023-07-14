@@ -11,6 +11,7 @@ let
     math = callLibs ./math.nix;
     radix = callLibs ./radix.nix;
     strings = callLibs ./strings.nix;
+    tests = callLibs ./tests.nix;
     shellscript = callLibs ./shellscript.nix;
     trivial = callLibs ./trivial.nix;
     units = callLibs ./units.nix;
@@ -26,11 +27,12 @@ let
       indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
       elemAtDefault elemAt removeElems sublist split lsplit rsplit lpad rpad
       flattenCond;
+    inherit (lib.math) pow powi abs;
     inherit (lib.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
       lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
       rsplitString lpadString rpadString;
-    inherit (lib.math) pow powi abs;
+    inherit (lib.tests) mkTests runTestsRecursive;
     inherit (lib.radix) intToHex;
     inherit (lib.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;
