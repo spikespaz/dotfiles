@@ -19,7 +19,8 @@ let
 
   prelude = {
     inherit (lib.attrsets)
-      updates recursiveUpdates thruAttr mapThruAttr mapListToAttrs attrPaths;
+      updates recursiveUpdates getAttrDefault getAttr thruAttr mapThruAttr
+      mapListToAttrs attrPaths;
     inherit (lib.debug) traceM traceValM;
     inherit (lib.lists)
       indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
