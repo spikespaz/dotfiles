@@ -72,17 +72,17 @@ in {
 
       urgency_low = {
         frame_color = urgency_low;
-        timeout = "15s";
+        timeout = "7s";
       };
 
       urgency_normal = {
         frame_color = urgency_normal;
-        timeout = "30s";
+        timeout = "7s";
       };
 
       urgency_critical = {
         frame_color = urgency_critical;
-        timeout = "2m";
+        timeout = "15s";
       };
     };
   };
