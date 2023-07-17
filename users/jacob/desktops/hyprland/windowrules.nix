@@ -98,7 +98,7 @@ in {
       fileZillaModal
       discordModal
     ])
-    (map (rule [ "opacity 0.97 0.97" ]) [ vscode discord ])
+    (map (rule [ "opacity 0.97 0.97" ]) [ discord ])
     (map (rule [ "opacity 0.97 0.97" "float" ]) [
       printerConfig
       audioControl
@@ -107,7 +107,7 @@ in {
       polkitAgent
       mountDialog
     ])
-    (map (rule [ "opacity 0.92 0.92" ]) [ steam ])
+    (map (rule [ "opacity 0.92 0.92" ]) [ vscode steam ])
     (map (rule [ "opacity 0.92 0.92" "float" ]) [ filePickerPortal ])
     (map (rule [ "opacity 0.87 0.87" ]) [ ])
     (map (rule [ "opacity 0.87 0.87" "float" ]) [ calculator ])
