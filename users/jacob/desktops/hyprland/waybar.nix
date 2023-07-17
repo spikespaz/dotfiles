@@ -159,6 +159,8 @@ in {
         # `#pulseaudio.output:not(.safe)`
         states = { safe = 100; };
 
+        ignored-sinks = [ "Easy Effects Sink" ];
+
         on-click = commands.outputSoundSettings;
         on-click-right = commands.outputVolumeMute;
         on-scroll-up = commands.outputVolumeUp;
