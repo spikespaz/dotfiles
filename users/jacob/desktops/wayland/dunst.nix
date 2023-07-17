@@ -1,4 +1,8 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  rgba = rgb: a: "#" + lib.birdos.colors.hexRGBA rgb;
+  theme = lib.birdos.colors.palettes.gruvbox.dark;
+in {
   home.packages = [ pkgs.libnotify ];
 
   services.dunst = {
@@ -11,14 +15,14 @@
     iconTheme.size = "32x32";
 
     settings = let
-      bg_opacity = "b2"; # 70%
-      fg_opacity = "e6"; # 90%
-      background = "#282828" + bg_opacity;
-      foreground = "#bdae93" + fg_opacity;
-      highlight = "#458588" + fg_opacity;
-      urgency_low = "#d79921" + fg_opacity;
-      urgency_normal = foreground;
-      urgency_critical = "#b16286" + fg_opacity;
+      bg_a = 0.8;
+      fg_a = 0.9;
+      background = rgba theme.bg0 bg_a;
+      foreground = rgba theme.fg0 fg_a;
+      highlight = rgba theme.hl_blue fg_a;
+      urgency_low = rgba theme.hl_purple fg_a;
+      urgency_normal = rgba theme.fg3 fg_a;
+      urgency_critical = rgba theme.hl_yellow fg_a;
     in {
       global = {
         # position
