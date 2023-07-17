@@ -42,10 +42,10 @@ in {
       title = [ "(\\[\\d+\\] )?WebCord.*" ".*Discord" ];
     };
     calculator.class = [ "qalculate-gtk" ];
-    obsStudio = {
-      class = [ "com.obsproject.Studio" ];
-      title = [ "OBS\\s[\\d\\.]+.*" ];
-    };
+    # obsStudio = {
+    #   class = [ "com.obsproject.Studio" ];
+    #   title = [ "OBS\\s[\\d\\.]+.*" ];
+    # };
     steam = {
       class = [ "Steam" ];
       # title = ["Steam"];
@@ -88,7 +88,6 @@ in {
     [
       (rule [ "size 740 460" ] filePickerPortal)
       (rule [ "size 950 700" ] kvantumConfig)
-      (rule [ "size 1200 800" ] obsStudio)
     ]
     (map (rule [ "idleinhibit focus" ]) [ minecraft virtManagerConsole ])
     (map (rule [ "float" ]) [
@@ -98,7 +97,6 @@ in {
       firefoxModal
       fileZillaModal
       discordModal
-      obsStudio
     ])
     (map (rule [ "opacity 0.97 0.97" ]) [ vscode discord ])
     (map (rule [ "opacity 0.97 0.97" "float" ]) [
