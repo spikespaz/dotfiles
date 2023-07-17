@@ -152,7 +152,12 @@ in {
           default = [ "󰕿" "󰖀" "󰕾" ];
         };
 
-        states = { warning = 101; };
+        # anything below 100% is "safe" volume levels,
+        # the default style will be used,
+        # anything higher than this will have no CSS class,
+        # that will be considered "warning" state
+        # `#pulseaudio.output:not(.safe)`
+        states = { safe = 100; };
 
         on-click = commands.outputSoundSettings;
         on-click-right = commands.outputVolumeMute;

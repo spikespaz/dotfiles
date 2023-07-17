@@ -178,6 +178,6 @@ window.popup {
   }
 }
 
-#pulseaudio.warning {
+#pulseaudio.output:not(.safe) {
   @include breathe-highlight(#cc241d, 10s);
 }
