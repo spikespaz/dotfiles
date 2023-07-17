@@ -1,14 +1,22 @@
-{ ... }: {
+{ lib, ... }:
+let
+  rgba = rgb: a: "rgba(${lib.birdos.colors.hexRGBA' rgb a})";
+  theme = lib.birdos.colors.palettes.gruvbox.dark;
+  shadow = let
+    # 6% of each channel
+    percent = 6.0e-2;
+  in lib.genAttrs [ "r" "g" "b" ] (_: builtins.floor (percent * 255));
+in {
   wayland.windowManager.hyprland = {
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     config.general = {
       border_size = 2;
       gaps_inside = 5;
       gaps_outside = 10;
-      active_border_color = "rgba(BDAE93FF)";
-      inactive_border_color = "rgba(665C54FF)";
-      active_group_border_color = "rgba(8EC07CFF)"; # aqua
-      inactive_group_border_color = "rgba(665C54FF)"; # bg3
+      active_border_color = rgba theme.fg3 1.0;
+      inactive_border_color = rgba theme.bg3 1.0;
+      active_group_border_color = rgba theme.fg_aqua 1.0;
+      inactive_group_border_color = rgba theme.bg3 1.0;
       cursor_inactive_timeout = 10;
       no_cursor_warps = true;
       resize_on_border = true;
@@ -23,8 +31,8 @@
       blur_ignore_opacity = true;
       shadow_range = 10;
       shadow_render_power = 2;
-      active_shadow_color = "rgba(0F0F0FE6)";
-      inactive_shadow_color = "rgba(0F0F0F99)";
+      active_shadow_color = rgba shadow 0.9;
+      inactive_shadow_color = rgba shadow 0.6;
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#input>
@@ -69,7 +77,7 @@
       render_titles_in_groupbar = true;
       groupbar_titles_font_size = 9;
       groupbar_gradients = false;
-      groupbar_text_color = "rgba(FBF1C7FF)"; # fg0
+      groupbar_text_color = rgba theme.fg0 1.0;
 
       # works well with swayidle
       key_press_enables_dpms = true;
