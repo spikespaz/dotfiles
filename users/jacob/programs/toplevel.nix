@@ -69,6 +69,7 @@
     programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
       wlrobs
       obs-move-transition
+      obs-backgroundremoval
     ];
     # needed for screen selection on wayland
     home.packages = [ pkgs.slurp ];
