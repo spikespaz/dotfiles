@@ -29,6 +29,8 @@ args@{ self, tree, lib, inputs, ... }: {
       self.overlays.default
       # override packages with an unfree license
       self.overlays.allowUnfree
+      # window manager
+      inputs.hyprland.overlays.default
       # other packages
       inputs.slight.overlays.default
       inputs.ragenix.overlays.default

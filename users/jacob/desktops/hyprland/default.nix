@@ -37,10 +37,7 @@
     enable = true;
     portals = let useIn = [ "Hyprland" ];
     in [
-      {
-        package =
-          inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-      }
+      { package = pkgs.xdg-desktop-portal-hyprland; }
       {
         package = pkgs.libsForQt5.xdg-desktop-portal-kde;
         interfaces = [

@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   rgba = rgb: a: "rgba(${lib.birdos.colors.hexRGBA' rgb a})";
   theme = lib.birdos.colors.palettes.gruvbox.dark;
@@ -8,6 +8,8 @@ let
   in lib.genAttrs [ "r" "g" "b" ] (_: builtins.floor (percent * 255));
 in {
   wayland.windowManager.hyprland = {
+    package = pkgs.hyprland;
+
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     config.general = {
       border_size = 2;

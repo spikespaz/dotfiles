@@ -5,7 +5,7 @@ let
     "${sessionData}/share/xsessions"
     "${sessionData}/share/wayland-sessions"
   ];
-  hyprlandPackage = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  hyprlandPackage = pkgs.hyprland;
 in {
   imports = [ self.nixosModules.greetd ];
 
