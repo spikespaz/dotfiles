@@ -23,9 +23,11 @@ let
       updates recursiveUpdates getAttrDefault getAttr thruAttr mapThruAttr
       mapListToAttrs attrPaths;
     inherit (lib.debug) traceM traceValM;
+    # FIXME find a new name for `lib.lists.elemAt`, because `nixpkgs` uses
+    # `with` on `builtins` which makes it use this `elemAt`.
     inherit (lib.lists)
       indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
-      elemAtDefault elemAt removeElems sublist split lsplit rsplit lpad rpad
+      elemAtDefault removeElems sublist split lsplit rsplit lpad rpad
       flattenCond;
     inherit (lib.math) pow powi abs;
     inherit (lib.strings)
