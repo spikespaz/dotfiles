@@ -3,8 +3,14 @@ let
   inherit (lib) types;
   cfg = config.services.swayidle.alt;
 
-  typeTimeout = {
+  typeTimeout = { name, ... }: {
     options = {
+      scriptName = lib.mkOption {
+        type = types.singleLineStr;
+        readOnly = true;
+        visible = false;
+        default = name;
+      };
       timeout = lib.mkOption {
         type = types.ints.positive;
         description = lib.mdDoc ''
@@ -120,37 +126,35 @@ in {
   };
 
   config = lib.mkIf cfg.enable (let
-    eventNames = {
-      beforeSleep = "before-sleep";
-      afterResume = "after-resume";
-    };
-    mkEventArgs = name: script: [
-      (if eventNames ? ${name} then eventNames.${name} else name)
-      (pkgs.writeShellScript "swayidle-${name}" script).outPath
-    ];
-    mkTimeoutArgs = name:
-      { timeout, script, resumeScript ? null, }:
+    mkEventArgs = name: script:
+      let
+        eventNames = {
+          beforeSleep = "before-sleep";
+          afterResume = "after-resume";
+        };
+      in [
+        (if eventNames ? ${name} then eventNames.${name} else name)
+        (pkgs.writeShellScript "swayidle-${name}" script).outPath
+      ];
+    mkTimeoutArgs = { scriptName, timeout, script, resumeScript }:
       [
         "timeout"
         (toString timeout)
-        (pkgs.writeShellScript "swayidle-${name}" script).outPath
+        (pkgs.writeShellScript "swayidle-${scriptName}" script).outPath
       ] ++ lib.optionals (resumeScript != null) [
         "resume"
-        (pkgs.writeShellScript "swayidle-${name}-resume" resumeScript).outPath
+        (pkgs.writeShellScript "swayidle-${scriptName}-resume"
+          resumeScript).outPath
       ];
     args = lib.flatten [
       (map lib.escapeShellArg cfg.extraArgs)
       (lib.mapAttrsToList mkEventArgs cfg.events)
-      (lib.mapAttrsToList mkTimeoutArgs cfg.timeouts)
+      (map mkTimeoutArgs (builtins.attrValues cfg.timeouts))
       (lib.optionals (cfg.idleHint != null) [
         "idlehint"
         (toString cfg.idleHint)
       ])
     ];
-    targets = if lib.isList cfg.systemdTarget then
-      cfg.systemdTarget
-    else
-      [ cfg.systemdTarget ];
   in {
     systemd.user.services.swayidle = {
       Unit = {
@@ -168,7 +172,7 @@ in {
           "${cfg.package}/bin/swayidle ${lib.concatStringsSep " " args}";
       };
 
-      Install.WantedBy = targets;
+      Install.WantedBy = lib.toList cfg.systemdTarget;
     };
   });
 }
