@@ -17,15 +17,15 @@ let
   screenOffTimeoutAC = hours 1;
   kbdLightOffTimeoutAC = minutes 2;
 
-  # Lock screen settings
-  lockEventGrace = seconds 5;
-  autoLockGrace = seconds 15;
-
   # Screen dimming settings
   screenDimTargetBAT = 15; # percent
   screenDimTargetAC = 15; # percent
   screenDimEnterDuration = "2s";
   screenDimLeaveDuration = "500ms";
+
+  # Lock screen settings
+  lockEventGrace = seconds 5;
+  autoLockGrace = seconds 15;
 
   # Keyboard backlight settings
   kbdLightOffValue = 0;
@@ -49,23 +49,25 @@ in {
     hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
     swaylock = lib.getExe config.programs.swaylock.package;
 
+    lockFileDir = "/var/run/user/$(id -u)/swayidle";
+
     screenDimEnter = { target, duration, lockName }: ''
       set -eu
       brightness="$(${slight} get -p)"
       brightness="''${brightness/\%/}"
       if [[ "$brightness" -gt ${toString target} ]]; then
-        printf '%s' "$brightness" > /tmp/${lockName}
+        printf '%s' "$brightness" > ${lockFileDir}/${lockName}
         ${slight} set -D ${toString target} -t ${duration} &
-        printf '%s' "$!" > /tmp/${lockName}.pid
+        printf '%s' "$!" > ${lockFileDir}/${lockName}.pid
       fi
       set +eu
     '';
     screenDimLeave = { duration, lockName }: ''
       set -eu
-      brightness="$(cat /tmp/${lockName})"
-      kill "$(cat /tmp/${lockName}.pid)" || true
+      brightness="$(cat ${lockFileDir}/${lockName})"
+      kill "$(cat ${lockFileDir}/${lockName}.pid)" || true
       ${slight} set -I "$brightness%" -t ${duration}
-      rm -f /tmp/${lockName}{,.pid}
+      rm -f ${lockFileDir}/${lockName}{,.pid}
       set +eu
     '';
 
@@ -75,16 +77,16 @@ in {
       set -eu
       brightness="$(${slight} -D ${kbdLightDevice} get)"
       if [[ "$brightness" -gt ${toString target} ]]; then
-        printf '%s' "$brightness" > /tmp/${lockName}
+        printf '%s' "$brightness" > ${lockFileDir}/${lockName}
         ${slight} -D ${device} set -D ${toString target}
       fi
       set +eu
     '';
     kbdLightOffLeave = { device, lockName }: ''
       set -eu
-      brightness="$(cat /tmp/${lockName})"
+      brightness="$(cat ${lockFileDir}/${lockName})"
       ${slight} -D ${device} set -I "$brightness"
-      rm -f /tmp/${lockName}{,.pid}
+      rm -f ${lockFileDir}/${lockName}{,.pid}
       set +eu
     '';
   in {
@@ -106,7 +108,7 @@ in {
     };
 
     batteryTimeouts = {
-      screenDim = let lockName = ".screen_dim_brightness_bat";
+      screenDim = let lockName = "screenDim-battery_brightness";
       in {
         timeout = screenDimTimeoutBAT;
         script = screenDimEnter {
@@ -137,7 +139,7 @@ in {
         '';
       };
 
-      kbdLightOff = let lockName = ".timeout_kbd_light_off_bat";
+      kbdLightOff = let lockName = "kbdLightOff-battery_brightness";
       in {
         timeout = kbdLightOffTimeoutBAT;
         script = kbdLightOffEnter {
@@ -153,7 +155,7 @@ in {
     };
 
     pluggedInTimeouts = {
-      screenDim = let lockName = ".screen_dim_brightness_ac";
+      screenDim = let lockName = "screenDim-pluggedIn_brightness";
       in {
         timeout = screenDimTimeoutAC;
         script = screenDimEnter {
@@ -184,7 +186,7 @@ in {
         '';
       };
 
-      kbdLightOff = let lockName = ".timeout_kbd_light_off_ac";
+      kbdLightOff = let lockName = "kbdLightOff-pluggedIn_brightness";
       in {
         timeout = kbdLightOffTimeoutAC;
         script = kbdLightOffEnter {
