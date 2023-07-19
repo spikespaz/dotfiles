@@ -46,6 +46,9 @@
     libsForQt5.print-manager # Print Manager
     libsForQt5.skanlite # Lightweight Document Scanner
 
+    # General Utilities
+    gnome.gnome-sound-recorder
+
     # Video Player
     haruna
 
