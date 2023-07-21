@@ -1,4 +1,9 @@
 { ... }: {
+  disabledModules = [
+    # module in Home Manager conflicts with this one
+    "services/window-managers/hyprland.nix"
+  ];
+
   imports = [
     ./events.nix
     ./config.nix
