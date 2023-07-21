@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   inherit (lib) types;
-  cfg = config.services.swayidle.alt;
+  cfg = config.services.swayidle;
 
   typeTimeout = { name, ... }: {
     options = {
@@ -43,8 +43,11 @@ let
     merge = lib.mergeEqualOption;
   };
 in {
+  # replaces home-manager's module
+  disabledModules = [ "services/swayidle.nix" ];
+
   options = {
-    services.swayidle.alt = {
+    services.swayidle = {
       enable = lib.mkEnableOption (lib.mdDoc ''
         Whether to enable the swayidle systemd service.
       '');

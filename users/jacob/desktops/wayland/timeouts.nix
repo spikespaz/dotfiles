@@ -51,7 +51,7 @@ in {
   # this is the idle daemon by the sway developers
   # it reacts to events (such as timeouts) and runs commands
   # <https://github.com/swaywm/swayidle/blob/master/swayidle.1.scd>
-  services.swayidle.alt = let
+  services.swayidle = let
     slight = lib.getExe pkgs.slight;
     hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
     swaylock = lib.getExe config.programs.swaylock.package;
