@@ -19,10 +19,10 @@
     HOTPLUG_MON = "HDMI-A-1";
     DOCK_MON = "DP-1";
 
-    slightExe = lib.getExe pkgs.slight;
-    osdfnsExe = lib.getExe config.utilities.osd-functions.package;
-    cleanModeExe = "disable-input-devices-notify";
-    smartPinExe = (pkgs.writeShellScript "pin-window" (let
+    slight = lib.getExe pkgs.slight;
+    osdFunc = lib.getExe config.utilities.osd-functions.package;
+    activateCleanMode = "disable-input-devices-notify";
+    pinWindow = (pkgs.writeShellScript "pin-window" (let
       hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
     in ''
       if ${hyprctl} activewindow | grep 'floating: 0'; then
@@ -46,18 +46,18 @@
     # <https://github.com/xkbcommon/libxkbcommon/blob/master/include/xkbcommon/xkbcommon-keysyms.h>
 
     # toggle mute default sink
-    bindl.", XF86AudioMute" = "exec, ${osdfnsExe} output mute";
+    bindl.", XF86AudioMute" = "exec, ${osdFunc} output mute";
 
     # raise and lower default sink
-    bindel.", XF86AudioRaiseVolume" = "exec, ${osdfnsExe} output +0.05";
-    bindel.", XF86AudioLowerVolume" = "exec, ${osdfnsExe} output -0.05";
+    bindel.", XF86AudioRaiseVolume" = "exec, ${osdFunc} output +0.05";
+    bindel.", XF86AudioLowerVolume" = "exec, ${osdFunc} output -0.05";
 
     # mute default source
-    bindl.", XF86AudioMicMute" = "exec, ${osdfnsExe} input mute";
+    bindl.", XF86AudioMicMute" = "exec, ${osdFunc} input mute";
 
     # raise and lower display brightness
-    bindel.", XF86MonBrightnessUp" = "exec, ${slightExe} inc 10 -t 300ms";
-    bindel.", XF86MonBrightnessDown" = "exec, ${slightExe} dec 10 -t 300ms";
+    bindel.", XF86MonBrightnessUp" = "exec, ${slight} inc 10 -t 300ms";
+    bindel.", XF86MonBrightnessDown" = "exec, ${slight} dec 10 -t 300ms";
 
     # lock the screen and then turn off dpms (actually toggle for emergency usage)
     # does not work because (r)elease only works for individual keys, not combos
@@ -185,7 +185,7 @@
 
     bind."SUPER, Q" = "killactive,";
     bind."SUPER, F" = "togglefloating,";
-    bind."SUPER, P" = "exec, ${smartPinExe}";
+    bind."SUPER, P" = "exec, ${pinWindow}";
     #bind = SUPER, P, pseudo,
     bind."SUPER_SHIFT, F" = "fullscreen, 0";
     bind."ALT, grave" = "changegroupactive, f";
@@ -215,7 +215,7 @@
     # Rofi-emoji
     bind."SUPER, period" = "exec, rofi -show emoji -emoji-mode copy";
     # "Cleaning mode"
-    bindrl."SUPER_CTRL_SHIFT, delete" = "exec, ${cleanModeExe}";
+    bindrl."SUPER_CTRL_SHIFT, delete" = "exec, ${activateCleanMode}";
 
     # Passthrough all shortcuts
     bind."SUPER_SHIFT, K" = "submap, passthru";
