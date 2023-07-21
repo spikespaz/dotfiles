@@ -108,28 +108,29 @@ in {
     };
 
     batteryTimeouts = {
-      screenDim = let lockName = "screenDim-battery_brightness";
-      in {
-        timeout = screenDimTimeoutBAT;
-        script = screenDimEnter {
-          target = screenDimTargetBAT;
-          duration = screenDimEnterDuration;
-          inherit lockName;
-        };
-        resumeScript = screenDimLeave {
-          duration = screenDimLeaveDuration;
-          inherit lockName;
-        };
-      };
+      screenDim = lib.mkIf (screenDimTargetBAT != null)
+        (let lockName = "screenDim-battery_brightness";
+        in {
+          timeout = screenDimTimeoutBAT;
+          script = screenDimEnter {
+            target = screenDimTargetBAT;
+            duration = screenDimEnterDuration;
+            inherit lockName;
+          };
+          resumeScript = screenDimLeave {
+            duration = screenDimLeaveDuration;
+            inherit lockName;
+          };
+        });
 
-      autoLock = {
+      autoLock = lib.mkIf (autoLockTimeoutBAT != null) {
         timeout = autoLockTimeoutBAT;
         script = ''
           ${swaylock} -f --grace ${toString autoLockGrace}
         '';
       };
 
-      screenOff = {
+      screenOff = lib.mkIf (screenOffTimeoutBAT != null) {
         timeout = screenOffTimeoutBAT;
         script = ''
           ${hyprctl} dispatch dpms off
@@ -139,44 +140,46 @@ in {
         '';
       };
 
-      kbdLightOff = let lockName = "kbdLightOff-battery_brightness";
-      in {
-        timeout = kbdLightOffTimeoutBAT;
-        script = kbdLightOffEnter {
-          device = kbdLightDevice;
-          target = kbdLightOffValue;
-          inherit lockName;
-        };
-        resumeScript = kbdLightOffLeave {
-          device = kbdLightDevice;
-          inherit lockName;
-        };
-      };
+      kbdLightOff = lib.mkIf (kbdLightOffTimeoutBAT != null)
+        (let lockName = "kbdLightOff-battery_brightness";
+        in {
+          timeout = kbdLightOffTimeoutBAT;
+          script = kbdLightOffEnter {
+            device = kbdLightDevice;
+            target = kbdLightOffValue;
+            inherit lockName;
+          };
+          resumeScript = kbdLightOffLeave {
+            device = kbdLightDevice;
+            inherit lockName;
+          };
+        });
     };
 
     pluggedInTimeouts = {
-      screenDim = let lockName = "screenDim-pluggedIn_brightness";
-      in {
-        timeout = screenDimTimeoutAC;
-        script = screenDimEnter {
-          target = screenDimTargetAC;
-          duration = screenDimEnterDuration;
-          inherit lockName;
-        };
-        resumeScript = screenDimLeave {
-          duration = screenDimLeaveDuration;
-          inherit lockName;
-        };
-      };
+      screenDim = lib.mkIf (screenDimTimeoutAC != null)
+        (let lockName = "screenDim-pluggedIn_brightness";
+        in {
+          timeout = screenDimTimeoutAC;
+          script = screenDimEnter {
+            target = screenDimTargetAC;
+            duration = screenDimEnterDuration;
+            inherit lockName;
+          };
+          resumeScript = screenDimLeave {
+            duration = screenDimLeaveDuration;
+            inherit lockName;
+          };
+        });
 
-      autoLock = {
+      autoLock = lib.mkIf (autoLockTimeoutAC != null) {
         timeout = autoLockTimeoutAC;
         script = ''
           ${swaylock} -f --grace ${toString autoLockGrace}
         '';
       };
 
-      screenOff = {
+      screenOff = lib.mkIf (screenOffTimeoutAC != null) {
         timeout = screenOffTimeoutAC;
         script = ''
           ${hyprctl} dispatch dpms off
@@ -186,19 +189,20 @@ in {
         '';
       };
 
-      kbdLightOff = let lockName = "kbdLightOff-pluggedIn_brightness";
-      in {
-        timeout = kbdLightOffTimeoutAC;
-        script = kbdLightOffEnter {
-          device = kbdLightDevice;
-          target = kbdLightOffValue;
-          inherit lockName;
-        };
-        resumeScript = kbdLightOffLeave {
-          device = kbdLightDevice;
-          inherit lockName;
-        };
-      };
+      kbdLightOff = lib.mkIf (kbdLightOffTimeoutAC != null)
+        (let lockName = "kbdLightOff-pluggedIn_brightness";
+        in {
+          timeout = kbdLightOffTimeoutAC;
+          script = kbdLightOffEnter {
+            device = kbdLightDevice;
+            target = kbdLightOffValue;
+            inherit lockName;
+          };
+          resumeScript = kbdLightOffLeave {
+            device = kbdLightDevice;
+            inherit lockName;
+          };
+        });
     };
   };
 }
