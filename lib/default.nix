@@ -24,16 +24,17 @@ let
       mapListToAttrs attrPaths;
     inherit (lib.debug) traceM traceValM;
     # FIXME find a new name for `lib.lists.elemAt`, because `nixpkgs` uses
-    # `with` on `builtins` which makes it use this `elemAt`.
+    # `with` on `lib` after `builtins` which makes it use this `elemAt`.
     inherit (lib.lists)
       indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
       elemAtDefault removeElems sublist split lsplit rsplit lpad rpad
       flattenCond;
     inherit (lib.math) pow powi abs;
+    # FIXME `substring` conflicts with `builtins.substring`.
     inherit (lib.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
-      lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
-      rsplitString lpadString rpadString;
+      lastIndexOfChar charAtDefault charAt removeChars lsplitString rsplitString
+      lpadString rpadString;
     inherit (lib.tests) mkTests mkTestSuite runTestsRecursive;
     inherit (lib.radix) intToHex;
     inherit (lib.shellscript)
