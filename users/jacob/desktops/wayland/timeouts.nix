@@ -10,12 +10,14 @@ let
   autoLockTimeoutBAT = minutes 2;
   screenOffTimeoutBAT = minutes 7;
   kbdLightOffTimeoutBAT = seconds 45;
+  sleepTimeoutBAT = minutes 15;
 
   # Options for timeouts on AC
   screenDimTimeoutAC = minutes 4 + seconds 30;
   autoLockTimeoutAC = minutes 5;
   screenOffTimeoutAC = minutes 10;
   kbdLightOffTimeoutAC = minutes 2;
+  sleepTimeoutAC = null; # never
 
   # Screen dimming settings
   screenDimTargetBAT = 15; # percent
@@ -30,6 +32,11 @@ let
   # Keyboard backlight settings
   kbdLightOffValue = 0;
 
+  # Sleep settings
+  sleepVerbBAT = "suspend-then-hibernate";
+  sleepVerbAC = "hybrid-sleep";
+
+  # Utility functions
   hours = x: x * 60 * 60;
   minutes = x: x * 60;
   seconds = x: x;
@@ -154,6 +161,13 @@ in {
             inherit lockName;
           };
         });
+
+      sleep = lib.mkIf (sleepTimeoutBAT != null) {
+        timeout = sleepTimeoutBAT;
+        script = ''
+          systemctl ${sleepVerbBAT}
+        '';
+      };
     };
 
     pluggedInTimeouts = {
@@ -203,6 +217,13 @@ in {
             inherit lockName;
           };
         });
+
+      sleep = lib.mkIf (sleepTimeoutAC != null) {
+        timeout = sleepTimeoutAC;
+        script = ''
+          systemctl ${sleepVerbAC}
+        '';
+      };
     };
   };
 }
