@@ -160,7 +160,8 @@ in {
     ### 3D PRINTING ###
     programs.openscad
     programs.prusa-slicer
-    programs.super-slicer
+    # disabled until <https://github.com/NixOS/nixpkgs/pull/225817> is merged
+    # programs.super-slicer
     programs.cura
 
     ### HARDWARE ###
