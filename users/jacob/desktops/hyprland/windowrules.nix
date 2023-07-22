@@ -41,6 +41,7 @@ in {
       class = [ "WebCord" "discord" ];
       title = [ "(\\[\\d+\\] )?WebCord.*" ".*Discord" ];
     };
+    tidal.class = [ "tidal-hifi" ];
     calculator.class = [ "qalculate-gtk" ];
     # obsStudio = {
     #   class = [ "com.obsproject.Studio" ];
@@ -63,6 +64,10 @@ in {
     discordModal = {
       class = [ "WebCord" ];
       title = [ "WebCord.+Settings" ];
+    };
+    tidalModal = {
+      class = [ "tidal-hifi" ];
+      title = [ "Tidal Hi-Fi settings" ];
     };
     keePassModal = {
       class = [ "org.keepassxc.KeePassXC" ];
@@ -97,6 +102,7 @@ in {
       firefoxModal
       fileZillaModal
       discordModal
+      tidalModal
     ])
     (map (rule [ "opacity 0.97 0.97" ]) [ discord ])
     (map (rule [ "opacity 0.97 0.97" "float" ]) [
@@ -107,7 +113,7 @@ in {
       polkitAgent
       mountDialog
     ])
-    (map (rule [ "opacity 0.92 0.92" ]) [ vscode steam ])
+    (map (rule [ "opacity 0.92 0.92" ]) [ vscode steam tidal ])
     (map (rule [ "opacity 0.92 0.92" "float" ]) [ filePickerPortal ])
     (map (rule [ "opacity 0.87 0.87" ]) [ ])
     (map (rule [ "opacity 0.87 0.87" "float" ]) [ calculator ])
