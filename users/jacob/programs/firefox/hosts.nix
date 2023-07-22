@@ -121,7 +121,6 @@ in {
             "ublock-badware"
             "ublock-privacy"
             "ublock-quick-fixes"
-            "ublock-abuse"
             "ublock-unbreak"
             # Ads
             "easylist"
@@ -135,12 +134,16 @@ in {
             "curben-pup"
             # Annoyances
             "adguard-annoyance"
+            "adguard-cookies"
+            "adguard-mobile-app-banners"
+            "adguard-popup-overlays"
             "adguard-social"
             "fanboy-thirdparty_social"
             "fanboy-cookiemonster"
             "fanboy-annoyance"
             "fanboy-social"
             "ublock-annoyances"
+            "easylist-newsletters"
             # Multipurpose
             "dpollock-0"
             "plowe-0"
