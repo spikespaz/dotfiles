@@ -85,6 +85,8 @@
   ### MEDIA CONSUMPTION ###
   #########################
 
+  tidal = { home.packages = [ pkgs.tidal-hifi ]; };
+
   #################################
   ### OFFICE & WRITING SOFTWARE ###
   #################################

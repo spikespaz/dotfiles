@@ -91,6 +91,7 @@ in {
 
     ### MEDIA CONSUMPTION ###
     # programs.spotify
+    programs.tidal
 
     ### OFFICE & WRITING SOFTWARE ###
     programs.onlyoffice
