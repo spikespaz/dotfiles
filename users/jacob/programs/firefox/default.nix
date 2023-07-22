@@ -15,7 +15,7 @@ in {
   programs.firefox.enable = true;
 
   imports = [
-    ./hosts.nix
+    ./blocking.nix
     (import ./chrome profile)
     # self.homeManagerModules.firefox-pwa
   ];
