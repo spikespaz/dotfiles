@@ -68,6 +68,7 @@
       ];
     };
   }
+
   #############################
   ### NETWORKING & WIRELESS ###
   #############################
@@ -413,5 +414,14 @@
       qemu.swtpm.enable = true;
       qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
     };
+  }
+
+  ###################
+  ### TTY CONSOLE ###
+  ###################
+  {
+    console.keyMap = "us";
+    console.packages = [ pkgs.tamsyn ];
+    console.font = "Tamsyn8x16r";
   }
 ]

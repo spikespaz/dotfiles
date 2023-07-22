@@ -5,12 +5,8 @@ let
   plymouth =
     pkgs.plymouth.override { systemd = config.boot.initrd.systemd.package; };
 in {
-  # font for log text & tty
-  console = {
-    keyMap = "us";
-    font = "Lat2-Terminus16";
-    earlySetup = true;
-  };
+  # allow plymouth to take over the framebuffer sooner
+  console.earlySetup = true;
 
   # make the boot quiet
   boot.consoleLogLevel = 3;
