@@ -144,6 +144,17 @@
       trackpoint.speed = 85;
     };
 
+    boot.kernelParams = [
+      # Display backlight brightness control (and keyboard, etc.),
+      # allows the backlight to be controlled via software.
+      "amdgpu.backlight=0"
+      # Checked `dmesg`, suggested that I add this.
+      # Not sure if this is placebo, but I seem to notice
+      # pointer acceleration being slightly smoother.
+      # Anyway, it doesn't sem to hurt.
+      "psmouse.synaptics_intertouch=1"
+    ];
+
     # # gui tool for processor management
     # programs.corectrl.enable = true;
     # # sets the overdrive bit in amdgpu.ppfeaturemask
@@ -276,9 +287,6 @@
     #   auth sufficient pam_unix.so try_first_pass nullok
     # '';
 
-    # backlight brightness control (and keyboard, etc)
-    # allows the backlight to be controlled via software
-    boot.kernelParams = [ "amdgpu.backlight=0" ];
     environment.systemPackages = [ pkgs.slight ];
     services.udev.packages = [ pkgs.slight ];
 
