@@ -1,5 +1,7 @@
 { lib, pkgs, ... }: {
-  programs.vscode.extensions = with pkgs.vscode-marketplace;
+  programs.vscode.extensions =
+    #
+    with pkgs.vscode-marketplace;
     with pkgs.vscode-marketplace-release; [
       ms-vscode.live-server
       aeschli.vscode-css-formatter

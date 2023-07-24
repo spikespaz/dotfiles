@@ -11,7 +11,9 @@
     paths = [ editorPackage ] ++ fontPackages;
   });
 
-  programs.vscode.extensions = with pkgs.vscode-marketplace;
+  programs.vscode.extensions =
+    #
+    with pkgs.vscode-marketplace;
     with pkgs.vscode-marketplace-release; [
       ## Appearances ##
       # jdinhlife.gruvbox

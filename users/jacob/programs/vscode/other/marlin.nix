@@ -1,5 +1,7 @@
 { lib, pkgs, ... }: {
-  programs.vscode.extensions = with pkgs.vscode-extensions;
+  programs.vscode.extensions =
+    #
+    with pkgs.vscode-extensions;
     with pkgs.vscode-marketplace;
     with pkgs.vscode-marketplace-release; [
       marlinfirmware.auto-build
