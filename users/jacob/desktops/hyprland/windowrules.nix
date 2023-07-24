@@ -3,8 +3,6 @@
 let
   # I recommend using this factory function for creating window rules.
   rule = rules: attrs: attrs // { inherit rules; };
-  # not used because my layer rules aren't compl
-  layerRule = rules: namespace: rule rules { namespace = [ namespace ]; };
 in {
   wayland.windowManager.hyprland.layerRules = [{
     namespace = [ "rofi" "notification" ];
