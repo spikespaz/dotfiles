@@ -174,7 +174,7 @@ in {
 
     ### MEDIA ###
     services.playerctl
-    services.spotify
+    # services.spotify
 
     ### FILE SYNCHRONIZATION ###
     services.onedrive
