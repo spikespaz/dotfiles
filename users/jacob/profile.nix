@@ -173,6 +173,7 @@ in {
     ##############################
 
     ### MEDIA ###
+    services.playerctl
     services.spotify
 
     ### FILE SYNCHRONIZATION ###
