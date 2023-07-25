@@ -64,6 +64,7 @@ in {
 
           This should be the systemd target of your window manager(s).
         '';
+        apply = lib.toList;
       };
 
       extraArgs = lib.mkOption {
@@ -296,7 +297,7 @@ in {
           "${cfg.package}/bin/swayidle ${lib.concatStringsSep " " args}";
       };
 
-      Install.WantedBy = lib.toList cfg.systemdTarget;
+      Install.WantedBy = cfg.systemdTarget;
     };
   });
 }
