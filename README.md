@@ -121,7 +121,7 @@ but each is presented with the intent to represent an average setup.
         └── profile.nix
 ```
 
-### Contents of `flake.nix`:
+### Contents of `flake.nix`
 
 This is a larger example that shows usage of both [NixOS] and [Home Manager] modules.
 It also shows several different ways of using the `imports` attribute
@@ -224,7 +224,7 @@ that are specific to the circumstance.
 }
 ```
 
-### Contents of `hosts/intrepid/powerplan.nix`:
+### Contents of `hosts/intrepid/powerplan.nix`
 
 This file is included in the `modules` list passed to `nixpkgs.lib.nixosSystem`
 as shown in the example `flake.nix`.
@@ -255,7 +255,7 @@ as shown in the example `flake.nix`.
 }
 ```
 
-## Contents of `users/jacob/profile.nix`:
+### Contents of `users/jacob/profile.nix`
 
 This is how I prefer to organize my [Home Manager] configuration.
 Instead of adding all the modules to `modules` in the arguments to
@@ -299,7 +299,7 @@ in order to make it easy to comment out certain imports when I am experimenting.
 }
 ```
 
-## Contents of `users/jacob/desktops/wayland/default.nix`:
+### Contents of `users/jacob/desktops/wayland/default.nix`
 
 ```nix
 { ... }: {
@@ -311,7 +311,7 @@ in order to make it easy to comment out certain imports when I am experimenting.
 }
 ```
 
-## Contents of `users/jacob/desktops/wayland/timeouts.nix`:
+### Contents of `users/jacob/desktops/wayland/timeouts.nix`
 
 ```nix
 { inputs, ... }: {
@@ -344,7 +344,7 @@ in order to make it easy to comment out certain imports when I am experimenting.
 }
 ```
 
-## Contents of `users/jacob/desktops/hyprland/*`
+### Contents of `users/jacob/desktops/hyprland/*`
 
 If the above examples are insufficient, please open an issue and I will write
 out more examples.
