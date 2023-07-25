@@ -403,6 +403,8 @@ or the `overlays` output (read [more about this](#notes-about-using-the-default-
 > nix eval 'github:spikespaz/dotfiles#overlays' --apply 'builtins.attrNames'
 > ```
 
+## Using packages via the `packages` output
+
 Make sure you have added `inputs` to `specialArgs` in the attribute set passed
 to `lib.nixos.nixosSystem`, or `extraSpecialArgs` for `home-manager.lib.homeManagerConfiguration`:
 
@@ -436,6 +438,8 @@ for example to install `fastfetch` to your user session:
   # ...
 }
 ```
+
+## Using packages via `overlays.default`
 
 For those of you who like to use overlays,
 use something similar to this when importing [Nixpkgs]:
@@ -520,8 +524,9 @@ For example, installing `fastfetch` as a system package:
 > which *might* result in build errors.
 >
 > In the event that you are using the `default` overlay and it causes build errors,
-> please consider using the method shown in the first example below for that
-> specific package.
+> please consider using the method shown in the
+> [previous subsection](#using-packages-via-the-packages-output)
+> for that specific package.
 >
 > This mechanism accomplishes much the same goal as using `inputs.follows`
 > where you list this flake as an input, but the two approaches are not identical.
