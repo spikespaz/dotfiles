@@ -6,6 +6,21 @@ for my computers running [NixOS].
 There are may modules and packages that some people may find useful to
 utilize in their own [NixOS] or [Home Manager] environments.
 
+> Note that the command:
+>
+> ```sh
+> nix flake show 'github:spikespaz/dotfiles'
+> ```
+>
+> Currently does not work, because the `formatter` output points to a package
+> which uses IFD. This means that running the above command on a system that has
+> `allow-import-from-derivation` disabled will result in a failure.
+>
+> Please use the provided `nix eval` commands or browse the repository to
+> explore its features until this is rectified.
+
+---
+
 # Usage
 
 To use components from my flake in your own configurations,
