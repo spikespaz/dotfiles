@@ -71,6 +71,23 @@ by printing out `lib.birdos.prelude`.
 For packages, you have two options. Either use the flake's `packages` output
 or the `overlays` output.
 
+> You might want to use the `default` overlay if you use multiple packages
+> from this flake, or if you want to compile them with dependencies provided by your
+> locked revision of [Nixpkgs].
+>
+> Do note however that if you do *not* use the `default` overlay,
+> packages are (nearly) guaranteed to build; if you do use the
+> overlay, Nix will try to build packages using newer dependencies from
+> [Nixpkgs] instead of using the ones decreed by this flake's `flake.lock`,
+> which *might* result in build errors.
+>
+> In the event that you are using the `default` overlay and it causes build errors,
+> please consider using the method shown in the first example below for that
+> specific package.
+>
+> This mechanism accomplishes much the same goal as using `inputs.follows`
+> where you list this flake as an input, but the two approaches are not identical.
+
 Make sure you have added `inputs` to `specialArgs` in the attribute set passed
 to `lib.nixos.nixosSystem`, or `extraSpecialArgs` for `home-manager.lib.homeManagerConfiguration`:
 
