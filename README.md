@@ -41,6 +41,301 @@ add it as an input in your `flake.nix`:
 
 ---
 
+# Modules
+
+This flake has several modules for both [Home Manager] and [NixOS] that you will probably find useful.
+My two favorites are the
+[*swayidle* module](https://github.com/spikespaz/dotfiles/blob/master/hm-modules/swayidle.nix)
+([example config](https://github.com/spikespaz/dotfiles/blob/master/users/jacob/desktops/wayland/timeouts.nix)),
+and the
+[Hyprland module](https://github.com/spikespaz/dotfiles/tree/master/hm-modules/hyprland)
+([example config](https://github.com/spikespaz/dotfiles/tree/master/users/jacob/desktops/hyprland)).
+
+> ### List available modules
+>
+> To see all the modules made available, run the command(s):
+>
+> ```sh
+> nix eval 'github:spikespaz/dotfiles#nixosModules' --apply 'builtins.attrNames'
+> # and
+> nix eval 'github:spikespaz/dotfiles#homeManagerModules' --apply 'builtins.attrNames'
+> ```
+
+Assuming that you have this flake added as an input to your own (described above under [Usage](#usage)):
+1. Make sure your flake's `inputs` are passed to `specialArgs` or `extraSpecialArgs`
+   wherever you call `nixpkgs.lib.nixosSystem` or `home-manager.lib.homeManagerConfiguration`.
+1. Create a new `*.nix` file in your flake, wherever you like.
+2. Make sure that the file you created is imported somewhere.
+   - In the `modules` attribute of a call to `nixpkgs.lib.nixosSystem`,
+   - In the `modules` attribute of a call to `home-manager.lib.homeManagerConfiguration`,
+   - In the `imports` list of another module.
+3. Make sure that the file is a lambda including `inputs` as an argument.
+4. Add the module you want to the `imports` list of the file you created.
+   - *This is a recommendation. There are other ways, detailed later.*
+5. Set the options you want from the module you used.
+
+## Example usage of modules
+
+You may organize your flake however you want.
+Following is a minimal example with that satisfies my personal preferences.
+
+Here is an example of a directory structure where certain files use specific modules.
+Not every file shown in the tree is relevant to the example,
+but each is presented with the intent to represent an average setup.
+
+```ruby
+.
+├── flake.lock
+├── flake.nix
+├── hosts
+│   └── intrepid
+│       ├── bootloader.nix
+│       ├── configuration.nix
+│       ├── filesystems.nix
+│       └── powerplan.nix # Imports the `amdctl` module.
+└── users
+    └── jacob
+        ├── desktops
+        │   ├── hyprland
+        │   │   ├── default.nix # Imports the `hyprland` module...
+        │   │   ├── config.nix # which is used here,
+        │   │   └── windowrules.nix # and here.
+        │   └── wayland
+        │       ├── default.nix # Imports the `timeous.nix` file.
+        │       └── timeouts.nix # Imports the `swayidle` module.
+        └── profile.nix
+```
+
+### Contents of `flake.nix`:
+
+This is a larger example that shows usage of both [NixOS] and [Home Manager] modules.
+It also shows several different ways of using the `imports` attribute
+that are specific to the circumstance.
+
+> I think that it is best-practice to keep imports of modules to the scopes
+> in which they are used. In the long run, if a file is included in your module
+> tree somewhere, the options defined by it are made globally available.
+> Regardless of this fact, keeping imports to narrow scopes
+> allows for greater portability.
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    birdos.url = "github:spikespaz/dotfiles";
+    birdos.inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  # The `outputs` attribute is a lambda that receives the `inputs`
+  # attributes which are defined above.
+  #
+  # Here that attribute set is destructured to expose `nixpkgs`
+  # and `home-manager` to the entire scope of of `outputs`,
+  # but is also bound to `inputs` using the `@` syntax so that it
+  # may be passed along to your modules further.
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+    let
+      inherit (nixpkgs) lib;
+      # ...
+    in {
+      nixosConfigurations = {
+        intrepid = nixpkgs.lib.nixosSystem {
+          # Note that this is not the recommended way to specify the host platform.
+          # The relevant changes have not really reached the docs as of 7/24/2023,
+          # but if you browse the source code of this function there is a warning.
+          system = "x86_64-linux";
+          # Add your own modules to this list,
+          # as well as any that you may want to use in your configuration.
+          #
+          # Note that including modules from `inputs` here is just one way to do it,
+          # and not my personal preference.
+          modules = [
+            # These three are irrelevant to the example and are just
+            # here to indicate a typical configuration.
+            ./hosts/intrepid/bootloader.nix
+            ./hosts/intrepid/configuration.nix
+            ./hosts/intrepid/filesystems.nix
+            # This one needs `inputs` to pull in `amdctl` module options.
+            ./hosts/intrepid/powerplan.nix
+            # You could include all the modules you need to use here,
+            # but I recommend seeing the rest of the example files first.
+            #
+            # Omit the line below if you trust me.
+            inputs.birdos.nixosModules.amdctl
+          ];
+          specialArgs = {
+            # Add this to ensure that modules above have access to the `inputs`
+            # attribute set, so that you can use `imports` later.
+            inherit inputs;
+            # ...
+          };
+        };
+        # ...
+      };
+      # This assumes that you will use Home Manager as "standalone",
+      # see the HM documentation for details.
+      homeConfigurations = {
+        jacob = home-manager.lib.homeManagerConfiguration {
+          # This is also not the recommended way of passing `nixpkgs`,
+          # for reasons (similar to `system` above) that are out-of-scope of this example.
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          modules = [
+            # Before you ask why this is the only module--
+            # when there are clearly others in the file tree--
+            # please see the rest of the example files.
+            ./users/jacob/profile.nix
+            # Just like the `nixosSystem` example above,
+            # this is my least preferred method of including
+            # modules from `inputs.birdos`.
+            #
+            # Listing them here is possible, but wait until you see the other files.
+            inputs.birdos.homeManagerModules.swayidle
+            inputs.birdos.homeManagerModules.hyprland
+          ];
+          # Just like `specialArgs` above...
+          extraSpecialArgs = {
+            inherit inputs;
+            # ...
+          };
+        };
+        # ...
+      };
+      # ...
+    };
+}
+```
+
+### Contents of `hosts/intrepid/powerplan.nix`:
+
+This file is included in the `modules` list passed to `nixpkgs.lib.nixosSystem`
+as shown in the example `flake.nix`.
+
+```nix
+{ inputs, ... }: {
+  # Add the `amdctl` module to the `imports` list.
+  imports = [ inputs.birdos.nixosModules.amdctl ];
+
+  # Use the options defined by that module.
+  services.undervolt.amdctl = {
+    enable = true;
+    mode = "undervolt";
+    pstateVoltages = [ 150 100 100 ];
+  };
+
+  # This is here just to show that all of the default modules from
+  # Home Manager still work here.
+  services.upower = {
+    enable = true;
+    percentageLow = 15;
+    percentageCritical = 7;
+    percentageAction = 5;
+    criticalPowerAction = "Hibernate";
+  };
+
+  # ...
+}
+```
+
+## Contents of `users/jacob/profile.nix`:
+
+This is how I prefer to organize my [Home Manager] configuration.
+Instead of adding all the modules to `modules` in the arguments to
+`home-manager.lib.homeManagerConfiguration`, I prefer a more granular approach;
+I only include the modules in the files in which they are used.
+
+I use a file named `profile.nix` in the root of my user configuration,
+in order to make it easy to comment out certain imports when I am experimenting.
+
+```nix
+{ config, inputs, ... }: {
+  imports = [
+    # Both of these relative paths are directories that contain a file called
+    # `default.nix`, which is what will actually be imported.
+    ./desktops/wayland
+    ./desktops/hyprland
+    # While I do not include modules from `inputs.birdos` here,
+    # I do add `homeage` here (not shown in the example `flake.nix`).
+    # This is because I directly use options from that module *in this file*.
+    #
+    # This has nothing to do with `birdos` modules, and is only here for
+    # illustrative purposes.
+    inputs.homeage.homeManagerModules.homeage
+    # ...
+  ];
+
+  # You'd typically have some other commonplace
+  # options from Home Manager itself defined in here too.
+  home.username = "jacob";
+  home.homeDirectory = "/home/jacob";
+
+  programs.home-manager.enable = true;
+  # ...
+
+  # This is to show usage of the `homeage` module (another flake)
+  # which is imported above.
+  homeage.mount = "${config.home.homeDirectory}/.secrets";
+  homeage.identityPaths = [ "~/.ssh/id_ed25519" ];
+
+  # ...
+}
+```
+
+## Contents of `users/jacob/desktops/wayland/default.nix`:
+
+```nix
+{ ... }: {
+  imports = [
+    ./timeouts.nix
+    # ...
+  ];
+  # ...
+}
+```
+
+## Contents of `users/jacob/desktops/wayland/timeouts.nix`:
+
+```nix
+{ inputs, ... }: {
+  imports = [
+    # These two modules from my flake pair nicely together.
+    # They are imported *in this file* because they are used *only in this file*.
+    inputs.birdos.homeManagerModules.swayidle
+    inputs.birdos.homeManagerModules.idlehack
+  ];
+
+  # Enabling the service from the `idlehack` module.
+  services.idlehack.enable = true;
+
+  # Usage of many options from the `swayidle` module.
+  services.swayidle = {
+    enable = true;
+    # Only use the `systemd` targets for the desktops that you have configured.
+    systemdTarget = [ "sway-session.target" "hyprland-session.target" ];
+    # Actual configurations are elided for brevity.
+    events = {
+      # ...
+    };
+    batteryTimeouts = {
+      # ...
+    };
+    pluggedInTimeouts = {
+      # ...
+    };
+  };
+}
+```
+
+## Contents of `users/jacob/desktops/hyprland/*`
+
+If the above examples are insufficient, please open an issue and I will write
+out more examples.
+
+---
+
 # Library
 
 If you want to use the extended `lib` provided by this flake, you can either
