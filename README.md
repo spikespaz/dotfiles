@@ -134,13 +134,15 @@ use something similar to this when importing [Nixpkgs]:
 
 ```nix
 {
-  nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-  home-manager.url = "github:nix-community/home-manager";
-  home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.birdos.url = "github:spikespaz/dotfiles";
-  inputs.birdos.inputs.nixpkgs.follows = "nixpkgs";
+    birdos.url = "github:spikespaz/dotfiles";
+    birdos.inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   outputs = inputs@{ nixpkgs, ... }:
     let
