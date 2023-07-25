@@ -6,10 +6,10 @@ for my computers running [NixOS].
 There are may modules and packages that some people may find useful to
 utilize in their own NixOS or Home Manager environments.
 
-## Usage
+# Usage
 
-To use modules from my flake in your own configurations,
-add it as an input in `flake.nix`:
+To use components from my flake in your own configurations,
+add it as an input in your `flake.nix`:
 
 ```nix
 {
@@ -39,7 +39,9 @@ add it as an input in `flake.nix`:
 > have to wait on me to run `nix flake update` or `nix flake lock --update-input nixpkgs`
 > before you can compile `birdos` packages with the latest dependencies from `nixpkgs`.
 
-### Library
+---
+
+# Library
 
 If you want to use the extended `lib` provided by this flake, you can either
 use `inputs.birdos.lib` (assuming `birdos` is what you named
@@ -62,7 +64,9 @@ behind the `birdos` attribute (such as flake utilities).
 You can learn what is inherited at the top-level `lib`
 by printing out `lib.birdos.prelude`.
 
-### Packages
+---
+
+# Packages
 
 For packages, you have two options. Either use the flake's `packages` output
 or the `overlays` output.
@@ -169,7 +173,9 @@ For example, installing `fastfetch` as a system package:
 }
 ```
 
-## Building Configurations
+---
+
+# Building Configurations
 
 This section is mostly for my personal reference,
 but it is also good for the newbies so I will make it extensive.
@@ -178,7 +184,7 @@ if any are wrong, please open an issue.
 
 All commands assume that you are at the root of the cloned repository.
 
-### Build activation packages
+## Build activation packages
 
 NixOS system package for the current hostname:
 
@@ -192,7 +198,7 @@ Home Manager package for the current user:
 nix build "path:.#homeConfigurations.$USER.activationPackage"
 ```
 
-### Install a system configuration
+## Install a system configuration
 
 Prepare the disk for installation.
 
@@ -241,7 +247,9 @@ configuration that you would like to switch to.
 nixos-rebuild switch --flake "path:.#$(hostname)"
 ```
 
-## Troubleshooting
+---
+
+# Troubleshooting
 
 If you have a problem with any of the modules or packages provided by this
 flake, **please** open an issue and let me know so that others can benefit.
@@ -254,7 +262,7 @@ code without studying it, just know that I don't fish for charity.
 
 ---
 
-## References
+# References
 
 It would have been an impossibility to set everything and learn how this crazy
 software works  up without the support of many people.
