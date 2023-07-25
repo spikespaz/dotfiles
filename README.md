@@ -61,8 +61,15 @@ Some `lib` functions added by this flake are top-level, but some
 that are not generally useful to the bulk of configuration are hidden
 behind the `birdos` attribute (such as flake utilities).
 
-You can learn what is inherited at the top-level `lib`
-by printing out `lib.birdos.prelude`.
+> ### List additional prelude functions
+>
+> You can learn what is inherited at the top-level `lib`
+> (when you extend `nixpkgs.lib` as shown above)
+> by printing out `lib.birdos.prelude`.
+>
+> ```sh
+> nix eval 'github:spikespaz/dotfiles#lib.birdos.prelude' --apply 'builtins.attrNames'
+> ```
 
 ---
 
@@ -190,6 +197,21 @@ For example, installing `fastfetch` as a system package:
 }
 ```
 
+> ### List available packages and overlays
+>
+> Run this command to print out all of the available package names:
+>
+> ```sh
+> # Replace `x86_64-linux` with the system-double of the host you're using.
+> nix eval 'github:spikespaz/dotfiles#packages.x86_64-linux' --apply 'builtins.attrNames'
+> ```
+>
+> Or this one to see the overlays:
+>
+> ```sh
+> nix eval 'github:spikespaz/dotfiles#overlays' --apply 'builtins.attrNames'
+> ```
+
 ---
 
 # Building Configurations
@@ -199,7 +221,7 @@ but it is also good for the newbies so I will make it extensive.
 Some of these are untested because I am writing them down when I feel clever,
 if any are wrong, please open an issue.
 
-All commands assume that you are at the root of the cloned repository.
+> All commands assume that you are at the root of the cloned repository.
 
 ## Build activation packages
 
