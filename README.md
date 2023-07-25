@@ -13,10 +13,31 @@ add it as an input in `flake.nix`:
 
 ```nix
 {
+  # Assumes you already have `nixpkgs` as an input.
   inputs.birdos.url = "github:spikespaz/dotfiles/master";
-  inputs.birdos.nixpkgs.follows = "nixpkgs";
+  inputs.birdos.inputs.nixpkgs.follows = "nixpkgs";
 }
 ```
+
+> **Q:** What does the second line with `follows` accomplish?
+>
+> **A:** The first time something from a flake is built (or some other command is run),
+> the inputs are locked in a file named `flake.lock`.
+> This is a JSON file that contains a long registry of inputs--
+> as well as the inputs of your inputs--
+> and each entry is associated with a Git hash which determines what revision
+> or "version" of that input your flake will use.
+>
+> Now, when you use something like `input.A.inputs.B.follows = "C"`,
+> this allows you to override input `B` of flake `A` to instead use
+> another input from your flake, `C`, where `C` is an attribute name from your
+> own `inputs`, which is locked in your own `flake.lock`.
+>
+> In the code block above, this mechanism demonstrates the ability to override
+> the `flake.lock` which is cloned from this repository and instead replace the
+> `nixpkgs` input to use the revision that you have locked instead. This means you don't
+> have to wait on me to run `nix flake update` or `nix flake lock --update-input nixpkgs`
+> before you can compile `birdos` packages with the latest dependencies from `nixpkgs`.
 
 ### Library
 
@@ -91,7 +112,7 @@ use something similar to this when importing [nixpkgs]:
   home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.birdos.url = "github:spikespaz/dotfiles";
-  inputs.birdos.nixpkgs.follows = "nixpkgs";
+  inputs.birdos.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = inputs@{ nixpkgs, ... }:
     let
