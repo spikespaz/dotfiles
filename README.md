@@ -4,7 +4,7 @@ Welcome, this repository houses my personal configuration files
 for my computers running [NixOS].
 
 There are may modules and packages that some people may find useful to
-utilize in their own NixOS or Home Manager environments.
+utilize in their own [NixOS] or [Home Manager] environments.
 
 # Usage
 
@@ -35,9 +35,9 @@ add it as an input in your `flake.nix`:
 >
 > In the code block above, this mechanism demonstrates the ability to override
 > the `flake.lock` which is cloned from this repository and instead replace the
-> `nixpkgs` input to use the revision that you have locked instead. This means you don't
+> [Nixpkgs] input to use the revision that you have locked instead. This means you don't
 > have to wait on me to run `nix flake update` or `nix flake lock --update-input nixpkgs`
-> before you can compile `birdos` packages with the latest dependencies from `nixpkgs`.
+> before you can compile `birdos` packages with the latest dependencies from [Nixpkgs].
 
 ---
 
@@ -45,7 +45,7 @@ add it as an input in your `flake.nix`:
 
 If you want to use the extended `lib` provided by this flake, you can either
 use `inputs.birdos.lib` (assuming `birdos` is what you named
-the input), or you can extend [nixpkgs]' lib with `lib.extend`.
+the input), or you can extend [Nixpkgs]' lib with `lib.extend`.
 
 For example, in a `let` block before your flake's output attributes:
 
@@ -106,7 +106,7 @@ for example to install `fastfetch` to your user session:
 ```
 
 For those of you who like to use overlays,
-use something similar to this when importing [nixpkgs]:
+use something similar to this when importing [Nixpkgs]:
 
 ```nix
 {
@@ -133,9 +133,9 @@ use something similar to this when importing [nixpkgs]:
             # If you use packages from this flake that have an unfree license,
             # you need to include this if `nixpkgs.config.allowUnfree`
             # and `nixpkgs.config.allowUnfreePredicate` don't work for you.
-            # Last checked, nixpkgs applies the unfree predicate before merging
+            # Last checked, Nixpkgs applies the unfree predicate before merging
             # overlays, so packages from overlays with unfree licenses will not
-            # care about the policy set by your nixpkgs options.
+            # care about the policy set by your Nixpkgs options.
             inputs.birdos.overlays.allowUnfree
             # The overlay for OracleJDK 8 to get around Oracle's sign-in page.
             inputs.birdos.overlays.oraclejdk
@@ -186,13 +186,13 @@ All commands assume that you are at the root of the cloned repository.
 
 ## Build activation packages
 
-NixOS system package for the current hostname:
+[NixOS] system package for the current hostname:
 
 ```
 nix build "path:.#nixosConfigurations.$(hostname).config.system.build.toplevel"
 ```
 
-Home Manager package for the current user:
+[Home Manager] package for the current user:
 
 ```
 nix build "path:.#homeConfigurations.$USER.activationPackage"
@@ -282,14 +282,14 @@ personal configurations for me to read and learn from.
 - <https://github.com/viperML/dotfiles>
 - <https://github.com/hlissner/dotfiles>
 
-If you came here on your own, and would like to find help with Nix or NixOS,
+If you came here on your own, and would like to find help with Nix or [NixOS],
 I encourage you to join [this small Discord server](https://discord.gg/8ydgceUJDm), mostly led by [@NobbZ].
 
 ---
 
 [NixOS]: https://nixos.org/
-[nixpkgs]: https://github.com/nixos/nixpkgs
-[home-manager]: https://github.com/nix-community/home-manager
+[Nixpkgs]: https://github.com/nixos/nixpkgs
+[Home Manager]: https://github.com/nix-community/home-manager
 
 [@NobbZ]: https://github.com/NobbZ/
 [@tejing1]: https://github.com/tejing1
