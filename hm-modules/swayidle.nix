@@ -121,11 +121,13 @@ in {
         default = { };
         example = lib.literalExpression "";
         description = lib.mdDoc ''
+          > Scripts defined in this option are power-supply-agnostic.
+          >
           > If you are using a laptop, you may prefer to use
           > {option}`batteryTimeouts` and {option}`pluggedInTimeouts`.
           >
           > Timeout scripts defined in this option will be run
-          > regardless of state, and have no lock file.
+          > regardless of power state, and have no lock file.
 
           An attribute set of timeout definitions.
           The attribute name is the used internally to name
@@ -143,22 +145,30 @@ in {
         '';
       };
 
-      batteryDevice = lib.mkOption {
+      powerSupply = lib.mkOption {
         type = typeRootPath;
-        default = "/sys/class/power_supply/BAT0";
-        example = lib.literalExpression "/sys/class/power_supply/BAT1";
+        default = "/sys/class/power_supply/AC";
+        example = lib.literalExpression
+          "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:37/PNP0C09:00/ACPI0003:00/power_supply/AC";
         description = lib.mdDoc ''
-          The path to the battery device to check.
-          Must be a directory with a `status` file.
+          The power supply device to use when determining if the
+          system is plugged in to an constant power supply,
+          such as an AC or a DC adapter, or a UPS device.
 
-          This path is expected to match the Linux kernel's
-          [sysfs-class-power](https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power)
-          specification.
+          This value is expected to be a `sysfs` path to a power supply
+          device as described in the Linux kernel's documentation:
+          <https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-power>
 
-          Timeouts from {option}`pluggedInTimeouts` will be run
-          if the contents of the `status` file equals either
-          `Charging` and `Not charging`, otherwise timeouts from
-          {options}`batteryTimeouts` will be run instead.
+          Note that the only property needed is `online`.
+          The system will be considered "plugged-in" when the value
+          of `online` is greater than zero.
+
+          This power device should be online when the system is plugged
+          into a charger, and offline when running on battery power.
+
+          If this device is **online**, scripts from {option}`pluggedInTimeouts`
+          will be run; if this device is **offline**, scripts from
+          {option}`batteryTimeouts` will run.
         '';
       };
 
@@ -168,8 +178,8 @@ in {
         example = lib.literalExpression "";
         description = lib.mdDoc ''
           > This option is only relevant for laptop users.
-          > For devices powered directly from AC,
-          > use {option}`timeouts` instead.
+          > For devices that are always powered directly from
+          > a constant supply, use {option}`timeouts` instead.
 
           Timeouts to run only when on battery power.
           See {option}`timeouts` for details.
@@ -186,8 +196,8 @@ in {
         example = lib.literalExpression "";
         description = lib.mdDoc ''
           > This option is only relevant for laptop users.
-          > For devices powered directly from AC,
-          > use {option}`timeouts` instead.
+          > For devices that are always powered directly from
+          > a constant supply, use {option}`timeouts` instead.
 
           Timeouts to run only when plugged in with an AC adapter.
           See {option}`timeouts` for details.
@@ -255,12 +265,7 @@ in {
         '';
       };
 
-    # maybe make this configurable?
-    batStatusCond = states:
-      "${lib.getExe pkgs.gnugrep} -q -x -F ${
-        lib.concatMapStrings (s: " -e '${s}'") states
-      } ${cfg.batteryDevice}/status";
-    pluggedInCond = batStatusCond [ "Charging" "Not charging" ];
+    pluggedInCond = ''[ "$(cat '${cfg.powerSupply}/online')" -gt 0 ]'';
 
     args = lib.flatten [
       (map lib.escapeShellArg cfg.extraArgs)
