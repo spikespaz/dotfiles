@@ -222,6 +222,7 @@
   };
   lsd = { programs.lsd.enable = true; };
   fzf = { programs.fzf.enable = true; };
+  jq = { programs.jq.enable = true; };
   gallery-dl = { home.packages = [ pkgs.gallery-dl ]; };
 
   ###########################################

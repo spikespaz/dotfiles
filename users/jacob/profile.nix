@@ -138,6 +138,7 @@ in {
     programs.bat
     programs.lsd
     programs.fzf
+    programs.jq
     programs.gallery-dl
 
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
