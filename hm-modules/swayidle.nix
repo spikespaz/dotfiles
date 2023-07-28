@@ -3,7 +3,7 @@ let
   inherit (lib) types;
   cfg = config.services.swayidle;
 
-  typeTimeout = { name, ... }: {
+  typeTimeout = types.submodule ({ name, ... }: {
     options = {
       scriptName = lib.mkOption {
         type = types.singleLineStr;
@@ -33,7 +33,7 @@ let
         '';
       };
     };
-  };
+  });
 
   typeRootPath = lib.mkOptionType {
     name = "rootPath";
@@ -117,7 +117,7 @@ in {
       };
 
       timeouts = lib.mkOption {
-        type = types.attrsOf (types.submodule typeTimeout);
+        type = types.attrsOf typeTimeout;
         default = { };
         example = lib.literalExpression "";
         description = lib.mdDoc ''
@@ -173,7 +173,7 @@ in {
       };
 
       batteryTimeouts = lib.mkOption {
-        type = types.attrsOf (types.submodule typeTimeout);
+        type = types.attrsOf typeTimeout;
         default = { };
         example = lib.literalExpression "";
         description = lib.mdDoc ''
@@ -191,7 +191,7 @@ in {
       };
 
       pluggedInTimeouts = lib.mkOption {
-        type = types.attrsOf (types.submodule typeTimeout);
+        type = types.attrsOf typeTimeout;
         default = { };
         example = lib.literalExpression "";
         description = lib.mdDoc ''
