@@ -58,7 +58,7 @@ let
       fi
     '').outPath;
     bluetoothKill =
-      "rfkill blick bluetooth && ${systemctl} restart bluetooth.service";
+      "rfkill block bluetooth && ${systemctl} restart bluetooth.service";
     bluetoothOff = "${bluetoothctl} power off";
     wirelessSettings = iwgtk;
     workspaceSwitchPrev = "${hyprctl} dispatch workspace m-1";
