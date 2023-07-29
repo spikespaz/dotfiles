@@ -98,6 +98,7 @@ in {
       modules-center = [ "clock#time" "clock#date" ];
 
       modules-right = [
+        "hyprland/submap"
         "pulseaudio#output"
         "pulseaudio#input"
         "backlight"
@@ -124,6 +125,11 @@ in {
         show-passive-items = true;
         icon-size = 12;
         spacing = 16;
+      };
+
+      "hyprland/submap" = {
+        format = "󰘳 {}";
+        tooltip = false;
       };
 
       "hyprland/window" = { max-length = 50; };

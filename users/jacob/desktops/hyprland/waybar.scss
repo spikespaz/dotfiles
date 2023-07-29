@@ -47,6 +47,7 @@ $highlight-foreground: #fbf1c7;
 }
 
 #clock,
+#submap,
 #backlight,
 #network,
 #bluetooth,
@@ -115,6 +116,10 @@ window.popup {
 
 #clock.time {
   font-weight: bold;
+}
+
+#submap {
+  @include indicate-active(#d3869b, "&");
 }
 
 #workspaces {
