@@ -15,6 +15,8 @@ args@{ self, tree, lib, inputs, ... }: {
     overlays = [
       # flake packages
       self.overlays.default
+      # updates to packages before committing upstream
+      self.overlays.updates
       # override packages with an unfree license
       self.overlays.allowUnfree
       # skip the manual download for oracle's jdk
