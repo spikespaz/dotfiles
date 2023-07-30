@@ -213,7 +213,7 @@
     # Screenshot to clipboard by region selection
     bind."SUPER_SHIFT, print" = "exec, prtsc -c -m r -D -b 00000066";
     # Rofi-emoji
-    bind."SUPER, period" = "exec, rofi -show emoji -emoji-mode copy";
+    bind."SUPER, equals" = "exec, rofi -show emoji -emoji-mode copy";
     # "Cleaning mode"
     bindrl."SUPER_CTRL_SHIFT, delete" = "exec, ${activateCleanMode}";
 
