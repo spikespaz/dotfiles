@@ -77,6 +77,11 @@
     bindl."SUPER, comma" = "exec, ${playerctl} previous";
     bindl."SUPER, period" = "exec, ${playerctl} next";
 
+    # however, some devices send these keys over bluetooth or USB
+    bindl.", XF86AudioPlay" = "exec, ${playerctl} play-pause";
+    bindl.", XF86AudioPrev" = "exec, ${playerctl} previous";
+    bindl.", XF86AudioNext" = "exec, ${playerctl} next";
+
     ##########################
     ### ESSENTIAL PROGRAMS ###
     ##########################
