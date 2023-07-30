@@ -257,7 +257,7 @@
       fontDir.enable = true;
       # handled by filesystem
       fontDir.decompressFonts = true;
-      fonts = with pkgs; [
+      packages = with pkgs; [
         (pkgs.ttf-ms-win11.override { acceptEula = true; })
         noto-fonts
         noto-fonts-extra
