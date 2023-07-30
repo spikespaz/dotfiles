@@ -19,6 +19,7 @@
     HOTPLUG_MON = "HDMI-A-1";
     DOCK_MON = "DP-1";
 
+    playerctl = lib.getExe pkgs.playerctl;
     slight = lib.getExe pkgs.slight;
     osdFunc = lib.getExe config.utilities.osd-functions.package;
     activateCleanMode = "disable-input-devices-notify";
@@ -66,6 +67,15 @@
     # Fn is XF86WakeUp
     bindrl.", XF86Display" =
       "exec, loginctl lock-session && sleep 5 && hyprctl dispatch dpms toggle";
+
+    ##################
+    ### MEDIA KEYS ###
+    ##################
+
+    # my laptop does not have dedicated media keys, sadness
+    bindl."SUPER, slash" = "exec, ${playerctl} play-pause";
+    bindl."SUPER, comma" = "exec, ${playerctl} previous";
+    bindl."SUPER, period" = "exec, ${playerctl} next";
 
     ##########################
     ### ESSENTIAL PROGRAMS ###
