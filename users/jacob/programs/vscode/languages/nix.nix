@@ -14,10 +14,8 @@ in {
     "nix.enableLanguageServer" = true;
     "nix.serverPath" = lib.getExe pkgs.nil;
     "nix.serverSettings".nil = {
-      formatting.command = [ (lib.getExe pkgs.nixfmt) ];
+      formatting.command = [ "nix" "fmt" "--" "--" ];
     };
-    # "nix.formatterPath" = lib.getExe pkgs.alejandra;
-    # "alejandra.program" = lib.getExe pkgs.alejandra;
     "[nix]" = {
       # appears to be buggy at the moment
       "editor.stickyScroll.enabled" = false;
