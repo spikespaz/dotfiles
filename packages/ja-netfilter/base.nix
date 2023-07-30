@@ -1,12 +1,12 @@
 # use the source luke
 # <https://sourcegraph.com/github.com/NixOS/nixpkgs/-/blob/pkgs/development/tools/database/schemaspy/default.nix>
 # <https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/maven.section.md>
-{ pname, version, src, outputHash, targetJar, renameJar, }:
+{ pname, version, src, depsHash, targetJar, renameJar, }:
 { lib, stdenv, callPackage, maven, oraclejdk, buildMaven, }:
 let
   inherit pname version src;
 
-  repository = stdenv.mkDerivation {
+  mavenDeps = stdenv.mkDerivation {
     name = "${pname}-${version}-deps";
     inherit src;
 
@@ -29,7 +29,7 @@ let
 
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
-    inherit outputHash;
+    outputHash = depsHash;
 
     doCheck = false;
   };
@@ -42,7 +42,7 @@ in stdenv.mkDerivation {
 
     mvn package --offline \
       -Dmaven.test.skip=true \
-      -Dmaven.repo.local=${repository}
+      -Dmaven.repo.local=${mavenDeps.outPath}
 
     runHook postBuild
   '';
