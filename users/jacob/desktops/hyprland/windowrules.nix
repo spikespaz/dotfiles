@@ -77,7 +77,7 @@ in {
     };
     firefoxModal = {
       class = [ "firefox" ];
-      title = [ "Extension.+Mozilla Firefox.*" ];
+      title = [ "Extension.+Mozilla Firefox.*" "Picture-in-Picture" ];
     };
     lxImageModal = {
       class = [ "lximage-qt" ];
