@@ -26,9 +26,9 @@ let
     # FIXME find a new name for `lib.lists.elemAt`, because `nixpkgs` uses
     # `with` on `lib` after `builtins` which makes it use this `elemAt`.
     inherit (lib.lists)
-      indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
-      elemAtDefault removeElems sublist split lsplit rsplit lpad rpad
-      flattenCond;
+      indicesOf indicesOfPred indexOfDefault indexOf lastIndexOfDefault
+      lastIndexOf elemAtDefault removeElems sublist split lsplit rsplit lpad
+      rpad flattenCond;
     inherit (lib.math) pow powi abs;
     # FIXME `substring` conflicts with `builtins.substring`.
     inherit (lib.strings)

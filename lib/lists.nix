@@ -2,10 +2,14 @@
 let
   # Return a list of indices where element `needle`
   # occurs in list `haystack`.
-  indicesOf = needle: haystack:
+  indicesOf = needle: indicesOfPred (x: x == needle);
+
+  # Return a list of indices where applying
+  # the predicate to each element returns `true`.
+  indicesOfPred = pred: haystack:
     lib.pipe haystack [
       (lib.imap0 (i: v: { inherit i v; }))
-      (builtins.filter (c: c.v == needle))
+      (builtins.filter (c: pred c.v))
       (map (x: x.i))
     ];
 
@@ -138,7 +142,7 @@ let
       [ x ];
 in {
   #
-  inherit indicesOf indexOfDefault indexOf lastIndexOfDefault lastIndexOf
-    elemAtDefault elemAt removeElems sublist split lsplit rsplit lpad rpad
-    flattenCond;
+  inherit indicesOf indicesOfPred indexOfDefault indexOf lastIndexOfDefault
+    lastIndexOf elemAtDefault elemAt removeElems sublist split lsplit rsplit
+    lpad rpad flattenCond;
 }
