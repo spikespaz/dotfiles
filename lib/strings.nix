@@ -124,6 +124,18 @@ let
     else
       str;
 
+  # Removes whitespace from the beginning and end of a string.
+  #
+  # This function is expensive, because it recurses deeply with several loops.
+  # This could be improved by re-implementing `rstrip` and `lstrip` to
+  # operate with a list of patterns instead of a single pattern string.
+  trim = str:
+    let
+      # Not two spaces, the second is a tab character.
+      white = [ " " "	" "\n" "\r" ];
+      stripped = lib.pipe str (map strip white);
+    in if stripped == str then str else trim stripped;
+
   # Checks if second argument `str` begins with the `pattern` string.
   startsWith = pattern: str:
     let
@@ -147,5 +159,6 @@ in {
   #
   inherit indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
     lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
-    rsplitString lpadString rpadString startsWith endsWith strip trim lstrip rstrip;
+    rsplitString lpadString rpadString strip lstrip rstrip trim startsWith
+    endsWith;
 }

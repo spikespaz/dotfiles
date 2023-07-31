@@ -34,7 +34,7 @@ let
     inherit (lib.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
       lastIndexOfChar charAtDefault charAt removeChars lsplitString rsplitString
-      lpadString rpadString strip lstrip rstrip startsWith endsWith;
+      lpadString rpadString strip lstrip rstrip trim startsWith endsWith;
     inherit (lib.tests) mkTests mkTestSuite runTestsRecursive;
     inherit (lib.radix) intToHex;
     inherit (lib.shellscript)
