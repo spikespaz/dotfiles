@@ -7,12 +7,15 @@ let
     Event listener for Hyprland's `socket2` IPC protocol.
   '';
 
-  # takes a prefix string and an attrset of attrsets
-  # ```
-  # <eventName> = {
-  #   event = "<socketeventname>";
-  #   vars = [list of event parameters];
-  # }
+  # Takes a list of event handler name/variable mappings,
+  # and prefixes each string in `vars` with `prefix`.
+  #
+  # For example, when `prefix` is `"HL_"`,
+  # the `vars` list `["WINDOW_CLASS" "WINDOW_TITLE"]`
+  # will be turned into `["HL_WINDOW_CLASS" "HL_WINDOW_TITLE"]`.
+  #
+  # This prefix is added to reduce the chance of collisions in
+  # bash scripts.
   addEventVarPrefixes = prefix:
     lib.mapAttrs
     (_: attrs@{ vars, ... }: attrs // { vars = map (v: prefix + v) vars; });
@@ -23,6 +26,10 @@ let
     windowFocus = {
       event = "activewindow";
       vars = [ "WINDOW_CLASS" "WINDOW_TITLE" ];
+    };
+    windowFocusV2 = {
+      event = "activewindowv2";
+      vars = [ "WINDOW_ADDRESS" ];
     };
     windowOpen = {
       event = "openwindow";
@@ -44,6 +51,18 @@ let
     windowFullscreen = {
       event = "fullscreen";
       vars = [ "FULLSCREEN_STATE" ];
+    };
+    windowMinimize = {
+      event = "minimize";
+      vars = [ "WINDOW_ADDRESS" "MINIMIZE_STATE" ];
+    };
+    windowUrgent = {
+      event = "urgent";
+      vars = [ "WINDOW_ADDRESS" ];
+    };
+    windowTitle = {
+      event = "windowtitle";
+      vars = [ "WINDOW_ADDRESS" ];
     };
 
     ### LAYERS ###
@@ -96,6 +115,10 @@ let
     submapChange = {
       event = "submap";
       vars = [ "SUBMAP_NAME" ];
+    };
+    screencastChange = {
+      event = "screencast";
+      vars = [ "SCREENCAST_STATE" "SCREENCAST_OWNER" ];
     };
   };
 in {
