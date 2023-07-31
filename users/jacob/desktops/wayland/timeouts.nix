@@ -63,18 +63,19 @@ in {
       brightness="$(${slight} get -p)"
       brightness="''${brightness/\%/}"
       if [[ "$brightness" -gt ${toString target} ]]; then
-        printf '%s' "$brightness" > ${lockFileDir}/${lockName}
+        mkdir -p "${lockFileDir}"
+        printf '%s' "$brightness" > "${lockFileDir}/${lockName}"
         ${slight} set -D ${toString target} -t ${duration} &
-        printf '%s' "$!" > ${lockFileDir}/${lockName}.pid
+        printf '%s' "$!" > "${lockFileDir}/${lockName}.pid"
       fi
       set +eu
     '';
     screenDimLeave = { duration, lockName }: ''
       set -eu
-      brightness="$(cat ${lockFileDir}/${lockName})"
-      kill "$(cat ${lockFileDir}/${lockName}.pid)" || true
+      brightness="$(cat "${lockFileDir}/${lockName}")"
+      kill "$(cat "${lockFileDir}/${lockName}.pid")" || true
       ${slight} set -I "$brightness%" -t ${duration}
-      rm -f ${lockFileDir}/${lockName}{,.pid}
+      rm -f "${lockFileDir}/${lockName}"{,.pid}
       set +eu
     '';
 
@@ -84,16 +85,17 @@ in {
       set -eu
       brightness="$(${slight} -D ${kbdLightDevice} get)"
       if [[ "$brightness" -gt ${toString target} ]]; then
-        printf '%s' "$brightness" > ${lockFileDir}/${lockName}
+        mkdir -p "${lockFileDir}"
+        printf '%s' "$brightness" > "${lockFileDir}/${lockName}"
         ${slight} -D ${device} set -D ${toString target}
       fi
       set +eu
     '';
     kbdLightOffLeave = { device, lockName }: ''
       set -eu
-      brightness="$(cat ${lockFileDir}/${lockName})"
+      brightness="$(cat "${lockFileDir}/${lockName}")"
       ${slight} -D ${device} set -I "$brightness"
-      rm -f ${lockFileDir}/${lockName}{,.pid}
+      rm -f "${lockFileDir}/${lockName}"{,.pid}
       set +eu
     '';
   in {
