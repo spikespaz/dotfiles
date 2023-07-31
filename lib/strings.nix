@@ -96,6 +96,34 @@ let
       padChars = lib.replicate padLen fillChar;
     in lib.concatStrings ([ str ] ++ padChars);
 
+  # Removes the `pattern` string from the beginning and the end
+  # of `str` as many times as it appears on either side.
+  strip = pattern: str: rstrip pattern (lstrip pattern str);
+
+  # Removes the `pattern` string from the beginning
+  # of `str` as many times as it appears.
+  lstrip = pattern: str:
+    let
+      strLen = builtins.stringLength str;
+      patLen = builtins.stringLength pattern;
+      starts = pattern == builtins.substring 0 patLen str;
+    in if strLen >= patLen && starts then
+      lstrip pattern (builtins.substring patLen strLen str)
+    else
+      str;
+
+  # Removes the `pattern` string from the end
+  # of `str` as many times as it appears.
+  rstrip = pattern: str:
+    let
+      strLen = builtins.stringLength str;
+      patLen = builtins.stringLength pattern;
+      ends = pattern == builtins.substring (strLen - patLen) patLen str;
+    in if strLen >= patLen && ends then
+      rstrip pattern (builtins.substring 0 (strLen - patLen) str)
+    else
+      str;
+
   # Checks if second argument `str` begins with the `pattern` string.
   startsWith = pattern: str:
     let
@@ -119,5 +147,5 @@ in {
   #
   inherit indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
     lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
-    rsplitString lpadString rpadString startsWith;
+    rsplitString lpadString rpadString startsWith endsWith strip trim lstrip rstrip;
 }
