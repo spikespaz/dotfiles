@@ -233,11 +233,11 @@ in {
         format-disconnected = "󰲛";
         format-icons = [ "󰤟" "󰤢" "󰤥" "󰤨" ];
 
-        tooltip-format = ''
+        tooltip-format = lib.trim ''
           <b>Interface</b>: {ifname}
           ${tooltip}
         '';
-        tooltip-format-wifi = ''
+        tooltip-format-wifi = lib.trim ''
           <b>SSID:</b> {essid}
           <b>Strength:</b> {signaldBm} dBmW ({signalStrength}%)
           <b>Frequency:</b> {frequency} GHz
