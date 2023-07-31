@@ -93,9 +93,16 @@ in {
       mode = "dock";
       height = 26;
 
-      modules-left = [ "wlr/workspaces" "tray" "hyprland/window" ];
+      modules-left = [ # #
+        "wlr/workspaces"
+        "tray"
+        "mpris"
+      ];
 
-      modules-center = [ "clock#time" "clock#date" ];
+      modules-center = [ # #
+        "clock#time"
+        "clock#date"
+      ];
 
       modules-right = [
         "hyprland/submap"
@@ -125,6 +132,28 @@ in {
         show-passive-items = true;
         icon-size = 12;
         spacing = 16;
+      };
+
+      mpris = {
+        player = "playerctld";
+        interval = 1;
+
+        format = "{status_icon} {dynamic}";
+        dynamic-separator = " — ";
+        dynamic-order = [ "title" "artist" "position" "length" ];
+        status-icons = {
+          playing = "󰐊";
+          paused = "󰏤";
+          stopped = "󰓛";
+        };
+
+        tooltip-format = lib.trim ''
+          <b>Player:</b> {player} ({status})
+          <b>Title:</b> {title}
+          <b>Artist:</b> {artist}
+          <b>Album:</b> {album}
+          <b>Length:</b> {position}/{length}
+        '';
       };
 
       "hyprland/submap" = {
