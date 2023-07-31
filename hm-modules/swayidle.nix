@@ -246,20 +246,14 @@ in {
         inherit timeout;
         script = ''
           if ${condition}; then
+            mkdir -p "${lockFileDir}"
+            touch "${lockPath}"
             ${script}
-            ${
-              lib.optionalString (resumeScript != null) ''
-                mkdir -p "${lockFileDir}"
-                touch "${lockPath}"
-              ''
-            }
           fi
         '';
-        resumeScript = if resumeScript == null then
-          null
-        else ''
+        resumeScript = ''
           if [ -f "${lockPath}" ]; then
-            ${resumeScript}
+            ${lib.optionalString (resumeScript != null) resumeScript}
             rm "${lockPath}"
           fi
         '';
