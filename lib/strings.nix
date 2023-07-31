@@ -95,9 +95,29 @@ let
       padLen = totalLen - (builtins.stringLength str);
       padChars = lib.replicate padLen fillChar;
     in lib.concatStrings ([ str ] ++ padChars);
+
+  # Checks if second argument `str` begins with the `pattern` string.
+  startsWith = pattern: str:
+    let
+      strLen = builtins.stringLength str;
+      patLen = builtins.stringLength pattern;
+    in if strLen >= patLen then
+      pattern == builtins.substring 0 patLen str
+    else
+      false;
+
+  # Checks if second argument `str` ends with the `pattern` string.
+  endsWith = pattern: str:
+    let
+      strLen = builtins.stringLength str;
+      patLen = builtins.stringLength pattern;
+    in if strLen >= patLen then
+      pattern == builtins.substring (strLen - patLen) patLen str
+    else
+      false;
 in {
   #
   inherit indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
     lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
-    rsplitString lpadString rpadString;
+    rsplitString lpadString rpadString startsWith;
 }
