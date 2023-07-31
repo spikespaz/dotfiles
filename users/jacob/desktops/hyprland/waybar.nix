@@ -304,7 +304,7 @@ in {
         };
         tooltip-format-activated =
           "Idle timer inhibited, device will not sleep.";
-        tooltop-format-deactivated =
+        tooltip-format-deactivated =
           "Idle timer enabled, device will sleep when not in use.";
       };
     };
