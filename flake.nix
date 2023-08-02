@@ -88,8 +88,18 @@
 
     vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
-    hyprland.url = "github:hyprwm/hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # Dependencies of packages from `hyprland-nix`.
+    hyprland-git.url = "github:hyprwm/hyprland";
+    hyprland-xdph-git.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    hyprland-protocols-git.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    # I want to lock each in my own `flake.lock`,
+    # and let them be used by `hyprland-nix`.
+    hyprland-nix.url = "github:spikespaz/hyprland-flake";
+    hyprland-nix.inputs = {
+      hyprland.follows = "hyprland-git";
+      hyprland-xdph.follows = "hyprland-xdph-git";
+      hyprland-protocols.follows = "hyprland-protocols-git";
+    };
 
     # The Hyprland input and its dependencies are overridden until
     # <https://github.com/hyprwm/Hyprland/pull/2210>

@@ -24,7 +24,7 @@ args@{ self, tree, lib, inputs, ... }: {
       # nix user repo packages
       inputs.nur.overlay
       # packages for window manager
-      inputs.hyprland.overlays.default
+      inputs.hyprland-nix.overlays.default
       # other packages
       inputs.slight.overlays.default
       inputs.vscode-extensions.overlays.default

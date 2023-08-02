@@ -1,7 +1,7 @@
 { self, config, lib, pkgs, inputs, ... }: {
   imports = [
     self.homeManagerModules.desktop-portals
-    self.homeManagerModules.hyprland
+    inputs.hyprland-nix.homeManagerModules.default
     ./config.nix
     ./monitors.nix
     ./windowrules.nix
