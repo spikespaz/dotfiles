@@ -102,17 +102,22 @@ in {
       discordModal
       tidalModal
     ])
+    # Barely translucent
     (map (rule [ "opacity 0.97 0.97" ]) [ discord ])
     (map (rule [ "opacity 0.97 0.97" "float" ]) [
       printerConfig
       audioControl
-      wifiControl
       bluetoothControl
       polkitAgent
       mountDialog
     ])
+    # More translucent
     (map (rule [ "opacity 0.92 0.92" ]) [ vscode steam tidal ])
-    (map (rule [ "opacity 0.92 0.92" "float" ]) [ filePickerPortal ])
+    (map (rule [ "opacity 0.92 0.92" "float" ]) [
+      filePickerPortal
+      wifiControl
+    ])
+    # Super translucent
     (map (rule [ "opacity 0.87 0.87" ]) [ ])
     (map (rule [ "opacity 0.87 0.87" "float" ]) [ calculator ])
   ];
