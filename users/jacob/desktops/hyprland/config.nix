@@ -28,13 +28,19 @@ in {
     # <https://wiki.hyprland.org/Configuring/Variables/#decoration>
     config.decoration = {
       rounding = 0;
-      blur_size = 2;
-      blur_passes = 3;
-      blur_ignore_opacity = true;
       shadow_range = 10;
       shadow_render_power = 2;
       active_shadow_color = rgba shadow 0.9;
       inactive_shadow_color = rgba shadow 0.6;
+      blur = {
+        size = 3; # 8
+        passes = 2; # 1
+        ignore_opacity = true; # false
+        xray = true; # false
+        noise = 6.5e-2; # 0.0117
+        contrast = 0.75; # 0.8916
+        brightness = 0.8; # 0.8172
+      };
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#input>
