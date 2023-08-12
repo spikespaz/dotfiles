@@ -116,21 +116,22 @@ in {
       '';
     };
 
-    batteryTimeouts = {
-      screenDim = lib.mkIf (screenDimTargetBAT != null)
-        (let lockName = "screenDim-battery_brightness";
-        in {
-          timeout = screenDimTimeoutBAT;
-          script = screenDimEnter {
-            target = screenDimTargetBAT;
-            duration = screenDimEnterDuration;
-            inherit lockName;
-          };
-          resumeScript = screenDimLeave {
-            duration = screenDimLeaveDuration;
-            inherit lockName;
-          };
-        });
+    batteryTimeouts = let
+      lockName.screenDim = "screenDim-battery_brightness";
+      lockName.kbdLightOff = "kbdLightOff-battery_brightness";
+    in {
+      screenDim = lib.mkIf (screenDimTimeoutBAT != null) {
+        timeout = screenDimTimeoutBAT;
+        script = screenDimEnter {
+          target = screenDimTargetBAT;
+          duration = screenDimEnterDuration;
+          lockName = lockName.screenDim;
+        };
+        resumeScript = screenDimLeave {
+          duration = screenDimLeaveDuration;
+          lockName = lockName.screenDim;
+        };
+      };
 
       autoLock = lib.mkIf (autoLockTimeoutBAT != null) {
         timeout = autoLockTimeoutBAT;
@@ -149,20 +150,18 @@ in {
         '';
       };
 
-      kbdLightOff = lib.mkIf (kbdLightOffTimeoutBAT != null)
-        (let lockName = "kbdLightOff-battery_brightness";
-        in {
-          timeout = kbdLightOffTimeoutBAT;
-          script = kbdLightOffEnter {
-            device = kbdLightDevice;
-            target = kbdLightOffValue;
-            inherit lockName;
-          };
-          resumeScript = kbdLightOffLeave {
-            device = kbdLightDevice;
-            inherit lockName;
-          };
-        });
+      kbdLightOff = lib.mkIf (kbdLightOffTimeoutBAT != null) {
+        timeout = kbdLightOffTimeoutBAT;
+        script = kbdLightOffEnter {
+          device = kbdLightDevice;
+          target = kbdLightOffValue;
+          lockName = lockName.kbdLightOff;
+        };
+        resumeScript = kbdLightOffLeave {
+          device = kbdLightDevice;
+          lockName = lockName.kbdLightOff;
+        };
+      };
 
       sleep = lib.mkIf (sleepTimeoutBAT != null) {
         timeout = sleepTimeoutBAT;
@@ -172,21 +171,22 @@ in {
       };
     };
 
-    pluggedInTimeouts = {
-      screenDim = lib.mkIf (screenDimTimeoutAC != null)
-        (let lockName = "screenDim-pluggedIn_brightness";
-        in {
-          timeout = screenDimTimeoutAC;
-          script = screenDimEnter {
-            target = screenDimTargetAC;
-            duration = screenDimEnterDuration;
-            inherit lockName;
-          };
-          resumeScript = screenDimLeave {
-            duration = screenDimLeaveDuration;
-            inherit lockName;
-          };
-        });
+    pluggedInTimeouts = let
+      lockName.screenDim = "screenDim-pluggedIn_brightness";
+      lockName.kbdLightOff = "kbdLightOff-pluggedIn_brightness";
+    in {
+      screenDim = lib.mkIf (screenDimTimeoutAC != null) {
+        timeout = screenDimTimeoutAC;
+        script = screenDimEnter {
+          target = screenDimTargetAC;
+          duration = screenDimEnterDuration;
+          lockName = lockName.screenDim;
+        };
+        resumeScript = screenDimLeave {
+          duration = screenDimLeaveDuration;
+          lockName = lockName.screenDim;
+        };
+      };
 
       autoLock = lib.mkIf (autoLockTimeoutAC != null) {
         timeout = autoLockTimeoutAC;
@@ -205,20 +205,18 @@ in {
         '';
       };
 
-      kbdLightOff = lib.mkIf (kbdLightOffTimeoutAC != null)
-        (let lockName = "kbdLightOff-pluggedIn_brightness";
-        in {
-          timeout = kbdLightOffTimeoutAC;
-          script = kbdLightOffEnter {
-            device = kbdLightDevice;
-            target = kbdLightOffValue;
-            inherit lockName;
-          };
-          resumeScript = kbdLightOffLeave {
-            device = kbdLightDevice;
-            inherit lockName;
-          };
-        });
+      kbdLightOff = lib.mkIf (kbdLightOffTimeoutAC != null) {
+        timeout = kbdLightOffTimeoutAC;
+        script = kbdLightOffEnter {
+          device = kbdLightDevice;
+          target = kbdLightOffValue;
+          lockName = lockName.kbdLightOff;
+        };
+        resumeScript = kbdLightOffLeave {
+          device = kbdLightDevice;
+          lockName = lockName.kbdLightOff;
+        };
+      };
 
       sleep = lib.mkIf (sleepTimeoutAC != null) {
         timeout = sleepTimeoutAC;
