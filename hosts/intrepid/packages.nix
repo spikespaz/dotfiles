@@ -1,5 +1,13 @@
 { pkgs, ... }: {
-  # NO GUI PACKAGES
+  # NOTE:
+  # You're supposed to add users to the `adbusers` group for
+  # these rules to work, but it works for me regardless.
+  # Perhaps these rules work for users in `wheel`?
+  # <https://github.com/NixOS/nixpkgs/blob/nixos-23.05/nixos/modules/programs/adb.nix>
+  programs.adb.enable = true;
+
+  # Packages which are appropriate for a typical Linux system.
+  # There should be **no GUI programs** in this list.
   environment.systemPackages = with pkgs; [
     ##################
     ### ESSENTIALS ###
