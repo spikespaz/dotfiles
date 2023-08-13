@@ -15,7 +15,7 @@ let
   # Options for timeouts on AC
   screenDimTimeoutAC = minutes 4 + seconds 30;
   autoLockTimeoutAC = minutes 5;
-  screenOffTimeoutAC = minutes 10;
+  screenOffTimeoutAC = minutes 15;
   kbdLightOffTimeoutAC = minutes 2;
   sleepTimeoutAC = null; # never
 
