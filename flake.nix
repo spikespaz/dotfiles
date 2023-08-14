@@ -4,26 +4,16 @@
     Jacob Birkett's personal computers.
   '';
 
-  outputs = inputs@{ self, nixpkgs, ... }:
+  outputs = inputs@{ self, nixpkgs, systems, ... }:
     let
-      inherit (self) lib tree systems;
-      pkgsFor = lib.genAttrs systems (system:
+      inherit (self) lib tree;
+      eachSystem = lib.genAttrs (import systems);
+      pkgsFor = eachSystem (system:
         import nixpkgs {
           localSystem = system;
           overlays = [ self.overlays.default ];
         });
     in {
-      # any of aarch64, arm, x86_64, linux and darwin.
-      # other platforms may be negotiable.
-      systems = with lib.systems.doubles;
-        lib.birdos.mkFlakeSystems [
-          [ x86_64 linux ]
-          [ arm linux ]
-          [ aarch64 linux ]
-          [ arm darwin ]
-          [ aarch64 darwin ]
-        ];
-
       lib = nixpkgs.lib.extend (import ./lib);
 
       # The purpose of `mkFlakeTree` is to recurse the project files,
@@ -32,8 +22,7 @@
       # directory structure of the flake, very much like the `tree` command.
       tree = lib.birdos.mkFlakeTree ./.;
 
-      formatter =
-        lib.genAttrs systems (system: inputs.nixfmt.packages.${system}.default);
+      formatter = eachSystem (system: inputs.nixfmt.packages.${system}.default);
 
       overlays = lib.pipe tree.overlays [
         (attrs: removeAttrs attrs [ "unfree" ])
@@ -80,6 +69,8 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nixpkgs.follows = "nixpkgs-unstable";
+
+    systems.url = "github:nix-systems/default";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";

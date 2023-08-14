@@ -23,6 +23,14 @@ let
       builtins.listToAttrs
     ];
 
+  # systems = with lib.systems.doubles;
+  #   lib.birdos.mkFlakeSystems [
+  #     [ x86_64 linux ]
+  #     [ arm linux ]
+  #     [ aarch64 linux ]
+  #     [ arm darwin ]
+  #     [ aarch64 darwin ]
+  #   ];
   mkFlakeSystems = matrix:
     lib.pipe matrix [
       (map (lib.applyArgs lib.intersectLists))
