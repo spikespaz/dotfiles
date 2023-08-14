@@ -45,7 +45,6 @@ in {
         rycee.translate-web-pages
 
         ### PERFORMANCE ###
-        rycee.h264ify
         rycee.auto-tab-discard
 
         ### BLOCKING ###
