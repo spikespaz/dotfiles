@@ -1,7 +1,7 @@
 args@{ self, config, lib, pkgs, ... }: {
   imports = [ self.homeManagerModules.zsh ];
 
-  home.packages = [ pkgs.most ];
+  home.packages = [ pkgs.most pkgs.nvimpager ];
 
   programs.starship = {
     enable = true;
@@ -100,7 +100,7 @@ args@{ self, config, lib, pkgs, ... }: {
       znap source zdharma-continuum/fast-syntax-highlighting
       # znap source z-shell/F-Sy-H
 
-      PAGER='${lib.getExe pkgs.most}'
+      PAGER='${lib.getExe pkgs.nvimpager}'
 
       ### KEYBINDINGS ###
 
