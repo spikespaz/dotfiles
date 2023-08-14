@@ -1,8 +1,8 @@
-final: prev:
+lib: lib0:
 let
-  callLibs = file: import file { lib = final; };
+  callLibs = file: import file { inherit lib; };
 
-  lib = {
+  libAttrs = {
     attrsets = callLibs ./attrsets.nix;
     builders = callLibs ./builders.nix;
     debug = callLibs ./debug.nix;
@@ -19,35 +19,36 @@ let
   };
 
   prelude = {
-    inherit (lib.attrsets)
+    inherit (libAttrs.attrsets)
       updates recursiveUpdates getAttrDefault getAttr thruAttr mapThruAttr
       mapListToAttrs attrPaths;
-    inherit (lib.debug) traceM traceValM;
+    inherit (libAttrs.debug) traceM traceValM;
     # FIXME find a new name for `lib.lists.elemAt`, because `nixpkgs` uses
     # `with` on `lib` after `builtins` which makes it use this `elemAt`.
-    inherit (lib.lists)
+    inherit (libAttrs.lists)
       indicesOf indicesOfPred indexOfDefault indexOf lastIndexOfDefault
       lastIndexOf elemAtDefault removeElems sublist split lsplit rsplit lpad
       rpad flattenCond;
-    inherit (lib.math) pow powi abs;
+    inherit (libAttrs.math) pow powi abs;
     # FIXME `substring` conflicts with `builtins.substring`.
-    inherit (lib.strings)
+    inherit (libAttrs.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
       lastIndexOfChar charAtDefault charAt removeChars lsplitString rsplitString
       lpadString rpadString strip lstrip rstrip trim startsWith endsWith;
-    inherit (lib.tests) mkTests mkTestSuite runTestsRecursive;
-    inherit (lib.radix) intToHex;
-    inherit (lib.shellscript)
+    inherit (libAttrs.tests) mkTests mkTestSuite runTestsRecursive;
+    inherit (libAttrs.radix) intToHex;
+    inherit (libAttrs.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;
-    inherit (lib.trivial) imply implyDefault applyArgs;
-    inherit (lib.units) bytes kbytes;
+    inherit (libAttrs.trivial) imply implyDefault applyArgs;
+    inherit (libAttrs.units) bytes kbytes;
   };
-in prev // prelude // {
+in lib0 // prelude // {
   birdos = {
-    inherit lib prelude;
-    inherit (lib.builders)
+    inherit prelude;
+    lib = libAttrs;
+    inherit (libAttrs.builders)
       mkFlakeTree mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay mkHost mkHome;
-    inherit (lib) colors;
+    inherit (libAttrs) colors;
   };
 
   maintainers.spikespaz = {
