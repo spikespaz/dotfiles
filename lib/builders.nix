@@ -121,9 +121,10 @@ let
     ... }:
     let
       ownArgs = builtins.attrNames (builtins.functionArgs (mkHome args));
-      lib = (if args ? lib then args.lib else nixpkgs.lib).extend (final: _: {
-        hm = import "${homeManager}/modules/lib" { lib = final; };
-      });
+      lib = (if args ? lib then args.lib else nixpkgs.lib).extend
+        (self: super: {
+          hm = import "${homeManager}/modules/lib" { lib = self; };
+        });
     in homeManager.lib.homeManagerConfiguration ((removeAttrs setup ownArgs)
       // {
         inherit modules;

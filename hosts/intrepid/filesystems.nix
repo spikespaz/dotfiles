@@ -49,8 +49,8 @@ in {
     kernelModules = [ "zfs" ];
 
     kernelPackages = lib.mkForce (if enableUnstableZfs then
-      (pkgs.linuxPackages_latest.extend (_: prev: {
-        zfsUnstable = prev.zfsUnstable.overrideAttrs
+      (pkgs.linuxPackages_latest.extend (self: super: {
+        zfsUnstable = super.zfsUnstable.overrideAttrs
           (self: super: { meta = super.meta // { broken = false; }; });
       }))
     else
