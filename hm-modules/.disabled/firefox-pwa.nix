@@ -56,8 +56,8 @@ in {
       FFPWA_SYSDATA = cfg.sysData;
       FFPWA_USERDATA = cfg.userData;
     };
-    programs.firefox.package = cfg.firefoxPackage.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ])
+    programs.firefox.package = cfg.firefoxPackage.overrideAttrs (self: super: {
+      nativeBuildInputs = (super.nativeBuildInputs or [ ])
         ++ [ pkgs.makeWrapper ];
       postFixup = ''
         wrapProgram ${lib.getExe cfg.firefoxPackage} \

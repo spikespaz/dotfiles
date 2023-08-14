@@ -11,16 +11,15 @@ let
     withOpenASAR = true;
     # fix for not respecting system browser
     nss = pkgs.nss_latest;
-  }).overrideAttrs (old:
-    let binaryName = "DiscordCanary";
-    in {
-      # why is this missing?
-      # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/networking/instant-messengers/discord/linux.nix#L99>
-      postFixup = ''
-        wrapProgram $out/opt/${binaryName}/${binaryName} \
-          --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--enable-features=UseOzonePlatform --ozone-platform=wayland}}" \
-      '';
-    });
+  }).overrideAttrs (let binaryName = "DiscordCanary";
+  in {
+    # why is this missing?
+    # <https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/networking/instant-messengers/discord/linux.nix#L99>
+    postFixup = ''
+      wrapProgram $out/opt/${binaryName}/${binaryName} \
+        --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--enable-features=UseOzonePlatform --ozone-platform=wayland}}" \
+    '';
+  });
 in {
   canary = {
     home.packages = [ discordPackage ];

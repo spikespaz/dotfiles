@@ -31,12 +31,8 @@ in {
   home.packages = [
     # TODO make a pull request
     # this is fixed on Prism Launcher
-    # (pkgs.polymc.overrideAttrs (old: {
-    #   buildInputs =
-    #     old.buildInputs
-    #     ++ [
-    #       pkgs.libsForQt5.qt5.qtwayland
-    #     ];
+    # (pkgs.polymc.overrideAttrs (self: super: {
+    #   buildInputs = super.buildInputs ++ [ pkgs.libsForQt5.qt5.qtwayland ];
     # }))
 
     # Qt5 is supported by qt5ct, Qt6 is not

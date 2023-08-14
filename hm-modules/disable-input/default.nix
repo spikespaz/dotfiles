@@ -119,9 +119,9 @@ in {
           --set PATH '${scriptPath}'
       '';
     };
-    wrappedPackage = package.overrideAttrs (old: {
+    wrappedPackage = package.overrideAttrs (self: super: {
       postFixup = ''
-        wrapProgram $out/bin/${old.pname} \
+        wrapProgram $out/bin/${super.pname} \
           --set DISABLE_DELAY '${toString cfg.delay}' \
           --set DISABLE_DURATION '${toString cfg.duration}' \
           --set NOTIFICATION_COUNTDOWN '${

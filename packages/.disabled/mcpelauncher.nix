@@ -9,12 +9,13 @@ let
   '';
 
   nlohmann_json' =
-    (nlohmann_json.override { stdenv = clangStdenv; }).overrideAttrs (_: rec {
+    (nlohmann_json.override { stdenv = clangStdenv; }).overrideAttrs
+    (self: super: {
       version = "3.7.3";
       src = fetchFromGitHub {
         owner = "nlohmann";
         repo = "json";
-        rev = "v${version}";
+        rev = "v${self.version}";
         hash = "sha256-PNH+swMdjrh53Ioz2D8KuERKFpKM+iBf+eHo+HvwORM=";
       };
     });

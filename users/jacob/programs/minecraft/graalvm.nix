@@ -12,7 +12,7 @@ let
       sha256 = "sha256-uey9VC3h7Qo9pGpinyJmqIIDJpj1/LxU2JI3K5GJsO0=";
     };
     meta.platforms = [ "x86_64-linux" ];
-  }).overrideAttrs (_: { doInstallCheck = false; });
+  }).overrideAttrs { doInstallCheck = false; };
 in {
   inherit graalvm8-ce;
   graalvm8-ce-jre = "${graalvm8-ce}/jre";

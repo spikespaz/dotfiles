@@ -1,5 +1,5 @@
 pkgs: pkgs0: {
-  nushell = pkgs0.nushell.overrideAttrs (old: rec {
+  nushell = pkgs0.nushell.overrideAttrs (self: super: {
     version = "unstable_03-17-2022";
     src = pkgs.fetchFromGitHub {
       owner = "nushell";
@@ -11,11 +11,11 @@ pkgs: pkgs0: {
     cargoSha256 = pkgs.lib.fakeSha256;
     # This isn't mentioned:
     # <https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/rust.section.md>
-    cargoDeps = old.cargoDeps.overrideAttrs (pkgs.lib.const {
-      name = "${old.pname}-${version}-vendor.tar.gz";
-      inherit src;
+    cargoDeps = super.cargoDeps.overrideAttrs {
+      name = "${self.pname}-${self.version}-vendor.tar.gz";
+      inherit (self) src;
       outputHash = "sha256-FZM9KcwUart+xXeSXUTo8iv2IkwM8LQ/vAltk9SqdUE=";
-    });
-    buildInputs = old.buildInputs or [ ] ++ [ pkgs.procps ];
+    };
+    buildInputs = super.buildInputs or [ ] ++ [ pkgs.procps ];
   });
 }

@@ -3,7 +3,7 @@ let inherit (pkgs) lib;
 in {
   # <https://github.com/NixOS/nixpkgs/pull/212306>
   # <https://github.com/laalsaas/nixpkgs/commit/c8bb1b66fd21c1d8d37ec8a177d01a7512a30a22>
-  handbrake = pkgs0.handbrake.overrideAttrs (old:
+  handbrake = pkgs0.handbrake.overrideAttrs (self: super:
     let
       version = "1.6.1";
 
@@ -16,7 +16,7 @@ in {
 
       ffmpegVersion = "5.1.1";
       ffmpegPatchesDir = "${src}/contrib/ffmpeg";
-      ffmpegCustom = pkgs.ffmpeg_5-full.overrideAttrs (old: {
+      ffmpegCustom = pkgs.ffmpeg_5-full.overrideAttrs (self: super: {
         version = ffmpegVersion;
         src = pkgs.fetchurl {
           url =
@@ -28,15 +28,15 @@ in {
           (lib.filterAttrs (name: type:
             type == "regular" && builtins.match ".+\\.patch" name != null))
           (lib.mapAttrsToList (name: _: "${ffmpegPatchesDir}/${name}"))
-          (patches: old.patches or [ ] ++ patches)
+          (patches: super.patches or [ ] ++ patches)
         ];
       });
 
       ffmpegOldName = "ffmpeg-full-4.4.1";
       ffmpegOld =
-        lib.findSingle (p: p.name == ffmpegOldName) null null old.buildInputs;
+        lib.findSingle (p: p.name == ffmpegOldName) null null super.buildInputs;
 
-      buildInputs = (lib.remove ffmpegOld old.buildInputs)
+      buildInputs = (lib.remove ffmpegOld super.buildInputs)
         ++ [ ffmpegCustom pkgs.svt-av1 ];
     in { inherit version src buildInputs; });
 }

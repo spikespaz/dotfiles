@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 let
-  # package = pkgs.swaylock-effects.overrideAttrs (old: rec {
+  # package = pkgs.swaylock-effects.overrideAttrs (self: super: {
   #   version = "1.6.11";
   #   src = pkgs.fetchFromGitHub {
   #     owner = "jirutka";
   #     repo = "swaylock-effects";
-  #     rev = "v${version}";
+  #     rev = "v${self.version}";
   #     sha256 = "sha256-MKmWVYssO9HAcP5uqwpy9kDa6/kfZyV2NI7ibozt7Ug=";
   #   };
   # });

@@ -51,7 +51,7 @@ in {
     kernelPackages = lib.mkForce (if enableUnstableZfs then
       (pkgs.linuxPackages_latest.extend (_: prev: {
         zfsUnstable = prev.zfsUnstable.overrideAttrs
-          (self: { meta = self.meta // { broken = false; }; });
+          (self: super: { meta = super.meta // { broken = false; }; });
       }))
     else
       config.boot.zfs.package.latestCompatibleLinuxPackages);

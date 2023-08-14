@@ -8,13 +8,13 @@
   microsoft-edge = {
     home.packages = [
       # TODO pull-request
-      (pkgs.microsoft-edge.overrideAttrs (old: {
+      (pkgs.microsoft-edge.overrideAttrs {
         nativeBuildInputs = [ pkgs.makeWrapper ];
         postFixup = ''
           wrapProgram $out/opt/microsoft/msedge/microsoft-edge \
             --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
         '';
-      }))
+      })
     ];
   };
 
@@ -136,11 +136,11 @@
     package = (pkgs.git.override {
       withLibsecret = true;
       # withSvnSupport = true;
-    }).overrideAttrs (old: {
+    }).overrideAttrs {
       # not sure why this is failing
       # <https://github.com/NixOS/nixpkgs/issues/195891>
       doInstallCheck = false;
-    });
+    };
   in {
     programs.git = {
       enable = true;

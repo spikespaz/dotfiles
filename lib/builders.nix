@@ -47,10 +47,10 @@ let
         value = lib.getAttrFromPath path pkgs;
       }))
       (map (it:
-        lib.setAttrByPath it.path (it.value.overrideAttrs (old:
-          lib.recursiveUpdate old {
-            meta.license = (if builtins.isList old.meta.license then
-              map (_: { free = true; }) old.meta.license
+        lib.setAttrByPath it.path (it.value.overrideAttrs (self: super:
+          lib.recursiveUpdate super {
+            meta.license = (if builtins.isList super.meta.license then
+              map (_: { free = true; }) super.meta.license
             else {
               free = true;
             });
