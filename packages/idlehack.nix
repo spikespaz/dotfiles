@@ -1,12 +1,12 @@
 { lib, stdenv, fetchFromGitHub, systemdSupport ? stdenv.isLinux, pkg-config
 , bash, dbus, systemd, xorg, ... }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (self: {
   pname = "idlehack";
   version = "unstable-2021-12-05";
 
   src = fetchFromGitHub {
     owner = "loops";
-    repo = pname;
+    repo = self.pname;
     rev = "fd73c76c2d289f9eb9ad9b0695fa9e9f151be22f";
     sha256 = "sha256-vURFnGid52F1Jy5S9O3LRskzzxeyMzlhbwdEYQrUvWc=";
   };
@@ -36,9 +36,9 @@ stdenv.mkDerivation rec {
       and then invokes "/bin/swayidle-inhibit" which is responsible for temporarily
       disabling the screen blanking.
     '';
-    inherit (src.meta) homepage;
+    inherit (self.src.meta) homepage;
     license = lib.licenses.isc;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ spikespaz ];
   };
-}
+})

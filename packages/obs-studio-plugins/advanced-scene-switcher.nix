@@ -1,14 +1,14 @@
 { lib, stdenv, fetchFromGitHub, wrapQtAppsHook, cmake, pkg-config, obs-studio
 , qtbase, xorg, procps, curlMinimal, asio, websocketpp, opencv
 , withOpenCV ? true, }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (self: {
   pname = "advanced-scene-switcher";
   version = "1.20.4";
 
   src = fetchFromGitHub {
     owner = "WarmUpTill";
     repo = "SceneSwitcher";
-    rev = version;
+    rev = self.version;
     sha256 = "sha256-xGPTrqJZcKLK1fV+FbgWdVFdwyI/DC5F2QzUy8YbUHs=";
   };
 
@@ -23,4 +23,4 @@ stdenv.mkDerivation rec {
     mv $out/data/obs-plugins/* -t $out/share/obs/obs-plugins
     rm -rf $out/{obs-plugins,data}
   '';
-}
+})

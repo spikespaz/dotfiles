@@ -1,12 +1,13 @@
 { stdenvNoCC, fetchzip, fontFormats ? [ "ttf" "woff" "woff2" ] }:
-stdenvNoCC.mkDerivation rec {
+stdenvNoCC.mkDerivation (self: {
   pname = "fork-awesome";
   version = "1.2.0";
 
   preferLocalBuild = true;
 
   src = fetchzip {
-    url = "https://github.com/ForkAwesome/Fork-Awesome/archive/${version}.zip";
+    url =
+      "https://github.com/ForkAwesome/Fork-Awesome/archive/${self.version}.zip";
     sha256 = "sha256-zG6/0dWjU7/y/oDZuSEv+54Mchng64LVyV8bluskYzc=";
   };
 
@@ -22,4 +23,4 @@ stdenvNoCC.mkDerivation rec {
 
     runHook postInstall
   '';
-}
+})

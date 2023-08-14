@@ -1,5 +1,5 @@
 { lib, stdenv, fetchFromGitHub, }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (self: {
   pname = "adi1090x-rofi-themes";
   version = "1";
 
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     cp -rf ./files/* "$config_dir"
 
     for file in $config_dir/**/*.rasi; do
-      sed -i "s|${replaceImportFrom}|${replaceImportTo}|g" "$file"
+      sed -i "s|${self.replaceImportFrom}|${self.replaceImportTo}|g" "$file"
     done
 
     runHook postInstall
@@ -33,9 +33,9 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "adi1090x's Rofi themes";
-    inherit (src) hostname;
+    inherit (self.src) hostname;
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ spikespaz ];
   };
-}
+})

@@ -6,14 +6,14 @@ enableChafa ? false, chafa, enableImageMagick ? false, imagemagick_light
 , enableOpenCLModule ? true, ocl-icd, opencl-headers, enableOpenGLModule ? true
 , libglvnd, enableVulkanModule ? true, vulkan-loader, enableWayland ? true
 , wayland, enableX11 ? true, xorg, enableXFCE ? false, xfce, }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (self: {
   pname = "fastfetch";
   version = "1.11.1";
 
   src = fetchFromGitHub {
     owner = "LinusDierheimer";
-    repo = pname;
-    rev = version;
+    repo = self.pname;
+    rev = self.version;
     hash = "sha256-glC6zYnZ3L8YGLAIc16jWbSdRBIWyTWd8XTSjtR4G88=";
   };
 
@@ -28,26 +28,26 @@ stdenv.mkDerivation rec {
     ++ lib.optional enableWayland wayland ++ lib.optional enableX11 xorg.libxcb
     ++ lib.optional enableXFCE xfce.xfconf;
 
-  buildInputs = runtimeDependencies
+  buildInputs = self.runtimeDependencies
     ++ lib.optional enableOpenCLModule opencl-headers
     ++ lib.optional enableX11 xorg.libX11;
 
   cmakeFlags = [ "-DCMAKE_INSTALL_SYSCONFDIR=${placeholder "out"}/etc" ];
 
-  ldLibraryPath = lib.makeLibraryPath runtimeDependencies;
+  libraryPath = lib.makeLibraryPath self.runtimeDependencies;
 
   postInstall = ''
     wrapProgram $out/bin/fastfetch \
-      --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
+      --prefix LD_LIBRARY_PATH : "${self.libraryPath}"
     wrapProgram $out/bin/flashfetch \
-      --prefix LD_LIBRARY_PATH : "${ldLibraryPath}"
+      --prefix LD_LIBRARY_PATH : "${self.libraryPath}"
   '';
 
   meta = {
     description = "Like neofetch, but much faster";
-    inherit (src.meta) homepage;
+    inherit (self.src.meta) homepage;
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ spikespaz ];
   };
-}
+})

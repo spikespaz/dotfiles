@@ -1,17 +1,14 @@
 { lib, stdenv, fetchFromGitHub, cmake, libsForQt5, qt6, tree, }:
-let
+stdenv.mkDerivation (self: {
+  pname = "qtstyleplugin-kvantum-qt6";
   version = "1.0.9";
-  source = fetchFromGitHub {
+
+  src = (fetchFromGitHub {
     owner = "tsujan";
     repo = "Kvantum";
-    rev = "V${version}";
+    rev = "V${self.version}";
     sha256 = "sha256-5/cScJpi5Z5Z/SjizKfMTGytuEo2uUT6QtpMnn7JhKc=";
-  };
-in stdenv.mkDerivation rec {
-  pname = "qtstyleplugin-kvantum-qt6";
-  inherit version source;
-
-  src = "${source}/Kvantum";
+  }).outPath + "/Kvantum";
 
   nativeBuildInputs = [ cmake qt6.qttools ];
 
@@ -36,4 +33,4 @@ in stdenv.mkDerivation rec {
     install -Dm555 ./style/libkvantum.so \
       -t $out/$qtPluginPrefix
   '';
-}
+})

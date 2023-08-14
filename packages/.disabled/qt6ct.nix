@@ -1,13 +1,13 @@
 { stdenv, lib, fetchFromGitHub, wrapQtAppsHook, qtbase, qtsvg, qttools, qmake
 , qtwayland, }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (self: {
   pname = "qt6ct";
   version = "0.7";
 
   src = fetchFromGitHub {
     owner = "trialuser02";
     repo = "qt6ct";
-    rev = version;
+    rev = self.version;
     sha256 = "sha256-7WuHdb7gmdC/YqrPDT7OYbD6BEm++EcIkmORW7cSPDE=";
   };
 
@@ -27,4 +27,4 @@ stdenv.mkDerivation rec {
   #   license = licenses.bsd2;
   #   maintainers = with maintainers; [ralith];
   # };
-}
+})

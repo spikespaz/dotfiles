@@ -3,7 +3,7 @@
 , enableThaiFonts ? true, enableChineseSimplifiedFonts ? true
 , enableChineseTraditionalFonts ? true, enableOtherFonts ? true, }:
 let inherit (import ./hashes.nix { }) fonts sha256Hashes;
-in stdenv.mkDerivation rec {
+in stdenv.mkDerivation (self: {
   pname = "ttf-ms-win11";
   version = "1";
 
@@ -72,7 +72,7 @@ in stdenv.mkDerivation rec {
   configurePhase = ''
     runHook preConfigure
 
-    ${lib.toShellVar "filenames" enabledFonts}
+    ${lib.toShellVar "filenames" self.enabledFonts}
     ${lib.toShellVar "checksums" sha256Hashes}
 
     echo "Preparing to install ''${#filenames[@]} fonts."
@@ -127,7 +127,7 @@ in stdenv.mkDerivation rec {
     echo "Installing license files..."
     install -Dm444 ./license.rtf \
       -t "$out/share/licenses/WindowsFonts"
-    install -Dm444 '${eula}' \
+    install -Dm444 '${self.eula}' \
       -t "$out/share/licenses/WindowsFonts"
 
     runHook postInstall
@@ -141,4 +141,4 @@ in stdenv.mkDerivation rec {
     license = lib.licenses.unfreeRedistributable;
     maintainers = with lib.maintainers; [ spikespaz ];
   };
-}
+})

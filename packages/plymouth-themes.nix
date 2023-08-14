@@ -1,5 +1,5 @@
 { lib, stdenv, fetchFromGitHub, pack ? 2, theme ? "green_blocks", ... }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (self: {
   pname = "adi1090x-plymouth-themes";
   version = "1.0.0";
 
@@ -32,9 +32,9 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "A collection of plymouth themes ported from Android.";
-    inherit (src.meta) homepage;
+    inherit (self.src.meta) homepage;
     license = lib.licenses.gpl3;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ spikespaz ];
   };
-}
+})
