@@ -37,14 +37,14 @@ let
       lib.concatLists
     ];
 
-  mkJoinedOverlays = overlays: final: prev:
-    lib.foldl' (attrs: overlay: attrs // (overlay final prev)) { } overlays;
+  mkJoinedOverlays = overlays: pkgs: pkgs0:
+    lib.foldl' (attrs: overlay: attrs // (overlay pkgs pkgs0)) { } overlays;
 
-  mkUnfreeOverlay = prev: paths:
-    lib.pipe paths [
+  mkUnfreeOverlay = pkgs: pkgs0:
+    lib.pipe pkgs0 [
       (map (path: {
         inherit path;
-        value = lib.getAttrFromPath path prev;
+        value = lib.getAttrFromPath path pkgs;
       }))
       (map (it:
         lib.setAttrByPath it.path (it.value.overrideAttrs (old:

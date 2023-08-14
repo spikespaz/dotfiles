@@ -30,8 +30,8 @@
         (attrs:
           attrs // {
             default = tree.packages.default;
-            allowUnfree = _: prev:
-              lib.birdos.mkUnfreeOverlay prev [ [ "ttf-ms-win11" ] ];
+            allowUnfree = pkgs: pkgs0:
+              lib.birdos.mkUnfreeOverlay pkgs0 [ [ "ttf-ms-win11" ] ];
           })
       ];
       packages =

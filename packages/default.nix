@@ -1,24 +1,23 @@
-final: prev: {
+pkgs: pkgs0: {
   # Individual packages
 
-  ja-netfilter = final.callPackage ./ja-netfilter { };
-  prtsc = final.callPackage ./prtsc { };
-  ttf-ms-win11 = final.callPackage ./ttf-ms-win11 { };
-  fastfetch = final.callPackage ./fastfetch.nix { };
-  fork-awesome = final.callPackage ./fork-awesome.nix { };
-  idlehack = final.callPackage ./idlehack.nix { };
-  plymouth-themes = final.callPackage ./plymouth-themes.nix { };
-  proton-ge-custom = final.callPackage ./proton-ge-custom.nix { };
-  qt6ct = final.qt6.callPackage ./qt6ct.nix { };
-  nerdfonts-symbols-only = final.callPackage ./nerdfonts.nix { };
+  ja-netfilter = pkgs.callPackage ./ja-netfilter { };
+  prtsc = pkgs.callPackage ./prtsc { };
+  ttf-ms-win11 = pkgs.callPackage ./ttf-ms-win11 { };
+  fastfetch = pkgs.callPackage ./fastfetch.nix { };
+  fork-awesome = pkgs.callPackage ./fork-awesome.nix { };
+  idlehack = pkgs.callPackage ./idlehack.nix { };
+  plymouth-themes = pkgs.callPackage ./plymouth-themes.nix { };
+  proton-ge-custom = pkgs.callPackage ./proton-ge-custom.nix { };
+  qt6ct = pkgs.qt6.callPackage ./qt6ct.nix { };
+  nerdfonts-symbols-only = pkgs.callPackage ./nerdfonts.nix { };
 
   # Package sets
 
-  obs-studio-plugins = prev.obs-studio-plugins // {
+  obs-studio-plugins = pkgs0.obs-studio-plugins // {
     advanced-scene-switcher =
-      final.qt6.callPackage ./obs-studio-plugins/advanced-scene-switcher.nix
-      { };
-    advanced-scene-switcher-qt5 = final.libsForQt5.callPackage
+      pkgs.qt6.callPackage ./obs-studio-plugins/advanced-scene-switcher.nix { };
+    advanced-scene-switcher-qt5 = pkgs.libsForQt5.callPackage
       ./obs-studio-plugins/advanced-scene-switcher.nix { };
   };
 }
