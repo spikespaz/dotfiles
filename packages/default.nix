@@ -7,7 +7,6 @@ pkgs: pkgs0: {
   fastfetch = pkgs.callPackage ./fastfetch.nix { };
   fork-awesome = pkgs.callPackage ./fork-awesome.nix { };
   idlehack = pkgs.callPackage ./idlehack.nix { };
-  plymouth-themes = pkgs.callPackage ./plymouth-themes.nix { };
   proton-ge-custom = pkgs.callPackage ./proton-ge-custom.nix { };
   qt6ct = pkgs.qt6.callPackage ./qt6ct.nix { };
   nerdfonts-symbols-only = pkgs.callPackage ./nerdfonts.nix { };
