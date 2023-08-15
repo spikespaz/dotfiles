@@ -30,12 +30,13 @@ in {
 
   # configure plymouth theme
   # <https://github.com/adi1090x/plymouth-themes>
-  boot.plymouth = let
-    pack = 3;
-    theme = "hud_3";
+  # <https://github.com/NixOS/nixpkgs/blob/nixos-23.05/pkgs/data/themes/adi1090x-plymouth-themes/shas.nix>
+  boot.plymouth = let theme = "colorful_loop";
   in {
     enable = true;
-    themePackages = [ (pkgs.plymouth-themes.override { inherit pack theme; }) ];
+    themePackages = [
+      (pkgs.adi1090x-plymouth-themes.override { selected_themes = [ theme ]; })
+    ];
     inherit theme;
   };
 
