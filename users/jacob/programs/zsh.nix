@@ -1,7 +1,18 @@
-args@{ self, config, lib, pkgs, ... }: {
+args@{ self, config, lib, pkgs, ... }:
+let
+  # FIXME use symlinkJoin
+  # FIXME git_colors based on git config
+  nvimpager' = pkgs.nvimpager.overrideAttrs (self: super: {
+    nativeBuildInputs = super.nativeBuildInputs or [ ] ++ [ pkgs.makeWrapper ];
+    postInstall = super.postInstall or "" + ''
+      wrapProgram $out/bin/nvimpager \
+        --add-flags '-- -c "lua nvimpager.maps = false; nvimpager.git_colors = true"'
+    '';
+  });
+in {
   imports = [ self.homeManagerModules.zsh ];
 
-  home.packages = [ pkgs.most pkgs.nvimpager ];
+  home.packages = [ pkgs.most nvimpager' ];
 
   programs.starship = {
     enable = true;
@@ -100,7 +111,7 @@ args@{ self, config, lib, pkgs, ... }: {
       znap source zdharma-continuum/fast-syntax-highlighting
       # znap source z-shell/F-Sy-H
 
-      PAGER='${lib.getExe pkgs.nvimpager}'
+      PAGER='${lib.getExe nvimpager'}'
 
       ### KEYBINDINGS ###
 
