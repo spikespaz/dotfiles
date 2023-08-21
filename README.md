@@ -6,18 +6,23 @@ for my computers running [NixOS].
 There are may modules and packages that some people may find useful to
 utilize in their own [NixOS] or [Home Manager] environments.
 
-> Note that the command:
+> [!IMPORTANT]
+> The following command, which most flakes recommend, does not work currently.
 >
 > ```sh
 > nix flake show 'github:spikespaz/dotfiles'
 > ```
 >
-> Currently does not work, because the `formatter` output points to a package
+> This is because the `formatter` output points to a package
 > which uses IFD. This means that running the above command on a system that has
 > `allow-import-from-derivation` disabled will result in a failure.
 >
 > Please use the provided `nix eval` commands or browse the repository to
 > explore its features until this is rectified.
+
+> [!WARNING]
+> All commands assume that you are at the root of the cloned repository,
+> unless specified otherwise.
 
 ---
 
@@ -33,7 +38,7 @@ add it as an input in your `flake.nix`:
   inputs.birdos.inputs.nixpkgs.follows = "nixpkgs";
 }
 ```
-
+> [!NOTE]
 > **Q:** What does the second line with `follows` accomplish?
 >
 > **A:** The first time something from a flake is built (or some other command is run),
@@ -66,6 +71,7 @@ and the
 [Hyprland module](https://github.com/spikespaz/dotfiles/tree/master/hm-modules/hyprland)
 ([example config](https://github.com/spikespaz/dotfiles/tree/master/users/jacob/desktops/hyprland)).
 
+> [!NOTE]
 > ### List available modules
 >
 > To see all the modules made available, run the command(s):
@@ -127,6 +133,7 @@ This is a larger example that shows usage of both [NixOS] and [Home Manager] mod
 It also shows several different ways of using the `imports` attribute
 that are specific to the circumstance.
 
+> [!NOTE]
 > I think that it is best-practice to keep imports of modules to the scopes
 > in which they are used. In the long run, if a file is included in your module
 > tree somewhere, the options defined by it are made globally available.
@@ -371,6 +378,7 @@ Some `lib` functions added by this flake are top-level, but some
 that are not generally useful to the bulk of configuration are hidden
 behind the `birdos` attribute (such as flake utilities).
 
+> [!NOTE]
 > ### List additional prelude functions
 >
 > You can learn what is inherited at the top-level `lib`
@@ -386,8 +394,9 @@ behind the `birdos` attribute (such as flake utilities).
 # Packages
 
 For packages, you have two options. Either use the flake's `packages` output
-or the `overlays` output (read [more about this](#notes-about-using-the-default-overlay)).
+or the `overlays` output (read [more about this](#using-the-default-overlay)).
 
+> [!NOTE]
 > ### List available packages and overlays
 >
 > Run this command to print out all of the available package names:
@@ -511,7 +520,8 @@ For example, installing `fastfetch` as a system package:
 }
 ```
 
-> ### Notes about using the `default` overlay
+> [!WARNING]
+> ### Using the `default` overlay
 >
 > You might want to use the `default` overlay if you use multiple packages
 > from this flake, or if you want to compile them with dependencies provided by your
@@ -539,8 +549,6 @@ This section is mostly for my personal reference,
 but it is also good for the newbies so I will make it extensive.
 Some of these are untested because I am writing them down when I feel clever,
 if any are wrong, please open an issue.
-
-> All commands assume that you are at the root of the cloned repository.
 
 ## Build activation packages
 
@@ -572,6 +580,7 @@ that you are using a configuration that specifies
 `user.users.root.hashedPassword = "!"`, which effectively disables root login.
 Do not use this option if you have no users configured.
 
+> [!NOTE]
 > The following command tells nix to run four jobs at a time,
 > each job with access to a quarter of your CPU cores.
 > For example, with a 6-core, 12-thread CPU, each job would be allocated 3 threads,
@@ -640,8 +649,9 @@ personal configurations for me to read and learn from.
 - <https://github.com/viperML/dotfiles>
 - <https://github.com/hlissner/dotfiles>
 
-If you came here on your own, and would like to find help with Nix or [NixOS],
-I encourage you to join [this small Discord server](https://discord.gg/8ydgceUJDm), mostly led by [@NobbZ].
+> [!IMPORTANT]
+> If you came here on your own, and would like to find help with Nix or [NixOS],
+> I encourage you to join [this small Discord server](https://discord.gg/8ydgceUJDm), mostly led by [@NobbZ].
 
 ---
 
