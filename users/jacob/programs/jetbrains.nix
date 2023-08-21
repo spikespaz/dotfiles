@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   ja-netfilter = pkgs.ja-netfilter.override {
     programName = "jetbrains";
@@ -30,22 +30,35 @@ let
     --add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED
     -javaagent:${javaAgentJar}=jetbrains
   '';
+  forkingWrapper = package: wrapperName:
+    let
+      exe = lib.getExe package;
+      wrapperExe = pkgs.writeShellScriptBin wrapperName ''
+        ${exe} "$@" >/dev/null 2>&1 &
+      '';
+    in pkgs.symlinkJoin {
+      name = package.name;
+      paths = [ package wrapperExe ];
+      postBuild = ''
+        ln -s ${exe} $out/bin/${wrapperName}-unwrapped
+      '';
+    };
+  wrapJetBrains = package: name:
+    forkingWrapper (package.override { inherit vmopts; }) name;
 in {
-  clion = {
-    home.packages = [ (pkgs.jetbrains.clion.override { inherit vmopts; }) ];
-  };
-  goland = {
-    home.packages = [ (pkgs.jetbrains.goland.override { inherit vmopts; }) ];
-  };
-  webstorm = {
-    home.packages = [ (pkgs.jetbrains.webstorm.override { inherit vmopts; }) ];
-  };
-  idea = {
-    home.packages =
-      [ (pkgs.jetbrains.idea-ultimate.override { inherit vmopts; }) ];
-  };
-  pycharm = {
-    home.packages =
-      [ (pkgs.jetbrains.pycharm-professional.override { inherit vmopts; }) ];
-  };
+  clion = let clion' = wrapJetBrains pkgs.jetbrains.clion "clion";
+  in { home.packages = [ clion' ]; };
+
+  goland = let goland' = wrapJetBrains pkgs.jetbrains.goland "goland";
+  in { home.packages = [ goland' ]; };
+
+  webstorm = let webstorm' = wrapJetBrains pkgs.jetbrains.webstorm "webstorm";
+  in { home.packages = [ webstorm' ]; };
+
+  idea = let idea' = wrapJetBrains pkgs.jetbrains.idea-ultimate "idea";
+  in { home.packages = [ idea' ]; };
+
+  pycharm =
+    let pycharm' = wrapJetBrains pkgs.jetbrains.pycharm-professional "pycharm";
+    in { home.packages = [ pycharm' ]; };
 }
