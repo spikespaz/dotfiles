@@ -13,6 +13,7 @@ pkgs: pkgs0: {
 
   # Package sets
 
+  zsh-plugins = pkgs.callPackage ./zsh-plugins.nix { };
   obs-studio-plugins = pkgs0.obs-studio-plugins // {
     advanced-scene-switcher =
       pkgs.qt6.callPackage ./obs-studio-plugins/advanced-scene-switcher.nix { };
