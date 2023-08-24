@@ -6,7 +6,7 @@ let
   cfg = config.programs.zsh.alt;
   inherit (lib) types;
 in {
-  imports = [ ./znap.nix ./integrations.nix ];
+  imports = [ ./integrations.nix ];
 
   options = {
     programs.zsh.alt = {
