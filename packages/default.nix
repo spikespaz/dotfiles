@@ -9,7 +9,7 @@ pkgs: pkgs0: {
   idlehack = pkgs.callPackage ./idlehack.nix { };
   proton-ge-custom = pkgs.callPackage ./proton-ge-custom.nix { };
   qt6ct = pkgs.qt6.callPackage ./qt6ct.nix { };
-  nerdfonts-symbols-only = pkgs.callPackage ./nerdfonts.nix { };
+  nerdfonts-symbols = pkgs.callPackage ./nerdfonts.nix { };
 
   # Package sets
 
