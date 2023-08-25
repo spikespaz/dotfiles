@@ -106,8 +106,6 @@
 
     nixfmt.url = "github:serokell/nixfmt";
 
-    spicetify.url = "github:the-argus/spicetify-nix";
-
     # polymc.url = "github:PolyMC/PolyMC";
 
     prism-launcher.url = "github:PrismLauncher/PrismLauncher";

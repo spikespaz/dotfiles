@@ -1,3 +1,0 @@
-[submodule "inputs/spicetify"]
-	path = inputs/spicetify
-	url = https://github.com/spikespaz/spicetify-nix
