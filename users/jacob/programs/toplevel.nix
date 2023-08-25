@@ -132,25 +132,20 @@
   ### DEVELOPMENT TOOLS ###
   #########################
 
-  git = let
-    package = (pkgs.git.override {
-      withLibsecret = true;
-      # withSvnSupport = true;
-    }).overrideAttrs {
-      # not sure why this is failing
-      # <https://github.com/NixOS/nixpkgs/issues/195891>
-      doInstallCheck = false;
-    };
-  in {
+  git = {
     programs.git = {
       enable = true;
-      package = package;
+      package = pkgs.git.override {
+        withLibsecret = true;
+        # withSvnSupport = true;
+      };
 
       userName = "Jacob Birkett";
       userEmail = "jacob@birkett.dev";
 
       extraConfig = {
-        credential.helper = "${package}/bin/git-credential-libsecret";
+        credential.helper =
+          "${config.programs.git.package}/bin/git-credential-libsecret";
       };
 
       # better looking diffs
