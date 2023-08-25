@@ -1,14 +1,14 @@
 { lib, pkgs, ... }: {
   programs.vscode.enable = true;
   programs.vscode.package = let
-    editorPackage = pkgs.vscode;
+    super = pkgs.vscode;
     fontPackages = with pkgs; [
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
       material-design-icons
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
   in (pkgs.symlinkJoin {
-    inherit (editorPackage) name pname version;
-    paths = [ editorPackage ] ++ fontPackages;
+    inherit (super) name pname version;
+    paths = [ super ] ++ fontPackages;
   });
 
   programs.vscode.extensions =
@@ -71,7 +71,10 @@
     ## Appearances ##
 
     # the most important setting
-    "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Material Design Icons'";
+    "editor.fontFamily" = lib.concatMapStringsSep ", " (s: "'${s}'") [
+      "Material Design Icons"
+      "JetBrainsMono Nerd Font"
+    ];
     "editor.fontSize" = 14;
     "editor.cursorSmoothCaretAnimation" = "explicit";
     "editor.cursorStyle" = "block";
@@ -92,13 +95,13 @@
 
     # title
     "window.titleSeparator" = " - ";
-    "window.title" = lib.concatStrings (map (s: "\${${s}}") [
+    "window.title" = lib.concatMapStrings (s: "\${${s}}") [
       "rootName"
       "separator"
       "activeEditorMedium"
       "separator"
       "appName"
-    ]);
+    ];
 
     # scale the ui down
     "window.zoomLevel" = -1;
