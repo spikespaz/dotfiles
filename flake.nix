@@ -85,7 +85,7 @@
     hyprland-protocols-git.url = "github:hyprwm/xdg-desktop-portal-hyprland";
     # I want to lock each in my own `flake.lock`,
     # and let them be used by `hyprland-nix`.
-    hyprland-nix.url = "github:spikespaz/hyprland-flake";
+    hyprland-nix.url = "github:spikespaz/hyprland-nix";
     hyprland-nix.inputs = {
       hyprland.follows = "hyprland-git";
       hyprland-xdph.follows = "hyprland-xdph-git";
