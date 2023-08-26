@@ -39,7 +39,8 @@ let
     inherit (libAttrs.radix) intToHex;
     inherit (libAttrs.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;
-    inherit (libAttrs.trivial) imply implyDefault applyArgs;
+    inherit (libAttrs.trivial)
+      not nand nor xor xnor imply implyDefault applyArgs;
     inherit (libAttrs.units) bytes kbytes;
   };
 in lib0 // prelude // {
