@@ -9,6 +9,9 @@ in {
   ### PREAMBLE ###
   ################
 
+  # It doesn't even work with flakes...
+  news.display = "silent";
+
   # fix for some display managers not using ~/.profile
   systemd.user.sessionVariables = config.home.sessionVariables;
 
@@ -24,11 +27,6 @@ in {
   xdg.enable = true;
   xdg.userDirs.enable = true;
   xdg.userDirs.createDirectories = true;
-
-  home.sessionVariables = {
-    # gtk applications should use filepickers specified by xdg
-    GTK_USE_PORTAL = "1";
-  };
 
   programs.home-manager.enable = true;
 
