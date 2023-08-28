@@ -93,6 +93,16 @@ in {
     xdg.desktopPortals = {
       enable = lib.mkEnableOption (lib.mdDoc "");
 
+      frontendPackage = lib.mkOption {
+        type = types.package;
+        default = pkgs.xdg-desktop-portal;
+        description = lib.mdDoc ''
+          The frontend service package that provides the DBus integration.
+
+          This option is not for backend portal packages.
+        '';
+      };
+
       # <https://github.com/NixOS/nixpkgs/blob/f155f0cf4ea43c4e3c8918d2d327d44777b6cad4/nixos/modules/config/xdg/portal.nix#L65-L75>
       xdgOpenUsePortal = lib.mkOption {
         type = types.bool;
@@ -137,8 +147,8 @@ in {
     };
   };
   config = let
-    portalPackages = [ pkgs.xdg-desktop-portal ]
-      ++ lib.mapAttrsToList (name: value: value.finalPackage) cfg.portals;
+    portalPackages =
+      lib.mapAttrsToList (name: value: value.finalPackage) cfg.portals;
     joinedPortals = pkgs.buildEnv {
       name = "xdg-desktop-portals";
       paths = portalPackages;
@@ -146,7 +156,7 @@ in {
         [ "/share/xdg-desktop-portal/portals" "/share/applications" ];
     };
   in lib.mkIf cfg.enable {
-    home.packages = portalPackages;
+    home.packages = [ cfg.frontendPackage ] ++ portalPackages;
     home.sessionVariables = {
       XDG_DESKTOP_PORTAL_DIR =
         "${joinedPortals}/share/xdg-desktop-portal/portals";
