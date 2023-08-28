@@ -36,16 +36,16 @@
   xdg.desktopPortals = {
     enable = true;
     portals = let useIn = [ "Hyprland" ];
-    in [
-      {
+    in {
+      hyprland = {
         package = pkgs.xdg-desktop-portal-hyprland;
         inherit useIn;
-      }
-      {
+      };
+      kde = {
         package = pkgs.libsForQt5.xdg-desktop-portal-kde;
         interfaces = [ "org.freedesktop.impl.portal.FileChooser" ];
         inherit useIn;
-      }
-    ];
+      };
+    };
   };
 }

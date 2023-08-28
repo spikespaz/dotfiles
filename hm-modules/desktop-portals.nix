@@ -3,7 +3,7 @@ let
   inherit (lib) types;
   cfg = config.xdg.desktopPortals;
 
-  xdgPortal = types.submodule ({ config, ... }: {
+  xdgPortal = types.submodule ({ config, name, ... }: {
     options = {
       package = lib.mkOption {
         type = types.package;
@@ -13,20 +13,15 @@ let
       };
       portalName = lib.mkOption {
         type = types.singleLineStr;
-        defaultText = lib.mdDoc ''
-          This is the name of the main `*.portal` file in the package,
-          with the file extension removed.
-
-          By default, it is assumed that the `*.portal` file is named the
-          same as the package with the `xdg-desktop-portal-` prefix removed.
+        default = name;
+        description = lib.mdDoc ''
+          The name of the `*.portal` file without the file extension,
+          relative to the package's `$out/share/xdg-desktop-portal/portals`
+          directory.
 
           For example with the {package}`pkgs.xdg-desktop-portal-wlr` package,
           whose `pname` is `xdg-desktop-portal-wlr`, the default value for this
-          option would be `wlr`.
-        '';
-        description = lib.mdDoc ''
-          The name of the `*.portal` file without the suffix, relative to
-          the package's `$out/share/xdg-desktop-portal/portals` directory.
+          option should be `wlr`.
         '';
       };
       useIn = lib.mkOption {
@@ -72,10 +67,6 @@ let
       };
     };
     config = {
-      portalName = lib.mkDefault (lib.pipe config.package.pname [
-        (lib.removePrefix "xdg-desktop-portal-")
-        (lib.removeSuffix ".portal")
-      ]);
       finalPackage = pkgs.symlinkJoin {
         inherit (config.package) name pname version;
         paths = [ config.package ];
@@ -118,16 +109,36 @@ in {
       };
 
       portals = lib.mkOption {
-        type = types.listOf xdgPortal;
-        default = [ ];
-        description = lib.mdDoc "";
-        example = lib.literalExpression "";
+        type = types.attrsOf xdgPortal;
+        default = { };
+        description = lib.mdDoc ''
+          An attribute set of portal specifications.
+
+          The name should match the name of the package's main `*.portal` file,
+          without the file extension.
+
+          See the documentation of this option type for more information.
+        '';
+        example = lib.literalExpression ''
+          {
+            wlr = {
+              package = pkgs.xdg-desktop-portal-wlr;
+              useIn = ["sway"];
+            };
+            kde = {
+              package = pkgs.libsForQt5.xdg-desktop-portal-kde;
+              # Only the `FileChooser` interface is desired.
+              interfaces = [ "org.freedesktop.impl.portal.FileChooser" ];
+              useIn = ["sway"];
+            };
+          }
+        '';
       };
     };
   };
   config = let
     portalPackages = [ pkgs.xdg-desktop-portal ]
-      ++ map (it: it.finalPackage) cfg.portals;
+      ++ lib.mapAttrsToList (name: value: value.finalPackage) cfg.portals;
     joinedPortals = pkgs.buildEnv {
       name = "xdg-desktop-portals";
       paths = portalPackages;
