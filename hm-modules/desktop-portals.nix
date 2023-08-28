@@ -102,6 +102,21 @@ in {
     xdg.desktopPortals = {
       enable = lib.mkEnableOption (lib.mdDoc "");
 
+      # <https://github.com/NixOS/nixpkgs/blob/f155f0cf4ea43c4e3c8918d2d327d44777b6cad4/nixos/modules/config/xdg/portal.nix#L65-L75>
+      xdgOpenUsePortal = lib.mkOption {
+        type = types.bool;
+        default = pkgs.stdenv.hostPlatform.isLinux;
+        description = lib.mdDoc ''
+          Set environment variable `NIXOS_XDG_OPEN_USE_PORTAL` to `1`.
+
+          This will make `xdg-open` use the portal to open programs,
+          which resolves bugs involving programs opening inside FHS environments
+          or with unexpected environment variables set from wrappers.
+
+          See [nixpkgs#160923](https://github.com/NixOS/nixpkgs/issues/160923) for more information.
+        '';
+      };
+
       portals = lib.mkOption {
         type = types.listOf xdgPortal;
         default = [ ];
@@ -124,6 +139,7 @@ in {
     home.sessionVariables = {
       XDG_DESKTOP_PORTAL_DIR =
         "${joinedPortals}/share/xdg-desktop-portal/portals";
+      NIXOS_XDG_OPEN_USE_PORTAL = lib.mkIf cfg.xdgOpenUsePortal "1";
     };
   };
 }
