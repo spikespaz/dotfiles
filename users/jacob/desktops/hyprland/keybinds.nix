@@ -66,7 +66,7 @@
     # sleep is added to compensate, but not perfect solution
     # Fn is XF86WakeUp
     bindrl.", XF86Display" =
-      "exec, loginctl lock-session && sleep 5 && hyprctl dispatch dpms toggle";
+      "exec, loginctl lock-session && sleep 5 && hyprctl dispatch dpms off";
 
     ##################
     ### MEDIA KEYS ###
@@ -229,7 +229,7 @@
     # Screenshot to clipboard by region selection
     bind."SUPER_SHIFT, print" = "exec, prtsc -c -m r -D -b 00000066";
     # Rofi-emoji
-    bind."SUPER, equals" = "exec, rofi -show emoji -emoji-mode copy";
+    bind."SUPER, equal" = "exec, rofi -show emoji -emoji-mode copy";
     # "Cleaning mode"
     bindrl."SUPER_CTRL_SHIFT, delete" = "exec, ${activateCleanMode}";
 
