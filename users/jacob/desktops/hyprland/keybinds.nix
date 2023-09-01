@@ -32,6 +32,24 @@
 
       ${hyprctl} dispatch pin active
     '')).outPath;
+    lockAndToggleDpms = (pkgs.writeTextFile {
+      name = "lock-and-toggle-dpms";
+      executable = true;
+      text = ''
+        #!${pkgs.runtimeShell}
+        PATH="${
+          lib.makeBinPath [
+            pkgs.jq
+            pkgs.systemd
+            config.wayland.windowManager.hyprland.package
+          ]
+        }:$PATH"
+        ${builtins.readFile ./scripts/lock_and_toggle_dpms.sh}
+      '';
+      checkPhase = ''
+        ${pkgs.stdenv.shellDryRun} "$target"
+      '';
+    }).outPath;
   in {
     #########################
     ### PROGRAM LAUNCHING ###
@@ -65,8 +83,7 @@
     # issue when using Fn + XF96Display
     # sleep is added to compensate, but not perfect solution
     # Fn is XF86WakeUp
-    bindrl.", XF86Display" =
-      "exec, loginctl lock-session && sleep 5 && hyprctl dispatch dpms off";
+    bindrl.", XF86Display" = "exec, ${lockAndToggleDpms}";
 
     ##################
     ### MEDIA KEYS ###
