@@ -10,6 +10,7 @@ let
     lists = callLibs ./lists.nix;
     math = callLibs ./math.nix;
     radix = callLibs ./radix.nix;
+    sources = callLibs ./sources.nix;
     strings = callLibs ./strings.nix;
     tests = callLibs ./tests.nix;
     shellscript = callLibs ./shellscript.nix;
@@ -30,6 +31,7 @@ let
       lastIndexOf elemAtDefault removeElems sublist split lsplit rsplit lpad
       rpad flattenCond;
     inherit (libAttrs.math) pow powi abs;
+    inherit (libAttrs.sources) sourceFilter;
     # FIXME `substring` conflicts with `builtins.substring`.
     inherit (libAttrs.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
