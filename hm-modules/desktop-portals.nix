@@ -106,7 +106,7 @@ in {
       # <https://github.com/NixOS/nixpkgs/blob/f155f0cf4ea43c4e3c8918d2d327d44777b6cad4/nixos/modules/config/xdg/portal.nix#L65-L75>
       xdgOpenUsePortal = lib.mkOption {
         type = types.bool;
-        default = pkgs.stdenv.hostPlatform.isLinux;
+        default = false;
         description = lib.mdDoc ''
           Set environment variable `NIXOS_XDG_OPEN_USE_PORTAL` to `1`.
 
