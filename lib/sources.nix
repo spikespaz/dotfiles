@@ -18,6 +18,9 @@ let
   objectSourceFilter = sourceFilter ({ isFile, extension, ... }:
     !(isFile && builtins.elem extension [ ".o" ".so" ]));
 
+  # Filter out sockets and other types of files we can't have in the store.
+  unknownSourceFilter = sourceFilter ({ type, ... }: !(type == "unknown"));
+
   # Removes directories for version control systems at any
   # level of nested paths.
   vcsSourceFilter = sourceFilter ({ baseName, isDir, ... }:
@@ -82,6 +85,6 @@ let
   #     # Filter out sockets and other types of files we can't have in the store.
   #     (type == "unknown"));
 in {
-  inherit sourceFilter objectSourceFilter vcsSourceFilter editorSourceFilter
+  inherit sourceFilter objectSourceFilter unknownSourceFilter vcsSourceFilter editorSourceFilter
     flakeSourceFilter rustSourceFilter;
 }
