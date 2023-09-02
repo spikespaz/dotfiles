@@ -31,7 +31,7 @@ let
       lastIndexOf elemAtDefault removeElems sublist split lsplit rsplit lpad
       rpad flattenCond;
     inherit (libAttrs.math) pow powi abs;
-    inherit (libAttrs.sources) sourceFilter flakeSourceFilter;
+    inherit (libAttrs.sources) sourceFilter vcsSourceFilter flakeSourceFilter;
     # FIXME `substring` conflicts with `builtins.substring`.
     inherit (libAttrs.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault

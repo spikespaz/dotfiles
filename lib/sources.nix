@@ -15,6 +15,19 @@ let
       inherit name type baseName relPath atRoot isFile isDir isLink extension;
     };
 
+  # Removes directories for version control systems at any
+  # level of nested paths.
+  vcsSourceFilter = sourceFilter ({ baseName, isDir, ... }:
+    !(
+      # Git
+      (isDir && baseName == ".git")
+      # Apache Subversion
+      || (isDir && baseName == ".svn")
+      # Mercurial
+      || (isDir && baseName == ".hg")
+      # Concurrent Versions System
+      || (isDir && baseName == "CVS")));
+
   flakeSourceFilter = sourceFilter
     ({ baseName, atRoot, relPath, isDir, isFile, extension, ... }:
       !(
@@ -41,4 +54,4 @@ let
   #     (type == "symlink" && lib.hasPrefix "result" baseName) ||
   #     # Filter out sockets and other types of files we can't have in the store.
   #     (type == "unknown"));
-in { inherit sourceFilter flakeSourceFilter; }
+in { inherit sourceFilter vcsSourceFilter flakeSourceFilter; }
