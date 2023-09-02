@@ -15,6 +15,16 @@ let
       inherit name type baseName relPath atRoot isFile isDir isLink extension;
     };
 
+  flakeSourceFilter = sourceFilter
+    ({ baseName, atRoot, relPath, isDir, isFile, extension, ... }:
+      !(
+        # A very common convention is to have a directory for Nix files.
+        (atRoot && isDir && baseName == "nix")
+        # Also don't want any Nix files in the root.
+        || (atRoot && isFile && extension == ".nix")
+        # And of course, the `flake.lock`.
+        || (atRoot && isFile && baseName == "flake.lock")));
+
   # cleanSourceFilter = name: type:
   #   let baseName = baseNameOf (toString name);
   #   in !(
@@ -31,4 +41,4 @@ let
   #     (type == "symlink" && lib.hasPrefix "result" baseName) ||
   #     # Filter out sockets and other types of files we can't have in the store.
   #     (type == "unknown"));
-in { inherit sourceFilter; }
+in { inherit sourceFilter flakeSourceFilter; }
