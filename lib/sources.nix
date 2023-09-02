@@ -45,14 +45,19 @@ let
       || (builtins.match "^\\..*\\.sw[a-z]$" baseName != null)));
 
   flakeSourceFilter = sourceFilter
-    ({ baseName, atRoot, relPath, isDir, isFile, extension, ... }:
+    ({ baseName, atRoot, relPath, isDir, isFile, isLink, extension, ... }:
       !(
         # A very common convention is to have a directory for Nix files.
         (atRoot && isDir && baseName == "nix")
         # Also don't want any Nix files in the root.
+        # Others might be examples or included,
+        # if a project is properly organized they won't be anywhere besides
+        # the root anyway.
         || (atRoot && isFile && extension == ".nix")
         # And of course, the `flake.lock`.
-        || (atRoot && isFile && baseName == "flake.lock")));
+        || (atRoot && isFile && baseName == "flake.lock")
+        # Filter out `nix-build` result symlinks.
+        || (isLink && lib.hasPrefix "result" baseName)));
 
   # Removes directories that Cargo generates.
   # This filter is careful and will only remove matching names
