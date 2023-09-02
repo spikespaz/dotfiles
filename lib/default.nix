@@ -45,7 +45,7 @@ let
     inherit (libAttrs.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;
     inherit (libAttrs.trivial)
-      not nand nor xor xnor imply implyDefault applyArgs;
+      not nand nor xor xnor imply implyDefault applyArgs applyAutoArgs;
     inherit (libAttrs.units) bytes kbytes;
   };
 in lib0 // prelude // {

@@ -20,7 +20,15 @@ let
       v;
 
   applyArgs = lib.foldl' (fn': arg: fn' arg);
+
+  # Given a large attribute set (of arguments),
+  # reduce the set to only what the function expects, and apply it.
+  applyAutoArgs = fn: attrs:
+    let
+      fnArgs = lib.functionArgs fn;
+      autoArgs = builtins.intersectAttrs fnArgs attrs;
+    in fn autoArgs;
 in {
   #
-  inherit not nand nor xor xnor imply implyDefault applyArgs;
+  inherit not nand nor xor xnor imply implyDefault applyArgs applyAutoArgs;
 }
