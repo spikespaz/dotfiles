@@ -23,11 +23,20 @@ let
   mkSourceFilter = sourceRoot: filters: name: type:
     builtins.all (fn: fn sourceRoot name type) filters;
 
-  objectSourceFilter = sourceFilter ({ isFile, extension, ... }:
-    !(isFile && builtins.elem extension [ ".o" ".so" ]));
+  defaultSourceFilter = sourceRoot:
+    mkSourceFilter sourceRoot [
+      unknownSourceFilter
+      objectSourceFilter
+      vcsSourceFilter
+      editorSourceFilter
+      flakeSourceFilter
+    ];
 
   # Filter out sockets and other types of files we can't have in the store.
   unknownSourceFilter = sourceFilter ({ type, ... }: !(type == "unknown"));
+
+  objectSourceFilter = sourceFilter ({ isFile, extension, ... }:
+    !(isFile && builtins.elem extension [ ".o" ".so" ]));
 
   # Removes directories for version control systems at any
   # level of nested paths.
@@ -93,6 +102,7 @@ let
   #     # Filter out sockets and other types of files we can't have in the store.
   #     (type == "unknown"));
 in {
-  inherit sourceFilter mkSourceFilter objectSourceFilter unknownSourceFilter
-    vcsSourceFilter editorSourceFilter flakeSourceFilter rustSourceFilter;
+  inherit sourceFilter mkSourceFilter defaultSourceFilter unknownSourceFilter
+    objectSourceFilter vcsSourceFilter editorSourceFilter flakeSourceFilter
+    rustSourceFilter;
 }
