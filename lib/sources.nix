@@ -15,6 +15,14 @@ let
       inherit name type baseName relPath atRoot isFile isDir isLink extension;
     };
 
+  # Compose multiple filters into one, suitable for `lib.cleanSourceWith`.
+  # The first argument is the source root, and the second is a list of filters.
+  # The filters are expected to take the source root as the first argument,
+  # which means this function is not compatible with `lib.cleanSourceFilter`.
+  # Use the other pre-made filters instead.
+  mkSourceFilter = sourceRoot: filters: name: type:
+    builtins.all (fn: fn sourceRoot name type) filters;
+
   objectSourceFilter = sourceFilter ({ isFile, extension, ... }:
     !(isFile && builtins.elem extension [ ".o" ".so" ]));
 
@@ -85,6 +93,6 @@ let
   #     # Filter out sockets and other types of files we can't have in the store.
   #     (type == "unknown"));
 in {
-  inherit sourceFilter objectSourceFilter unknownSourceFilter vcsSourceFilter editorSourceFilter
-    flakeSourceFilter rustSourceFilter;
+  inherit sourceFilter mkSourceFilter objectSourceFilter unknownSourceFilter
+    vcsSourceFilter editorSourceFilter flakeSourceFilter rustSourceFilter;
 }

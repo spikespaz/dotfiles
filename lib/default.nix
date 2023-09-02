@@ -32,8 +32,8 @@ let
       rpad flattenCond;
     inherit (libAttrs.math) pow powi abs;
     inherit (libAttrs.sources)
-      sourceFilter objectSourceFilter unknownSourceFilter vcsSourceFilter
-      editorSourceFilter flakeSourceFilter rustSourceFilter;
+      sourceFilter mkSourceFilter objectSourceFilter unknownSourceFilter
+      vcsSourceFilter editorSourceFilter flakeSourceFilter rustSourceFilter;
     # FIXME `substring` conflicts with `builtins.substring`.
     inherit (libAttrs.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
