@@ -15,6 +15,9 @@ let
       inherit name type baseName relPath atRoot isFile isDir isLink extension;
     };
 
+  objectSourceFilter = sourceFilter ({ isFile, extension, ... }:
+    !(isFile && builtins.elem extension [ ".o" ".so" ]));
+
   # Removes directories for version control systems at any
   # level of nested paths.
   vcsSourceFilter = sourceFilter ({ baseName, isDir, ... }:
@@ -74,6 +77,6 @@ let
   #     # Filter out sockets and other types of files we can't have in the store.
   #     (type == "unknown"));
 in {
-  inherit sourceFilter vcsSourceFilter editorSourceFilter flakeSourceFilter
-    rustSourceFilter;
+  inherit sourceFilter objectSourceFilter vcsSourceFilter editorSourceFilter
+    flakeSourceFilter rustSourceFilter;
 }
