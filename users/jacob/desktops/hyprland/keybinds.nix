@@ -32,8 +32,8 @@
 
       ${hyprctl} dispatch pin active
     '')).outPath;
-    lockAndToggleDpms = (pkgs.writeTextFile {
-      name = "lock-and-toggle-dpms";
+    toggleSilentRunning = (pkgs.writeTextFile {
+      name = "silent-running";
       executable = true;
       text = ''
         #!${pkgs.runtimeShell}
@@ -44,7 +44,7 @@
             config.wayland.windowManager.hyprland.package
           ]
         }:$PATH"
-        ${builtins.readFile ./scripts/lock_and_toggle_dpms.sh}
+        ${builtins.readFile ./scripts/silent_running.sh}
       '';
       checkPhase = ''
         ${pkgs.stdenv.shellDryRun} "$target"
@@ -83,7 +83,7 @@
     # issue when using Fn + XF96Display
     # sleep is added to compensate, but not perfect solution
     # Fn is XF86WakeUp
-    bindrl.", XF86Display" = "exec, ${lockAndToggleDpms}";
+    bindrl.", XF86Display" = "exec, ${toggleSilentRunning}";
 
     ##################
     ### MEDIA KEYS ###
