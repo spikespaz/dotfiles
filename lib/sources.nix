@@ -28,6 +28,19 @@ let
       # Concurrent Versions System
       || (isDir && baseName == "CVS")));
 
+  editorSourceFilter = sourceFilter ({ baseName, isDir, ... }:
+    !(
+      # Visual Studio Code
+      (isDir && baseName == ".vscode")
+      # JetBrains
+      || (isDir && baseName == ".idea")
+      # Eclipse
+      || (isDir && baseName == ".eclipse")
+      # Backup / swap files
+      || (lib.hasSuffix "~" baseName)
+      || (builtins.match "^\\.sw[a-z]$" baseName != null)
+      || (builtins.match "^\\..*\\.sw[a-z]$" baseName != null)));
+
   flakeSourceFilter = sourceFilter
     ({ baseName, atRoot, relPath, isDir, isFile, extension, ... }:
       !(
@@ -60,4 +73,7 @@ let
   #     (type == "symlink" && lib.hasPrefix "result" baseName) ||
   #     # Filter out sockets and other types of files we can't have in the store.
   #     (type == "unknown"));
-in { inherit sourceFilter vcsSourceFilter flakeSourceFilter rustSourceFilter; }
+in {
+  inherit sourceFilter vcsSourceFilter editorSourceFilter flakeSourceFilter
+    rustSourceFilter;
+}
