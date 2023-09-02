@@ -11,7 +11,7 @@ let
       isLink = type == "symlink";
       extMatch = builtins.match "^.*(\\..+)$" name;
       extension = if extMatch != null then builtins.elemAt extMatch 0 else null;
-    in fn {
+    in lib.applyAutoArgs fn {
       inherit name type baseName relPath atRoot isFile isDir isLink extension;
     };
 
@@ -33,14 +33,14 @@ let
     ];
 
   # Filter out sockets and other types of files we can't have in the store.
-  unknownSourceFilter = sourceFilter ({ type, ... }: !(type == "unknown"));
+  unknownSourceFilter = sourceFilter ({ type }: !(type == "unknown"));
 
-  objectSourceFilter = sourceFilter ({ isFile, extension, ... }:
+  objectSourceFilter = sourceFilter ({ isFile, extension }:
     !(isFile && builtins.elem extension [ ".o" ".so" ]));
 
   # Removes directories for version control systems at any
   # level of nested paths.
-  vcsSourceFilter = sourceFilter ({ baseName, isDir, ... }:
+  vcsSourceFilter = sourceFilter ({ baseName, isDir }:
     !(
       # Git
       (isDir && baseName == ".git")
@@ -51,7 +51,7 @@ let
       # Concurrent Versions System
       || (isDir && baseName == "CVS")));
 
-  editorSourceFilter = sourceFilter ({ baseName, isDir, ... }:
+  editorSourceFilter = sourceFilter ({ baseName, isDir }:
     !(
       # Visual Studio Code
       (isDir && baseName == ".vscode")
@@ -65,7 +65,7 @@ let
       || (builtins.match "^\\..*\\.sw[a-z]$" baseName != null)));
 
   flakeSourceFilter = sourceFilter
-    ({ baseName, atRoot, relPath, isDir, isFile, isLink, extension, ... }:
+    ({ baseName, atRoot, relPath, isDir, isFile, isLink, extension }:
       !(
         # A very common convention is to have a directory for Nix files.
         (atRoot && isDir && baseName == "nix")
@@ -82,7 +82,7 @@ let
   # Removes directories that Cargo generates.
   # This filter is careful and will only remove matching names
   # in the source root, but not similarly-named nested paths.
-  rustSourceFilter = sourceFilter ({ baseName, atRoot, isDir, ... }:
+  rustSourceFilter = sourceFilter ({ baseName, atRoot, isDir }:
     !(atRoot && isDir && baseName == "target"));
 
   # cleanSourceFilter = name: type:
