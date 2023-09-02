@@ -38,6 +38,12 @@ let
         # And of course, the `flake.lock`.
         || (atRoot && isFile && baseName == "flake.lock")));
 
+  # Removes directories that Cargo generates.
+  # This filter is careful and will only remove matching names
+  # in the source root, but not similarly-named nested paths.
+  rustSourceFilter = sourceFilter ({ baseName, atRoot, isDir, ... }:
+    !(atRoot && isDir && baseName == "target"));
+
   # cleanSourceFilter = name: type:
   #   let baseName = baseNameOf (toString name);
   #   in !(
@@ -54,4 +60,4 @@ let
   #     (type == "symlink" && lib.hasPrefix "result" baseName) ||
   #     # Filter out sockets and other types of files we can't have in the store.
   #     (type == "unknown"));
-in { inherit sourceFilter vcsSourceFilter flakeSourceFilter; }
+in { inherit sourceFilter vcsSourceFilter flakeSourceFilter rustSourceFilter; }
