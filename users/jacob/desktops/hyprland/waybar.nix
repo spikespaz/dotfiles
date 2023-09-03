@@ -2,7 +2,11 @@
 let
   # package overridden for hyprland-specific patches
   # <https://wiki.hyprland.org/Useful-Utilities/Status-Bars/#clicking-on-a-workspace-icon-does-not-work>
-  package = pkgs.waybar-hyprland;
+  waybar' = let super = pkgs.waybar;
+  in pkgs.symlinkJoin {
+    inherit (super) name pname version meta;
+    paths = [ super ] ++ fontPackages;
+  };
   # the fonts that will be included with the waybar package
   fontPackages = [ pkgs.ubuntu_font_family pkgs.material-design-icons ];
 
@@ -66,22 +70,13 @@ let
   };
 in {
   programs.waybar.enable = true;
-
-  programs.waybar.package = pkgs.symlinkJoin {
-    name = package.name;
-    paths = [ package ] ++ fontPackages;
-  };
+  programs.waybar.package = waybar';
 
   programs.waybar.systemd.enable = true;
   xdg.configFile."waybar/config".onChange = ''
     echo 'Restarting waybar.service'
     ${pkgs.systemd}/bin/systemctl --user restart waybar.service
   '';
-
-  systemd.user.services.waybar.Service.Environment = [
-    # fix mainly for missing the hyprctl binary
-    "PATH=${lib.makeBinPath package.buildInputs}"
-  ];
 
   programs.waybar.style =
     builtins.readFile (compileSCSS "waybar-style" ./waybar.scss);
