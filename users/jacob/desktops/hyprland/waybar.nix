@@ -89,7 +89,8 @@ in {
       height = 26;
 
       modules-left = [ # #
-        "wlr/workspaces"
+        # "wlr/workspaces"
+        "hyprland/workspaces"
         "tray"
         "mpris"
       ];
@@ -115,10 +116,21 @@ in {
 
       ## MODULES-LEFT ##
 
-      "wlr/workspaces" = {
-        sort-by-number = true;
+      # Hyprland dropped support unfortunately.
 
-        on-click = "activate";
+      # "wlr/workspaces" = {
+      #   sort-by-number = true;
+
+      #   on-click = "activate";
+      #   on-scroll-up = commands.workspaceSwitchPrev;
+      #   on-scroll-down = commands.workspaceSwitchNext;
+      # };
+
+      "hyprland/workspaces" = {
+        format = "{name}";
+        # sort-by-number = true;
+
+        # on-click = "activate";
         on-scroll-up = commands.workspaceSwitchPrev;
         on-scroll-down = commands.workspaceSwitchNext;
       };
