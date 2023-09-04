@@ -1,14 +1,16 @@
 { config, lib, pkgs, ... }:
 let
-  # package overridden for hyprland-specific patches
-  # <https://wiki.hyprland.org/Useful-Utilities/Status-Bars/#clicking-on-a-workspace-icon-does-not-work>
-  waybar' = let super = pkgs.waybar;
+  package = pkgs.waybar;
+
+  # the fonts that will be included with the waybar package
+  fontPackages = [ pkgs.ubuntu_font_family pkgs.material-design-icons ];
+
+  # patch those fonts in
+  package' = let super = package;
   in pkgs.symlinkJoin {
     inherit (super) name pname version meta;
     paths = [ super ] ++ fontPackages;
   };
-  # the fonts that will be included with the waybar package
-  fontPackages = [ pkgs.ubuntu_font_family pkgs.material-design-icons ];
 
   compileSCSS = name: source:
     "${
@@ -70,7 +72,7 @@ let
   };
 in {
   programs.waybar.enable = true;
-  programs.waybar.package = waybar';
+  programs.waybar.package = package';
 
   programs.waybar.systemd.enable = true;
   xdg.configFile."waybar/config".onChange = ''
