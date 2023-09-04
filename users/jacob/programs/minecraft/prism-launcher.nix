@@ -1,6 +1,14 @@
-{ pkgs, ... }:
+{ nixpkgs, lib, pkgs, ... }:
 let
+  package = pkgs.prismlauncher-qt5;
+
   inherit (pkgs.callPackage ./graalvm.nix { }) graalvm8-ce-jre;
+  mkJava = opts:
+    pkgs.callPackage (import
+      "${nixpkgs}/pkgs/development/compilers/temurin-bin/jdk-linux-base.nix"
+      opts) { };
+  temurinSources = lib.importJSON ./temurin-sources.json;
+  temurin20-jre-bin = mkJava { sourcePerArch = temurinSources.openjdk20; };
 
   javaPackages = [
     # Java 8
@@ -12,6 +20,8 @@ let
     pkgs.graalvm11-ce
     # Java 17
     pkgs.graalvm17-ce
+    # Java 20
+    temurin20-jre-bin
     # Latest
     pkgs.temurin-jre-bin
     pkgs.zulu
@@ -36,7 +46,7 @@ in {
     # }))
 
     # Qt5 is supported by qt5ct, Qt6 is not
-    (pkgs.prismlauncher-qt5.override { jdks = javaPackages; })
+    (package.override { jdks = javaPackages; })
 
     # wrapperScript
   ];

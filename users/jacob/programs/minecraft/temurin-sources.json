@@ -1,0 +1,12 @@
+{
+  "openjdk20": {
+    "packageType": "jre",
+    "vmType": "hotspot",
+    "x86_64": {
+      "build": "9",
+      "sha256": "e3592e86290c192804d9c6b5035d42cc32cf04141d1c0b9d1ecb67739826c8c5",
+      "url": "https://github.com/adoptium/temurin20-binaries/releases/download/jdk-20.0.2%2B9/OpenJDK20U-jre_x64_linux_hotspot_20.0.2_9.tar.gz",
+      "version": "20.0.2"
+    }
+  }
+}
