@@ -75,10 +75,6 @@ in {
   programs.waybar.package = package';
 
   programs.waybar.systemd.enable = true;
-  xdg.configFile."waybar/config".onChange = ''
-    echo 'Restarting waybar.service'
-    ${pkgs.systemd}/bin/systemctl --user restart waybar.service
-  '';
 
   programs.waybar.style =
     builtins.readFile (compileSCSS "waybar-style" ./waybar.scss);
@@ -347,4 +343,21 @@ in {
       };
     };
   };
+
+  imports = [
+    (lib.mkIf config.programs.waybar.systemd.enable {
+      xdg.configFile."waybar/config".onChange = lib.mkOverride 90 ''
+        if [ -z "''${_reloaded_waybar-}" ]; then
+          _reloaded_waybar=1
+          ${pkgs.systemd}/bin/systemctl --user restart waybar.service
+        fi
+      '';
+      xdg.configFile."waybar/style.css".onChange = lib.mkOverride 90 ''
+        if [ -z "''${_reloaded_waybar-}" ]; then
+          _reloaded_waybar=1
+          ${pkgs.systemd}/bin/systemctl --user restart waybar.service
+        fi
+      '';
+    })
+  ];
 }
