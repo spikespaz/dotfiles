@@ -173,6 +173,10 @@ in {
       ZSH_WINDOW_TITLE_DIRECTORY_DEPTH=4
 
       plugin-load zsh-window-title
+
+      ### MISCELLANEOUS ###
+
+      ${lib.getExe pkgs.nix-your-shell} zsh | source /dev/stdin
     '';
   };
 }

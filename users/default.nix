@@ -25,13 +25,15 @@ args@{ self, tree, lib, inputs, ... }: {
       inputs.nur.overlay
       # packages for window manager
       inputs.hyprland-nix.overlays.default
+      # nix related packages
+      inputs.nix-your-shell.overlays.default
+      inputs.ragenix.overlays.default
       # other packages
       inputs.slight.overlays.default
       inputs.vscode-extensions.overlays.default
       inputs.nil.overlays.default
       inputs.prism-launcher.overlays.default
       # inputs.webcord.overlays.default
-      inputs.ragenix.overlays.default
     ];
     extraSpecialArgs = {
       pkgs-stable = import inputs.nixpkgs-stable {

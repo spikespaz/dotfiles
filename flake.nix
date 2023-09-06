@@ -72,6 +72,9 @@
 
     systems.url = "github:nix-systems/default";
 
+    nix-your-shell.url = "github:MercuryTechnologies/nix-your-shell";
+    nix-your-shell.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
