@@ -5,6 +5,7 @@
     with pkgs.vscode-marketplace-release; [
       rust-lang.rust-analyzer
       tamasfe.even-better-toml
+      serayuzgur.crates
       a5huynh.vscode-ron
       # these guys are sort of inconsiderate and not even designing
       # the extension properly, I should be able to provide
