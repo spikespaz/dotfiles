@@ -182,6 +182,8 @@
     "explorer.confirmDelete" = false;
     # set the integrated terminal to use zsh
     "terminal.integrated.defaultProfile.linux" = "zsh";
+    # never ask to open parent git repo if one-off
+    "git.openRepositoryInParentFolders" = "never";
 
     ## Temporarily Disabled ###
 
