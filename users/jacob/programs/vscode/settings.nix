@@ -120,6 +120,8 @@
     # fix fuzzy text in integrated terminal
     "terminal.integrated.gpuAcceleration" = "on";
 
+    # hide the action bar, I know the keybinds
+    "workbench.activityBar.visible" = false;
     # put the sidebar on the right so that text doesn't jump
     "workbench.sideBar.location" = "right";
     # no delay when automatically hiding the sidebar or panels
