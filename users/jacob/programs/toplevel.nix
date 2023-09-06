@@ -150,6 +150,18 @@
 
       # better looking diffs
       delta.enable = true;
+      delta.options = {
+        syntax-theme = "Monokai Extended Bright";
+        line-numbers = true;
+        diff-so-fancy = true;
+        grep-output-style = "ripgrep";
+        hunk-header-decoration-style = "omit";
+        hunk-header-style = "file line-number";
+        hunk-header-file-style = "magenta";
+        hunk-header-line-number-style = "yellow";
+        line-numbers-minus-style = "bold red";
+        line-numbers-plus-style = "bold green";
+      };
     };
   };
 
