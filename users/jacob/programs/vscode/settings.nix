@@ -164,6 +164,8 @@
     "errorLens.enabledInMergeConflict" = false;
     # diagnostic levels to show, removed "info"
     "errorLens.enabledDiagnosticLevels" = [ "error" "warning" ];
+    # slower updates but less buggy
+    "errorLens.delayMode" = "debounce";
 
     # prompt for completions after the last path segment is accepted
     "path-intellisense.autoTriggerNextSuggestion" = true;
