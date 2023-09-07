@@ -1,12 +1,15 @@
 { config, ... }:
 let
-  internalMon = "eDP-1";
-  hotplugMon = "HDMI-A-1";
-  dockMon = "DP-1";
+  monitors = {
+    internal = "eDP-1";
+    hotplug = "HDMI-A-1";
+    portable = "DP-2";
+    dock = "DP-1";
+  };
 
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
 in {
-  wayland.windowManager.hyprland = {
+  wayland.windowManager.hyprland = with monitors; {
     # <https://wiki.hyprland.org/Configuring/Monitors/>
     config.monitor = [
       # "${INTERNAL_MON}, preferred, 0x1080, 1"
@@ -17,9 +20,10 @@ in {
       # have to use this for now,
       # need to make something using
       # <https://github.com/spikespaz/hyprshot#readme>
-      "${internalMon}, preferred, 0x0, 1"
-      "${hotplugMon}, preferred, 1920x0, 1"
-      "${dockMon}, preferred, 1920x0, 1"
+      "${internal}, preferred, 0x0, 1"
+      "${hotplug}, preferred, 1920x0, 1"
+      "${portable}, preferred, 1920x0, 1"
+      "${dock}, preferred, 1920x0, 1"
 
       # Causes bugs with Qt on wayland, such as menus disappearing.
       # "${INTERNAL_MON}, preferred, 1920x1080, 1"
@@ -27,18 +31,18 @@ in {
       # "${DOCK_MON}, preferred, 1920x0, 1"
     ];
 
-    workspaceRules = {
-      "1".monitor = internalMon;
-      "3".monitor = internalMon;
-      "5".monitor = internalMon;
-      "7".monitor = internalMon;
-      "9".monitor = internalMon;
+    workspaceRules = with monitors; {
+      "1".monitor = internal;
+      "3".monitor = internal;
+      "5".monitor = internal;
+      "7".monitor = internal;
+      "9".monitor = internal;
 
-      "2".monitor = [ hotplugMon dockMon ];
-      "4".monitor = [ hotplugMon dockMon ];
-      "6".monitor = [ hotplugMon dockMon ];
-      "8".monitor = [ hotplugMon dockMon ];
-      "10".monitor = [ hotplugMon dockMon ];
+      "2".monitor = [ portable dock ];
+      "4".monitor = [ portable dock ];
+      "6".monitor = [ portable dock ];
+      "8".monitor = [ portable dock ];
+      "10".monitor = [ hotplug portable dock ];
     };
 
     eventListener.handler.monitorAdd = ''
