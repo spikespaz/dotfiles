@@ -3,6 +3,54 @@ let
   package = pkgs.armcord;
   configDir = "ArmCord";
 
+  # <https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/DiscordRecolor/DiscordRecolor.theme.css>
+  # defaultTheme = colorSchemes.default // themeSettings.default;
+
+  theme = colorSchemes.default // {
+    font = [ "system-ui" ];
+    settingsicons = false;
+  };
+
+  colorSchemes = {
+    default = {
+      accentcolor = [ 88 101 242 ];
+      accentcolor2 = [ 255 115 250 ];
+      linkcolor = [ 0 176 244 ];
+      mentioncolor = [ 250 166 26 ];
+      successcolor = [ 59 165 92 ];
+      warningcolor = [ 250 166 26 ];
+      dangercolor = [ 237 66 69 ];
+
+      textbrightest = [ 255 255 255 ];
+      textbrighter = [ 222 222 222 ];
+      textbright = [ 185 185 185 ];
+      textdark = [ 140 140 140 ];
+      textdarker = [ 115 115 115 ];
+      textdarkest = [ 80 80 80 ];
+
+      backgroundaccent = [ 50 50 50 ];
+      backgroundprimary = [ 30 30 30 ];
+      backgroundsecondary = [ 20 20 20 ];
+      backgroundsecondaryalt = [ 15 15 15 ];
+      backgroundtertiary = [ 10 10 10 ];
+      backgroundfloating = [ 0 0 0 ];
+    };
+  };
+
+  themeSettings = {
+    default = {
+      font = [
+        "gg sans"
+        "Noto Sans"
+        "Helvetica Neue"
+        "Helvetica"
+        "Arial"
+        "sans-serif"
+      ];
+      settingsicons = true;
+    };
+  };
+
   mkRecolorTheme = vars:
     let
       mkCssValue = expr:
@@ -76,40 +124,6 @@ in {
       supportsArmCordTitlebar = false;
     };
 
-  # <https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/DiscordRecolor/DiscordRecolor.theme.css>
   xdg.configFile."${configDir}/themes/DiscordRecolor-BD/theme.css".text =
-    mkRecolorTheme {
-      font = [
-        "system-ui"
-        # "gg sans"
-        # "Noto Sans"
-        "Helvetica Neue"
-        "Helvetica"
-        "Arial"
-        "sans-serif"
-      ];
-      settingsicons = true;
-
-      accentcolor = [ 88 101 242 ];
-      accentcolor2 = [ 255 115 250 ];
-      linkcolor = [ 0 176 244 ];
-      mentioncolor = [ 250 166 26 ];
-      successcolor = [ 59 165 92 ];
-      warningcolor = [ 250 166 26 ];
-      dangercolor = [ 237 66 69 ];
-
-      textbrightest = [ 255 255 255 ];
-      textbrighter = [ 222 222 222 ];
-      textbright = [ 185 185 185 ];
-      textdark = [ 140 140 140 ];
-      textdarker = [ 115 115 115 ];
-      textdarkest = [ 80 80 80 ];
-
-      backgroundaccent = [ 50 50 50 ];
-      backgroundprimary = [ 30 30 30 ];
-      backgroundsecondary = [ 20 20 20 ];
-      backgroundsecondaryalt = [ 15 15 15 ];
-      backgroundtertiary = [ 10 10 10 ];
-      backgroundfloating = [ 0 0 0 ];
-    };
+    mkRecolorTheme theme;
 }
