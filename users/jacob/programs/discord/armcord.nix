@@ -72,15 +72,17 @@ in {
       website = "https://mwittrien.github.io/";
       source =
         "https://github.com/mwittrien/BetterDiscordAddons/tree/master/Themes/DiscordRecolor/";
-      # updateSrc = "https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Themes/DiscordRecolor/DiscordRecolor.theme.css";
+      # updateSrc = "redacted because we don't want it to update";
       supportsArmCordTitlebar = false;
     };
 
+  # <https://github.com/mwittrien/BetterDiscordAddons/blob/master/Themes/DiscordRecolor/DiscordRecolor.theme.css>
   xdg.configFile."${configDir}/themes/DiscordRecolor-BD/theme.css".text =
     mkRecolorTheme {
       font = [
-        "gg sans"
-        "Noto Sans"
+        "system-ui"
+        # "gg sans"
+        # "Noto Sans"
         "Helvetica Neue"
         "Helvetica"
         "Arial"
