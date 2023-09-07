@@ -77,7 +77,8 @@ in {
     programs.mailspring
     programs.thunderbird
     # programs.discord.canary
-    programs.discord.webcord
+    # programs.discord.webcord
+    programs.discord.armcord
     programs.hexchat
     programs.telegram
     programs.matrix
