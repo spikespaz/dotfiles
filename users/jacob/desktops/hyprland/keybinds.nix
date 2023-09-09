@@ -147,6 +147,16 @@
     bind."SUPER, 8" = "workspace, 8";
     bind."SUPER, 9" = "workspace, 9";
     bind."SUPER, 0" = "workspace, 10";
+    bind."SUPER_ALT, 1" = "workspace, 11";
+    bind."SUPER_ALT, 2" = "workspace, 12";
+    bind."SUPER_ALT, 3" = "workspace, 13";
+    bind."SUPER_ALT, 4" = "workspace, 14";
+    bind."SUPER_ALT, 5" = "workspace, 15";
+    bind."SUPER_ALT, 6" = "workspace, 16";
+    bind."SUPER_ALT, 7" = "workspace, 17";
+    bind."SUPER_ALT, 8" = "workspace, 18";
+    bind."SUPER_ALT, 9" = "workspace, 19";
+    bind."SUPER_ALT, 0" = "workspace, 20";
 
     ##################################
     ### INTERPANEL WINDOW MOVEMENT ###
@@ -211,6 +221,16 @@
     bind."SUPER_SHIFT, 8" = "movetoworkspacesilent, 8";
     bind."SUPER_SHIFT, 9" = "movetoworkspacesilent, 9";
     bind."SUPER_SHIFT, 0" = "movetoworkspacesilent, 10";
+    bind."SUPER_ALT_SHIFT, 1" = "movetoworkspacesilent, 11";
+    bind."SUPER_ALT_SHIFT, 2" = "movetoworkspacesilent, 12";
+    bind."SUPER_ALT_SHIFT, 3" = "movetoworkspacesilent, 13";
+    bind."SUPER_ALT_SHIFT, 4" = "movetoworkspacesilent, 14";
+    bind."SUPER_ALT_SHIFT, 5" = "movetoworkspacesilent, 15";
+    bind."SUPER_ALT_SHIFT, 6" = "movetoworkspacesilent, 16";
+    bind."SUPER_ALT_SHIFT, 7" = "movetoworkspacesilent, 17";
+    bind."SUPER_ALT_SHIFT, 8" = "movetoworkspacesilent, 18";
+    bind."SUPER_ALT_SHIFT, 9" = "movetoworkspacesilent, 19";
+    bind."SUPER_ALT_SHIFT, 0" = "movetoworkspacesilent, 20";
 
     #####################
     ### ACTIVE WINDOW ###
