@@ -188,8 +188,7 @@
     ]);
   };
 
-  rustup = {
-    home.packages = with pkgs; [ rustup gcc ];
+  rust = {
     home.file.".cargo/config.toml".source =
       (pkgs.formats.toml { }).generate "cargo-config" {
         "target.x86_64-unknown-linux-gnu" = {

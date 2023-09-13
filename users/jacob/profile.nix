@@ -126,7 +126,7 @@ in {
     ### DEVELOPMENT TOOLS ###
     programs.git
     programs.java
-    programs.rustup
+    programs.rust # Does not contain packages, use devshell.
 
     ### SHELL ENVIRONMENTS ###
     programs.bash
