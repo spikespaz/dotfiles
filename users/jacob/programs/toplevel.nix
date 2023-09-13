@@ -165,16 +165,24 @@
     };
   };
 
-  java = {
-    programs.java.enable = true;
-    programs.java.package = pkgs.temurin-bin-16;
-
+  java = let
     # IntelliJ likes to see a `~/.jdks` directory,
     # so we will use that convention for now.
+    homeJdksDir = ".jdks";
+    defaultJdk = pkgs.temurin-bin;
+  in {
+    home.sessionPath =
+      [ "${config.home.homeDirectory}/${homeJdksDir}/${defaultJdk.name}/bin" ];
+    # Notice below, that each JDK source *is* the `home` of that JDK.
+    home.sessionVariables.JAVA_HOME =
+      "${config.home.homeDirectory}/${homeJdksDir}/${defaultJdk.name}";
+
     home.file = builtins.listToAttrs (map (package: {
-      name = ".jdks/${package.name}";
+      name = "${homeJdksDir}/${package.name}";
+      # I think this should work because binaries are ELF-patched.
       value = { source = "${package.home}"; };
     }) [
+      defaultJdk
       pkgs.jdk8
       pkgs.jdk11
       pkgs.jdk17
