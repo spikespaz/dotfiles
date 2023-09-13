@@ -176,7 +176,7 @@ in {
 
       ### MISCELLANEOUS ###
 
-      ${lib.getExe pkgs.nix-your-shell} zsh | source /dev/stdin
+      source ${pkgs.nix-your-shell.generate-config "zsh"}
     '';
   };
 }
