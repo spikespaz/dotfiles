@@ -109,7 +109,7 @@ in {
     programs.vscode.languages.rust
     programs.vscode.languages.web
     programs.vscode.languages.yuck
-    # programs.vscode.languages.nushell
+    programs.vscode.languages.nushell
     programs.vscode.other.marlin
     programs.vscode.other.marp
     # TODO broken idk why
