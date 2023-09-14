@@ -134,9 +134,9 @@ in {
       "[$behind_count](bold ${colors.orange})"
       " "
     ];
-    up_to_date = "[  ](bold ${colors.aqua})";
+    up_to_date = "[󰅠  ](bold ${colors.aqua})";
     untracked = "[ $count ](bold ${colors.orange})";
-    stashed = "[ $count ](bold ${colors.yellow})";
+    stashed = "[󰆓 $count ](bold ${colors.yellow})";
     modified = "[ $count ](bold ${colors.purple})";
     staged = "[ $count ](bold ${colors.green})";
     renamed = "[ $count ](bold ${colors.blue})";
