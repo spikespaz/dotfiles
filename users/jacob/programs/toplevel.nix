@@ -211,15 +211,6 @@
   ### SHELL ENVIRONMENTS ###
   ##########################
 
-  bash = {
-    home.packages = [ pkgs.blesh ];
-    programs.bash = {
-      enable = true;
-      bashrcExtra = "source '${pkgs.blesh}/share/ble.sh'";
-      historyIgnore = [ "reboot" "exit" ];
-    };
-    programs.starship.enableBashIntegration = true;
-  };
   zsh = {
     imports = [ ./zsh.nix ];
     programs.zsh.alt.enable = true;

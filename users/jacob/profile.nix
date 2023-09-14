@@ -129,7 +129,6 @@ in {
     programs.rust # Does not contain packages, use devshell.
 
     ### SHELL ENVIRONMENTS ###
-    programs.bash
     programs.zsh
     programs.nushell
 
