@@ -10,5 +10,6 @@ let
   users = [ intrepid.jacob ];
 in {
   "root.pia.age".publicKeys = root;
+  "root.nix-access-tokens-github.age".publicKeys = root;
   "jacob.spotifyd.age".publicKeys = users;
 }
