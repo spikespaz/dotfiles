@@ -1,4 +1,6 @@
 { lib, pkgs, ... }: {
+  home.packages = [ pkgs.rust-analyzer ];
+
   programs.vscode.extensions =
     #
     with pkgs.vscode-marketplace;
@@ -24,7 +26,10 @@
     # use clippy over cargo check
     "rust-analyzer.check.command" = "clippy";
 
-    "rust-analyzer.server.path" = lib.getExe pkgs.rust-analyzer;
+    # Set the name of the binary so that it does not use a bundle.
+    # This is useful because `nix develop` should provide `rust-analyzer`,
+    # and when it doesn't, it will use the one from `home.packages`.
+    "rust-analyzer.server.path" = "rust-analyzer";
 
     # use nightly range formatting, should be faster
     "rust-analyzer.rustfmt.rangeFormatting.enable" = true;
