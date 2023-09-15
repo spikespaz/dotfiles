@@ -83,6 +83,7 @@ in {
         # rycee.markdownload
         # rycee.flagfox
         rycee.keepassxc-browser
+        rycee.wappalyzer
         # slaier.dictionary-anywhere
       ];
     }
