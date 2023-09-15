@@ -23,15 +23,9 @@
     slight = lib.getExe pkgs.slight;
     osdFunc = lib.getExe config.utilities.osd-functions.package;
     activateCleanMode = "disable-input-devices-notify";
-    pinWindow = (pkgs.writeShellScript "pin-window" (let
-      hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-    in ''
-      if ${hyprctl} activewindow | grep 'floating: 0'; then
-      	${hyprctl} dispatch togglefloating active;
-      fi
-
-      ${hyprctl} dispatch pin active
-    '')).outPath;
+    pinWindow = pkgs.patchShellScript ./scripts/pin-window.sh {
+      runtimeInputs = [ config.wayland.windowManager.hyprland.package pkgs.jq ];
+    };
     toggleSilentRunning = (pkgs.writeTextFile {
       name = "silent-running";
       executable = true;
