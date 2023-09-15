@@ -26,24 +26,10 @@
     pinWindow = pkgs.patchShellScript ./scripts/pin-window.sh {
       runtimeInputs = [ config.wayland.windowManager.hyprland.package pkgs.jq ];
     };
-    toggleSilentRunning = (pkgs.writeTextFile {
-      name = "silent-running";
-      executable = true;
-      text = ''
-        #!${pkgs.runtimeShell}
-        PATH="${
-          lib.makeBinPath [
-            pkgs.jq
-            pkgs.systemd
-            config.wayland.windowManager.hyprland.package
-          ]
-        }:$PATH"
-        ${builtins.readFile ./scripts/silent_running.sh}
-      '';
-      checkPhase = ''
-        ${pkgs.stdenv.shellDryRun} "$target"
-      '';
-    }).outPath;
+    toggleSilentRunning = pkgs.patchShellScript ./scripts/silent-running.sh {
+      runtimeInputs =
+        [ pkgs.jq pkgs.systemd config.wayland.windowManager.hyprland.package ];
+    };
   in {
     #########################
     ### PROGRAM LAUNCHING ###
