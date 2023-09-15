@@ -36,8 +36,8 @@ in {
       # class = ["code-url-handler"];
     };
     discord = {
-      class = [ "WebCord" "discord" ];
-      title = [ "(\\[\\d+\\] )?WebCord.*" ".*Discord" ];
+      class = [ "ArmCord" "WebCord" "discord" ];
+      title = [ ".*ArmCord" "(\\[\\d+\\] )?WebCord.*" ".*Discord" ];
     };
     tidal.class = [ "tidal-hifi" ];
     calculator.class = [ "qalculate-gtk" ];
@@ -103,7 +103,7 @@ in {
       tidalModal
     ])
     # Barely translucent
-    (map (rule [ "opacity 0.97 0.97" ]) [ discord ])
+    (map (rule [ "opacity 0.97 0.97" ]) [ ])
     (map (rule [ "opacity 0.97 0.97" "float" ]) [
       printerConfig
       audioControl
@@ -112,7 +112,7 @@ in {
       mountDialog
     ])
     # More translucent
-    (map (rule [ "opacity 0.92 0.92" ]) [ vscode steam tidal ])
+    (map (rule [ "opacity 0.92 0.92" ]) [ vscode steam tidal discord ])
     (map (rule [ "opacity 0.92 0.92" "float" ]) [
       filePickerPortal
       wifiControl
