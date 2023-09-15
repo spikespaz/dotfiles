@@ -13,6 +13,8 @@ args@{ self, tree, lib, inputs, ... }: {
       desktops.suite
     ];
     overlays = [
+      # flake lib functions that are in pkgs
+      self.overlays.lib
       # flake packages
       self.overlays.default
       # updates to packages before committing upstream
