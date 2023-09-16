@@ -28,7 +28,7 @@
 
       ## Intelligence ##
       usernamehw.errorlens
-      christian-kohler.path-intellisense
+      ionutvmi.path-autocomplete
       streetsidesoftware.code-spell-checker
 
       ## Version Control ##
@@ -167,8 +167,8 @@
     # slower updates but less buggy
     "errorLens.delayMode" = "debounce";
 
-    # prompt for completions after the last path segment is accepted
-    "path-intellisense.autoTriggerNextSuggestion" = true;
+    # don't add a trailing slash for dirs
+    "path-autocomplete.enableFolderTrailingSlash" = false;
 
     ## Miscellaneous ##
 
