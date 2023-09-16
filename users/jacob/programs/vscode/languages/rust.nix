@@ -44,6 +44,9 @@
     "rust-analyzer.lens.references.method.enable" = true;
     "rust-analyzer.lens.references.trait.enable" = true;
 
+    # show lens text above attributes
+    "rust-analyzer.lens.location" = "above_whole_item";
+
     # enforce consistent imports everywhere
     "rust-analyzer.imports.granularity.enforce" = true;
     "rust-analyzer.imports.granularity.group" = "module";
