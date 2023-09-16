@@ -54,7 +54,7 @@ let
 
   # `lib.lists.split`
   # The missing function `lib.strings.splitString` is provided by Nixpkgs.
-  __stub.splitString = null;
+  # __stub.splitString = null;
 
   # `lib.lists.lsplit`
   lsplitString = char: str:
