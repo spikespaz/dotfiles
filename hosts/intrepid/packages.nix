@@ -26,7 +26,7 @@
     zip # archive utility
     bat # cat with wings
     fzf # fuzzy finder
-    exa # colored alternative to ls
+    eza # colored alternative to ls
     ripgrep # grep but rust
     sd # sed but rust
     # tealdear      # manpage summaries
