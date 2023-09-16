@@ -95,16 +95,6 @@
       hyprland-protocols.follows = "hyprland-protocols-git";
     };
 
-    # The Hyprland input and its dependencies are overridden until
-    # <https://github.com/hyprwm/Hyprland/pull/2210>
-    # is merged, this uses my `fix-overlay` branch
-    # so that Wayland doesn't conflict with `nixpkgs-unstable`.
-    # hyprland-protocols.url = "github:spikespaz/hyprland-protocols/fix-overlays";
-    # xdph.url = "github:spikespaz/xdg-desktop-portal-hyprland/fix-overlays";
-    # hyprland.url = "github:spikespaz/hyprland-window-manager/fix-overlays";
-    # hyprland.inputs.hyprland-protocols.follows = "hyprland-protocols";
-    # hyprland.inputs.xdph.follows = "xdph";
-
     nil.url = "github:oxalica/nil";
 
     nixfmt.url = "github:serokell/nixfmt";
