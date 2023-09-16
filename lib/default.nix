@@ -40,6 +40,7 @@ in lib0 // prelude // {
     inherit (libAttrs.builders)
       mkFlakeTree importDir mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay
       mkHost mkHome;
+    inherit (libAttrs.tests) runTests;
     inherit (libAttrs) colors;
   };
 
