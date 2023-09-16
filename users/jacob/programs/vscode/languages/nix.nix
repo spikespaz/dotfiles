@@ -8,6 +8,7 @@ in {
       jnoortheen.nix-ide
       # kamadorueda.alejandra
       arrterian.nix-env-selector
+      ionutvmi.path-autocomplete
     ];
 
   programs.vscode.userSettings = {
@@ -19,6 +20,10 @@ in {
     "[nix]" = {
       # appears to be buggy at the moment
       "editor.stickyScroll.enabled" = false;
+      # allow paths to be auto-completed
+      "path-autocomplete.triggerOutsideStrings" = true;
+      # don't add a trailing slash for dirs
+      "path-autocomplete.enableFolderTrailingSlash" = false;
     };
 
     "cSpell.languageSettings" = [{
