@@ -70,6 +70,13 @@
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       ];
     };
+
+    ### NIX ACCESS-TOKENS ###
+    age.secrets.nix-access-tokens-github.file =
+      "${self}/secrets/root.nix-access-tokens-github.age";
+    nix.extraOptions = ''
+      !include ${config.age.secrets.nix-access-tokens-github.path}
+    '';
   }
 
   #############################
