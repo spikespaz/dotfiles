@@ -1,28 +1,15 @@
 lib: lib0:
 let
-  callLibs = file: import file { inherit lib; };
-
-  libAttrs = {
-    attrsets = callLibs ./attrsets.nix;
-    builders = callLibs ./builders.nix;
-    debug = callLibs ./debug.nix;
-    # generators = callLibs ./generators.nix;
-    lists = callLibs ./lists.nix;
-    math = callLibs ./math.nix;
-    radix = callLibs ./radix.nix;
-    sources = callLibs ./sources.nix;
-    strings = callLibs ./strings.nix;
-    tests = callLibs ./tests.nix;
-    shellscript = callLibs ./shellscript.nix;
-    trivial = callLibs ./trivial.nix;
-    units = callLibs ./units.nix;
-    colors = callLibs ./colors;
-  };
-
+  inherit (import ./attrsets.nix { lib = lib0; }) importDir;
+  libAttrs = lib.pipe ./. [
+    (dir:
+      importDir dir (name: type: !(type == "regular" && name == "default.nix")))
+    (lib.mapAttrs (_: fn: fn { inherit lib; }))
+  ];
   prelude = {
     inherit (libAttrs.attrsets)
       updates recursiveUpdates getAttrDefault getAttr thruAttr mapThruAttr
-      mapListToAttrs attrPaths;
+      mapListToAttrs attrPaths importDir;
     inherit (libAttrs.debug) traceM traceValM;
     # FIXME find a new name for `lib.lists.elemAt`, because `nixpkgs` uses
     # `with` on `lib` after `builtins` which makes it use this `elemAt`.
@@ -53,7 +40,8 @@ in lib0 // prelude // {
     inherit prelude;
     lib = libAttrs;
     inherit (libAttrs.builders)
-      mkFlakeTree mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay mkHost mkHome;
+      mkFlakeTree importDir mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay
+      mkHost mkHome;
     inherit (libAttrs) colors;
   };
 
