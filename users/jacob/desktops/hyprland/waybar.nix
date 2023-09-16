@@ -144,8 +144,10 @@ in {
         interval = 1;
 
         format = "{status_icon} {dynamic}";
+        dynamic-len = 70;
         dynamic-separator = " — ";
         dynamic-order = [ "title" "artist" "position" "length" ];
+        dynamic-importance = [ "position" "title" "artist" ];
         status-icons = {
           playing = "󰐊";
           paused = "󰏤";
