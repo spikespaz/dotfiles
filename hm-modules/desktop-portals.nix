@@ -160,7 +160,8 @@ in {
     home.sessionVariables = {
       XDG_DESKTOP_PORTAL_DIR =
         "${joinedPortals}/share/xdg-desktop-portal/portals";
-      NIXOS_XDG_OPEN_USE_PORTAL = lib.mkIf cfg.xdgOpenUsePortal "1";
+    } // lib.optionalAttrs cfg.xdgOpenUsePortal {
+      NIXOS_XDG_OPEN_USE_PORTAL = "1";
     };
   };
 }

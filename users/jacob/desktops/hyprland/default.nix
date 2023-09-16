@@ -34,6 +34,7 @@
   };
 
   xdg.desktopPortals = {
+    xdgOpenUsePortal = true;
     enable = true;
     portals = let useIn = [ "Hyprland" ];
     in {
