@@ -1,11 +1,9 @@
 lib: lib0:
 let
   inherit (import ./attrsets.nix { lib = lib0; }) importDir;
-  libAttrs = lib.pipe ./. [
-    (dir:
-      importDir dir (name: type: !(type == "regular" && name == "default.nix")))
-    (lib.mapAttrs (_: fn: fn { inherit lib; }))
-  ];
+  libAttrs =
+    lib.mapAttrs (_: fn: fn { inherit lib; }) (importDir ./. "default.nix");
+
   prelude = {
     inherit (libAttrs.attrsets)
       updates recursiveUpdates getAttrDefault getAttr thruAttr mapThruAttr

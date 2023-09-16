@@ -51,22 +51,46 @@ let
       (lib.flattenCond (builtins.any lib.isList))
     ];
 
-  # Takes a directory and a predicate, and imports each file or directory
+  # Takes a directory and a deny clause, and imports each file or directory
   # based on rules. An attribute set of the imported expressions is returned,
   # named according to each file with the `.nix` suffix removed.
+  #
+  # Your deny clause is turned into a predicate.
+  # See the type checking in source.
   #
   # The rules for importing are:
   #  1. Is a regular file ending with `.nix`.
   #  2. Is a directory containing the regular file `default.nix`.
   #  3. Your predicate, given `name` and `type`, returns `true`.
-  importDir = dir: pred:
+  importDir = dir: deny:
     let
+      inherit (lib) types;
+      pred = # #
+        if deny == null then
+          (_: _: false)
+        else if types.singleLineStr.check deny then
+        # A single string is assumed to be a file name to be excluded.
+          (name: type: !(type == "regular" && name == deny))
+        else if lib.isFunction deny then
+        # Basic predicate.
+          deny
+        else if (types.listOf types.singleLineStr).check deny then
+        # A list of strings is assumed to be files
+        # and directory names to exclude.
+          (name: type: !(builtins.elem name deny))
+        else if (types.listOf types.function).check deny then
+        # Multiple predicates in a list, join them.
+          (name: type: lib.birdos.mkJoinedOverlays deny)
+        else
+          throw
+          "importDir predicate should be a string, function, or list of strings or functions";
       isNix = name: type:
         (type == "regular" && lib.hasSuffix ".nix" name)
         || (lib.pathIsRegularFile "${dir}/${name}/default.nix");
+      pred' = name: type: (isNix name type) && (pred name type);
     in lib.pipe dir [
       builtins.readDir
-      (lib.filterAttrs (name: type: (isNix name type) && (pred name type)))
+      (lib.filterAttrs pred')
       (lib.mapAttrs' (name: _: {
         name = lib.removeSuffix ".nix" name;
         value = import "${dir}/${name}";
