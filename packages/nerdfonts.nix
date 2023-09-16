@@ -8,7 +8,7 @@ stdenvNoCC.mkDerivation (self: {
     sha256 = "sha256-clfxFE1MvBUKn3NR/3WxW08R/4HZy0qZZi+S4Pt6WvI=";
     stripRoot = false;
   };
-  enabledPhases = [ "unpackPhase" "installPhase" ];
+  phases = [ "unpackPhase" "installPhase" ];
   installPhase = ''
     runHook preInstall
     mkdir -p $out/share/fonts/truetype
