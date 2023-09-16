@@ -1,5 +1,8 @@
-{ self, config, pkgs, lib, ... }:
+{ self, config, pkgs, lib, inputs, ... }:
 (xs: { imports = xs; }) [
+  ### TOP-LEVEL NIXOS MODULES ###
+  inputs.ragenix.nixosModules.default
+
   #################
   ### NIX SETUP ###
   #################
