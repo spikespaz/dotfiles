@@ -67,7 +67,7 @@ let
       inherit (lib) types;
       pred = # #
         if deny == null then
-          (_: _: false)
+          (_: _: true)
         else if types.singleLineStr.check deny then
         # A single string is assumed to be a file name to be excluded.
           (name: type: !(type == "regular" && name == deny))
