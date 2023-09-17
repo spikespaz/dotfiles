@@ -25,7 +25,6 @@ let
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
       lastIndexOfChar charAtDefault charAt removeChars lsplitString rsplitString
       lpadString rpadString strip lstrip rstrip trim startsWith endsWith;
-    inherit (libAttrs.tests) mkTests mkTestSuite runTestsRecursive;
     inherit (libAttrs.radix) intToHex;
     inherit (libAttrs.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;
