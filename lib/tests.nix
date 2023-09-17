@@ -1,30 +1,35 @@
 { lib }:
 let
-  runTests = _: path: tests:
-    lib.pipe tests [
-      (lib.mapListToAttrs ({ name, expr, expect }: {
-        name = "${lib.concatStringsSep "." path} :: ${name}";
-        value = {
-          inherit name path;
-          success = expr == expect;
-          fail = expr != expect;
-          got = lib.generators.toPretty { multiline = true; } expr;
-          expected = lib.generators.toPretty { multiline = true; } expect;
-        };
-      }))
-      (lib.mapAttrsToList (name:
-        { fail, got, expected, ... }:
+  runTest = test:
+    lib.pipe test [
+      # Evaluate the test.
+      ({ path, name, expr, expect }: {
+        inherit path name;
+        success = expr == expect;
+        fail = expr != expect;
+        got = lib.generators.toPretty { multiline = true; } expr;
+        expected = lib.generators.toPretty { multiline = true; } expect;
+      })
+      # Trace the test if it failed, return null if successful.
+      ({ path, name, fail, got, expected, ... }:
         if fail then
           builtins.trace ''
-            ${name}
+            "${lib.concatStringsSep "." path} :: ${name}"
 
             got: ${got}
 
             expected: ${expected}
           '' name
         else
-          null))
+          null)
+    ];
+
+  runTests = tests:
+    lib.pipe tests [
+      (map runTest)
+      # Remove successful tests.
       (lib.filter (name: name != null))
+      # Trace the tallies, and return failed tests.
       (fails:
         let
           ok = (lib.length tests) - bad;
