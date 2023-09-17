@@ -1,6 +1,6 @@
 { lib }:
 let src = "/some/source/root";
-in {
+in lib.birdos.mkTestSuite {
   defaultSourceFilter = [
     {
       name = "allow regular file";

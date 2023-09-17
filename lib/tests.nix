@@ -36,6 +36,14 @@ let
           FAILURES: ${toString bad} (${toString (per)}%)
         '' fails)
     ];
+
+  mkTestSuite = sections: {
+    _type = "tests";
+    tests = lib.flatten (lib.mapAttrsToList
+      (name: tests: map (test: test // { path = [ name ]; }) tests) sections);
+  };
+
+  isTestSuite = x: lib.isAttrs x && x ? _type && x._type == "tests";
 in { # #
-  inherit runTests;
+  inherit runTests mkTestSuite isTestSuite;
 }
