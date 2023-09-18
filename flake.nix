@@ -16,6 +16,9 @@
     in {
       lib = nixpkgs.lib.extend (import ./lib);
 
+      # $ nix eval 'path:.#tests'
+      tests = import ./tests { inherit lib; };
+
       # The purpose of `mkFlakeTree` is to recurse the project files,
       # importing any folders with `default.nix` or files themselves.
       # This forms a structure of nested attrsets that somewhat resembles the
