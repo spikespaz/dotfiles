@@ -109,6 +109,14 @@ let
     else
       lib.flatten
       (lib.mapAttrsToList (name: collectTests acc (path ++ [ name ])) attrs);
+
+  runTestsRecursive = expr: args:
+    lib.pipe expr [
+      (expr: importTests expr args)
+      (collectTests [ ] [ ])
+      (runTests)
+    ];
 in { # #
-  inherit runTests mkTestSuite isTestSuite importTests collectTests;
+  inherit runTests mkTestSuite isTestSuite importTests collectTests
+    runTestsRecursive;
 }
