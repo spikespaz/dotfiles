@@ -12,14 +12,15 @@ let
       })
       # Trace the test if it failed, return null if successful.
       ({ path, name, fail, got, expected, ... }:
-        if fail then
+        let prettyName = "${lib.concatStringsSep "." path} :: ${name}";
+        in if fail then
           builtins.trace ''
-            "${lib.concatStringsSep "." path} :: ${name}"
+            ${prettyName}
 
             got: ${got}
 
             expected: ${expected}
-          '' name
+          '' prettyName
         else
           null)
     ];
