@@ -32,6 +32,7 @@ let
     inherit (libAttrs.trivial)
       not nand nor xor xnor imply implyDefault applyArgs applyAutoArgs;
     inherit (libAttrs.units) bytes kbytes;
+    inherit (libAttrs.builders) mkDirEntry;
   };
 in lib0 // prelude // {
   birdos = {
