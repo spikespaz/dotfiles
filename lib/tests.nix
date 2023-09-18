@@ -1,44 +1,40 @@
 { lib }:
 let
-  runTest = test:
-    lib.pipe test [
-      # Evaluate the test.
-      ({ path, name, expr, expect }: {
-        inherit path name;
-        success = expr == expect;
-        fail = expr != expect;
-        got = lib.generators.toPretty { multiline = true; } expr;
-        expected = lib.generators.toPretty { multiline = true; } expect;
+  makePrettyName = { path, name, ... }:
+    "${lib.concatStringsSep "." path} :: ${name}";
+
+  evalTest = { path, name, expr, expect }: {
+    inherit path name;
+    passed = expr == expect;
+    evaluated = lib.generators.toPretty { multiline = true; } expr;
+    expected = lib.generators.toPretty { multiline = true; } expect;
+  };
+
+  runTestsRecursive = expr: args:
+    lib.pipe expr [
+      (expr: importTests expr args)
+      (collectTests [ ] [ ])
+      (map evalTest)
+      (results: {
+        successes = lib.filter (res: res.passed) results;
+        failures = lib.filter (res: !res.passed) results;
       })
-      # Trace the test if it failed, return null if successful.
-      ({ path, name, fail, got, expected, ... }:
-        let prettyName = "${lib.concatStringsSep "." path} :: ${name}";
-        in if fail then
-          builtins.trace ''
-            ${prettyName}
-
-            got: ${got}
-
-            expected: ${expected}
-          '' prettyName
-        else
-          null)
-    ];
-
-  runTests = tests:
-    lib.pipe tests [
-      (map runTest)
-      # Remove successful tests.
-      (lib.filter (res: res != null))
-      # Trace the tallies, and return failed tests.
-      (fails:
+      ({ successes, failures }:
         let
-          count = lib.length tests;
-          bad = lib.length fails;
-          ratio = (bad + 0.0) / count;
+          succeeded = lib.length successes;
+          failed = lib.foldl' (count: result: lib.trace ''
+            ${makePrettyName result}
+            evaluated: ${result.evaluated}
+            expected: ${result.expected}
+          '' (count + 1)) 0 failures;
+          total = succeeded + failed;
+          ratio = (failed + 0.0) / total;
         in lib.trace ''
-          FAILURES: ${toString bad}/${toString count} (${lib.toPercent 2 ratio})
-        '' fails)
+          TOTAL FAILURES: ${toString failed}/${toString total} (${
+            lib.toPercent 2 ratio
+          })
+        '' failures)
+      (map (makePrettyName))
     ];
 
   mkTestSuite = sections: {
@@ -109,14 +105,7 @@ let
     else
       lib.flatten
       (lib.mapAttrsToList (name: collectTests acc (path ++ [ name ])) attrs);
-
-  runTestsRecursive = expr: args:
-    lib.pipe expr [
-      (expr: importTests expr args)
-      (collectTests [ ] [ ])
-      (runTests)
-    ];
 in { # #
-  inherit runTests mkTestSuite isTestSuite importTests collectTests
-    runTestsRecursive;
+  inherit evalTest runTestsRecursive mkTestSuite isTestSuite importTests
+    collectTests;
 }
