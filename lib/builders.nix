@@ -146,6 +146,7 @@ let
     isDir = type == "directory";
     isProject = !isHidden && (isFile || isDir);
     isNixFile = isFile && lib.hasSuffix ".nix" name;
+    isDefault = isFile && name == "default.nix";
     hasDefault = let ls = builtins.readDir "${path}";
     in isDir && ls ? "default.nix" && ls."default.nix" == "regular";
     hasNixFiles =
