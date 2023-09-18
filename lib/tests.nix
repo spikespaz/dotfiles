@@ -32,13 +32,12 @@ let
       # Trace the tallies, and return failed tests.
       (fails:
         let
-          ok = (lib.length tests) - bad;
+          count = lib.length tests;
           bad = lib.length fails;
-          per = (bad / ok) * 100.0;
+          ok = count - bad;
+          ratio = (bad + 0.0) / ok;
         in lib.trace ''
-
-          SUCCESSFUL: ${toString ok}
-          FAILURES: ${toString bad} (${toString (per)}%)
+          FAILURES: ${toString bad}/${toString ok} (${lib.toPercent 2 ratio})
         '' fails)
     ];
 
