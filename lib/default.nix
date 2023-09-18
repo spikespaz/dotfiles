@@ -24,7 +24,8 @@ let
     inherit (libAttrs.strings)
       indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
       lastIndexOfChar charAtDefault charAt removeChars lsplitString rsplitString
-      lpadString rpadString strip lstrip rstrip trim startsWith endsWith;
+      lpadString rpadString strip lstrip rstrip trim startsWith endsWith
+      toPercent;
     inherit (libAttrs.radix) intToHex;
     inherit (libAttrs.shellscript)
       wrapShellScript writeShellScriptShebang writeNuScript;

@@ -155,10 +155,14 @@ let
       pattern == builtins.substring (strLen - patLen) patLen str
     else
       false;
+
+  # Forms a fractional number into a percentage string.
+  toPercent = decimals: n:
+    "${rstrip "0" (toString (lib.round decimals (n * 100.0)))}%";
 in {
   #
   inherit indicesOfChar indexOfCharDefault indexOfChar lastIndexOfCharDefault
     lastIndexOfChar charAtDefault charAt removeChars substring lsplitString
     rsplitString lpadString rpadString strip lstrip rstrip trim startsWith
-    endsWith;
+    endsWith toPercent;
 }
