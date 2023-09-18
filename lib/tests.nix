@@ -99,6 +99,16 @@ let
       lib.mapAttrs (_: value: importTests value args) expr
     else
       abort "value of type ${builtins.typeOf expr} cannot be a test suite";
+
+  # Walk down a recursive attribute set (produced by `importTests`),
+  # collecting all tests into a final list.
+  # The list preserves the attribute path in `path` of each test.
+  collectTests = acc: path: attrs:
+    if lib.birdos.isTestSuite attrs then
+      acc ++ map (test: test // { path = path ++ test.path; }) attrs.tests
+    else
+      lib.flatten
+      (lib.mapAttrsToList (name: collectTests acc (path ++ [ name ])) attrs);
 in { # #
-  inherit runTests mkTestSuite isTestSuite importTests;
+  inherit runTests mkTestSuite isTestSuite importTests collectTests;
 }

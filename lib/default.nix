@@ -41,7 +41,8 @@ in lib0 // prelude // {
     inherit (libAttrs.builders)
       mkFlakeTree importDir mkFlakeSystems mkJoinedOverlays mkUnfreeOverlay
       mkHost mkHome;
-    inherit (libAttrs.tests) runTests mkTestSuite isTestSuite importTests;
+    inherit (libAttrs.tests)
+      runTests mkTestSuite isTestSuite importTests collectTests;
     inherit (libAttrs) colors;
   };
 
