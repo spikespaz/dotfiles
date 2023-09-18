@@ -15,7 +15,7 @@ let
       indicesOf indicesOfPred indexOfDefault indexOf lastIndexOfDefault
       lastIndexOf elemAtDefault removeElems sublist split lsplit rsplit lpad
       rpad flattenCond;
-    inherit (libAttrs.math) pow powi abs;
+    inherit (libAttrs.math) pow powi mantissa abs;
     inherit (libAttrs.sources)
       sourceFilter mkSourceFilter defaultSourceFilter unknownSourceFilter
       objectSourceFilter vcsSourceFilter editorSourceFilter flakeSourceFilter
