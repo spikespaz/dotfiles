@@ -29,16 +29,15 @@ let
     lib.pipe tests [
       (map runTest)
       # Remove successful tests.
-      (lib.filter (name: name != null))
+      (lib.filter (res: res != null))
       # Trace the tallies, and return failed tests.
       (fails:
         let
           count = lib.length tests;
           bad = lib.length fails;
-          ok = count - bad;
-          ratio = (bad + 0.0) / ok;
+          ratio = (bad + 0.0) / count;
         in lib.trace ''
-          FAILURES: ${toString bad}/${toString ok} (${lib.toPercent 2 ratio})
+          FAILURES: ${toString bad}/${toString count} (${lib.toPercent 2 ratio})
         '' fails)
     ];
 
