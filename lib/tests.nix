@@ -22,19 +22,31 @@ let
       ({ successes, failures }:
         let
           succeeded = lib.length successes;
-          failed = lib.foldl' (count: result: lib.trace ''
-            ${makePrettyName result}
-            evaluated: ${result.evaluated}
-            expected: ${result.expected}
-          '' (count + 1)) 0 failures;
+          # Folding sum has been used to force failures down the eval path,
+          # so that traces can be displayed.
+          failed = lib.foldl' (count: result:
+            lib.trace ''
+              ${makePrettyName result}
+              evaluated: ${result.evaluated}
+              expected: ${result.expected}
+            '' (count + 1)) 0 failures;
           total = succeeded + failed;
           ratio = (failed + 0.0) / total;
         in lib.trace ''
           TOTAL FAILURES: ${toString failed}/${toString total} (${
             lib.toPercent 2 ratio
           })
+
+          ${lib.concatImapStrings (i: res: (''
+            ${toString i}: ${makePrettyName res}
+          '')) failures}
         '' failures)
-      (map (makePrettyName))
+      (failures:
+        if builtins.length failures == 0 then
+          true
+        else
+        # Force all failures to be evaluated, aborting with error code for CI.
+          assert (builtins.all (_: false) failures); false)
     ];
 
   mkTestSuite = sections: {
