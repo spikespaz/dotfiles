@@ -147,10 +147,11 @@ let
     isProject = !isHidden && (isFile || isDir);
     isNixFile = isFile && lib.hasSuffix ".nix" name;
     hasDefault = let ls = builtins.readDir "${path}";
-    in ls ? "default.nix" && ls."default.nix" == "regular";
+    in isDir && ls ? "default.nix" && ls."default.nix" == "regular";
     hasNixFiles =
       let ls = lib.mapAttrsToList (mkDirEntry path) (builtins.readDir path);
-      in builtins.any (it: it.isNixFile || (it.isDir && it.hasNixFiles)) ls;
+      in isDir
+      && (builtins.any (it: it.isNixFile || (it.isDir && it.hasNixFiles)) ls);
     isNix = isProject && (isNixFile || (isDir && hasNixFiles));
   };
 in {
