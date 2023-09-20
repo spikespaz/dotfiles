@@ -18,7 +18,7 @@ let
   plugins = {
     inherit (pkgs.zsh-plugins)
       zsh-autosuggestions zsh-autocomplete zsh-edit zsh-autopair zsh-auto-notify
-      zsh-window-title fast-syntax-highlighting;
+      zsh-window-title zsh-fast-syntax-highlighting;
   };
 in {
   imports = [ self.homeManagerModules.zsh ];
@@ -46,8 +46,8 @@ in {
     enableAliases = true;
   };
 
-  xdg.configFile = lib.mapAttrs' (name: source: {
-    name = "zsh/plugins/${name}";
+  xdg.configFile = lib.mapAttrs' (_: source: {
+    name = "zsh/plugins/${source.pname}";
     value = { inherit source; };
   }) plugins;
 
