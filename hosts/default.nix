@@ -2,7 +2,7 @@
 # as seen in the flake's `nixosConfigurations` output.
 
 args@{ self, tree, lib, inputs, ... }: {
-  intrepid = lib.birdos.mkHost args {
+  intrepid = lib.bird.mkHost args {
     hostPlatform.system = "x86_64-linux";
     nixpkgs = inputs.nixpkgs-unstable;
     nixpkgsArgs.config.allowUnfree = true;

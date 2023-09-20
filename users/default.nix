@@ -2,7 +2,7 @@
 # as seen in the flake's `homeConfigurations` output.
 
 args@{ self, tree, lib, inputs, ... }: {
-  jacob = lib.birdos.mkHome args rec {
+  jacob = lib.bird.mkHome args rec {
     hostPlatform.system = "x86_64-linux";
     nixpkgs = inputs.nixpkgs-unstable;
     nixpkgsArgs.config.allowUnfree = true;

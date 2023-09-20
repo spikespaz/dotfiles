@@ -14,7 +14,10 @@
           overlays = [ self.overlays.default ];
         });
     in {
-      lib = nixpkgs.lib.extend (import ./lib);
+      lib = builtins.foldl' (lib: overlay: lib.extend overlay) nixpkgs.lib [
+        (inputs.bird-nix-lib.lib.overlay)
+        (import ./lib)
+      ];
 
       # $ nix eval 'path:.#tests'
       tests = import ./tests { inherit lib; };
@@ -23,7 +26,7 @@
       # importing any folders with `default.nix` or files themselves.
       # This forms a structure of nested attrsets that somewhat resembles the
       # directory structure of the flake, very much like the `tree` command.
-      tree = lib.birdos.mkFlakeTree ./.;
+      tree = lib.bird.mkFlakeTree ./.;
 
       formatter = eachSystem (system: inputs.nixfmt.packages.${system}.default);
 
@@ -34,7 +37,7 @@
           attrs // {
             default = tree.packages.default;
             allowUnfree = pkgs: pkgs0:
-              lib.birdos.mkUnfreeOverlay pkgs0 [ [ "ttf-ms-win11" ] ];
+              lib.bird.mkUnfreeOverlay pkgs0 [ [ "ttf-ms-win11" ] ];
           })
       ];
       packages =
@@ -68,6 +71,8 @@
   # you should probably be using overlays and accessing packages from
   # `pkgs` passed to your module's arguments.
   inputs = {
+    bird-nix-lib.url = "github:spikespaz/bird-nix-lib";
+
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
