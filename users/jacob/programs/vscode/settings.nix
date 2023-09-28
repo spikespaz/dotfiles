@@ -148,6 +148,16 @@
 
     # prevent pollute history with whitespace changes
     "diffEditor.ignoreTrimWhitespace" = false;
+    # show blames at the end of current line
+    "gitblame.inlineMessageEnabled" = true;
+    # blame message format for inline, remove "Blame"
+    "gitblame.inlineMessageFormat" = "\${author.name} (\${time.ago})";
+    "gitblame.inlineMessageNoCommit" = "Uncommitted changes";
+    # blame message format for status bar
+    "gitblame.statusBarMessageFormat" = "Blame \${author.name} (\${time.ago})";
+    "gitblame.statusBarMessageNoCommit" = "Uncommitted changes";
+    # open the changes in browser when clicking blame on status bar
+    "gitblame.statusBarMessageClickAction" = "Open tool URL";
 
     ## Navigation Behavior ##
 
