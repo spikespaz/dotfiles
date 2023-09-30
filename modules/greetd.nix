@@ -3,7 +3,7 @@ let
   inherit (lib) types;
   cfg = config.services.greetd;
 
-  typeSession = types.submodule {
+  typeSession = types.submodule ({ name, ... }: {
     options = {
       name = lib.mkOption {
         type = types.singleLineStr;
@@ -11,7 +11,6 @@ let
         description = lib.mdDoc ''
           The name of the session to be used in the Desktop Entry.
         '';
-        example = lib.literalExpression "TODO";
       };
       comment = lib.mkOption {
         type = types.singleLineStr;
@@ -29,7 +28,8 @@ let
         '';
       };
     };
-  };
+    config = { name = lib.mkDefault name; };
+  });
 in {
   options = {
     services.greetd = {
