@@ -1,7 +1,13 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
-  # <https://gist.github.com/sebastian-de/648555c1233fdc6688c0a224fc2fca7e>
-  laptop-unsuck = lib.importJSON ./laptop_unsuck.json;
+  # <https://github.com/sebastian-de/easyeffects-thinkpad-unsuck>
+  thinkpad-unsuck-src = pkgs.fetchFromGitHub {
+    owner = "sebastian-de";
+    repo = "easyeffects-thinkpad-unsuck";
+    rev = "6356f4953b54911e156f31ed90da29eb4436ad7e";
+    hash = "sha256-LqsiPNzU4NIhvc0+qlXIQqKEn075UK0zAoGYIcUeHrY=";
+  };
+  thinkpad-unsuck-json = "${thinkpad-unsuck-src}/thinkpad-unsuck.json";
 in {
   services.easyeffects.enable = true;
 
@@ -18,8 +24,7 @@ in {
   # <https://github.com/wwmm/easyeffects/issues/1359>
   # Can I just say, EasyEffects is shitty software.
 
-  xdg.configFile."easyeffects/output/laptop_unsuck.json".text =
-    builtins.toJSON laptop-unsuck;
+  xdg.configFile."easyeffects/output/thinkpad-unsuck.json".source = thinkpad-unsuck-json;
 
   xdg.configFile."easyeffects/autoload/output/alsa_output.pci-0000_08_00.6.HiFi__hw_Generic_1__sink:[Out] Speaker.json".text =
     builtins.toJSON {
@@ -27,7 +32,7 @@ in {
       device-description =
         "Family 17h/19h HD Audio Controller Speaker + Headphones";
       device-profile = "[Out] Speaker";
-      preset-name = "laptop_unsuck";
+      preset-name = "thinkpad-unsuck";
     };
 
   xdg.configFile."easyeffects/autoload/output/alsa_output.pci-0000_08_00.6.HiFi__hw_Generic_1__sink:[Out] Headphones.json".text =
