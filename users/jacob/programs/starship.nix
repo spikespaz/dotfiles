@@ -60,7 +60,7 @@ in {
     vicmd_symbol = "[](${colors.purple})";
   };
 
-  continuation_prompt = "[﬌](${colors.gray}) ";
+  continuation_prompt = "[󰘍](${colors.gray}) ";
 
   status = {
     disabled = false;
