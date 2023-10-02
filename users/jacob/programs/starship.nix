@@ -139,7 +139,7 @@ in {
     staged = "[ $count ](bold ${colors.green})";
     renamed = "[ $count ](bold ${colors.blue})";
     deleted = "[ $count ](bold ${colors.red})";
-    ignore_submodules = false;
+    ignore_submodules = true;
   };
 
   fill = {
