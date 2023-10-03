@@ -1,11 +1,24 @@
-{ self, config, lib, pkgs, inputs, ... }:
+{ self, tree, config, lib, pkgs, inputs, ... }:
 let
   sessionData = config.services.xserver.displayManager.sessionData.desktops;
   sessionPath = lib.concatStringsSep ":" [
     "${sessionData}/share/xsessions"
     "${sessionData}/share/wayland-sessions"
   ];
-  hyprlandPackage = pkgs.hyprland;
+  hyprlandUserSessions = lib.pipe self.homeConfigurations [
+    (lib.mapAttrs (_: attrs:
+      attrs.config.wayland.windowManager.hyprland.finalPackage or null))
+    (lib.filterAttrs (_: package: package != null))
+    (lib.mapAttrs' (user: package: {
+      name = "${user}-${package.pname}";
+      value = {
+        comment = lib.attrByPath [ "meta" "description" ] null package;
+        script = ''
+          ${lib.getExe package} &> /dev/null  
+        '';
+      };
+    }))
+  ];
 in {
   imports = [ self.nixosModules.greetd ];
 
@@ -13,19 +26,10 @@ in {
   services.xserver.displayManager.sessionPackages =
     [ config.services.greetd.sessionFiles ];
 
-  services.greetd.sessions = {
-    hyprland = {
-      name = "Hyprland Compositor";
-      comment = "Wayland tiling compositor that doesn't sacrifice on looks.";
-      script = ''
-        ${lib.getExe hyprlandPackage} &> /dev/null
-      '';
-    };
-  };
-
   services.greetd = {
     enable = true;
     vt = 2;
+    sessions = lib.updates [ hyprlandUserSessions ];
     settings = {
       default_session = {
         command = lib.concatStringsSep " " [
