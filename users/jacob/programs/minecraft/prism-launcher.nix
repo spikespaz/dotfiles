@@ -17,14 +17,12 @@ let
     graalvm8-ce-jre
     # Java 11
     pkgs.temurin-jre-bin-11
-    pkgs.graalvm11-ce
-    # Java 17
-    pkgs.graalvm17-ce
     # Java 20
     temurin20-jre-bin
     # Latest
     pkgs.temurin-jre-bin
     pkgs.zulu
+    pkgs.graalvm-ce
   ];
 
   cmd.preLaunch = ''
