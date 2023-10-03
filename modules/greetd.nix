@@ -70,6 +70,17 @@ in {
         '';
         example = lib.literalExpression "TODO";
       };
+
+      nixosIntegration = lib.mkOption {
+        type = types.bool;
+        default = false;
+        description = lib.mdDoc ''
+          Whether to add `sessionFiles` to
+          {option}`services.xserver.displayManager.sessionPackages`
+          in order to integrate greetd's sessions with other modules provided by NixOS.
+        '';
+      };
+
       sessionFiles = lib.mkOption {
         type = types.package;
         readOnly = true;
@@ -78,16 +89,45 @@ in {
           {path}`$out/share/wayland-sessions`.
         '';
       };
+
+      sessionPath = lib.mkOption {
+        type = types.listOf types.path;
+        apply = lib.concatStringsSep ":";
+        description = lib.mdDoc ''
+          This option is intended to be used recursively in your greetd
+          configuration. For example, this value is appropriate for
+          tuigreet's `--sessions` parameter.
+        '';
+      };
     };
   };
 
-  config = {
-    services.greetd.sessionFiles = pkgs.symlinkJoin {
-      name = "greetd-session-desktop-files";
-      paths = lib.mapAttrsToList (_: session: session.desktopFile) cfg.sessions;
-      passthru.providedSessions =
-        lib.mapAttrsToList (_: session: session.fileName) cfg.sessions;
-    };
-  };
+  config = lib.mkMerge [
+    {
+      services.greetd.sessionFiles = pkgs.symlinkJoin {
+        name = "greetd-session-desktop-files";
+        paths =
+          lib.mapAttrsToList (_: session: session.desktopFile) cfg.sessions;
+        passthru.providedSessions =
+          lib.mapAttrsToList (_: session: session.fileName) cfg.sessions;
+      };
+    }
+    (lib.mkIf cfg.nixosIntegration {
+      services.xserver.displayManager.sessionPackages = [ cfg.sessionFiles ];
+      services.greetd.sessionPath = let
+        sessionPackage =
+          config.services.xserver.displayManager.sesisonData.desktops;
+      in [
+        "${sessionPackage}/share/xsessions"
+        "${sessionPackage}/share/wayand-sessions"
+      ];
+    })
+    (lib.mkIf (!cfg.nixosIntegration) {
+      services.greetd.sessionPath = [
+        "${cfg.sessionFiles}/share/xsessions"
+        "${cfg.sessionFiles}/share/wayland-sessions"
+      ];
+    })
+  ];
 }
 
