@@ -1,9 +1,6 @@
-{ pkgs, fetchurl, callPackage, }:
+{ pkgs, fetchurl, graalvmCEPackages }:
 let
-  buildGraalvm = callPackage
-    "${pkgs.path}/pkgs/development/compilers/graalvm/community-edition/buildGraalvm.nix";
-
-  graalvm8-ce = (buildGraalvm {
+  graalvm8-ce = (graalvmCEPackages.buildGraalvm {
     version = "21.3.1";
     javaVersion = "8";
     src = fetchurl {
@@ -12,8 +9,21 @@ let
       sha256 = "sha256-uey9VC3h7Qo9pGpinyJmqIIDJpj1/LxU2JI3K5GJsO0=";
     };
     meta.platforms = [ "x86_64-linux" ];
-  }).overrideAttrs { doInstallCheck = false; };
+  }).overrideAttrs (self: super: {
+    doInstallCheck = false;
+    # Make sure that `native-image` exists so that `wrapProgram`
+    # has something to do.
+    preInstall = ''
+      touch $out/bin/native-image
+      chmod +x $out/bin/native-image
+    '' + (super.preInstall or "");
+    # Remove the `native-image` wrapper and the original empty file.
+    postFixup = (super.postFixup or "") + ''
+      rm $out/bin/native-image*
+    '';
+  });
 in {
   inherit graalvm8-ce;
   graalvm8-ce-jre = "${graalvm8-ce}/jre";
 }
+
