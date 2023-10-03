@@ -3,68 +3,91 @@ let
   inherit (lib) types;
   cfg = config.services.greetd;
 
-  typeSession = types.submodule ({ name, ... }: {
+  desktopSession = types.submodule ({ name, config, ... }: {
     options = {
+      fileName = lib.mkOption {
+        type = types.singleLineStr;
+        description = lib.mdDoc ''
+          The name of the generated `*.desktop` file, without the extension.
+        '';
+      };
       name = lib.mkOption {
         type = types.singleLineStr;
-        # default = "";
         description = lib.mdDoc ''
           The name of the session to be used in the Desktop Entry.
+          By default this will be the same as {option}`fileName`.
         '';
       };
       comment = lib.mkOption {
         type = types.singleLineStr;
-        # default = "";
         description = lib.mdDoc ''
           The description to be used in the Desktop Entry.
         '';
-        example = lib.literalExpression "TODO";
       };
       script = lib.mkOption {
         type = types.lines;
-        # default = "";
         description = lib.mdDoc ''
           Lines of shell code to start the desktop session.
         '';
       };
+      desktopFile = lib.mkOption {
+        type = types.package;
+        readOnly = true;
+        description = lib.mdDoc ''
+          The generated `*.desktop` file for this session.
+          The file is in {path}`$out/share/wayland-sessions/`, so that
+          this package can be merged with others via `pkgs.symlinkJoin`.
+        '';
+      };
     };
-    config = { name = lib.mkDefault name; };
+    config = {
+      fileName = lib.mkDefault name;
+      name = lib.mkDefault config.fileName;
+      desktopFile =
+        pkgs.writeTextDir "share/wayland-sessions/${config.fileName}.desktop" ''
+          [Desktop Entry]
+          Name=${config.name}
+          ${lib.optionalString (config.comment != null)
+          "Comment=${config.comment}"}
+          Exec=${
+            pkgs.writeShellScript "${config.fileName}-session" config.script
+          }
+          Type=Application
+        '';
+    };
   });
 in {
   options = {
     services.greetd = {
       sessions = lib.mkOption {
-        type = types.attrsOf typeSession;
+        type = types.attrsOf desktopSession;
         default = { };
-        description = lib.mdDoc "TODO";
+        description = lib.mdDoc ''
+          Attribute set of desktop session specifications.
+          Each attribute name will be used as the name of the
+          corresponding `*.desktop` file, as well as the name of the session
+          in the generated fule, unless otherwise specified.
+        '';
         example = lib.literalExpression "TODO";
       };
-      sessionData = lib.mkOption {
-        readOnly = true;
+      sessionFiles = lib.mkOption {
         type = types.package;
-        # default = null;
-        description = lib.mdDoc "TODO";
-        example = lib.literalExpression "TODO";
+        readOnly = true;
+        description = lib.mdDoc ''
+          The final package of joined `*.desktop` files in
+          {path}`$out/share/wayland-sessions`.
+        '';
       };
     };
   };
 
   config = {
-    services.greetd.sessionData = pkgs.runCommand "generate-sessions" {
-      passthru.providedSessions = builtins.attrNames cfg.sessions;
-    } ''
-      mkdir -p $out/share/wayland-sessions
-
-      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (fName:
-        { name, comment ? null, script, }: ''
-          cat <<- 'EOF' > "$out/share/wayland-sessions/${fName}.desktop"
-          [Desktop Entry]
-          Name=${name}
-          ${lib.optionalString (comment != null) "Comment=${comment}"}
-          Exec=${pkgs.writeShellScript "${fName}-wrapped" script}
-          Type=Application
-          EOF
-        '') cfg.sessions)}
-    '';
+    services.greetd.sessionFiles = pkgs.symlinkJoin {
+      name = "greetd-session-desktop-files";
+      paths = lib.mapAttrsToList (_: session: session.desktopFile) cfg.sessions;
+      passthru.providedSessions =
+        lib.mapAttrsToList (_: session: session.fileName) cfg.sessions;
+    };
   };
 }
+

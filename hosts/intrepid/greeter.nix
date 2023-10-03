@@ -11,7 +11,7 @@ in {
 
   # needed to get the .desktop file copied
   services.xserver.displayManager.sessionPackages =
-    [ config.services.greetd.sessionData ];
+    [ config.services.greetd.sessionFiles ];
 
   services.greetd.sessions = {
     hyprland = {
