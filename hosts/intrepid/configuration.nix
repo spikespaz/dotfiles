@@ -227,139 +227,24 @@
     };
   }
 
-  #############################
-  ### SERVICES: APP SANDBOX ###
-  ############################
+  ##########################
+  ### SYSTEM ENVIRONMENT ###
+  ##########################
   {
-    ### SERVICES: FLATPAK ###
-    services.flatpak.enable = true;
-    xdg.portal.enable = true;
-  }
-
-  ###########################
-  ### DESKTOP ENVIRONMENT ###
-  ###########################
-  {
-    # policy kit;
-    # communication between unpriviledged and proviledged processes
-    security.polkit.enable = true;
-
-    # auth
-    services.gnome.gnome-keyring.enable = true;
-
+    # tty config
+    console.keyMap = "us";
+    console.packages = [ pkgs.tamsyn ];
+    console.font = "Tamsyn8x16r";
+    # enable shell completions for system packages
+    environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
     # enable fingerprint sensor
     services.fprintd.enable = true;
 
     # registry for linux, thanks to gnome
     programs.dconf.enable = true;
 
-    # locale and timezone
-    time.timeZone = "America/Phoenix";
-    i18n.defaultLocale = "en_US.UTF-8";
-
-    # allow users to mount fuse filesystems with allow_other
-    programs.fuse.userAllowOther = true;
-
-    ### DEFAULT FONTS ###
-
-    fonts = {
-      fontconfig.enable = true;
-      fontDir.enable = true;
-      # handled by filesystem
-      fontDir.decompressFonts = true;
-      packages = with pkgs; [
-        (pkgs.ttf-ms-win11.override { acceptEula = true; })
-        noto-fonts
-        noto-fonts-extra
-        noto-fonts-cjk-sans
-        noto-fonts-cjk-serif
-        noto-fonts-emoji
-        open-sans
-        ubuntu_font_family
-      ];
-    };
-  }
-
-  ####################################
-  ### DESKTOP ENVIRONMENT: WAYLAND ###
-  ####################################
-  self.nixosModules.disable-input
-  {
-    # <https://github.com/swaywm/swaylock/issues/61>
-    security.pam.services.swaylock.text = ''
-      auth sufficient pam_unix.so try_first_pass nullok
-      auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so
-    '';
-
-    # <https://github.com/swaywm/swaylock/issues/61>
-    # security.pam.services.swaylock.text = ''
-    #   auth sufficient ${pkgs.fprintd-grosshack}/lib/security/pam_fprintd_grosshack.so
-    #   auth sufficient pam_unix.so try_first_pass nullok
-    # '';
-
-    environment.systemPackages = [ pkgs.slight ];
-    services.udev.packages = [ pkgs.slight ];
-
-    programs.disable-input-devices = {
-      enable = true;
-      allowedUsers = [ "jacob" ];
-      # Show all event devices:
-      # $ sudo evtest
-      # Get information about a device:
-      # $ udevadm info -a /dev/input/eventXX
-      # Test by blocking a device:
-      # $ sudo evtest --grab /dev/input/eventXX
-      disableDevices = {
-        # "AT Translated Set 2 keyboard"
-        # Laptop Keyboard
-        "thinkpad/keyboard" = {
-          product = "0001";
-          vendor = "0001";
-        };
-        # "ThinkPad Extra Buttons"
-        # Laptop Special Function Keys
-        "thinkpad/extra-buttons" = {
-          product = "5054";
-          vendor = "17aa";
-        };
-        # "TPPS/2 Elan TrackPoint"
-        # TrackPoint and Touchpad Buttons
-        "thinkpad/trackpoint" = {
-          product = "000a";
-          vendor = "0002";
-        };
-        # "SynPS/2 Synaptics TouchPad"
-        # Laptop Touchpad
-        "thinkpad/touchpad" = {
-          product = "0007";
-          vendor = "0002";
-        };
-        # # "Power Button"
-        # # Power/Sleep Button
-        # "thinkpad/power-button" = {
-        #   product = "0001";
-        #   vendor = "0000";
-        # };
-        # "Lid Switch"
-        # Laptop Close Switch
-        "thinkpad/lid-switch" = {
-          product = "0005";
-          vendor = "0000";
-        };
-      };
-    };
-  }
-
-  #########################
-  ### SHARED USER FILES ###
-  #########################
-  # enable shell completions for system packages
-  {
-    environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
-  }
-  # very useful /usr/share/dict/words and $WORDLIST
-  # <https://en.wikipedia.org/wiki/Words_(Unix)>
-  {
+    # very useful /usr/share/dict/words and $WORDLIST
+    # <https://en.wikipedia.org/wiki/Words_(Unix)>
     environment.wordlist.enable = true;
     systemd.tmpfiles.rules = [
       "L /usr/share/dict/words - - - - ${
@@ -371,24 +256,41 @@
       }"
     ];
   }
-  # public shared directory for users of the users group
+  ### PERIPHERALS ###
   {
+    hardware.openrazer = {
+      enable = true;
+      users = [ "jacob" ];
+      devicesOffOnScreensaver = false;
+    };
+  }
+  ### VIRTUALIZATION ###
+  {
+    boot.kernelModules = [ "kvm-amd" ];
 
-    systemd.tmpfiles.rules = let publicDir = "/home/public/share";
-    in lib.pipe config.users.users [
-      lib.attrValues
-      (builtins.filter (user: user.createHome && user.isNormalUser))
-      # if changed fix alignment with \t
-      #             Type   Path            Mode User Group Age Argument
-      (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
-      lib.concatLists
-      (links: [ "d	${publicDir}		0666	root	users	10d		-" ] ++ links)
-    ];
+    # virtualisation.spiceUSBRedirection.enable = true;
+    virtualisation.libvirtd = {
+      enable = true;
+      onBoot = "ignore";
+      qemu.swtpm.enable = true;
+      qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
+    };
   }
 
-  #####################
+  ########################
+  ### USER ENVIRONMENT ###
+  ########################
+  {
+    # allow users to mount fuse filesystems with allow_other
+    programs.fuse.userAllowOther = true;
+    # locale and timezone
+    time.timeZone = "America/Phoenix";
+    i18n.defaultLocale = "en_US.UTF-8";
+
+    xdg.portal.enable = true;
+    services.flatpak.enable = true;
+  }
   ### USERS CONFIGS ###
-  #####################
   {
     # users.mutableUsers = false;
     users.users = let initialPassword = "password";
@@ -407,39 +309,18 @@
       };
     };
   }
-
-  ###################
-  ### PERIPHERALS ###
-  ###################
+  ### SHARED USER FILES ###
   {
-    hardware.openrazer = {
-      enable = true;
-      users = [ "jacob" ];
-      devicesOffOnScreensaver = false;
-    };
-  }
-
-  ######################
-  ### VIRTUALIZATION ###
-  ######################
-  {
-    boot.kernelModules = [ "kvm-amd" ];
-
-    # virtualisation.spiceUSBRedirection.enable = true;
-    virtualisation.libvirtd = {
-      enable = true;
-      onBoot = "ignore";
-      qemu.swtpm.enable = true;
-      qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
-    };
-  }
-
-  ###################
-  ### TTY CONSOLE ###
-  ###################
-  {
-    console.keyMap = "us";
-    console.packages = [ pkgs.tamsyn ];
-    console.font = "Tamsyn8x16r";
+    # public shared directory for users of the users group
+    systemd.tmpfiles.rules = let publicDir = "/home/public/share";
+    in lib.pipe config.users.users [
+      lib.attrValues
+      (builtins.filter (user: user.createHome && user.isNormalUser))
+      # if changed fix alignment with \t
+      #             Type   Path            Mode User Group Age Argument
+      (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
+      lib.concatLists
+      (links: [ "d	${publicDir}		0666	root	users	10d		-" ] ++ links)
+    ];
   }
 ]

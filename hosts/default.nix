@@ -23,6 +23,7 @@ args@{ self, tree, lib, inputs, ... }: {
       # gamemode
       gaming
       pia-openvpn
+      user-desktop
     ];
     overlays = [
       # flake packages
