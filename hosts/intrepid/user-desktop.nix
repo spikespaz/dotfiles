@@ -1,4 +1,4 @@
-{ self, pkgs, ... }:
+{ self, pkgs, lib, ... }:
 (xs: { imports = xs; }) [
   ### ADMINISTRATOR UTILITIES ###
   self.nixosModules.disable-input
@@ -6,10 +6,26 @@
     environment.systemPackages = [ pkgs.slight ];
     services.udev.packages = [ pkgs.slight ];
 
+    # Allow sudo users to renice without `sudo` invocation.
+    security.sudo.extraRules = [{
+      groups = [ "wheel" ];
+      commands = [
+        {
+          command = lib.getExe' pkgs.util-linux "renice";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = # this path is RO, it's safe
+            "/run/current-system/sw/bin/renice";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }];
+
     # create device paths to disable input devices
     programs.disable-input-devices = {
       enable = true;
-      allowedUsers = [ "jacob" ];
+      allowedGroups = [ "video" ];
       # Show all event devices:
       # $ sudo evtest
       # Get information about a device:
