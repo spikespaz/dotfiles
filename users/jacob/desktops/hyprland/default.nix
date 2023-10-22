@@ -18,6 +18,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    package = pkgs.hyprland;
     reloadConfig = true;
     systemdIntegration = true;
     recommendedEnvironment = true;

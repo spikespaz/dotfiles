@@ -8,7 +8,6 @@ let
   in lib.genAttrs [ "r" "g" "b" ] (_: builtins.floor (percent * 255));
 in {
   wayland.windowManager.hyprland = {
-    package = pkgs.hyprland;
 
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     config.general = {
