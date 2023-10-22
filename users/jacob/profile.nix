@@ -74,7 +74,7 @@ in {
     programs.microsoft-edge
 
     ### COMMUNICATION & MESSAGING ###
-    programs.mailspring
+    # programs.mailspring
     programs.thunderbird
     # programs.discord.canary
     # programs.discord.webcord
