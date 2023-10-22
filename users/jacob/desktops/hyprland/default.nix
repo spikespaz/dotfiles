@@ -23,7 +23,6 @@
     recommendedEnvironment = true;
 
     xwayland.enable = true;
-    xwayland.hidpi = false;
 
     config.exec_once = [
       # polkit agent, raises to root access with gui
