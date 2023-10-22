@@ -8,7 +8,6 @@ let
   in lib.genAttrs [ "r" "g" "b" ] (_: builtins.floor (percent * 255));
 in {
   wayland.windowManager.hyprland = {
-
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
     config.general = {
       border_size = 2;
@@ -75,6 +74,7 @@ in {
     in {
       disable_hyprland_logo = true; # false
       disable_splash_rendering = true; # false
+      force_default_wallpaper = 0; # disable weeb stuff
       variable_framerate = true;
       variable_refresh = FULLSCREEN_ONLY;
       disable_autoreload = true; # false # nix takes care of that
