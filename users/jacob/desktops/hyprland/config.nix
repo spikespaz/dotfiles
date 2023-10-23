@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 let
   rgba = rgb: a: "rgba(${lib.birdos.colors.hexRGBA' rgb a})";
   theme = lib.birdos.colors.palettes.gruvbox.dark;
@@ -15,8 +15,6 @@ in {
       gaps_outside = 10;
       active_border_color = rgba theme.fg3 1.0;
       inactive_border_color = rgba theme.bg3 1.0;
-      active_group_border_color = rgba theme.fg_aqua 1.0;
-      inactive_group_border_color = rgba theme.bg3 1.0;
       cursor_inactive_timeout = 10;
       no_cursor_warps = true;
       resize_on_border = true;
@@ -79,16 +77,34 @@ in {
       variable_refresh = FULLSCREEN_ONLY;
       disable_autoreload = true; # false # nix takes care of that
 
-      # these features are not polished yet
-      # <https://github.com/hyprwm/Hyprland/issues/2415>
-      render_titles_in_groupbar = true;
-      groupbar_titles_font_size = 9;
-      groupbar_gradients = false;
-      groupbar_text_color = rgba theme.fg0 1.0;
-
       # works well with swayidle
       key_press_enables_dpms = true;
       mouse_move_enables_dpms = true;
+    };
+
+    config.group = rec {
+      insert_after_current = true;
+      focus_removed_window = true;
+
+      active_border_color = rgba theme.fg_aqua 1.0;
+      inactive_border_color = rgba theme.bg3 1.0;
+      locked_active_border_color = rgba theme.fg_purple 1.0;
+      locked_inactive_border_color = inactive_border_color;
+
+      # these features are not polished yet
+      # <https://github.com/hyprwm/Hyprland/issues/2415>
+      groupbar = rec {
+        font_size = 9;
+        gradients = false;
+        render_titles = true;
+        scrolling = true;
+        text_color = rgba theme.fg0 1.0;
+
+        active_color = rgba theme.fg_aqua 0.9;
+        inactive_color = rgba theme.bg0 0.8;
+        locked_active_color = active_color;
+        locked_inactive_color = inactive_color;
+      };
     };
 
     # <https://wiki.hyprland.org/Configuring/Dwindle-Layout/>
