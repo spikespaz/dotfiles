@@ -169,9 +169,65 @@
       binde."SHIFT, left" = "resizeactive, -30 0";
       binde."SHIFT, up" = "resizeactive, 0 -30";
       binde."SHIFT, down" = "resizeactive, 0 30";
+
       bind.", escape" = "submap, reset";
       bind."CTRL, C" = "submap, reset";
-      # submap = reset
+    };
+
+    # GROUPS
+
+    bind."SUPER_SHIFT, G" = "lockactivegroup, toggle";
+    bind."ALT, grave" = "changegroupactive, f";
+    bind."ALT, tab" = "changegroupactive, b";
+
+    bind."SUPER, G" = "submap, groups";
+    submap.groups = {
+      ### Retain some binds from default submap:
+
+      bindm."SUPER, ${MOUSE_LMB}" = "movewindow";
+      bindm."SUPER, ${MOUSE_RMB}" = "resizewindow";
+
+      bindm.", ${MOUSE_EX2}" = "movewindow";
+      bindm.", ${MOUSE_EX1}" = "resizewindow";
+
+      bind."SUPER, left" = "movefocus, l";
+      bind."SUPER, right" = "movefocus, r";
+      bind."SUPER, up" = "movefocus, u";
+      bind."SUPER, down" = "movefocus, d";
+
+      bind."SUPER_SHIFT, left" = "movewindow, l";
+      bind."SUPER_SHIFT, right" = "movewindow, r";
+      bind."SUPER_SHIFT, up" = "movewindow, u";
+      bind."SUPER_SHIFT, down" = "movewindow, d";
+
+      # Cycle to the next/previous tab in group.
+      bind."ALT, grave" = "changegroupactive, f";
+      bind."ALT, tab" = "changegroupactive, b";
+
+      ### Binds specific to this submap:
+
+      # Turn the current active window into a group.
+      bind.", G" = "togglegroup";
+      # Lock/unlock the current active group.
+      bind.", L" = "lockactivegroup, toggle";
+      # Lock/unlock all groups.
+      bind."SHIFT, L" = "lockgroups, toggle"; # lock/unlock all groups
+
+      # Swap the current active window in a group
+      # with the previous/next one.
+      bind.", grave" = "movegroupwindow, f";
+      bind.", tab" = "movegroupwindow, b";
+
+      # Move the active window into or out of a group,
+      # in the specified direction.
+      bind.", left" = "movewindoworgroup, l";
+      bind.", right" = "movewindoworgroup, r";
+      bind.", up" = "movewindoworgroup, u";
+      bind.", down" = "movewindoworgroup, d";
+
+      # Exit the submap and restore normal binds.
+      bind.", escape" = "submap, reset";
+      bind."CTRL, C" = "submap, reset";
     };
 
     ######################################
@@ -221,10 +277,7 @@
     bind."SUPER, P" = "exec, ${pinWindow}";
     #bind = SUPER, P, pseudo,
     bind."SUPER_SHIFT, F" = "fullscreen, 0";
-    bind."ALT, grave" = "changegroupactive, f";
-    bind."ALT, tab" = "changegroupactive, b";
-    bind."SUPER, grave" = "togglesplit,";
-    bind."SUPER, tab" = "togglegroup,";
+    bind."SUPER, tab" = "togglesplit,";
 
     #####################
     ### MISCELLANEOUS ###
