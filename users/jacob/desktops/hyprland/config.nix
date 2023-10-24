@@ -82,17 +82,19 @@ in {
       mouse_move_enables_dpms = true;
     };
 
-    config.group = rec {
+    config.group = {
       insert_after_current = true;
       focus_removed_window = true;
 
-      active_border_color = rgba theme.fg_aqua 1.0;
+      active_border_color = rgba theme.hl_yellow 1.0;
       inactive_border_color = rgba theme.bg3 1.0;
-      locked_active_border_color = rgba theme.fg_purple 1.0;
-      locked_inactive_border_color = inactive_border_color;
+      locked_active_border_color = rgba theme.hl_blue 1.0;
+      locked_inactive_border_color = rgba theme.bg3 1.0;
 
-      # these features are not polished yet
+      # These features are not polished yet:
       # <https://github.com/hyprwm/Hyprland/issues/2415>
+      # @MightyPlaza is working on this, but not doing it how we expect.
+      # <https://github.com/hyprwm/Hyprland/pull/3197>
       groupbar = rec {
         font_size = 9;
         gradients = false;
@@ -100,8 +102,8 @@ in {
         scrolling = true;
         text_color = rgba theme.fg0 1.0;
 
-        active_color = rgba theme.fg_aqua 0.9;
-        inactive_color = rgba theme.bg0 0.8;
+        active_color = rgba theme.fg3 1.0;
+        inactive_color = rgba theme.bg1 0.6;
         locked_active_color = active_color;
         locked_inactive_color = inactive_color;
       };
