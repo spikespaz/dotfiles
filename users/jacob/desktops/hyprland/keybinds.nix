@@ -11,10 +11,6 @@
     MOUSE_EX1 = "mouse:275";
     MOUSE_EX2 = "mouse:276";
 
-    INTERNAL_MON = "eDP-1";
-    # HOTPLUG_MON = "HDMI-A-1";
-    DOCK_MON = "DP-1";
-
     playerctl = lib.getExe pkgs.playerctl;
     slight = lib.getExe pkgs.slight;
     osdFunc = lib.getExe config.utilities.osd-functions.package;
@@ -50,9 +46,6 @@
     #####################
     ### MISCELLANEOUS ###
     #####################
-
-    # Swap the two active workspaces.
-    bind."SUPER_SHIFT, S" = "swapactiveworkspaces, ${INTERNAL_MON} ${DOCK_MON}";
 
     # Dismiss all Dunst notifications.
     bind."SUPER_ALT, N" = "exec, dunstctl close-all";
@@ -219,7 +212,6 @@
       bind."SUPER_SHIFT, up" = "movewindow, u";
       bind."SUPER_SHIFT, down" = "movewindow, d";
 
-      # Switch to the next/previous tab in the active group.
       bind."ALT, grave" = "changegroupactive, f";
       bind."ALT, tab" = "changegroupactive, b";
 
@@ -254,6 +246,7 @@
     ###########################
 
     # TODO Bind the special workspace to `XF86Favorites`.
+    # TODO Create a bind for "insert after current workspace".
 
     # Switch to the next/previous workspace with page keys.
     bind."SUPER, page_down" = "workspace, m+1";
@@ -302,11 +295,6 @@
     # workspace with the mouse wheel while holding super and shift.
     bind."SUPER_SHIFT, mouse_up" = "movetoworkspace, m+1";
     bind."SUPER_SHIFT, mouse_down" = "movetoworkspace, m-1";
-
-    # Move the active window or group to the next/previous
-    # workspace with mouse side buttons, while holding super.
-    bind."SUPER, ${MOUSE_EX2}" = "movetoworkspace, m+1";
-    bind."SUPER, ${MOUSE_EX1}" = "movetoworkspace, m-1";
 
     # Move the active window or group to a primary workspace by index.
     bind."SUPER_SHIFT, 1" = "movetoworkspacesilent, 1";
