@@ -188,8 +188,8 @@
     bind."SUPER_SHIFT, G" = "lockactivegroup, toggle";
 
     # Switch to the next/previous tab in the active group.
-    bind."ALT, grave" = "changegroupactive, f";
-    bind."ALT, tab" = "changegroupactive, b";
+    bind."ALT, tab" = "changegroupactive, f";
+    bind."ALT, grave" = "changegroupactive, b";
 
     # Enter a submap for manipulating windows with relation to groups.
     bind."SUPER, G" = "submap, groups";
@@ -212,8 +212,8 @@
       bind."SUPER_SHIFT, up" = "movewindow, u";
       bind."SUPER_SHIFT, down" = "movewindow, d";
 
-      bind."ALT, grave" = "changegroupactive, f";
-      bind."ALT, tab" = "changegroupactive, b";
+      bind."ALT, tab" = "changegroupactive, f";
+      bind."ALT, grave" = "changegroupactive, b";
 
       ### Binds specific to this submap:
 
@@ -226,8 +226,8 @@
 
       # Swap the current active window in a group
       # with the previous/next one.
-      bind.", grave" = "movegroupwindow, f";
-      bind.", tab" = "movegroupwindow, b";
+      bind.", tab" = "movegroupwindow, f";
+      bind.", grave" = "movegroupwindow, b";
 
       # Move the active window into or out of a group,
       # in the specified direction.
