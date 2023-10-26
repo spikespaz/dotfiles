@@ -235,7 +235,7 @@ in {
 
       memory = {
         interval = 10;
-        format = "󰍛 {percentage}% ({used:.2g}/{total:.2g} GiB)";
+        format = "󰆼 {percentage}% ({used:.2g}/{total:.2g} GiB)";
       };
 
       cpu = {
