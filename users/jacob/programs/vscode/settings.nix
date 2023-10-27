@@ -38,6 +38,9 @@
       ## Editor Extension ##
       ryuta46.multi-command
       sirmspencer.vscode-autohide
+
+      ## Basic Config Languages ##
+      kdl-org.kdl
     ];
 
   ## Gruvbox Dark Hard
