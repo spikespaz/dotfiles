@@ -248,11 +248,11 @@
     # TODO Bind the special workspace to `XF86Favorites`.
     # TODO Create a bind for "insert after current workspace".
 
-    # Switch to the next/previous workspace with page keys.
+    # Switch to the next/previous used workspace with page keys.
     bind."SUPER, page_down" = "workspace, m+1";
     bind."SUPER, page_up" = "workspace, m-1";
 
-    # Switch to the next/previous workspace with the mouse wheel.
+    # Switch to the next/previous used workspace with the mouse wheel.
     bind."SUPER, mouse_up" = "workspace, m+1";
     bind."SUPER, mouse_down" = "workspace, m-1";
 
@@ -288,13 +288,13 @@
 
     # Move the active window or group to the next/previous
     # workspace with page keys, while holding super and shift.
-    bind."SUPER_SHIFT, page_down" = "movetoworkspace, m+1";
-    bind."SUPER_SHIFT, page_up" = "movetoworkspace, m-1";
+    bind."SUPER_SHIFT, page_down" = "movetoworkspace, r+1";
+    bind."SUPER_SHIFT, page_up" = "movetoworkspace, r-1";
 
     # Move the active window or group to the next/previous
     # workspace with the mouse wheel while holding super and shift.
-    bind."SUPER_SHIFT, mouse_up" = "movetoworkspace, m+1";
-    bind."SUPER_SHIFT, mouse_down" = "movetoworkspace, m-1";
+    bind."SUPER_SHIFT, mouse_up" = "movetoworkspace, r+1";
+    bind."SUPER_SHIFT, mouse_down" = "movetoworkspace, r-1";
 
     # Move the active window or group to a primary workspace by index.
     bind."SUPER_SHIFT, 1" = "movetoworkspacesilent, 1";
