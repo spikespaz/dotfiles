@@ -7,7 +7,6 @@ pkgs: pkgs0: {
   fork-awesome = pkgs.callPackage ./fork-awesome.nix { };
   idlehack = pkgs.callPackage ./idlehack.nix { };
   proton-ge-custom = pkgs.callPackage ./proton-ge-custom.nix { };
-  qt6ct = pkgs.qt6.callPackage ./qt6ct.nix { };
   nerdfonts-symbols = pkgs.callPackage ./nerdfonts.nix { };
 
   # Package sets

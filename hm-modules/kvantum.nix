@@ -42,7 +42,7 @@ in {
 
       qt6ct.package = lib.mkOption {
         type = types.package;
-        # default = pkgs.libsForQt5.qt5ct;
+        default = pkgs.qt6Packages.qt6ct;
         example = lib.literalExpression ''
           pkgs.qt6ct
         '';
