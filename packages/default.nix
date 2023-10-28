@@ -4,7 +4,6 @@ pkgs: pkgs0: {
   ja-netfilter = pkgs.callPackage ./ja-netfilter { };
   prtsc = pkgs.callPackage ./prtsc { };
   ttf-ms-win11 = pkgs.callPackage ./ttf-ms-win11 { };
-  fastfetch = pkgs.callPackage ./fastfetch.nix { };
   fork-awesome = pkgs.callPackage ./fork-awesome.nix { };
   idlehack = pkgs.callPackage ./idlehack.nix { };
   proton-ge-custom = pkgs.callPackage ./proton-ge-custom.nix { };
