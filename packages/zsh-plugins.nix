@@ -14,7 +14,7 @@ let
           homepage = src.meta.homepage;
         }) // meta;
     });
-in {
+in lib.recurseIntoAttrs {
   zsh-autosuggestions = mkZshPlugin rec {
     pname = "zsh-autosuggestions";
     version = "v0.7.0";
