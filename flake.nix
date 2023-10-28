@@ -25,16 +25,9 @@
 
       formatter = eachSystem (system: inputs.nixfmt.packages.${system}.default);
 
-      overlays = lib.pipe tree.overlays [
-        (attrs: removeAttrs attrs [ "unfree" ])
-        (lib.mapThruAttr "default")
-        (attrs:
-          attrs // {
-            default = tree.packages.default;
-            allowUnfree = pkgs: pkgs0:
-              lib.bird.mkUnfreeOverlay pkgs0 [ [ "ttf-ms-win11" ] ];
-          })
-      ];
+      # See `overlays/default.nix` for more information.
+      overlays = let packageOverlays = import ./packages/overlays.nix lib;
+      in import ./overlays lib packageOverlays;
       packages =
         eachSystem (system: import ./packages { inherit lib system nixpkgs; });
 
