@@ -8,11 +8,6 @@
     let
       inherit (self) lib tree;
       eachSystem = lib.genAttrs (import systems);
-      pkgsFor = eachSystem (system:
-        import nixpkgs {
-          localSystem = system;
-          overlays = [ self.overlays.default ];
-        });
     in {
       lib = builtins.foldl' (lib: overlay: lib.extend overlay) nixpkgs.lib [
         (inputs.bird-nix-lib.lib.overlay)
@@ -41,7 +36,7 @@
           })
       ];
       packages =
-        builtins.mapAttrs (_: pkgs: tree.packages.default pkgs pkgs) pkgsFor;
+        eachSystem (system: import ./packages { inherit lib system nixpkgs; });
 
       # since `tree` closely represents the file tree of the flake,
       # there are `default` attrs in some of the "folders".

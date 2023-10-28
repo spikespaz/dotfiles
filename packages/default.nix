@@ -1,15 +1,27 @@
-pkgs: pkgs0: {
-  # Individual packages
+{ lib, system, nixpkgs }:
+let
+  packageOverlays = builtins.attrValues (import ./overlays.nix lib);
+  pkgs = import nixpkgs {
+    localSystem = system;
+    overlays = lib.updates [ packageOverlays ];
+  };
+in lib.updates [
+  # INDIVIDUAL PACKAGES #
 
-  ja-netfilter = pkgs.callPackage ./ja-netfilter { };
-  prtsc = pkgs.callPackage ./prtsc { };
-  ttf-ms-win11 = pkgs.callPackage ./ttf-ms-win11 { };
-  fork-awesome = pkgs.callPackage ./fork-awesome.nix { };
-  idlehack = pkgs.callPackage ./idlehack.nix { };
-  proton-ge-custom = pkgs.callPackage ./proton-ge-custom.nix { };
-  nerdfonts-symbols = pkgs.callPackage ./nerdfonts.nix { };
+  (with pkgs; {
+    inherit ja-netfilter prtsc ttf-ms-win11 fork-awesome idlehack
+      proton-ge-custom nerdfonts-symbols;
+  })
 
-  # Package sets
+  # PACKAGE SETS #
 
-  zsh-plugins = pkgs.callPackage ./zsh-plugins.nix { };
-}
+  (with pkgs.zsh-plugins; {
+    zsh-autosuggestions = zsh-autosuggestions;
+    zsh-autocomplete = zsh-autocomplete;
+    zsh-edit = zsh-edit;
+    zsh-autopair = zsh-autopair;
+    zsh-auto-notify = zsh-auto-notify;
+    zsh-window-title = zsh-window-title;
+    zsh-fast-syntax-highlighting = zsh-fast-syntax-highlighting;
+  })
+]
