@@ -62,6 +62,13 @@ in {
         scdoc < extra/man/alacritty.1.scd | gzip -c > "$out/share/man/man1/alacritty.1.gz"
         scdoc < extra/man/alacritty-msg.1.scd | gzip -c > "$out/share/man/man1/alacritty-msg.1.gz"
       ''
+      # There are also several new manpages for the config.
+      ''
+        install -dm 755 "$out/share/man/man5"
+
+        scdoc < extra/man/alacritty.5.scd | gzip -c > "$out/share/man/man5/alacritty.5.gz"
+        scdoc < extra/man/alacritty-bindings.5.scd | gzip -c > "$out/share/man/man5/alacritty-bindings.5.gz"
+      ''
       # This file is empty because it is no longer included since 0.13.0.
       ''
         rm $out/share/doc/alacritty.yml
