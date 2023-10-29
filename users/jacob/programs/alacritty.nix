@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ self, lib, pkgs, ... }:
 let
   gruvbox_dark = {
     primary = {
@@ -31,6 +31,8 @@ let
     normal.black = "0x5c5c5c";
   };
 in {
+  imports = [ self.homeManagerModules.alacritty ];
+
   programs.alacritty.enable = true;
 
   home.packages =
