@@ -1,7 +1,5 @@
-{ lib }:
+{ rgb }:
 let
-  rgb = r: g: b: { inherit r g b; };
-
   colors = {
     dark0_hard = rgb 29 32 33; # #1d2021, 234
     dark0 = rgb 40 40 40; # #282828, 235
