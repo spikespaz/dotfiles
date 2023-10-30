@@ -123,7 +123,55 @@ let
       gray = colors.gray_245;
     };
   };
+
+  indexed = let mk = index: rgb: { inherit index rgb; };
+  in with colors; [
+    (mk 234 dark0_hard)
+    (mk 235 dark0)
+    (mk 236 dark0_soft)
+    (mk 237 dark1)
+    (mk 239 dark2)
+    (mk 241 dark3)
+    (mk 243 dark4)
+    (mk 243 dark4_256)
+
+    (mk 245 gray_245)
+    (mk 244 gray_244)
+
+    (mk 230 light0_hard)
+    (mk 229 light0)
+    (mk 228 light0_soft)
+    (mk 223 light1)
+    (mk 250 light2)
+    (mk 248 light3)
+    (mk 246 light4)
+    (mk 246 light4_256)
+
+    (mk 167 bright_red)
+    (mk 142 bright_green)
+    (mk 214 bright_yellow)
+    (mk 109 bright_blue)
+    (mk 175 bright_purple)
+    (mk 108 bright_aqua)
+    (mk 208 bright_orange)
+
+    (mk 124 neutral_red)
+    (mk 106 neutral_green)
+    (mk 172 neutral_yellow)
+    (mk 66 neutral_blue)
+    (mk 132 neutral_purple)
+    (mk 72 neutral_aqua)
+    (mk 166 neutral_orange)
+
+    (mk 88 faded_red)
+    (mk 100 faded_green)
+    (mk 136 faded_yellow)
+    (mk 24 faded_blue)
+    (mk 96 faded_purple)
+    (mk 66 faded_aqua)
+    (mk 130 faded_orange)
+  ];
 in {
-  inherit colors;
+  inherit colors indexed;
   inherit (palettes) light dark;
 }
