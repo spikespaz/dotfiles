@@ -29,7 +29,7 @@ let
         white = hex gb.light1;
 
         red = hex gb.neutral_red;
-        green = hex gb.neutral_blue;
+        green = hex gb.neutral_green;
         yellow = hex gb.neutral_yellow;
         blue = hex gb.neutral_blue;
         magenta = hex gb.neutral_purple;
