@@ -1,34 +1,56 @@
 { self, lib, pkgs, ... }:
 let
-  gruvbox_dark = {
-    primary = {
-      background = "0x282828";
-      foreground = "0xebdbb2";
+  themes = let
+    inherit (lib.birdos.colors) palettes hexRGBA;
+    rgb = r: g: b: { inherit r g b; };
+    hex = rgb: "#${hexRGBA rgb}";
+  in rec {
+    gruvbox_dark = let gb = palettes.gruvbox.colors;
+    in {
+      primary = {
+        background = hex gb.dark0_hard;
+        dim_foreground = hex gb.light2;
+        foreground = hex gb.light1;
+        bright_foreground = hex gb.light0;
+      };
+      dim = {
+        black = hex gb.dark1;
+        white = hex gb.light2;
+
+        red = hex gb.faded_red;
+        green = hex gb.faded_green;
+        yellow = hex gb.faded_yellow;
+        blue = hex gb.faded_blue;
+        magenta = hex gb.faded_purple;
+        cyan = hex gb.faded_aqua;
+      };
+      normal = {
+        black = hex gb.dark2;
+        white = hex gb.light1;
+
+        red = hex gb.neutral_red;
+        green = hex gb.neutral_blue;
+        yellow = hex gb.neutral_yellow;
+        blue = hex gb.neutral_blue;
+        magenta = hex gb.neutral_purple;
+        cyan = hex gb.neutral_aqua;
+      };
+      bright = {
+        black = hex gb.dark3;
+        white = hex gb.light0;
+
+        red = hex gb.bright_red;
+        green = hex gb.bright_green;
+        yellow = hex gb.bright_yellow;
+        blue = hex gb.bright_blue;
+        magenta = hex gb.bright_purple;
+        cyan = hex gb.bright_aqua;
+      };
     };
-    normal = {
-      black = "0x282828";
-      red = "0xcc241d";
-      green = "0x98971a";
-      yellow = "0xd79921";
-      blue = "0x458588";
-      magenta = "0xb16286";
-      cyan = "0x689d6a";
-      white = "0xa89984";
+    gruvbox_dark_harder = let dark_harder = rgb 18 18 18;
+    in gruvbox_dark // {
+      primary = gruvbox_dark.primary // { background = hex dark_harder; };
     };
-    bright = {
-      black = "0x928374";
-      red = "0xfb4934";
-      green = "0xb8bb26";
-      yellow = "0xfabd2f";
-      blue = "0x83a598";
-      magenta = "0xd3869b";
-      cyan = "0x8ec07c";
-      white = "0xebdbb2";
-    };
-  };
-  gruvbox_dark_custom = gruvbox_dark // {
-    primary.background = "0x121212";
-    normal.black = "0x5c5c5c";
   };
 in {
   imports = [ self.homeManagerModules.alacritty ];
@@ -58,12 +80,12 @@ in {
       size = 9;
     };
 
-    colors = gruvbox_dark_custom;
+    colors = themes.gruvbox_dark_harder;
 
     bell = {
       animation = "EaseOutQuart";
       duration = 100;
-      color = "0x404040";
+      color = "#404040";
     };
 
     cursor = {
