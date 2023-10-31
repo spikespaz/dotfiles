@@ -124,7 +124,7 @@ let
     };
   };
 
-  indexed = let mk = index: rgb: { inherit index rgb; };
+  indexed = let mk = index: color: { inherit index color; };
   in with colors; [
     (mk 234 dark0_hard)
     (mk 235 dark0)
