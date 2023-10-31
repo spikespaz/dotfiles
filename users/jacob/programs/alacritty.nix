@@ -46,6 +46,7 @@ let
         magenta = bright_purple;
         cyan = bright_aqua;
       };
+      indexed_colors = gruvbox.indexed;
     };
 
     gruvbox_dark_harder = let dark_harder = mkRGB 18 18 18;
