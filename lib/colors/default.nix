@@ -3,6 +3,9 @@ let
   # Taking R, G, and B arguments in range 0-255, produce an attribute set.
   rgb = r: g: b: { inherit r g b; };
 
+  # Create a monochrome RGB attrs by a percentage of each channel.
+  grayRGB = percent: let c = builtins.floor (percent * 255); in rgb c c c;
+
   # Produces a hexadecimal RRGGBBAA color from an attributes.
   # Each channel value is expected to be between 0-255.
   # Alpha attribute `a` is not required and may be undefined or null.
@@ -31,7 +34,7 @@ let
     (_: expr: if isRGBAttrs expr then op expr else expr);
 in {
   # FUNCTIONS #
-  inherit rgb hexRGB hexRGB' hexRGBA hexRGBA';
+  inherit rgb grayRGB hexRGB hexRGB' hexRGBA hexRGBA';
   # COLORS #
   inherit palettes;
   formats = {
