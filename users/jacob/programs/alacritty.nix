@@ -1,56 +1,55 @@
 { self, lib, pkgs, ... }:
 let
   themes = let
-    inherit (lib.birdos.colors) palettes hexRGBA;
-    rgb = r: g: b: { inherit r g b; };
-    hex = rgb: "#${hexRGBA rgb}";
+    inherit (lib.birdos.colors) rgb hexRGB';
+    mkRGB = r: g: b: hexRGB' (rgb r g b);
+
+    inherit (lib.birdos.colors.formats.hexRGB') gruvbox;
   in rec {
-    gruvbox_dark = let gb = palettes.gruvbox.colors;
-    in {
+    gruvbox_dark = with gruvbox.colors; {
       primary = {
-        background = hex gb.dark0_hard;
-        dim_foreground = hex gb.light2;
-        foreground = hex gb.light1;
-        bright_foreground = hex gb.light0;
+        background = dark0_hard;
+        dim_foreground = light2;
+        foreground = light1;
+        bright_foreground = light0;
       };
       dim = {
-        black = hex gb.dark1;
-        white = hex gb.light2;
+        black = dark1;
+        white = light2;
 
-        red = hex gb.faded_red;
-        green = hex gb.faded_green;
-        yellow = hex gb.faded_yellow;
-        blue = hex gb.faded_blue;
-        magenta = hex gb.faded_purple;
-        cyan = hex gb.faded_aqua;
+        red = faded_red;
+        green = faded_green;
+        yellow = faded_yellow;
+        blue = faded_blue;
+        magenta = faded_purple;
+        cyan = faded_aqua;
       };
       normal = {
-        black = hex gb.dark2;
-        white = hex gb.light1;
+        black = dark2;
+        white = light1;
 
-        red = hex gb.neutral_red;
-        green = hex gb.neutral_green;
-        yellow = hex gb.neutral_yellow;
-        blue = hex gb.neutral_blue;
-        magenta = hex gb.neutral_purple;
-        cyan = hex gb.neutral_aqua;
+        red = neutral_red;
+        green = neutral_green;
+        yellow = neutral_yellow;
+        blue = neutral_blue;
+        magenta = neutral_purple;
+        cyan = neutral_aqua;
       };
       bright = {
-        black = hex gb.dark3;
-        white = hex gb.light0;
+        black = dark3;
+        white = light0;
 
-        red = hex gb.bright_red;
-        green = hex gb.bright_green;
-        yellow = hex gb.bright_yellow;
-        blue = hex gb.bright_blue;
-        magenta = hex gb.bright_purple;
-        cyan = hex gb.bright_aqua;
+        red = bright_red;
+        green = bright_green;
+        yellow = bright_yellow;
+        blue = bright_blue;
+        magenta = bright_purple;
+        cyan = bright_aqua;
       };
     };
-    gruvbox_dark_harder = let dark_harder = rgb 18 18 18;
-    in gruvbox_dark // {
-      primary = gruvbox_dark.primary // { background = hex dark_harder; };
-    };
+
+    gruvbox_dark_harder = let dark_harder = mkRGB 18 18 18;
+    in lib.recursiveUpdate gruvbox_dark { primary.background = dark_harder; };
   };
 in {
   imports = [ self.homeManagerModules.alacritty ];
