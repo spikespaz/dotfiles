@@ -19,7 +19,7 @@ let
     in hexRGB (rgb // { a = a'; });
 
   # Like `hexRGBA` but prefix with `#`.
-  hexRGBA' = rgb: a: "${hexRGBA rgb a}";
+  hexRGBA' = rgb: a: "#${hexRGBA rgb a}";
 
   palettes = { gruvbox = import ./palettes/gruvbox.nix { inherit rgb; }; };
 
@@ -35,7 +35,14 @@ in rec {
   # COLORS #
   inherit palettes;
   formats = {
+    # Each color attribute is a value according
+    # to the format functor that produces it.
     hexRGB = transformPalette hexRGB palettes;
     hexRGB' = transformPalette hexRGB' palettes;
+
+    # For palettes ending with `A`, each color attribute is a function
+    # to which an alpha float value must be applied.
+    hexRGBA = transformPalette hexRGBA palettes;
+    hexRGBA' = transformPalette hexRGBA' palettes;
   };
 }
