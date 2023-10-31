@@ -29,12 +29,15 @@ let
   transformPalette = op:
     lib.mapRecursiveCond (expr: !(isRGBAttrs expr))
     (_: expr: if isRGBAttrs expr then op expr else expr);
-in rec {
+in {
   # FUNCTIONS #
   inherit rgb hexRGB hexRGB' hexRGBA hexRGBA';
   # COLORS #
   inherit palettes;
   formats = {
+    # Pre-transform palettes by specified `op` functor.
+    custom = op: transformPalette op palettes;
+
     # Each color attribute is a value according
     # to the format functor that produces it.
     hexRGB = transformPalette hexRGB palettes;
