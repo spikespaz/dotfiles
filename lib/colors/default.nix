@@ -15,8 +15,21 @@ let
     let a' = builtins.floor (a * 255);
     in hexRGBA (rgb // { a = a'; });
 
-  gruvbox = import ./palettes/gruvbox.nix { inherit rgb; };
-in {
+  palettes = { gruvbox = import ./palettes/gruvbox.nix { inherit rgb; }; };
+
+  isRGBAttrs = expr: lib.isAttrs expr && lib.hasExactAttrs [ "r" "g" "b" ] expr;
+
+  # Recurse deeply into attrs and lists, and transform each RGB attrs by `op`.
+  transformPalette = op:
+    lib.mapRecursiveCond (expr: !(isRGBAttrs expr))
+    (_: expr: if isRGBAttrs expr then op expr else expr);
+in rec {
+  # FUNCTIONS #
   inherit rgb hexRGBA hexRGBA';
-  palettes = { inherit gruvbox; };
+  # COLORS #
+  inherit palettes;
+  formats = {
+    hexRGB = transformPalette (rgb: hexRGBA rgb) palettes;
+    hexRGB' = transformPalette (rgb: "#${hexRGBA rgb}") palettes;
+  };
 }

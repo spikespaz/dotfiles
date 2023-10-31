@@ -81,11 +81,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1695271472,
-        "narHash": "sha256-fORCFxsGTIGPNtKAxjbC+CmMj5RxWKddnCRj+3y/0t0=",
+        "lastModified": 1698716962,
+        "narHash": "sha256-TD4j14TAB8iWSR2rUdtrCLh9ihQ2eWGek4qkSwBvZvo=",
         "owner": "spikespaz",
         "repo": "bird-nix-lib",
-        "rev": "515844f26efca333d48d3b05e607a50dcedca55f",
+        "rev": "9999cb461d2b20525e163777a2a87ddec75d6311",
         "type": "github"
       },
       "original": {
