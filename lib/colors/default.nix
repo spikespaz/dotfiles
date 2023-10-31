@@ -6,14 +6,14 @@ let
   # Produces a hexadecimal RRGGBBAA color from an attributes.
   # Each channel value is expected to be between 0-255.
   # Alpha attribute `a` is not required and may be undefined or null.
-  hexRGBA = { r, g, b, a ? null }:
+  hexRGB = { r, g, b, a ? null }:
     lib.concatStrings (map (c: lib.lpadString "0" 2 (lib.intToHex c))
       ([ r g b ] ++ lib.optional (a != null) a));
 
-  # Like `hexRGBA` but takes alpha as float in a separate argument.
-  hexRGBA' = rgb: a:
+  # Like `hexRGB` but takes alpha as float in a separate argument.
+  hexRGBA = rgb: a:
     let a' = builtins.floor (a * 255);
-    in hexRGBA (rgb // { a = a'; });
+    in hexRGB (rgb // { a = a'; });
 
   palettes = { gruvbox = import ./palettes/gruvbox.nix { inherit rgb; }; };
 
@@ -25,11 +25,11 @@ let
     (_: expr: if isRGBAttrs expr then op expr else expr);
 in rec {
   # FUNCTIONS #
-  inherit rgb hexRGBA hexRGBA';
+  inherit rgb hexRGB hexRGBA;
   # COLORS #
   inherit palettes;
   formats = {
-    hexRGB = transformPalette (rgb: hexRGBA rgb) palettes;
-    hexRGB' = transformPalette (rgb: "#${hexRGBA rgb}") palettes;
+    hexRGB = transformPalette hexRGB palettes;
+    hexRGB' = transformPalette (rgb: "#${hexRGB rgb}") palettes;
   };
 }
