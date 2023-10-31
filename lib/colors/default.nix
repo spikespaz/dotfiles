@@ -10,10 +10,16 @@ let
     lib.concatStrings (map (c: lib.lpadString "0" 2 (lib.intToHex c))
       ([ r g b ] ++ lib.optional (a != null) a));
 
+  # Same as `hexRGB` but prefix with `#`.
+  hexRGB' = rgb: "#${hexRGB rgb}";
+
   # Like `hexRGB` but takes alpha as float in a separate argument.
   hexRGBA = rgb: a:
     let a' = builtins.floor (a * 255);
     in hexRGB (rgb // { a = a'; });
+
+  # Like `hexRGBA` but prefix with `#`.
+  hexRGBA' = rgb: a: "${hexRGBA rgb a}";
 
   palettes = { gruvbox = import ./palettes/gruvbox.nix { inherit rgb; }; };
 
@@ -25,11 +31,11 @@ let
     (_: expr: if isRGBAttrs expr then op expr else expr);
 in rec {
   # FUNCTIONS #
-  inherit rgb hexRGB hexRGBA;
+  inherit rgb hexRGB hexRGB' hexRGBA hexRGBA';
   # COLORS #
   inherit palettes;
   formats = {
     hexRGB = transformPalette hexRGB palettes;
-    hexRGB' = transformPalette (rgb: "#${hexRGB rgb}") palettes;
+    hexRGB' = transformPalette hexRGB' palettes;
   };
 }
