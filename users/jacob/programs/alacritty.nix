@@ -1,10 +1,9 @@
 { self, lib, pkgs, ... }:
 let
-  themes = let
-    inherit (lib.birdos.colors) rgb hexRGB';
-    mkRGB = r: g: b: hexRGB' (rgb r g b);
+  inherit (lib.birdos.colors) grayRGB hexRGB';
+  gray = percent: hexRGB' (grayRGB percent);
 
-    inherit (lib.birdos.colors.formats.hexRGB') gruvbox;
+  themes = let inherit (lib.birdos.colors.formats.hexRGB') gruvbox;
   in rec {
     gruvbox_dark = with gruvbox.colors; {
       primary = {
@@ -49,8 +48,9 @@ let
       indexed_colors = gruvbox.indexed;
     };
 
-    gruvbox_dark_harder = let dark_harder = mkRGB 18 18 18;
-    in lib.recursiveUpdate gruvbox_dark { primary.background = dark_harder; };
+    gruvbox_dark_harder = lib.recursiveUpdate gruvbox_dark {
+      primary.background = gray 7.0e-2; # 7% of each channel
+    };
   };
 in {
   imports = [ self.homeManagerModules.alacritty ];
@@ -85,7 +85,7 @@ in {
     bell = {
       animation = "EaseOutQuart";
       duration = 100;
-      color = "#404040";
+      color = gray 0.25;
     };
 
     cursor = {
