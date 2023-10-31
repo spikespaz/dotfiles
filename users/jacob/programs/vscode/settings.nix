@@ -23,6 +23,7 @@
       # origamid.origamid-next
       # sainnhe.sonokai
       # dimitarnonov.jellybeans-theme
+      oderwat.indent-rainbow
 
       pkief.material-icon-theme
 
@@ -91,6 +92,26 @@
       };
       "[Sonokai Espresso]" = { "editor.background" = "#211e1d"; };
     };
+
+    # hide the default indentation guides to make way for the extension
+    "editor.guides.indentation" = false;
+    # only color the lines, not the whitespace characters
+    "indentRainbow.indicatorStyle" = "light";
+    # indent guide colors generated from a count
+    "indentRainbow.colors" = let
+      count = 12;
+      saturation = 0.425;
+      lightness = 0.35;
+      alpha = 0.5;
+    in map (hue:
+      "hsla(${
+        lib.concatStringsSep "," [
+          (toString hue)
+          (lib.toPercent 1 saturation)
+          (lib.toPercent 1 lightness)
+          (toString alpha)
+        ]
+      })") (lib.genList (i: (360 / count) * i) count);
 
     # icons
     "workbench.iconTheme" = "material-icon-theme";
