@@ -1,11 +1,9 @@
 { lib, ... }:
 let
-  rgba = rgb: a: "rgba(${lib.birdos.colors.hexRGBA' rgb a})";
-  theme = lib.birdos.colors.palettes.gruvbox.dark;
-  shadow = let
-    # 6% of each channel
-    percent = 6.0e-2;
-  in lib.genAttrs [ "r" "g" "b" ] (_: builtins.floor (percent * 255));
+  inherit (lib.birdos.colors) grayRGB;
+  hyprRGBA = rgb: a: "rgba(${lib.birdos.colors.hexRGBA' rgb a})";
+  gb = (lib.birdos.colors.formats.custom hyprRGBA).gruvbox.dark;
+  shadow = hyprRGBA (grayRGB 6.0e-2); # 6% of each channel
 in {
   wayland.windowManager.hyprland = {
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
@@ -13,8 +11,8 @@ in {
       border_size = 2;
       gaps_inside = 5;
       gaps_outside = 10;
-      active_border_color = rgba theme.fg3 1.0;
-      inactive_border_color = rgba theme.bg3 1.0;
+      active_border_color = gb.fg3 1.0;
+      inactive_border_color = gb.bg3 1.0;
       cursor_inactive_timeout = 10;
       no_cursor_warps = true;
       resize_on_border = true;
@@ -26,8 +24,8 @@ in {
       rounding = 0;
       shadow_range = 10;
       shadow_render_power = 2;
-      active_shadow_color = rgba shadow 0.9;
-      inactive_shadow_color = rgba shadow 0.6;
+      active_shadow_color = shadow 0.9;
+      inactive_shadow_color = shadow 0.6;
       blur = {
         size = 3; # 8
         passes = 2; # 1
@@ -87,10 +85,10 @@ in {
       insert_after_current = true;
       focus_removed_window = true;
 
-      active_border_color = rgba theme.hl_yellow 1.0;
-      inactive_border_color = rgba theme.bg3 1.0;
-      locked_active_border_color = rgba theme.hl_blue 1.0;
-      locked_inactive_border_color = rgba theme.bg3 1.0;
+      active_border_color = gb.hl_yellow 1.0;
+      inactive_border_color = gb.bg3 1.0;
+      locked_active_border_color = gb.hl_blue 1.0;
+      locked_inactive_border_color = gb.bg3 1.0;
 
       # These features are not polished yet:
       # <https://github.com/hyprwm/Hyprland/issues/2415>
@@ -101,10 +99,10 @@ in {
         gradients = false;
         render_titles = true;
         scrolling = true;
-        text_color = rgba theme.fg0 1.0;
+        text_color = gb.fg0 1.0;
 
-        active_color = rgba theme.fg3 1.0;
-        inactive_color = rgba theme.bg1 0.6;
+        active_color = gb.fg3 1.0;
+        inactive_color = gb.bg1 0.6;
         locked_active_color = active_color;
         locked_inactive_color = inactive_color;
       };
