@@ -1,7 +1,7 @@
 { lib, ... }:
 let
   inherit (lib.birdos.colors) grayRGB;
-  hyprRGBA = rgb: a: "rgba(${lib.birdos.colors.hexRGBA' rgb a})";
+  hyprRGBA = rgb: a: "rgba(${lib.birdos.colors.hexRGBA rgb a})";
   gb = (lib.birdos.colors.formats.custom hyprRGBA).gruvbox.dark;
   shadow = hyprRGBA (grayRGB 6.0e-2); # 6% of each channel
 in {
