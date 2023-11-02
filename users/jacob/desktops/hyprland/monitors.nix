@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, config, ... }:
 let
   monitors = {
     internal = "eDP-1";
@@ -6,6 +6,8 @@ let
     dock = "DP-1";
     hotplug = "HDMI-A-1";
   };
+  hyprctl =
+    lib.getExe' config.wayland.windowManager.hyprland.finalPackage "hyprctl";
 in {
   wayland.windowManager.hyprland = with monitors; {
     # <https://wiki.hyprland.org/Configuring/Monitors/>
@@ -56,5 +58,27 @@ in {
       "18".monitor = portable;
       "20".monitor = portable;
     };
+
+    # This is here to fix a Hyprland bug that seems to persist (repeat regression).
+    # When a monitor is connected, all workspaces assigned to it will be moved.
+    # Hyprland should already do that, but for some reason, it misses some.
+    eventListener.handler.monitorAdd =
+      lib.pipe config.wayland.windowManager.hyprland.workspaceRules [
+        (lib.mapAttrsToList (ws: attrs: {
+          inherit ws;
+          mon = attrs.monitor;
+        }))
+        (lib.groupBy' (wss: attrs: wss ++ [ attrs.ws ]) [ ] (attrs: attrs.mon))
+        (lib.mapAttrsToList (mon: wss: ''
+          if [[ "$HL_MONITOR_NAME" = '${mon}' ]]; then
+            ${
+              lib.concatStringsSep "\n  " (map (ws:
+                "${hyprctl} dispatch moveworkspacetomonitor '${ws}' '${mon}'")
+                wss)
+            }
+          fi
+        ''))
+        lib.concatLines
+      ];
   };
 }
