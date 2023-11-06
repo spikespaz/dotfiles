@@ -6,12 +6,14 @@ let
   # Create a monochrome RGB attrs by a percentage of each channel.
   grayRGB = percent: let c = builtins.floor (percent * 255); in rgb c c c;
 
+  listRGB = { r, g, b, a ? null }: [ r g b ] ++ lib.optional (a != null) a;
+
   # Produces a hexadecimal RRGGBBAA color from an attributes.
   # Each channel value is expected to be between 0-255.
   # Alpha attribute `a` is not required and may be undefined or null.
-  hexRGB = { r, g, b, a ? null }:
-    lib.concatStrings (map (c: lib.lpadString "0" 2 (lib.intToHex c))
-      ([ r g b ] ++ lib.optional (a != null) a));
+  hexRGB = rgb@{ r, g, b, a ? null }:
+    lib.concatStrings
+    (map (c: lib.lpadString "0" 2 (lib.intToHex c)) (listRGB rgb));
 
   # Same as `hexRGB` but prefix with `#`.
   hexRGB' = rgb: "#${hexRGB rgb}";
@@ -34,12 +36,14 @@ let
     (_: expr: if isRGBAttrs expr then op expr else expr);
 in {
   # FUNCTIONS #
-  inherit rgb grayRGB hexRGB hexRGB' hexRGBA hexRGBA';
+  inherit rgb grayRGB listRGB hexRGB hexRGB' hexRGBA hexRGBA';
   # COLORS #
   inherit palettes;
   formats = {
     # Pre-transform palettes by specified `op` functor.
     custom = op: transformPalette op palettes;
+
+    listRGB = transformPalette listRGB palettes;
 
     # Each color attribute is a value according
     # to the format functor that produces it.
