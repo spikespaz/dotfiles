@@ -4,6 +4,44 @@ let
   cfg = config.programs.armcord;
   jsonFormat = pkgs.formats.json { };
   configDir = "ArmCord";
+
+  #  <https://github.com/ArmCord/ArmCord/blob/dev/src/utils.ts#L46>
+  defaultSettings = {
+    windowStyle = "default";
+    channel = "stable";
+    armcordCSP = true;
+    minimizeToTray = true;
+    automaticPatches = false;
+    keybinds = [];
+    alternativePaste = false;
+    multiInstance = false;
+    mods = "none";
+    spellcheck = true;
+    performanceMode = "none";
+    skipSplash = false;
+    inviteWebsocket = true;
+    startMinimized = false;
+    dynamicIcon = false;
+    tray = true;
+    customJsBundle = "https://armcord.app/placeholder.js";
+    customCssBundle = "https://armcord.app/placeholder.css";
+    disableAutogain = false;
+    useLegacyCapturer = false;
+    mobileMode = false;
+    trayIcon = "default";
+    doneSetup = false;
+    clientName = "ArmCord";
+  };
+
+  # Overrides to make ArmCord play nice with bare-bones WMs.
+  nixosSettings = defaultSettings // {
+    windowStyle = "native";
+    # Someone might not have a tray.
+    tray = false;
+    minimizeToTray = false;
+    # Because it is configured declaratively.
+    doneSetup = true;
+  };
 in {
   options = {
     programs.armcord = {
@@ -12,9 +50,11 @@ in {
 
       settings = lib.mkOption {
         type = jsonFormat.type;
-        default = { };
+        default = nixosSettings;
         description = ''
           Settings to use in {file}`~/.config/${configDir}/storage/settings.json`.
+
+          Set this to `{ }` to not link the file, and let it be read-write.
         '';
       };
 
@@ -24,7 +64,7 @@ in {
         url = lib.mkOption {
           type = types.singleLineStr;
           default =
-            "https://mwittrien.github.io/BetterDiscordAddons/Themes/DiscordRecolor/DiscordRecolor.css";
+            "https://raw.githubusercontent.com/mwittrien/BetterDiscordAddons/master/Themes/DiscordRecolor/DiscordRecolor.css";
         };
 
         colors = lib.mkOption {
@@ -80,19 +120,21 @@ in {
 
     (lib.mkIf (cfg.settings != { }) {
       xdg.configFile."${configDir}/storage/settings.json".source =
-        jsonFormat.generate "armcord-settings.json" cfg.settings;
+        jsonFormat.generate "armcord-settings.json"
+        (nixosSettings // cfg.settings);
     })
 
     (lib.mkIf cfg.recolorTheme.enable {
+      # https://github.com/ArmCord/ArmCord/blob/dev/src/themeManager/main.ts#L8
       xdg.configFile."${configDir}/themes/DiscordRecolor-BD/manifest.json".source =
         jsonFormat.generate "armcord-recolor-manifest.json" {
-          theme = "theme.css";
           name = "DiscordRecolor";
-          description = "Allows you to customize Discord's native Color Scheme";
           author = "DevilBro";
+          description = "Allows you to customize Discord's native Color Scheme";
           version = "1.0.0";
-          authorId = "278543574059057154";
           invite = "Jx3TjNS";
+          authorId = "278543574059057154";
+          theme = "theme.css";
           donate = "https://www.paypal.me/MircoWittrien";
           patreon = "https://www.patreon.com/MircoWittrien";
           website = "https://mwittrien.github.io/";
