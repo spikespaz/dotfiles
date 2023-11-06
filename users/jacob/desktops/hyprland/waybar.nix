@@ -83,7 +83,8 @@ in {
     mainBar = {
       layer = "top";
       position = "top";
-      mode = "dock";
+      # Causes tooltips to be shown behind windows.
+      # mode = "dock";
       height = 26;
 
       modules-left = [ # #
