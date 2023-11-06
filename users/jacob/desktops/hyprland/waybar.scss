@@ -74,11 +74,13 @@ tooltip,
 window.popup {
   background: #282828;
   border: 1px solid #665c54;
-  border-radius: 5px;
+  // border-radius: 3px;
 }
 
 window.popup {
   menu {
+    padding: 5px 0;
+
     arrow {
       min-width: 16px;
       min-height: 16px;
@@ -103,8 +105,17 @@ window.popup {
     menuitem {
       padding: 4px 8px;
 
+      transition:
+        color 66ms ease-in,
+        background 66ms ease-in;
+
       &:hover {
-        background: #504945;
+        transition:
+          color 100ms ease-out,
+          background 100ms ease-out;
+
+        color: $highlight-foreground;
+        background: #689d6a;
       }
     }
 
