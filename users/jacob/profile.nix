@@ -78,7 +78,7 @@ in {
     programs.thunderbird
     # programs.discord.canary
     # programs.discord.webcord
-    programs.discord.armcord
+    programs.armcord
     programs.hexchat
     programs.telegram
     programs.matrix
