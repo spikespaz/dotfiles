@@ -1,25 +1,22 @@
 { self, lib, ... }:
 let
-  gruvbox-darker = let
-    gb = builtins.mapAttrs (_: { r, g, b }: [ r g b ])
-      lib.birdos.colors.palettes.gruvbox.dark;
-  in {
-    accentcolor = gb.hl_orange;
-    accentcolor2 = gb.fg_purple;
-    linkcolor = gb.fg_blue;
-    mentioncolor = gb.fg_aqua;
-    successcolor = gb.hl_green;
-    warningcolor = gb.hl_yellow;
-    dangercolor = gb.hl_red;
+  gruvbox-darker = with lib.birdos.colors.formats.listRGB.gruvbox.colors; {
+    accentcolor = neutral_orange;
+    accentcolor2 = neutral_purple;
+    linkcolor = neutral_blue;
+    mentioncolor = neutral_aqua;
+    successcolor = bright_green;
+    warningcolor = bright_yellow;
+    dangercolor = bright_red;
 
-    textbrightest = gb.fg0;
-    textbrighter = gb.fg0;
-    textbright = gb.fg1;
-    textdark = gb.bg4;
-    textdarker = gb.bg3;
-    textdarkest = gb.bg2;
+    textbrightest = light0_hard;
+    textbrighter = light0;
+    textbright = light0;
+    textdark = dark4;
+    textdarker = dark3;
+    textdarkest = dark2;
 
-    backgroundaccent = gb.bg0_soft;
+    backgroundaccent = dark0_hard;
     backgroundprimary = [ 20 20 20 ];
     backgroundsecondary = [ 16 16 16 ];
     backgroundsecondaryalt = [ 12 12 12 ];
