@@ -197,6 +197,8 @@
 
     ## Intelligence Features ##
 
+    # show the errors shortly after saving
+    "errorLens.onSaveTimeout" = 200;
     # space between EOL and error
     "errorLens.margin" = "1em";
     # do not show error messages on lines in merge conflict blocks
