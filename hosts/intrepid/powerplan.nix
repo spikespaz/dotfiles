@@ -4,7 +4,7 @@
 # - `man logind.conf`
 { self, ... }:
 let
-  idleAfter = 5 * 60; # seconds
+  # idleAfter = 5 * 60; # seconds
   hibernateDelay = 1.5 * 60 * 60; # seconds
   MHz = x: x * 1000;
 in {
@@ -41,12 +41,12 @@ in {
     lidSwitch = "suspend-then-hibernate";
     killUserProcesses = true;
     extraConfig = ''
-      IdleAction=suspend-then-hibernate
-      IdleActionSec=${toString idleAfter}
       HandlePowerKey=suspend-then-hibernate
       HandlePowerKeyLongPress=poweroff
       HandleLidSwitchExternalPower=suspend-then-hibernate
     '';
+    # IdleAction=suspend-then-hibernate
+    # IdleActionSec=${toString idleAfter}
   };
 
   systemd.sleep.extraConfig = ''
