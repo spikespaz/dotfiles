@@ -197,6 +197,8 @@
 
     ## Intelligence Features ##
 
+    # space between EOL and error
+    "errorLens.margin" = "1em";
     # do not show error messages on lines in merge conflict blocks
     "errorLens.enabledInMergeConflict" = false;
     # diagnostic levels to show, removed "info"
