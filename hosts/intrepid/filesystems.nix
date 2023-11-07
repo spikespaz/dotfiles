@@ -9,8 +9,8 @@
 # - <https://github.com/nix-community/impermanence>
 { config, lib, pkgs, enableUnstableZfs, ... }:
 let
-  rootPool = "ospool";
-  bootLabel = "BOOT";
+  rootPool = "intrepid";
+  bootLabel = "INTRPD";
 
   # function to easily duplicate a zfs automount scheme
   zfsAuto = device: {
@@ -32,7 +32,7 @@ in {
     "/home" = zfsAuto "${rootPool}/home";
 
     "/boot" = {
-      device = "/dev/disk/by-label/BOOT";
+      device = "/dev/disk/by-label/${bootLabel}";
       fsType = "vfat";
     };
   };

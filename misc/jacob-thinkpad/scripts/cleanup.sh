@@ -3,7 +3,7 @@ set -eu
 
 confirm=1
 target='/mnt'
-pool='ospool'
+pool='intrepid'
 unmount=0
 disable_cache=0
 

@@ -6,12 +6,12 @@ set -eu
 ##### PAREMETERS #####
 
 # Specify the drive to partition for install
-TARGET_DISK='/dev/disk/by-id/nvme-WDC_WDS500G1B0C-00S6U0_1917CB455310'
+TARGET_DISK='/dev/disk/by-id/nvme-WD_BLACK_SN850X_2000GB_23251F801658'
 BOOT_PART="${TARGET_DISK}-part1"
 SWAP_PART="${TARGET_DISK}-part2"
 ROOT_PART="${TARGET_DISK}-part3"
-POOL_NAME='ospool'
-BOOT_LABEL='BOOT'
+POOL_NAME='intrepid'
+BOOT_LABEL='INTRPD'
 
 # Calculate preferred swap partition size for hibernation
 TOTAL_MEM=$(awk '{if ($1 == "MemTotal:") print $2}' /proc/meminfo)
@@ -92,7 +92,7 @@ create_datasets() {
 create_datasets "${datasets[@]}"
 
 # Export the pool so that the script can be run repeatedly
-zpool export ospool
+zpool export $POOL_NAME
 
 # Format boot partition
 mkfs.vfat -F32 -n $BOOT_LABEL $BOOT_PART
