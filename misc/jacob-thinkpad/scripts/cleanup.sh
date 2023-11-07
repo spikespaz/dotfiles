@@ -10,23 +10,23 @@ disable_cache=0
 help_message="$(
 cat <<- EOF
 	Synopsis:
-	  Use this script after partitioning to recursively unmount the target,
+		Use this script after partitioning to recursively unmount the target,
 		invalidate zpool cache, and export the pool to ensure that the pool
 		can be imported without forcing after a reboot.
 
 	Usage:
-	  $(basename "$0") [-y][-h][-t <p>][-p <l>][-u][-c]
+		$(basename "$0") [-y][-h][-t <p>][-p <l>][-u][-c]
 
 	Options:
-	  -y | --no-confirm
-	    Skip confirmation and performs changes immediately.
-	  -h | --help
-	    Display this help message.
-	  -t <path> | --target <path>
-	    Specify an alternate path to the root of a filesystem,
-	    for example '/mnt' or '/target'.
-	  -p <label> | --pool <label>
-	    Specify the ZFS pool to export.
+		-y | --no-confirm
+			Skip confirmation and performs changes immediately.
+		-h | --help
+			Display this help message.
+		-t <path> | --target <path>
+			Specify an alternate path to the root of a filesystem,
+			for example '/mnt' or '/target'.
+		-p <label> | --pool <label>
+			Specify the ZFS pool to export.
 		-u | --unmount
 			Unmount the root filesystem, export the pool,
 			and do nothing else (unless specified).
@@ -35,7 +35,7 @@ cat <<- EOF
 
 	Notes:
 		- If neither '-u' or '-c' are specified, the default is to perform
-		  both actions.
+			both actions.
 EOF
 )"
 
@@ -55,7 +55,7 @@ while [ $# -ne 0 ]; do
 			;;
 		-p|--pool)
 			pool="$2"
-			shift
+			shift 2
 			;;
 		-u|--unmount)
 			unmount=1
@@ -94,9 +94,9 @@ if [ $confirm -eq 1 ]; then
 	echo 'Do you want to continue? [Y/n]'
 
 	while true; do
-    read -r -p "> " approve
+		read -r -p "> " approve
 
-    case $approve in
+		case $approve in
 			[Yy]*)
 				break
 				;;
@@ -107,7 +107,7 @@ if [ $confirm -eq 1 ]; then
 			*)
 				echo 'Please answer Y to continue or N to abort.'
 				;;
-    esac
+		esac
 	done
 fi
 
