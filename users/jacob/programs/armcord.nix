@@ -1,6 +1,9 @@
 { self, lib, ... }:
 let
-  gruvbox-darker = with lib.birdos.colors.formats.listRGB.gruvbox.colors; {
+  inherit (lib.birdos.colors) grayRGB listRGB formats;
+  gray = p: listRGB (grayRGB p);
+
+  gruvbox-darker = with formats.listRGB.gruvbox.colors; {
     accentcolor = neutral_orange;
     accentcolor2 = neutral_purple;
     linkcolor = neutral_blue;
@@ -16,12 +19,12 @@ let
     textdarker = dark3;
     textdarkest = dark2;
 
-    backgroundaccent = dark0_hard;
-    backgroundprimary = [ 20 20 20 ];
-    backgroundsecondary = [ 16 16 16 ];
-    backgroundsecondaryalt = [ 12 12 12 ];
-    backgroundtertiary = [ 10 10 10 ];
-    backgroundfloating = [ 0 0 0 ];
+    backgroundaccent = gray 0.12;
+    backgroundprimary = gray 8.0e-2;
+    backgroundsecondary = gray 6.0e-2;
+    backgroundsecondaryalt = gray 5.0e-2;
+    backgroundtertiary = gray 4.0e-2;
+    backgroundfloating = gray 0;
   };
 in {
   imports = [ self.homeManagerModules.armcord ];
