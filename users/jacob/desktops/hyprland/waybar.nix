@@ -45,7 +45,25 @@ let
     inputVolumeMute = "${kbFns} input mute";
     # inputVolumeUp = "${kbFns} input +0.05";
     # inputVolumeDown = "${kbFns} input -0.05";
-    bluetoothSettings = blueman-manager;
+    bluetoothSettings = (pkgs.writeShellScript "waybar-bluetooth-settings" ''
+      set -eux
+      export PATH="${
+        lib.makeBinPath
+        (with pkgs; [ coreutils gawk util-linux bluez nettools blueman ])
+      }:$PATH"
+      is_powered_on="$(
+        bluetoothctl show | \
+        awk '/Name: '"$(hostname)"'$/{p=1} p && /Powered: yes/{print "true"; exit} END{if(!NR || !p) print "false"}'
+      )"
+      if [[ $is_powered_on == 'true' ]]; then
+        blueman-manager
+      else
+        rfkill unblock bluetooth && sleep 1 || true
+        bluetoothctl power on
+        sleep 0.5
+        blueman-manager
+      fi
+    '').outPath;
     bluetoothToggle = (pkgs.writeShellScript "waybar-bluetooth-toggle" ''
       set -eux
       export PATH="${
