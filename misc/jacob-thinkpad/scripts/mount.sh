@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-target='/mnt'
-pool='ospool'
-boot_label='BOOT'
+target="${1:-'/mnt'}"
+pool="${2:-'ospool'}"
+boot_label="${3:-'BOOT'}"
 
 sudo -s <<- EOF
 	zpool import -f -R $target $pool
