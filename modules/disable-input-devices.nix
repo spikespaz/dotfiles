@@ -74,6 +74,7 @@ in {
               lib.concatMapStrings (name: ''
                 evtest --grab '/dev/${name}' 1>/dev/null 2>&1 &
                 pids+=($!)
+                echo "disabled: /dev/${name} ''${pids[-1]}"
                 echo "''${pids[-1]}" >> '${lockFile}'
               '') (builtins.attrNames cfg.disableDevices)
             }
