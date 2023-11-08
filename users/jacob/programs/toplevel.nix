@@ -254,6 +254,8 @@
     programs.keepassxc = {
       enable = true;
 
+      # KeePassXC doesn't play nice with
+      # custom Qt themes, and default looks great.
       package = (pkgs.symlinkJoin {
         inherit (pkgs.keepassxc) name pname version meta;
         paths = [ pkgs.keepassxc ];
@@ -263,6 +265,41 @@
             --set QT_QPA_PLATFORMTHEME ""
         '';
       });
+
+      settings = {
+        General = {
+          ConfigVersion = 2;
+          UseAtomicSaves = true;
+        };
+        Browser = {
+          Enabled = true;
+          SearchInAllDatabases = true;
+        };
+        FdoSecrets = { Enabled = true; };
+        GUI = {
+          ApplicationTheme = "dark";
+          ColorPasswords = true;
+          MinimizeOnClose = true;
+          MinimizeOnStartup = true;
+          MinimizeToTray = true;
+          MonospaceNotes = true;
+          ShowTrayIcon = true;
+          TrayIconAppearance = "monochrome-light";
+        };
+        PasswordGenerator = {
+          AdditionalChars = "";
+          ExcludedChars = "";
+          Length = 22;
+        };
+        Security = let minutes = s: builtins.floor (s * 60);
+        in {
+          ClearClipboardTimeout = minutes 0.75;
+          EnableCopyOnDoubleClick = true;
+          IconDownloadFallback = true;
+          LockDatabaseIdle = true;
+          LockDatabaseIdleSeconds = minutes 10;
+        };
+      };
     };
   };
 
