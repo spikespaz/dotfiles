@@ -282,8 +282,8 @@ in {
           <b>Speeds:</b> {bandwidthUpBytes} UL, {bandwidthDownBytes} DL
         '';
       in {
-        format-ethernet = "󰈀 {ifname}";
-        format-wifi = "{icon} {essid}";
+        format-ethernet = "󰈀";
+        format-wifi = "{icon}";
         format-linked = "󱫱";
         format-disconnected = "󰲛";
         format-icons = [ "󰤟" "󰤢" "󰤥" "󰤨" ];
