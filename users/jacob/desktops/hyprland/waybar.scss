@@ -151,6 +151,7 @@ window.popup {
 
 #network {
   @include indicate-active(#689d6a, "&.ethernet");
+  @include indicate-active(#d64d0e, "&.disconnected");
 }
 
 #bluetooth {
