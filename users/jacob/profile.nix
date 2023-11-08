@@ -9,9 +9,6 @@ in {
   ### PREAMBLE ###
   ################
 
-  # It doesn't even work with flakes...
-  news.display = "silent";
-
   # fix for some display managers not using ~/.profile
   systemd.user.sessionVariables = config.home.sessionVariables;
 

@@ -7,6 +7,12 @@ args@{ self, tree, lib, inputs, ... }: {
     nixpkgs = inputs.nixpkgs-unstable;
     nixpkgsArgs.config.allowUnfree = true;
     modules = with tree.users.jacob; [
+      # It doesn't even work out of the box with flakes...
+      # https://github.com/nix-community/home-manager/issues/2033#issuecomment-1801557851
+      {
+        # news.display = "silent";
+        disabledModules = [ "misc/news.nix" ];
+      }
       profile
       desktops.wayland.default
       desktops.hyprland.default
