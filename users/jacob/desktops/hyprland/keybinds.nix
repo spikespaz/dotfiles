@@ -11,16 +11,22 @@
     MOUSE_EX1 = "mouse:275";
     MOUSE_EX2 = "mouse:276";
 
-    playerctl = lib.getExe pkgs.playerctl;
-    slight = lib.getExe pkgs.slight;
-    osdFunc = lib.getExe config.utilities.osd-functions.package;
-    activateCleanMode = "disable-input-devices-notify";
-    pinWindow = pkgs.patchShellScript ./scripts/pin-window.sh {
-      runtimeInputs = [ config.wayland.windowManager.hyprland.package pkgs.jq ];
-    };
-    toggleSilentRunning = pkgs.patchShellScript ./scripts/silent-running.sh {
-      runtimeInputs =
-        [ pkgs.jq pkgs.systemd config.wayland.windowManager.hyprland.package ];
+    exec = {
+      playerctl = lib.getExe pkgs.playerctl;
+      slight = lib.getExe pkgs.slight;
+      osdFunc = lib.getExe config.utilities.osd-functions.package;
+      activateCleanMode = "disable-input-devices-notify";
+      pinWindow = pkgs.patchShellScript ./scripts/pin-window.sh {
+        runtimeInputs =
+          [ config.wayland.windowManager.hyprland.package pkgs.jq ];
+      };
+      toggleSilentRunning = pkgs.patchShellScript ./scripts/silent-running.sh {
+        runtimeInputs = [
+          pkgs.jq
+          pkgs.systemd
+          config.wayland.windowManager.hyprland.package
+        ];
+      };
     };
 
     # Collections of keybinds common across multiple submaps are collected into
@@ -33,9 +39,7 @@
       };
 
       # Kill the active window.
-      killWindow = {
-        bind."SUPER, Q" = "killactive,";
-      };
+      killWindow = { bind."SUPER, Q" = "killactive,"; };
 
       # Either window focus or window movement.
       moveFocusOrWindow = with groups;
@@ -65,9 +69,7 @@
 
       # Toggle between vertical and horizontal split for
       # the active window and an adjacent one.
-      toggleSplit = {
-        bind."SUPER, tab" = "togglesplit,";
-      };
+      toggleSplit = { bind."SUPER, tab" = "togglesplit,"; };
 
       # Resize a window with the mouse.
       mouseResizeWindow = {
@@ -82,7 +84,8 @@
       };
 
       # Switch to another workspace.
-      switchWorkspace = with groups; [switchWorkspaceAbsolute switchWorkspaceRelative];
+      switchWorkspace = with groups;
+        lib.mkMerge [ switchWorkspaceAbsolute switchWorkspaceRelative ];
 
       # Switch to a workspace by absolute identifier.
       switchWorkspaceAbsolute = {
@@ -126,7 +129,8 @@
       };
 
       # Send a window to another workspace.
-      sendWindow = with groups; lib.mkMerge [sendWindowAbsolute sendWindowRelative];
+      sendWindow = with groups;
+        lib.mkMerge [ sendWindowAbsolute sendWindowRelative ];
 
       # Send a window to a workspace by absolute identifier.
       sendWindowAbsolute = {
@@ -179,7 +183,7 @@
       bind."SUPER, F" = "togglefloating,";
 
       # Float and pin or unpin the active window.
-      bind."SUPER, P" = "exec, ${pinWindow}";
+      bind."SUPER, P" = "exec, ${exec.pinWindow}";
     }
     ### MISCELLANEOUS ###
     {
@@ -206,7 +210,7 @@
 
       # Enable cleaning mode, disable integrated input devices
       # for furious scrubbing with a damp cloth.
-      bindrl."SUPER_CTRL_SHIFT, delete" = "exec, ${activateCleanMode}";
+      bindrl."SUPER_CTRL_SHIFT, delete" = "exec, ${exec.activateCleanMode}";
 
       # Bypass all binds for the window manager and pass key combinations
       # directly to the active window.
@@ -231,32 +235,32 @@
       # <https://github.com/xkbcommon/libxkbcommon/blob/master/include/xkbcommon/xkbcommon-keysyms.h>
 
       # Mute/unmute the active audio output.
-      bindl.", XF86AudioMute" = "exec, ${osdFunc} output mute";
+      bindl.", XF86AudioMute" = "exec, ${exec.osdFunc} output mute";
 
       # Raise and lower the volume of the active audio output.
-      bindel.", XF86AudioRaiseVolume" = "exec, ${osdFunc} output +0.05";
-      bindel.", XF86AudioLowerVolume" = "exec, ${osdFunc} output -0.05";
+      bindel.", XF86AudioRaiseVolume" = "exec, ${exec.osdFunc} output +0.05";
+      bindel.", XF86AudioLowerVolume" = "exec, ${exec.osdFunc} output -0.05";
 
       # Mute the active microphone or audio source.
-      bindl.", XF86AudioMicMute" = "exec, ${osdFunc} input mute";
+      bindl.", XF86AudioMicMute" = "exec, ${exec.osdFunc} input mute";
 
       # Raise and lower display brightness.
-      bindel.", XF86MonBrightnessUp" = "exec, ${slight} inc 10 -t 300ms";
-      bindel.", XF86MonBrightnessDown" = "exec, ${slight} dec 10 -t 300ms";
+      bindel.", XF86MonBrightnessUp" = "exec, ${exec.slight} inc 10 -t 300ms";
+      bindel.", XF86MonBrightnessDown" = "exec, ${exec.slight} dec 10 -t 300ms";
 
       # Lock the session, and then turn off the display after some time.
       # Turn the display back on when triggered a second time.
-      bindrl.", XF86Display" = "exec, ${toggleSilentRunning}";
+      bindrl.", XF86Display" = "exec, ${exec.toggleSilentRunning}";
 
       # Regular media control keys, if your laptop or bluetooth device has them.
-      bindl.", XF86AudioPlay" = "exec, ${playerctl} play-pause";
-      bindl.", XF86AudioPrev" = "exec, ${playerctl} previous";
-      bindl.", XF86AudioNext" = "exec, ${playerctl} next";
+      bindl.", XF86AudioPlay" = "exec, ${exec.playerctl} play-pause";
+      bindl.", XF86AudioPrev" = "exec, ${exec.playerctl} previous";
+      bindl.", XF86AudioNext" = "exec, ${exec.playerctl} next";
 
       # Poor-man's media player control keys.
-      bindl."SUPER, slash" = "exec, ${playerctl} play-pause";
-      bindl."SUPER, comma" = "exec, ${playerctl} previous";
-      bindl."SUPER, period" = "exec, ${playerctl} next";
+      bindl."SUPER, slash" = "exec, ${exec.playerctl} play-pause";
+      bindl."SUPER, comma" = "exec, ${exec.playerctl} previous";
+      bindl."SUPER, period" = "exec, ${exec.playerctl} next";
     }
     ### WINDOW FOCUS & MOVEMENT ###
     groups.moveFocusOrWindow
@@ -270,8 +274,8 @@
         groups.killWindow
         groups.moveFocusOrWindow
         groups.toggleSplit
-        # groups.mouseResizeWindow
-        # groups.changeGroupActive
+        # groups.mouseResizeWindow # you should be using the keyboard
+        # groups.changeGroupActive # you probably forgot you're in the submap
         groups.switchWorkspace
         groups.sendWindow
         groups.submapReset
@@ -331,13 +335,9 @@
         }
       ];
     }
-    ###########################
     ### WORKSPACE SWITCHING ###
-    ###########################
     groups.switchWorkspace
-    #################################
     ### WORKSPACE WINDOW MOVEMENT ###
-    #################################
     groups.sendWindow
   ];
 }
