@@ -26,79 +26,66 @@
     # Collections of keybinds common across multiple submaps are collected into
     # groups, which can be merged together granularly.
     groups = {
+      # Exit the submap and restore normal binds.
       submapReset = {
-        # Exit the submap and restore normal binds.
         bind.", escape" = "submap, reset";
         bind."CTRL, C" = "submap, reset";
       };
 
+      # Kill the active window.
       killWindow = {
-        # Kill the active window.
         bind."SUPER, Q" = "killactive,";
       };
 
+      # Either window focus or window movement.
+      moveFocusOrWindow = with groups;
+        lib.mkMerge [ moveFocus moveWindow mouseMoveWindow ];
+
+      # Focus on another window, in the specified direction.
       moveFocus = {
-        # Focus on another window, in the specified direction.
         bind."SUPER, left" = "movefocus, l";
         bind."SUPER, right" = "movefocus, r";
         bind."SUPER, up" = "movefocus, u";
         bind."SUPER, down" = "movefocus, d";
       };
 
+      # Swap the active window with another, in the specified direction.
       moveWindow = {
-        # Swap the active window with another, in the specified direction.
         bind."SUPER_SHIFT, left" = "movewindow, l";
         bind."SUPER_SHIFT, right" = "movewindow, r";
         bind."SUPER_SHIFT, up" = "movewindow, u";
         bind."SUPER_SHIFT, down" = "movewindow, d";
       };
 
+      # Translate the dragged window by mouse movement.
       mouseMoveWindow = {
-        # Move the hovered window by mouse movement.
         bindm."SUPER, ${MOUSE_LMB}" = "movewindow";
-        # Move the hovered window by moving the mouse
-        # when the mouse's side button is held.
         bindm.", ${MOUSE_EX2}" = "movewindow";
       };
 
-      moveFocusOrWindow = with groups;
-        lib.mkMerge [ moveFocus moveWindow mouseMoveWindow ];
-
+      # Toggle between vertical and horizontal split for
+      # the active window and an adjacent one.
       toggleSplit = {
-        # Toggle between vertical and horizontal split for
-        # the active window and an adjacent one.
         bind."SUPER, tab" = "togglesplit,";
       };
 
+      # Resize a window with the mouse.
       mouseResizeWindow = {
-        # Resize the hovered window by moving the mouse
-        # when the super key is held.
         bindm."SUPER, ${MOUSE_RMB}" = "resizewindow";
-        # Resize the hovered window by moving the mouse
-        # when the super key is held.
         bindm.", ${MOUSE_EX1}" = "resizewindow";
       };
 
+      # Switch to the next/previous tab in the active group.
       changeGroupActive = {
-        # Switch to the next/previous tab in the active group.
         bind."ALT, tab" = "changegroupactive, f";
         bind."ALT, grave" = "changegroupactive, b";
       };
 
-      switchWorkspace = {
-        # TODO Bind the special workspace to `XF86Favorites`.
-        # TODO Create a bind for "insert after current workspace".
+      # Switch to another workspace.
+      switchWorkspace = with groups; [switchWorkspaceAbsolute switchWorkspaceRelative];
 
-        # Switch to the next/previous used workspace with page keys.
-        bind."SUPER, page_down" = "workspace, m+1";
-        bind."SUPER, page_up" = "workspace, m-1";
-
-        # Switch to the next/previous used workspace with the mouse wheel.
-        bind."SUPER, mouse_up" = "workspace, m+1";
-        bind."SUPER, mouse_down" = "workspace, m-1";
-
-        # NUMBERED
-
+      # Switch to a workspace by absolute identifier.
+      switchWorkspaceAbsolute = {
         # Switch to a primary workspace by index.
         bind."SUPER, 1" = "workspace, 1";
         bind."SUPER, 2" = "workspace, 2";
@@ -122,9 +109,27 @@
         bind."SUPER_ALT, 8" = "workspace, 18";
         bind."SUPER_ALT, 9" = "workspace, 19";
         bind."SUPER_ALT, 0" = "workspace, 20";
+
+        # TODO Bind the special workspace to `XF86Favorites`.
+        # TODO Create a bind for "insert after current workspace".
       };
 
-      sendWindow = {
+      # Switch to workspaces relative to the current one.
+      switchWorkspaceRelative = {
+        # Switch to the next/previous used workspace with page keys.
+        bind."SUPER, page_down" = "workspace, m+1";
+        bind."SUPER, page_up" = "workspace, m-1";
+
+        # Switch to the next/previous used workspace with the mouse wheel.
+        bind."SUPER, mouse_up" = "workspace, m+1";
+        bind."SUPER, mouse_down" = "workspace, m-1";
+      };
+
+      # Send a window to another workspace.
+      sendWindow = with groups; lib.mkMerge [sendWindowAbsolute sendWindowRelative];
+
+      # Send a window to a workspace by absolute identifier.
+      sendWindowAbsolute = {
         # Move the active window or group to a primary workspace by index.
         bind."SUPER_SHIFT, 1" = "movetoworkspacesilent, 1";
         bind."SUPER_SHIFT, 2" = "movetoworkspacesilent, 2";
@@ -150,7 +155,8 @@
         bind."SUPER_ALT_SHIFT, 0" = "movetoworkspacesilent, 20";
       };
 
-      mouseSendWindow = {
+      # Send windows to other workspaces, relative to the current one.
+      sendWindowRelative = {
         # Move the active window or group to the next/previous
         # workspace with page keys, while holding super and shift.
         bind."SUPER_SHIFT, page_down" = "movetoworkspace, r+1";
@@ -268,7 +274,6 @@
         # groups.changeGroupActive
         groups.switchWorkspace
         groups.sendWindow
-        groups.mouseSendWindow
         groups.submapReset
         {
           # Small adjustments in the specified direction.
@@ -301,7 +306,6 @@
         groups.changeGroupActive
         groups.switchWorkspace
         groups.sendWindow
-        groups.mouseSendWindow
         groups.submapReset
         {
           ### Binds specific to this submap:
@@ -335,6 +339,5 @@
     ### WORKSPACE WINDOW MOVEMENT ###
     #################################
     groups.sendWindow
-    groups.mouseSendWindow
   ];
 }
