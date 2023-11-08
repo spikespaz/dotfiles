@@ -58,26 +58,20 @@ in {
   config = lib.mkIf cfg.enable
     (let lockFile = "/var/lock/disable-input-devices.lock";
     in {
-      programs.disable-input-devices.script =
-        pkgs.writeShellScriptBin "disable-input-devices" ''
-          set -eux
-
-          export PATH='${
-            lib.makeBinPath (with pkgs; [ bash coreutils evtest ])
-          }'
-
+      programs.disable-input-devices.script = pkgs.writeShellApplication {
+        name = "disable-input-devices";
+        runtimeInputs = with pkgs; [ bash coreutils evtest ];
+        text = ''
           if [ "$(id -u)" -ne 0 ]; then
             echo 'Script must be run as root!'
             exit 1
           fi
-
           mode="$1"
-
           if [[ "$mode" = 'disable' ]]; then
             pids=()
             ${
               lib.concatMapStrings (name: ''
-                evtest --grab '/dev/${name}' 1> /dev/null 2>&1 &
+                evtest --grab '/dev/${name}' 1>/dev/null 2>&1 &
                 pids+=($!)
                 echo "''${pids[-1]}" >> '${lockFile}'
               '') (builtins.attrNames cfg.disableDevices)
@@ -92,6 +86,7 @@ in {
             exit 1
           fi
         '';
+      };
 
       environment.systemPackages = [ cfg.script ];
 
