@@ -1,7 +1,7 @@
 { self, pkgs, lib, ... }:
 (xs: { imports = xs; }) [
   ### ADMINISTRATOR UTILITIES ###
-  self.nixosModules.disable-input
+  self.nixosModules.disable-input-devices
   {
     environment.systemPackages = [ pkgs.slight ];
     services.udev.packages = [ pkgs.slight ];
