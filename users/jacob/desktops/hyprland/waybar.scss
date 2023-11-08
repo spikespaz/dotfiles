@@ -150,7 +150,9 @@ window.popup {
 }
 
 #network {
-  @include indicate-active(#689d6a, "&.ethernet");
+  @include indicate-active(#689d6a, "&.wifi");
+  @include indicate-active(#458588, "&.ethernet");
+  @include indicate-active(#b16286, "&.linked");
   @include indicate-active(#d64d0e, "&.disconnected");
 }
 
