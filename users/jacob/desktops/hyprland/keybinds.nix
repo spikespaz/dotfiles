@@ -280,17 +280,17 @@
         groups.sendWindow
         groups.submapReset
         {
-          # Small adjustments in the specified direction.
-          binde.", right" = "resizeactive, 10 0";
-          binde.", left" = "resizeactive, -10 0";
-          binde.", up" = "resizeactive, 0 -10";
-          binde.", down" = "resizeactive, 0 10";
-
           # Large adjustments in the specified direction.
-          binde."SHIFT, right" = "resizeactive, 30 0";
-          binde."SHIFT, left" = "resizeactive, -30 0";
-          binde."SHIFT, up" = "resizeactive, 0 -30";
-          binde."SHIFT, down" = "resizeactive, 0 30";
+          binde.", right" = "resizeactive, 30 0";
+          binde.", left" = "resizeactive, -30 0";
+          binde.", up" = "resizeactive, 0 -30";
+          binde.", down" = "resizeactive, 0 30";
+
+          # Small adjustments in the specified direction.
+          binde."SHIFT, right" = "resizeactive, 10 0";
+          binde."SHIFT, left" = "resizeactive, -10 0";
+          binde."SHIFT, up" = "resizeactive, 0 -10";
+          binde."SHIFT, down" = "resizeactive, 0 10";
         }
       ];
     }
