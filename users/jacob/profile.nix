@@ -48,9 +48,9 @@ in {
   ##########################
 
   imports = let
-    user = tree.users.${username};
-    programs = user.programs.default args;
-    services = user.services.default args;
+    user = lib.importDir ./. "profile.nix";
+    programs = user.programs args;
+    services = user.services args;
   in [
     ###############################
     ### MODULES & MISCELLANEOUS ###
@@ -111,10 +111,10 @@ in {
     programs.vscode.other.marp
     # TODO broken idk why
     # programs.vscode.languages.all
-    (programs.jetbrains args).clion
-    (programs.jetbrains args).goland
-    (programs.jetbrains args).idea
-    (programs.jetbrains args).pycharm
+    programs.jetbrains.clion
+    programs.jetbrains.goland
+    programs.jetbrains.idea
+    programs.jetbrains.pycharm
     programs.rstudio
     programs.neovim
     programs.helix
