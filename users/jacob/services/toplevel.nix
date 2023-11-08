@@ -15,4 +15,6 @@
     services.playerctld.enable = true;
     home.packages = [ config.services.playerctld.package ];
   };
+
+  keepassxc = { services.keepassxc.enable = true; };
 }

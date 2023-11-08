@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ self, config, pkgs, lib, ... }: {
   ####################
   ### WEB BROWSERS ###
   ####################
@@ -249,17 +249,21 @@
   ######################
 
   keepassxc = {
-    home.packages = [
-      (pkgs.symlinkJoin {
-        inherit (pkgs.keepassxc) name;
+    imports = [ self.homeManagerModules.keepassxc ];
+
+    programs.keepassxc = {
+      enable = true;
+
+      package = (pkgs.symlinkJoin {
+        inherit (pkgs.keepassxc) name pname version meta;
         paths = [ pkgs.keepassxc ];
         nativeBuildInputs = [ pkgs.makeWrapper ];
         postBuild = ''
           wrapProgram $out/bin/keepassxc \
             --set QT_QPA_PLATFORMTHEME ""
         '';
-      })
-    ];
+      });
+    };
   };
 
   ####################
