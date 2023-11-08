@@ -55,6 +55,7 @@ in {
       };
     };
   };
+
   config = lib.mkIf cfg.enable
     (let lockFile = "/var/lock/disable-input-devices.lock";
     in {
@@ -90,13 +91,10 @@ in {
 
       environment.systemPackages = [ cfg.script ];
 
-      services.udev.extraRules = lib.pipe cfg.disableDevices [
-        builtins.attrValues
-        (map ({ name, product, vendor, }: ''
+      services.udev.extraRules = lib.concatMapStrings
+        ({ name, product, vendor, }: ''
           SUBSYSTEMS=="input", ATTRS{id/product}=="${product}", ATTRS{id/vendor}=="${vendor}", SYMLINK+="${name}"
-        ''))
-        lib.concatStrings
-      ];
+        '') (builtins.attrValues cfg.disableDevices);
 
       security.sudo.extraRules = [{
         users = cfg.allowedUsers;
