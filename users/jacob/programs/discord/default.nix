@@ -62,5 +62,4 @@ in {
         config.lib.file.mkOutOfStoreSymlink
         "${config.home.homeDirectory}/Documents/dotfiles/users/jacob/programs/discord/webcord-config.json";
     };
-  armcord = import ./armcord.nix;
 }
