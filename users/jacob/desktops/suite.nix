@@ -1,5 +1,5 @@
 # desktop environment default programs
-{ pkgs, ... }: {
+{ lib, pkgs, ... }: {
   home.packages = with pkgs; [
     # CLI Utilities
     wl-clipboard
@@ -62,4 +62,34 @@
     # Compatibility
     appimage-run
   ];
+
+  xdg.configFile."dolphinrc".text = ''
+    MenuBar=Disabled
+
+    [DetailsMode]
+    PreviewSize=22
+
+    [General]
+    ShowStatusBar=false
+    UseTabForSwitchingSplitView=true
+    Version=202
+
+    [IconsMode]
+    PreviewSize=160
+
+    [KFileDialog Settings]
+    Places Icons Auto-resize=false
+    Places Icons Static Size=22
+    detailViewIconSize=16
+
+    [MainWindow]
+    MenuBar=Disabled
+    ToolBarsMovable=Disabled
+
+    [MainWindow][Toolbar mainToolBar]
+    ToolButtonStyle=IconOnly
+
+    [Toolbar mainToolBar]
+    ToolButtonStyle=IconOnly
+  '';
 }
