@@ -38,6 +38,14 @@
         bind."CTRL, C" = "submap, reset";
       };
 
+      # Self-explanatory.
+      launchPrograms = {
+        # Launch the program with a shortcut.
+        bind."SUPER, E" = "exec, dolphin";
+        bind."SUPER, T" = "exec, alacritty";
+        bind."SUPER, C" = "exec, qalculate-gtk";
+      };
+
       # Kill the active window.
       killWindow = { bind."SUPER, Q" = "killactive,"; };
 
@@ -218,16 +226,12 @@
       submap.passthru = { bind."SUPER_SHIFT, K" = "submap, reset"; };
     }
     ### PROGRAM LAUNCHING ###
+    groups.launchPrograms
     {
       # Open Rofi to launch a program.
       bind."SUPER, Space" = "exec, rofi -show drun -show-icons";
       # Open Rofi to run a command.
       bind."SUPER, R" = "exec, rofi -show run";
-
-      # Launch the program with a shortcut.
-      bind."SUPER, E" = "exec, dolphin";
-      bind."SUPER, T" = "exec, alacritty";
-      bind."SUPER, C" = "exec, qalculate-gtk";
     }
     ### FUNCTION KEYS ###
     {
@@ -271,6 +275,7 @@
       # Enter a submap for keyboard-driven window resizing.
       bind."SUPER, backslash" = "submap, resize";
       submap.resize = lib.mkMerge [
+        # groups.launchPrograms
         groups.killWindow
         groups.moveFocusOrWindow
         groups.toggleSplit
@@ -303,6 +308,7 @@
       # Enter a submap for manipulating windows with relation to groups.
       bind."SUPER, G" = "submap, groups";
       submap.groups = lib.mkMerge [
+        # groups.launchPrograms
         groups.killWindow
         groups.moveFocusOrWindow
         groups.toggleSplit
