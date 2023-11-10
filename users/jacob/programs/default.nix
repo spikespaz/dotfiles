@@ -1,6 +1,6 @@
 args@{ self, pkgs, lib, config, ... }:
 (lib.mapAttrs (_: expr: if lib.isFunction expr then expr args else expr)
-  (lib.importDir ./. "default.nix")) // {
+  (lib.importDir' ./. "default.nix")) // {
     ####################
     ### WEB BROWSERS ###
     ####################

@@ -48,7 +48,7 @@ in {
   ##########################
 
   imports = let
-    user = lib.importDir ./. "profile.nix";
+    user = lib.importDir' ./. "profile.nix";
     programs = user.programs args;
     services = user.services args;
   in [
