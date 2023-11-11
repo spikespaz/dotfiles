@@ -6,6 +6,7 @@
     with pkgs.vscode-marketplace;
     with pkgs.vscode-marketplace-release; [
       rust-lang.rust-analyzer
+      serayuzgur.crates
       tamasfe.even-better-toml
       a5huynh.vscode-ron
       slint.slint
