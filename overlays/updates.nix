@@ -75,4 +75,17 @@ in {
       ''
     ];
   });
+
+  vscode-marketplace = pkgs0.vscode-marketplace // {
+    slint = pkgs0.vscode-marketplace.slint // {
+      slint = pkgs0.vscode-marketplace.slint.slint.overrideAttrs (self: super: {
+        postInstall = (super.postInstall or "") + ''
+          extBin=$out/share/vscode/extensions/slint.slint/bin/
+          rm $out/share/vscode/extensions/slint.slint/bin/slint-lsp-*
+          cp ${lib.getExe pkgs.slint-lsp} \
+            $extBin/slint-lsp-${pkgs.hostPlatform.config}
+        '';
+      });
+    };
+  };
 }
