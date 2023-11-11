@@ -18,17 +18,11 @@ args@{ self, tree, lib, inputs, ... }: {
       desktops.hyprland.default
       desktops.suite
     ];
+    # Keep this flake's overlays towards the bottom;
+    # order matters. `pkgs0` may need to contain packages
+    # from input flakes, otherwise this user config will fail
+    # when it expects to find the twice-overridden package.
     overlays = [
-      # flake lib functions that are in pkgs
-      self.overlays.lib
-      # flake packages
-      self.overlays.default
-      # updates to packages before committing upstream
-      self.overlays.updates
-      # override packages with an unfree license
-      self.overlays.allowUnfree
-      # skip the manual download for oracle's jdk
-      self.overlays.oraclejdk
       # nix user repo packages
       inputs.nur.overlay
       # packages for window manager
@@ -42,6 +36,16 @@ args@{ self, tree, lib, inputs, ... }: {
       inputs.nil.overlays.default
       inputs.prism-launcher.overlays.default
       # inputs.webcord.overlays.default
+      # flake lib functions that are in pkgs
+      self.overlays.lib
+      # flake packages
+      self.overlays.default
+      # updates to packages before committing upstream
+      self.overlays.updates
+      # override packages with an unfree license
+      self.overlays.allowUnfree
+      # skip the manual download for oracle's jdk
+      self.overlays.oraclejdk
     ];
     extraSpecialArgs = {
       pkgs-stable = import inputs.nixpkgs-stable {
