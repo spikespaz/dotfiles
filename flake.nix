@@ -21,9 +21,50 @@
 
       formatter = eachSystem (system: inputs.nixfmt.packages.${system}.default);
 
-      # See `overlays/default.nix` for more information.
+      /*
+        $ nix eval 'path:.#overlays' | sed 's/<|>/"/g' | nixfmt
+        ---
+        There is an overlay for each package:
+
+          - fork-awesome
+          - idlehack
+          - ja-netfilter
+          - nerdfonts-symbols
+          - proton-ge-custom
+          - prtsc
+          - ttf-ms-win11
+          - zsh-plugins
+
+        Then there are collections/utilities also available as overlays:
+
+          - lib = extra functions merged into `pkgs`
+          - allowUnfree - override `meta.license` of certain packages
+          - oraclejdk - overrides `oraclejdk` to not `requireFile`
+          - default - all packages from this flake
+          - updates - some small updates/fixes for certain packages
+      */
       overlays = let packageOverlays = import ./packages/overlays.nix lib;
       in import ./overlays lib packageOverlays;
+
+      /*
+        $ nix eval 'path:.#packages.x86_64-linux' --apply 'builtins.attrNames' | nixfmt
+        [
+          "fork-awesome"
+          "idlehack"
+          "ja-netfilter"
+          "nerdfonts-symbols"
+          "proton-ge-custom"
+          "prtsc"
+          "ttf-ms-win11"
+          "zsh-auto-notify"
+          "zsh-autocomplete"
+          "zsh-autopair"
+          "zsh-autosuggestions"
+          "zsh-edit"
+          "zsh-fast-syntax-highlighting"
+          "zsh-window-title"
+        ]
+      */
       packages =
         eachSystem (system: import ./packages { inherit lib system nixpkgs; });
 
