@@ -12,7 +12,7 @@ args@{ self, tree, lib, inputs, ... }: {
     modules = with tree.hosts.intrepid; [
       bootloader
       filesystems
-      plymouth
+      # plymouth
       configuration
       packages
       nixbuild
