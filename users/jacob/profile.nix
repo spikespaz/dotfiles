@@ -100,6 +100,7 @@ in {
 
     ### CODE EDITORS ###
     programs.vscode.settings
+    programs.vscode.languages.cpp
     programs.vscode.languages.bash
     programs.vscode.languages.nix
     programs.vscode.languages.perl
