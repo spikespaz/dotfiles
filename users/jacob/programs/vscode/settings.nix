@@ -11,6 +11,10 @@
     paths = [ super ] ++ fontPackages;
   });
 
+  programs.vscode.enableExtensionUpdateCheck = false;
+  programs.vscode.enableUpdateCheck = false;
+  programs.vscode.mutableExtensionsDir = false;
+
   programs.vscode.extensions =
     #
     with pkgs.vscode-marketplace;
