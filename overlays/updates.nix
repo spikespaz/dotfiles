@@ -76,6 +76,18 @@ in {
     ];
   });
 
+  slint-lsp = pkgs0.slint-lsp.overrideAttrs (self: super: {
+    version = "1.3.0";
+    src = pkgs.fetchCrate {
+      inherit (self) pname version;
+      hash = "sha256-ikOKpQHMLPCC2IfqWvW0I1auiCdyIZZMu6nMGle/bE0=";
+    };
+    cargoDeps = super.cargoDeps.overrideAttrs {
+      inherit (self) src version;
+      outputHash = "sha256-FLPKwQWSE2M36w8Nx2Wdjr2ZtIA7m68I6DbV6w1Lj8w=";
+    };
+  });
+
   vscode-marketplace = pkgs0.vscode-marketplace // {
     slint = pkgs0.vscode-marketplace.slint // {
       slint = pkgs0.vscode-marketplace.slint.slint.overrideAttrs (self: super: {
