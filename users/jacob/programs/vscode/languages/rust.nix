@@ -10,6 +10,8 @@
       tamasfe.even-better-toml
       a5huynh.vscode-ron
       slint.slint
+      slints.slintsvscodesnippets
+
       # these guys are sort of inconsiderate and not even designing
       # the extension properly, I should be able to provide
       # the binaries it wants and disable the auto download thing
