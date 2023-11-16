@@ -122,6 +122,7 @@ in {
     programs.lapce
 
     ### DEVELOPMENT TOOLS ###
+    programs.nix
     programs.git
     programs.java
     programs.rust # Does not contain packages, use devshell.

@@ -1,4 +1,4 @@
-args@{ self, pkgs, lib, config, ... }:
+args@{ self, pkgs, lib, config, inputs, ... }:
 (lib.mapAttrs (_: expr: if lib.isFunction expr then expr args else expr)
   (lib.importDir' ./. "default.nix")) // {
     ####################
@@ -173,6 +173,12 @@ args@{ self, pkgs, lib, config, ... }:
           line-numbers-plus-style = "bold green";
         };
       };
+    };
+
+    nix = {
+      # TODO fix overlay for this flake
+      home.packages =
+        [ inputs.nixfmt.packages.${pkgs.hostPlatform.system}.nixfmt ];
     };
 
     java = let
