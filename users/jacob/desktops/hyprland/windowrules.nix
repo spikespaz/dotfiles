@@ -92,6 +92,9 @@ in {
       (rule [ "size 740 460" ] filePickerPortal)
       (rule [ "size 950 700" ] kvantumConfig)
     ]
+    # Because it can be shown and hidden with a systray icon.
+    (map (rule [ "float" "pin" "move 10% 10%" "size 80% 80%" ]) [ tidal ])
+    #
     (map (rule [ "idleinhibit focus" ]) [ minecraft virtManagerConsole ])
     (map (rule [ "float" ]) [
       kvantumConfig
