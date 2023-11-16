@@ -72,7 +72,7 @@ let
       fg_purple = colors.faded_purple;
       fg_aqua = colors.faded_aqua;
       fg_orange = colors.faded_orange;
-      fg_gray = colors.dark4;
+      fg_gray = colors.gray_244;
 
       hl_red = colors.neutral_red;
       hl_green = colors.neutral_green;
