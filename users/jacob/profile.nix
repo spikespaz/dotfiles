@@ -154,6 +154,7 @@ in {
     # programs.transmission
     programs.qbittorrent
     programs.filezilla
+    programs.jellyfin
 
     ### 3D PRINTING ###
     programs.openscad

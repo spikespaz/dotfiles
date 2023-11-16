@@ -321,6 +321,7 @@ args@{ self, pkgs, lib, config, ... }:
     transmission = { home.packages = [ pkgs.transmission-qt ]; };
     qbittorrent = { home.packages = [ pkgs.qbittorrent ]; };
     filezilla = { home.packages = [ pkgs.filezilla ]; };
+    jellyfin = { home.packages = [ pkgs.jellyfin ]; };
 
     ###################
     ### 3D PRINTING ###
