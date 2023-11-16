@@ -43,6 +43,7 @@
       ## Editor Extension ##
       ryuta46.multi-command
       sirmspencer.vscode-autohide
+      sleistner.vscode-fileutils
 
       ## Basic Config Languages ##
       kdl-org.kdl
