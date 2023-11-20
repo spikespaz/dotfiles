@@ -79,6 +79,7 @@ in {
     programs.hexchat
     programs.telegram
     programs.matrix
+    programs.mattermost
 
     ### MEDIA CREATION ###
     programs.obs-studio

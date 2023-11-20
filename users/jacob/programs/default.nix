@@ -62,6 +62,8 @@ args@{ self, pkgs, lib, config, inputs, ... }:
 
     matrix = { home.packages = [ pkgs.libsForQt5.neochat ]; };
 
+    mattermost = { home.packages = [ pkgs.mattermost-desktop ]; };
+
     ######################
     ### MEDIA CREATION ###
     ######################
