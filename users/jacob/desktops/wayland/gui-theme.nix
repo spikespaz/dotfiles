@@ -1,4 +1,4 @@
-{ self, config, pkgs, ... }: {
+{ self, config, pkgs, pkgs-stable, ... }: {
   imports = [
     #
     self.homeManagerModules.randbg
@@ -25,7 +25,14 @@
     enable = true;
     iconTheme.package = pkgs.papirus-icon-theme;
     iconTheme.name = "Papirus-Dark";
-    theme.package = pkgs.materia-theme;
+    # FIXME Should be investigated but...
+    # As of 2023-11-19, an update to nixpkgs in the last few days
+    # has caused this package to stop building,
+    # ```
+    # cp: cannot stat '/build/source/build/src/cinnamon/Materia.cinnamon.css': No such file or directory
+    # ```
+    # So, we use `pkgs-stable`.
+    theme.package = pkgs-stable.materia-theme;
     theme.name = "Materia-dark-compact";
     font.package = pkgs.ubuntu_font_family;
     font.name = "Ubuntu";
