@@ -1,6 +1,16 @@
 pkgs: pkgs0:
 let inherit (pkgs) lib;
 in {
+  # keepassxc = pkgs0.keepassxc.overrideAttrs (self: super: {
+  #   patches = super.patches or [ ] ++ [
+  #     (pkgs.fetchpatch {
+  #       url =
+  #         "https://github.com/keepassxreboot/keepassxc/commit/f93adaa854b859dc0bda4ad3422f6f98b269f744.diff";
+  #       hash = "sha256-D5HRUOonLZOmjmLevSzh+OaQ8pR2E4yfgnEJwFWMP0I=";
+  #     })
+  #   ];
+  # });
+
   # Alacritty 0.12.3 has a problem with latest Hyprland:
   #
   # ```
@@ -74,18 +84,6 @@ in {
         rm $out/share/doc/alacritty.yml
       ''
     ];
-  });
-
-  slint-lsp = pkgs0.slint-lsp.overrideAttrs (self: super: {
-    version = "1.3.0";
-    src = pkgs.fetchCrate {
-      inherit (self) pname version;
-      hash = "sha256-ikOKpQHMLPCC2IfqWvW0I1auiCdyIZZMu6nMGle/bE0=";
-    };
-    cargoDeps = super.cargoDeps.overrideAttrs {
-      inherit (self) src version;
-      outputHash = "sha256-FLPKwQWSE2M36w8Nx2Wdjr2ZtIA7m68I6DbV6w1Lj8w=";
-    };
   });
 
   vscode-marketplace = pkgs0.vscode-marketplace // {
