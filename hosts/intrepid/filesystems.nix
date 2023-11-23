@@ -71,7 +71,7 @@ in {
     trim.interval = "weekly";
 
     autoScrub.enable = true;
-    autoScrub.pools = [ "ospool" ];
+    autoScrub.pools = [ rootPool ];
     autoScrub.interval = "weekly";
   };
 }

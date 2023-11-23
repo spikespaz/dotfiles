@@ -9,22 +9,25 @@ args@{ self, tree, lib, inputs, ... }: {
     # the bootloader module takes this as a param
     # determines if should use untested kernel with zfs
     specialArgs.enableUnstableZfs = false;
-    modules = with tree.hosts.intrepid; [
-      bootloader
-      filesystems
-      # plymouth
-      configuration
-      packages
-      nixbuild
-      registry
-      powerplan
-      touchpad
-      greeter
-      # gamemode
-      gaming
-      pia-openvpn
-      user-desktop
-    ];
+    modules = with tree.hosts;
+      with tree.hosts.intrepid; [
+        common.amd-thinkpad.bootloader
+        # common.amd-thinkpad.plymouth
+        common.amd-thinkpad.user-desktop
+
+        common.touchpad-fix
+        common.greetd-hyprland
+        # common.gamemode
+        common.run-game
+        common.packages
+        common.nix-registry
+        common.pia-openvpn
+        common.nixbuild
+
+        misc
+        filesystems
+        powerplan
+      ];
     overlays = [
       # flake packages
       self.overlays.default
