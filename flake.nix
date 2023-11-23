@@ -77,8 +77,9 @@
 
       # for more information about the host configurations,
       # see ./hosts/default.nix
-      nixosConfigurations =
-        import ./hosts { inherit self lib tree inputs nixpkgs; };
+      nixosConfigurations = lib.mapAttrs (_host: fn:
+        lib.applyAutoArgs fn { inherit self lib tree inputs nixpkgs; })
+        (lib.importDir' ./hosts "common");
 
       # for more information aboyt user configurations,
       # see ./users/default.nix
