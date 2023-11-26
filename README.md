@@ -595,7 +595,7 @@ nixos-install --flake "path:.#$(hostname)" --no-root-password --cores "$(($(npro
 This requires that the user in question is logged in and has an active shell.
 
 ```sh
-home-manager switch --flake "path:.#$USER"
+home-manager switch --flake "path:.#$(whoami)@$(hostname)"
 ```
 
 Or perhaps more explicitly,

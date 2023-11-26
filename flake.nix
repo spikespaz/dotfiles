@@ -83,8 +83,11 @@
 
       # for more information aboyt user configurations,
       # see ./users/default.nix
-      homeConfigurations =
-        import ./users { inherit self lib tree inputs nixpkgs; };
+      homeConfigurations = lib.mapAttrs (_userAtHost: fn:
+        lib.applyAutoArgs fn { inherit self lib tree inputs nixpkgs; })
+        (lib.importDir' ./users
+          ({ isNix, isHidden, hasNixFiles, hasDefault, ... }:
+            isNix && !isHidden && !(hasNixFiles && !hasDefault)));
     };
 
   # Do not use `<input>.inputs.*.follows` unless there is a good reason.
