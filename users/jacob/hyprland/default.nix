@@ -3,7 +3,6 @@
     self.homeManagerModules.desktop-portals
     inputs.hyprland-nix.homeManagerModules.default
     ./config.nix
-    ./monitors.nix
     ./windowrules.nix
     ./keybinds.nix
     ./waybar.nix
