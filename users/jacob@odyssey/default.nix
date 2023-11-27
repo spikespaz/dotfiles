@@ -11,9 +11,9 @@ lib.bird.mkHome args rec {
       disabledModules = [ "misc/news.nix" ];
     }
     profile
-    desktops.wayland.default
-    desktops.hyprland.default
-    desktops.suite
+    wayland.default
+    hyprland.default
+    wayland.suite
   ];
   # Keep this flake's overlays towards the bottom;
   # order matters. `pkgs0` may need to contain packages
