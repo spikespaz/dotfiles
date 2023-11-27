@@ -10,7 +10,7 @@
 { config, lib, pkgs, enableUnstableZfs, ... }:
 let
   rootPool = "odyssey";
-  bootLabel = "ODSSY";
+  bootLabel = "ODSY";
 
   # function to easily duplicate a zfs automount scheme
   zfsAuto = device: {
