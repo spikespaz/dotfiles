@@ -1,20 +1,23 @@
-{ lib, config, ... }:
+# FIXME Only `mkForce` for now because the `users/jacob` dir needs to all be `mkDefault`.
+{ lib, pkgs, config, ... }:
 let
   monitors = {
     internal = "eDP-1";
-    portable = "DP-2";
-    dock = "DP-1";
+    portable = "DP-5";
+    dock = "DP-6";
     hotplug = "HDMI-A-1";
   };
   hyprctl =
     lib.getExe' config.wayland.windowManager.hyprland.finalPackage "hyprctl";
 in {
+  home.packages = [ pkgs.wdisplays ];
+
   wayland.windowManager.hyprland = with monitors; {
     # <https://wiki.hyprland.org/Configuring/Monitors/>
     config.monitor = [
       ", preferred, auto, 1"
 
-      "${internal}, preferred, 1920x1080, 1"
+      "${internal}, preferred, 1920x1080, 1.5"
       "${portable}, preferred, 0x1080, 1"
       "${dock}, preferred, 1920x0, 1"
       "${hotplug}, preferred, 0x1080, 1"
