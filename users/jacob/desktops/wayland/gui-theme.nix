@@ -8,7 +8,7 @@
   ## WALLPAPER ##
 
   home.sessionVariables.USER_WALLPAPERS_DIRECTORY =
-    "${config.home.homeDirectory}/Pictures/Wallpapers";
+    "${config.home.homeDirectory}/OneDrive/Pictures/Wallpapers";
 
   # randomly cycle the wallpaper every hour with a 25% chance
   services.randbg = {
