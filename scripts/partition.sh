@@ -6,12 +6,26 @@ set -eu
 ##### PAREMETERS #####
 
 # Specify the drive to partition for install
-TARGET_DISK='/dev/disk/by-id/nvme-WD_BLACK_SN850X_2000GB_23251F801658'
+: "${TARGET_DISK:=/dev/disk/by-id/nvme-WD_BLACK_SN850X_2000GB_23251F801658}"
+: "${POOL_NAME:=intrepid}"
+: "${BOOT_LABEL:=INTRPD}"
+
+interactive=true
+
+if $interactive; then
+	read -r -p "Target disk ($TARGET_DISK): " input
+	[[ "$input" != '' ]] && TARGET_DISK="$input"
+
+	read -r -p "Root pool name ($POOL_NAME): " input
+	[[ "$input" != '' ]] && POOL_NAME="$input"
+
+	read -r -p "Boot partition label ($BOOT_LABEL): " input
+	[[ "$input" != '' ]] && BOOT_LABEL="$input"
+fi
+
 BOOT_PART="${TARGET_DISK}-part1"
 SWAP_PART="${TARGET_DISK}-part2"
 ROOT_PART="${TARGET_DISK}-part3"
-POOL_NAME='intrepid'
-BOOT_LABEL='INTRPD'
 
 # Calculate preferred swap partition size for hibernation
 TOTAL_MEM=$(awk '{if ($1 == "MemTotal:") print $2}' /proc/meminfo)
@@ -33,7 +47,6 @@ sgdisk -UR $TARGET_DISK
 # Create boot partition (ef00 = EFI system partition)
 sgdisk  -n1:1M:+512M        -t1:ef00  $TARGET_DISK
 # Create swap partition (8200 = Linux swap)
-# shellcheck disable=SC2086
 sgdisk  -n2:0:+$TOTAL_SWAP  -t2:8200  $TARGET_DISK
 # Create primary partition (bf00 = Solaris root)
 sgdisk  -n3:0:0             -t3:bf00  $TARGET_DISK
@@ -108,8 +121,8 @@ cat <<- EOF
 	Suggested commands:
 
 	sudo -s <<- END
-		zpool import -R /mnt ospool
+		zpool import -R /mnt $POOL_NAME
 		mkdir /mnt/boot
-		mount -t vfat /dev/disk/by-label/BOOT /mnt/boot
+		mount -t vfat /dev/disk/by-label/$BOOT_LABEL /mnt/boot
 	END
 EOF
