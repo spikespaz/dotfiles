@@ -3,7 +3,7 @@ let
   packageOverlays = builtins.attrValues (import ./overlays.nix lib);
   pkgs = import nixpkgs {
     localSystem = system;
-    overlays = lib.updates [ packageOverlays ];
+    overlays = packageOverlays;
   };
 in lib.updates [
   # INDIVIDUAL PACKAGES #
