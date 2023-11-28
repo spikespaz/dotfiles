@@ -1,6 +1,8 @@
 lib: {
   # INDIVIDUAL PACKAGES #
 
+  amdctl = pkgs: _: { amdctl = pkgs.callPackage ./amdctl.nix { }; };
+
   ja-netfilter = pkgs: _: {
     ja-netfilter = pkgs.callPackage ./ja-netfilter { inherit lib; };
   };

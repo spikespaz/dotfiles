@@ -9,7 +9,7 @@ in lib.updates [
   # INDIVIDUAL PACKAGES #
 
   (with pkgs; {
-    inherit ja-netfilter prtsc ttf-ms-win11 fork-awesome idlehack
+    inherit amdctl ja-netfilter prtsc ttf-ms-win11 fork-awesome idlehack
       proton-ge-custom nerdfonts-symbols;
   })
 

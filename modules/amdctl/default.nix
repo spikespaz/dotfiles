@@ -2,24 +2,6 @@
 let
   cfg = config.services.undervolt.amdctl;
   inherit (lib) types;
-
-  amdctl = pkgs.stdenv.mkDerivation (self: {
-    name = "amdctl";
-    version = "0.11";
-    nativeBuildInputs = [ pkgs.gnumake ];
-    installPhase = ''
-      runHook preInstall
-      make
-      install -Dm555 ./amdctl $out/bin/amdctl
-      runHook postInstall
-    '';
-    src = pkgs.fetchFromGitHub {
-      owner = "kevinlekiller";
-      repo = "amdctl";
-      rev = "v${self.version}";
-      sha256 = "sha256-2wBk/9aAD7ARMGbcVxk+CzEvUf8U4RS4ZwTCj8cHNNo=";
-    };
-  });
 in {
   options = {
     services.undervolt.amdctl = {
@@ -34,7 +16,7 @@ in {
 
       package = lib.mkOption {
         type = types.package;
-        default = amdctl;
+        default = pkgs.amdctl;
         description = lib.mdDoc ''
           The package to use for the `amdctl` binary.
         '';
