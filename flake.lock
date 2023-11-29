@@ -2076,11 +2076,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1698894958,
-        "narHash": "sha256-doGTS1dmPbqCBTyw+uhGUWnNj9CFmcpEMTcyZrdLKb0=",
+        "lastModified": 1701260734,
+        "narHash": "sha256-ptdZabe7xupZeHph4wEbPSYPialnj2b3msvv5J/UqrQ=",
         "owner": "spikespaz",
         "repo": "hyprland-nix",
-        "rev": "8eedcdaeab7ca7ed13f7ddf979eb770aed39b93c",
+        "rev": "20552905cf2d2279994900efab39c136d89ec4ad",
         "type": "github"
       },
       "original": {
