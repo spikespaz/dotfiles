@@ -14,6 +14,7 @@ lib.bird.mkHome args rec {
     wayland.default
     wayland.suite # not included in default
     hyprland.default
+    ./hyprland/config.nix
     ./hyprland/monitors.nix
   ];
   # Keep this flake's overlays towards the bottom;
