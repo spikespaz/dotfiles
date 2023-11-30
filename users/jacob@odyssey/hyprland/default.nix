@@ -1,1 +1,1 @@
-{ pkgs, ... }: { imports = [ ./config.nix ./monitors.nix ]; }
+{ imports = [ ./config.nix ./monitors.nix ]; }
