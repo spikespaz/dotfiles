@@ -2,7 +2,7 @@ lib: packageOverlays:
 lib.updates [
   # Include all overlays from the current directory
   # (excluding `default.nix` as it is not an overlay).
-  (lib.importDir' ./. null)
+  (lib.importDir' ./. "default.nix")
   # Also include each package overlay, as it is named.
   packageOverlays
   {
