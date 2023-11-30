@@ -182,6 +182,9 @@ in {
     ### USER-SPECIFIC SERVICES ###
     ##############################
 
+    ### BACKGROUND SYNC & NOTIFICATIONS ###
+    services.thunderbird
+
     ### MEDIA ###
     services.playerctl
     # services.spotify

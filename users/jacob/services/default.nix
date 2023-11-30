@@ -19,4 +19,22 @@ args@{ lib, config, ... }:
     };
 
     keepassxc = { services.keepassxc.enable = true; };
+
+    thunderbird = {
+      systemd.user.services.thunderbird = {
+        Unit = {
+          Description = "Thunderbird";
+          After = [ "network.target" "graphical-session.target" ];
+          StartLimitIntervalSec = 300;
+          StartLimitBurst = 5;
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = lib.getExe config.programs.thunderbird.package;
+          Restart = "always";
+          RestartSec = "1s";
+        };
+        Install = { WantedBy = [ "graphical-session.target" ]; };
+      };
+    };
   }
