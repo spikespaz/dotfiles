@@ -77,7 +77,7 @@ in {
 
     font = {
       normal.family = "JetBrainsMono Nerd Font";
-      size = 9;
+      size = 10;
     };
 
     colors = themes.gruvbox_dark_harder;
