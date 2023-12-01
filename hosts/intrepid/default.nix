@@ -6,25 +6,24 @@ lib.bird.mkHost args {
   # the bootloader module takes this as a param
   # determines if should use untested kernel with zfs
   specialArgs.enableUnstableZfs = false;
-  modules = with tree.hosts;
-    with tree.hosts.intrepid; [
-      common.amd-thinkpad.bootloader
-      # common.amd-thinkpad.plymouth
-      common.amd-thinkpad.user-desktop
+  modules = with tree.hosts; [
+    common.amd-thinkpad.bootloader
+    # common.amd-thinkpad.plymouth
+    common.amd-thinkpad.user-desktop
 
-      common.touchpad-fix
-      common.greetd-hyprland
-      # common.gamemode
-      common.run-game
-      common.packages
-      common.nix-registry
-      common.pia-openvpn
-      common.nixbuild
+    common.touchpad-fix
+    common.greetd-hyprland
+    # common.gamemode
+    common.run-game
+    common.packages
+    common.nix-registry
+    common.pia-openvpn
+    common.nixbuild
 
-      misc
-      filesystems
-      powerplan
-    ];
+    ./misc.nix
+    ./filesystems.nix
+    ./powerplan.nix
+  ];
   overlays = [
     # flake packages
     self.overlays.default
