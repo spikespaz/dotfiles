@@ -44,12 +44,6 @@ in {
     in {
       follow_mouse = LOOSE;
       float_switch_override_focus = DISABLED;
-
-      touchpad = {
-        # tap_to_click = true;
-        tap_and_drag = true;
-        # drag_lock = true;
-      };
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#binds>

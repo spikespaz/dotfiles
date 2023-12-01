@@ -14,7 +14,7 @@ lib.bird.mkHome args rec {
     wayland.default
     wayland.suite # not included in default
     hyprland.default
-    ./hyprland/monitors.nix
+    ./hyprland
   ];
   # Keep this flake's overlays towards the bottom;
   # order matters. `pkgs0` may need to contain packages
