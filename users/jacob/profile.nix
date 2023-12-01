@@ -2,7 +2,7 @@
 # <https://nix-community.github.io/home-manager/options.html>
 # PACKAGE SEARCH
 # <https://search.nixos.org/packages>
-args@{ tree, config, lib, inputs, pkgs, ... }:
+args@{ self, config, lib, inputs, pkgs, ... }:
 let username = "jacob";
 in {
   ################
@@ -57,6 +57,16 @@ in {
     ###############################
 
     inputs.homeage.homeManagerModules.homeage
+    {
+      home.packages = [
+        (pkgs.patchShellScript "${self}/scripts/dots.sh" rec {
+          name = "dots";
+          destination = "/bin/${name}";
+          # Recommended to use the `inputs.home-manager` overlay.
+          runtimeInputs = [ pkgs.home-manager ];
+        })
+      ];
+    }
 
     ### DEFAULT PROGRAMS ###
     user.mimeApps
