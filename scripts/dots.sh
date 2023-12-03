@@ -30,6 +30,7 @@ case "$noun" in
 				;;
 			*)
 				echo 'Unknown verb paired with noun `nixos`, must be one of: `build`, `switch`, or `boot`.'
+				exit 1
 				;;
 		esac
 		command+=(--flake "$flakeRef" "$@")
@@ -46,6 +47,7 @@ case "$noun" in
 				;;
 			*)
 				echo 'Unknown verb paired with noun `home`, must be one of: `build`, or `switch`.'
+				exit 1
 				;;
 		esac
 		command+=(--flake "$flakeRef" "$@")
