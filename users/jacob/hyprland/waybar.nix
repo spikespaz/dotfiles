@@ -106,15 +106,15 @@ in {
       height = 26;
 
       modules-left = [ # #
+        "clock#time"
+        "clock#date"
         # "wlr/workspaces"
-        "hyprland/workspaces"
         "tray"
         "mpris"
       ];
 
       modules-center = [ # #
-        "clock#time"
-        "clock#date"
+        "hyprland/workspaces"
       ];
 
       modules-right = [
