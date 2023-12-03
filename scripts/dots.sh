@@ -15,7 +15,7 @@ flakeRef=''
 command=()
 
 case "$noun" in
-	nixos)
+	host)
 		flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
 		command+=(sudo nixos-rebuild)
 		case "$verb" in
@@ -29,7 +29,7 @@ case "$noun" in
 				command+=(boot)
 				;;
 			*)
-				echo 'Unknown verb paired with noun `nixos`, must be one of: `build`, `switch`, or `boot`.'
+				echo 'Unknown verb paired with noun `host`, must be one of: `build`, `switch`, or `boot`.'
 				exit 1
 				;;
 		esac
@@ -53,7 +53,7 @@ case "$noun" in
 		command+=(--flake "$flakeRef" "$@")
 		;;
 	*)
-		echo 'Unknown noun. Must be one of: `nixos` or `home`.'
+		echo 'Unknown noun. Must be one of: `host` or `home`.'
 		exit 1
 		;;
 esac
