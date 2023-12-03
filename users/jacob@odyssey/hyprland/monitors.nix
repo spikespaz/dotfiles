@@ -53,7 +53,7 @@ in {
             # subtracted by half the scaled width of this monitor.
             - desk-dock.size.x / 2);
         position.y = origin.y;
-        refreshRate = 144;
+        refreshRate = 165;
         bitdepth = 10;
       };
 
