@@ -52,6 +52,7 @@
     e2fsprogs
 
     ### HARDWARE DIAGNOSTICS ###
+    smartmontools # for drive SMART status
     btop # system process monitor
     bottom # not top
     procs # process viewer
