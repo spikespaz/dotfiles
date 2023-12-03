@@ -47,7 +47,11 @@ in {
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#binds>
-    config.binds = { pass_mouse_when_bound = false; };
+    config.binds = let LONGEST_SHARED_SIDE = 1;
+    in {
+      pass_mouse_when_bound = false;
+      focus_preferred_method = LONGEST_SHARED_SIDE;
+    };
 
     config.gestures = {
       workspace_swipe = {
