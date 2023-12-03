@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   # NOTE:
   # You're supposed to add users to the `adbusers` group for
   # these rules to work, but it works for me regardless.
@@ -39,6 +39,7 @@
     ################
 
     ### SYSTEM DEVICES ###
+    config.boot.kernelPackages.cpupower
     v4l-utils # proprietary media hardware and encoding
     pciutils # utilities for pci and pcie devices
 
