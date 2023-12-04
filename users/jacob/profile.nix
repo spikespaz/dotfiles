@@ -158,6 +158,7 @@ in {
 
     ### VIDEO GAMES ###
     programs.minecraft.prism-launcher
+    programs.steam
 
     ### AUTHENTICATION ###
     programs.keepassxc
