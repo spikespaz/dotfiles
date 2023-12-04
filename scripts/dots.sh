@@ -7,6 +7,11 @@ set -eu -o pipefail
 # Default for my systems, each on a worktree branch in home.
 : "${NIXOS_FLAKE_DIR:=$HOME/dotfiles.git/$(hostname)}"
 
+if [[ ! -e "$NIXOS_FLAKE_DIR/.git" ]]; then
+	echo "NIXOS_FLAKE_DIR is set to \`$NIXOS_FLAKE_DIR\` but that path doesn't exist or is not a git repository."
+	exit 1
+fi
+
 verb=$1
 noun=$2
 shift 2
