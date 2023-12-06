@@ -49,7 +49,7 @@
       streetsidesoftware.code-spell-checker
 
       ## Version Control ##
-      waderyan.gitblame
+      huizhou.githd
       mhutchie.git-graph
 
       ## Editor Extension ##
