@@ -5,8 +5,11 @@
 
     input.touchpad = {
       scroll_factor = 0.75;
-      tap_to_click = false;
+      # only enabled because tap_and_drag
+      # doesn't work without it
+      tap_to_click = true;
       tap_and_drag = true;
+      # one, two, or three finger clicks
       clickfinger_behavior = true;
     };
 
