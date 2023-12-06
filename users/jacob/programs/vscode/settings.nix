@@ -59,6 +59,8 @@
 
       ## Basic Config Languages ##
       kdl-org.kdl
+      redhat.vscode-yaml
+      tamasfe.even-better-toml
     ];
 
   ## Gruvbox Dark Hard
