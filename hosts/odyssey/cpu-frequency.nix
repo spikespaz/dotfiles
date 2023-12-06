@@ -34,4 +34,47 @@
     KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/scaling_governor}="powersave"
     KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/energy_performance_preference}="balance_performance"
   '';
+
+  # Now TLP can be used to control this automatically while
+  # the system is running. The values set above should be mostly fine,
+  # but AC/battery profiles are further constrained below.
+  #
+  # The driver mode is `active` so that we can control the frequencies.
+  services.tlp.enable = true;
+  # Documentation:
+  # <https://linrunner.de/tlp/settings>
+  services.tlp.settings = let
+    MHz = x: x * 1000;
+
+    # These values can be discovered by register files in *sysfs*.
+    max_freq = MHz 5132;
+    lowest_nonlinear_freq = MHz 1099;
+
+    # Fraction of the frequency range where power consumption is high.
+    freq_deficit_bat = 0.2; # approximately 3.2 GHz
+  in {
+    TLP_ENABLE = 1;
+    # TLP_WARN_LEVEL = 3;
+    TLP_DEFAULT_MODE = "BAT";
+
+    ## Processor
+
+    CPU_BOOST_ON_AC = 1;
+    CPU_BOOST_ON_BAT = 0;
+
+    CPU_DRIVER_OPMODE_ON_AC = "guided";
+    CPU_SCALING_GOVERNOR_ON_AC = "schedutil";
+    CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
+
+    CPU_SCALING_MIN_FREQ_ON_AC = 0;
+    CPU_SCALING_MAX_FREQ_ON_AC = max_freq;
+
+    CPU_DRIVER_OPMODE_ON_BAT = "guided";
+    CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+    CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
+
+    CPU_SCALING_MIN_FREQ_ON_BAT = 0;
+    CPU_SCALING_MAX_FREQ_ON_BAT = max_freq - (builtins.floor
+      ((max_freq - lowest_nonlinear_freq) * freq_deficit_bat));
+  };
 }
