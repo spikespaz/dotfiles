@@ -227,7 +227,7 @@
     # tty config
     console.keyMap = "us";
     console.packages = [ pkgs.tamsyn ];
-    console.font = "Tamsyn8x16r";
+    console.font = "Tamsyn10x20r";
     # enable shell completions for system packages
     environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
     # enable fingerprint sensor
