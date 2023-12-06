@@ -155,9 +155,6 @@
     };
 
     boot.kernelParams = [
-      # Display backlight brightness control (and keyboard, etc.),
-      # allows the backlight to be controlled via software.
-      "amdgpu.backlight=0"
       # Checked `dmesg`, suggested that I add this.
       # Not sure if this is placebo, but I seem to notice
       # pointer acceleration being slightly smoother.
