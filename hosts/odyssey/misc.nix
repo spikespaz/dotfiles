@@ -148,10 +148,6 @@
       # enable opengl just in case the compositor doesn't
       opengl.enable = true;
       opengl.driSupport32Bit = true;
-
-      # enable the lenovo trackpoint (default) but decrease sensitivity
-      trackpoint.enable = true;
-      trackpoint.speed = 85;
     };
 
     boot.kernelParams = [
