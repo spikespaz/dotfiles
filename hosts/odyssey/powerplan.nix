@@ -44,8 +44,8 @@ in {
   # FIXME
   # Because I am unsure, I will leave that for foture investigation.
   services.udev.extraRules = ''
-    KERNEL=="cpu[0-15]", SUBSYSTEM=="cpu", ATTR{cpufreq/scaling_governor}="powersave"
-    KERNEL=="cpu[0-15]", SUBSYSTEM=="cpu", ATTR{cpufreq/energy_performance_preference}="balance_performance"
+    KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/scaling_governor}="powersave"
+    KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/energy_performance_preference}="balance_performance"
   '';
 
   # services.tlp.enable = false;
