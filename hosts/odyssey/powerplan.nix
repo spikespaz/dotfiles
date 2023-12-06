@@ -6,36 +6,36 @@
 let
   # idleAfter = 5 * 60; # seconds
   hibernateDelay = 1.5 * 60 * 60; # seconds
-  MHz = x: x * 1000;
+  # MHz = x: x * 1000;
 in {
-  imports = [ self.nixosModules.amdctl ];
+  # imports = [ self.nixosModules.amdctl ];
 
-  services.tlp.enable = false;
-  services.auto-cpufreq.enable = true;
+  # services.tlp.enable = false;
+  # services.auto-cpufreq.enable = true;
 
-  # temperature target on battery
-  services.undervolt.tempBat = 60; # deg C
-  # my amdctl module
-  services.undervolt.amdctl = {
-    enable = true;
-    mode = "dec";
-    pstateVoltages = [ 150 100 100 ];
-  };
+  # # temperature target on battery
+  # services.undervolt.tempBat = 60; # deg C
+  # # my amdctl module
+  # services.undervolt.amdctl = {
+  #   enable = true;
+  #   mode = "dec";
+  #   pstateVoltages = [ 150 100 100 ];
+  # };
 
-  services.auto-cpufreq.settings = {
-    battery = {
-      governor = "powersave";
-      scaling_min_freq = MHz 1400;
-      scaling_max_freq = MHz 1600;
-      turbo = "never";
-    };
-    charger = {
-      governor = "performance";
-      scaling_min_freq = MHz 1600;
-      scaling_max_freq = MHz 1700;
-      turbo = "auto";
-    };
-  };
+  # services.auto-cpufreq.settings = {
+  #   battery = {
+  #     governor = "powersave";
+  #     scaling_min_freq = MHz 1400;
+  #     scaling_max_freq = MHz 1600;
+  #     turbo = "never";
+  #   };
+  #   charger = {
+  #     governor = "performance";
+  #     scaling_min_freq = MHz 1600;
+  #     scaling_max_freq = MHz 1700;
+  #     turbo = "auto";
+  #   };
+  # };
 
   services.logind = {
     lidSwitch = "suspend-then-hibernate";

@@ -21,8 +21,9 @@ lib.bird.mkHost args {
     common.nixbuild
 
     ./misc.nix
+    ./packages.nix
     ./filesystems.nix
-    # ./powerplan.nix
+    ./powerplan.nix
   ];
   overlays = [
     # flake packages
