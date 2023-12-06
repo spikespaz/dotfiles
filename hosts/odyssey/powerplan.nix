@@ -4,77 +4,10 @@
 # - `man logind.conf`
 { self, config, ... }:
 let
-  # idleAfter = 5 * 60; # seconds
-  hibernateDelay = 1.5 * 60 * 60; # seconds
-  # MHz = x: x * 1000;
+  hours = h: minutes 60 * h;
+  minutes = m: seconds 60 * m;
+  seconds = s: s;
 in {
-  # imports = [ self.nixosModules.amdctl ];
-
-  environment.systemPackages = [
-    # *cpupower* could be in `packages.nix`, but it's a common diagnostic
-    # tool that should probably come along with the config that follows.
-    # <https://www.kernel.org/doc/html/latest/admin-guide/pm/amd-pstate.html#cpupower-tool-support-for-amd-pstate>
-    config.boot.kernelPackages.cpupower
-  ];
-
-  boot.kernelParams = [
-    # Required reading:
-    # <https://www.kernel.org/doc/html/latest/admin-guide/pm/amd-pstate.html>
-    # <https://www.kernel.org/doc/html/latest/admin-guide/pm/amd-pstate.html#amd-pstate-driver-operation-modes>
-    #
-    # Note that the EPP driver succeeds TLP's scheduler switching
-    # and makes it obsolete. Disable that function of TLP.
-    "amd_cpufreq=active"
-  ];
-
-  # This CPU (R7 8740U) has these energy performance preferences:
-  # default, performance, balance_performance, balance_power, power.
-  #
-  # Based on Phoronix' results:
-  # <https://www.phoronix.com/review/amd-pstate-epp-ryzen-mobile>
-  #
-  # I have decided on scheduler `powersave` and EPP `balance_performance`.
-  # I will also consider `powersave` and ` balance_power` once we know more.
-  # <https://www.phoronix.com/review/amd-pstate-epp-ryzen-mobile>
-  #
-  # I assume `balance_performance` means to choose to balance
-  # performance over power efficiency,
-  # and `balance_power` chooses efficiency over performance.
-  #
-  # FIXME
-  # Because I am unsure, I will leave that for foture investigation.
-  services.udev.extraRules = ''
-    KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/scaling_governor}="powersave"
-    KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/energy_performance_preference}="balance_performance"
-  '';
-
-  # services.tlp.enable = false;
-  # services.auto-cpufreq.enable = true;
-
-  # # temperature target on battery
-  # services.undervolt.tempBat = 60; # deg C
-  # # my amdctl module
-  # services.undervolt.amdctl = {
-  #   enable = true;
-  #   mode = "dec";
-  #   pstateVoltages = [ 150 100 100 ];
-  # };
-
-  # services.auto-cpufreq.settings = {
-  #   battery = {
-  #     governor = "powersave";
-  #     scaling_min_freq = MHz 1400;
-  #     scaling_max_freq = MHz 1600;
-  #     turbo = "never";
-  #   };
-  #   charger = {
-  #     governor = "performance";
-  #     scaling_min_freq = MHz 1600;
-  #     scaling_max_freq = MHz 1700;
-  #     turbo = "auto";
-  #   };
-  # };
-
   services.logind = {
     lidSwitch = "suspend-then-hibernate";
     killUserProcesses = true;
@@ -84,11 +17,11 @@ in {
       HandleLidSwitchExternalPower=suspend-then-hibernate
     '';
     # IdleAction=suspend-then-hibernate
-    # IdleActionSec=${toString idleAfter}
+    # IdleActionSec=${toString (minutes 5)}
   };
 
   systemd.sleep.extraConfig = ''
-    HibernateDelaySec=${toString hibernateDelay}
+    HibernateDelaySec=${toString (hours 1 + minutes 30)}
   '';
 
   services.upower = {
@@ -98,128 +31,4 @@ in {
     percentageAction = 5;
     criticalPowerAction = "Hibernate";
   };
-
-  # <https://linrunner.de/tlp/settings>
-  # services.tlp.settings = {
-  #   TLP_ENABLE = 1;
-  #   TLP_DEFAULT_MODE = "BAT";
-
-  #   # Timeout (in seconds) for the audio power saving mode (supports Intel HDA, AC97).
-  #   # A value of 1 is recommended for Linux desktop environments with PulseAudio,
-  #   # systems without PulseAudio may require 10. The value 0 disables power save.
-  #   SOUND_POWER_SAVE_ON_AC = 10;
-  #   SOUND_POWER_SAVE_ON_BAT = 10;
-
-  #   # SOUND_POWER_SAVE_CONTROLLER = "Y";
-
-  #   START_CHARGE_THRESH_BAT0 = 80;
-  #   STOP_CHARGE_THRESH_BAT0 = 95;
-
-  #   RESTORE_THRESHOLDS_ON_BAT = 1;
-
-  #   # battery care drivers
-  #   # NATACPI_ENABLE = 1;
-  #   # TPACPI_ENABLE = 1;
-  #   # TPSMAPI_ENABLE = 1;
-
-  #   DISK_DEVICES = "nvme0n1 mmcblk0";
-
-  #   # DISK_APM_LEVEL_ON_AC = "254 254";
-  #   # DISK_APM_LEVEL_ON_BAT = "128 128";
-
-  #   # DISK_IDLE_SECS_ON_AC=0;
-  #   DISK_IDLE_SECS_ON_BAT = 5;
-
-  #   # Timeout (in seconds) for writing unsaved data in file system buffers to disk.
-  #   # MAX_LOST_WORK_SECS_ON_AC = 15;
-  #   # MAX_LOST_WORK_SECS_ON_BAT = 60;
-
-  #   # RADEON_DPM_PERF_LEVEL_ON_AC = "auto";
-  #   RADEON_DPM_PERF_LEVEL_ON_BAT = "low";
-
-  #   # RADEON_DPM_STATE_ON_AC = "performance";
-  #   # RADEON_DPM_STATE_ON_BAT = "battery";
-
-  #   RADEON_POWER_PROFILE_ON_AC = "high";
-  #   RADEON_POWER_PROFILE_ON_BAT = "low";
-
-  #   # NMI_WATCHDOG = 0;
-
-  #   # Sets Wi-Fi power saving mode. Adapter support depends on kernel and driver.
-  #   # WIFI_PWR_ON_AC = "off";
-  #   # WIFI_PWR_ON_BAT = "on";
-
-  #   # WOL_DISABLE = "Y";
-
-  #   # Select the platform profile to control system operating characteristics
-  #   # around power/performance levels, thermal and fan speed.
-  #   # PLATFORM_PROFILE_ON_AC = "performance";
-  #   # PLATFORM_PROFILE_ON_BAT = "low-power";
-
-  #   # <https://www.kernel.org/doc/html/latest/admin-guide/pm/cpufreq.html>
-  #   CPU_SCALING_GOVERNOR_ON_AC = "schedutil";
-  #   CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-  #   CPU_SCALING_MIN_FREQ_ON_AC = MHz 1400;
-  #   CPU_SCALING_MAX_FREQ_ON_AC = MHz 1700;
-  #   CPU_SCALING_MIN_FREQ_ON_BAT = MHz 1400;
-  #   CPU_SCALING_MAX_FREQ_ON_BAT = MHz 1600;
-
-  #   CPU_BOOST_ON_AC = 1;
-  #   CPU_BOOST_ON_BAT = 0;
-
-  #   # SCHED_POWERSAVE_ON_AC = 0;
-  #   # SCHED_POWERSAVE_ON_BAT = 1;
-
-  #   # Restores radio device state (builtin Bluetooth, Wi-Fi, WWAN) from previous shutdown on boot.
-  #   # RESTORE_DEVICE_STATE_ON_STARTUP = 0;
-
-  #   DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth wwan";
-  #   DEVICES_TO_ENABLE_ON_STARTUP = "wifi";
-
-  #   # DEVICES_TO_DISABLE_ON_SHUTDOWN = "bluetooth wifi wwan";
-  #   # DEVICES_TO_ENABLE_ON_SHUTDOWN = "bluetooth wifi wwan";
-
-  #   # has precedence
-  #   DEVICES_TO_ENABLE_ON_AC = "";
-  #   DEVICES_TO_DISABLE_ON_BAT = "";
-
-  #   DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE = "bluetooth wwan";
-
-  #   DEVICES_TO_DISABLE_ON_LAN_CONNECT = "wwan";
-  #   DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "";
-  #   DEVICES_TO_DISABLE_ON_WWAN_CONNECT = "wifi";
-
-  #   DEVICES_TO_ENABLE_ON_LAN_DISCONNECT = "wifi";
-  #   DEVICES_TO_ENABLE_ON_WIFI_DISCONNECT = "";
-  #   DEVICES_TO_ENABLE_ON_WWAN_DISCONNECT = "";
-
-  #   DEVICES_TO_ENABLE_ON_DOCK = "wifi bluetooth";
-  #   # DEVICES_TO_DISABLE_ON_DOCK = "";
-
-  #   DEVICES_TO_ENABLE_ON_UNDOCK = "";
-  #   DEVICES_TO_DISABLE_ON_UNDOCK = "bluetooth";
-
-  #   # RUNTIME_PM_ON_AC = "on";
-  #   # RUNTIME_PM_ON_BAT = "auto";
-
-  #   # RUNTIME_PM_DENYLIST = "11:22.3 44:55.6";
-  #   RUNTIME_PM_DRIVER_DENYLIST = "mei_me nouveau radeon psmouse";
-
-  #   # RUNTIME_PM_ENABLE="11:22.3";
-  #   # RUNTIME_PM_DISABLE="44:55.6";
-
-  #   # PCIE_ASPM_ON_AC = "default";
-  #   PCIE_ASPM_ON_BAT = "powersupersave";
-
-  #   # USB_AUTOSUSPEND = 1;
-  #   # USB_DENYLIST = "1111:2222 3333:4444";
-  #   # USB_EXCLUDE_AUDIO = 1;
-  #   # USB_EXCLUDE_BTUSB = 1;
-  #   # USB_EXCLUDE_PHONE = 1;
-  #   # USB_EXCLUDE_PRINTER = 1;
-  #   # USB_EXCLUDE_WWAN = 0;
-  #   # USB_ALLOWLIST="5555:6666 7777:8888";
-  #   # USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN = 0;
-  # };
 }
