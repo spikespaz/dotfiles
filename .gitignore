@@ -1,6 +1,7 @@
 scratch.nix
 inputs
 result
+result-man
 .Trash-1000
 .pls_cache
 flake.lock.*
