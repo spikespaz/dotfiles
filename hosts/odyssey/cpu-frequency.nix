@@ -32,7 +32,7 @@
   # and `balance_power` chooses efficiency over performance.
   services.udev.extraRules = ''
     KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/scaling_governor}="powersave"
-    KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/energy_performance_preference}="balance_performance"
+    KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/energy_performance_preference}="balance_power"
   '';
 
   # Now TLP can be used to control this automatically while
