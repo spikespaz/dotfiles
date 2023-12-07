@@ -184,7 +184,7 @@ in {
     ##############################
 
     ### BACKGROUND SYNC & NOTIFICATIONS ###
-    services.thunderbird
+    # services.thunderbird
 
     ### MEDIA ###
     services.playerctl
