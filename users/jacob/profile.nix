@@ -69,7 +69,7 @@ in {
     }
 
     ### DEFAULT PROGRAMS ###
-    user.mimeApps
+    # user.mimeApps
 
     ##############################
     ### USER-SPECIFIC PROGRAMS ###
