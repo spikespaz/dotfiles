@@ -18,7 +18,7 @@ lib.bird.mkHost args {
     common.packages
     common.nix-registry
     common.pia-openvpn
-    common.nixbuild
+    # common.nixbuild
 
     ./misc.nix
     ./packages.nix
