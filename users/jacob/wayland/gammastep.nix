@@ -17,9 +17,9 @@
 
     slight.brightnessHook = {
       enable = true;
-      brightness.day = 90;
-      brightness.transition = 60;
-      brightness.night = 30;
+      brightness.day = 80;
+      brightness.transition = 50;
+      brightness.night = 20;
       interpDur.dayFromTransition = "10s";
       interpDur.nightFromTransition = "10s";
       interpDur.transitionFromDay = "20s";
