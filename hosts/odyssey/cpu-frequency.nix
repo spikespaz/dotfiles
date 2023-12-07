@@ -39,8 +39,8 @@
   # the system is running. The values set above should be mostly fine,
   # but AC/battery profiles are further constrained below.
   #
-  # The driver mode is `active` so that we can control the frequencies.
-  services.tlp.enable = true;
+  # The driver mode is `guided` so that we can control the frequencies.
+  services.tlp.enable = false;
   # Documentation:
   # <https://linrunner.de/tlp/settings>
   services.tlp.settings = let
