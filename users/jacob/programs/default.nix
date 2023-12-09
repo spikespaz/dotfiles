@@ -148,7 +148,7 @@ args@{ self, pkgs, lib, config, inputs, ... }:
         userEmail = "jacob@birkett.dev";
 
         extraConfig = {
-          alias.com = "commit";
+          alias.c-m = "commit -m";
           alias.undo = "reset --soft HEAD~1";
           alias.am = "commit --amend --no-edit";
           alias.cl = "clone";
