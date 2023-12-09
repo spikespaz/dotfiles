@@ -322,5 +322,18 @@
     # }
 
     ### END ###
+
+    ### FOCUS ON FILE EXPLORER SIDEBAR ###
+
+    {
+      key = "ctrl+e";
+      command = "-workbench.action.quickOpen";
+    }
+    {
+      key = "ctrl+e";
+      command = "workbench.files.action.focusFilesExplorer";
+    }
+
+    ### END ###
   ];
 }
