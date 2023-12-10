@@ -2,10 +2,26 @@
 #! nix-shell -i bash -p home-manager
 # shellcheck shell=bash
 
+# We assume that the `nixos-rebuild` command is already present,
+# since this script is intended for NixOS.
+
 set -eu -o pipefail
 
-# Default for my systems, each on a worktree branch in home.
-: "${NIXOS_FLAKE_DIR:=$HOME/dotfiles.git/$(hostname)}"
+: "${NIXOS_FLAKE_BASENAME:=dotfiles}"
+: "${NIXOS_FLAKE_IS_WORKTREE:=0}"
+: "${NIXOS_FLAKE_HOST_BRANCHES:=1}"
+if [[ "$NIXOS_FLAKE_HOST_BRANCHES" -eq 1 ]]; then
+	: "${NIXOS_FLAKE_WORKTREE_BRANCH:=$(hostname)}"
+else
+	: "${NIXOS_FLAKE_WORKTREE_BRANCH:=master}"
+fi
+
+if [[ -z "${NIXOS_FLAKE_DIR:-}" ]]; then
+	: "${NIXOS_FLAKE_DIR:="$HOME/$NIXOS_FLAKE_BASENAME"}"
+	if [[ "$NIXOS_FLAKE_IS_WORKTREE" -eq 1 ]]; then
+		NIXOS_FLAKE_DIR+=".git/$NIXOS_FLAKE_WORKTREE_BRANCH"
+	fi
+fi
 
 if [[ ! -e "$NIXOS_FLAKE_DIR/.git" ]]; then
 	echo "NIXOS_FLAKE_DIR is set to \`$NIXOS_FLAKE_DIR\` but that path doesn't exist or is not a git repository."
