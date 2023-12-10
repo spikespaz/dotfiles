@@ -64,6 +64,11 @@ in {
           destination = "/bin/${name}";
           # Recommended to use the `inputs.home-manager` overlay.
           runtimeInputs = [ pkgs.home-manager ];
+          overrideEnvironment = {
+            NIXOS_FLAKE_BASENAME = "dotfiles";
+            NIXOS_FLAKE_IS_WORKTREE = true;
+            NIXOS_FLAKE_HOST_BRANCHES = true;
+          };
         })
       ];
     }
