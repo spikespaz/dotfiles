@@ -5,8 +5,8 @@ let
   # I think this is correct, or at least mostly there.
   patchShellScript = script:
     args@{ name ? baseNameOf script, strictDeps ? true, runtimeInputs ? [ ]
-    , destination ? "", checkPhase ? null, runLocal ? true, meta ? { }
-    , passAsFile ? [ ], ... }:
+    , destination ? "", overrideEnvironment ? { }, checkPhase ? null
+    , runLocal ? true, meta ? { }, passAsFile ? [ ], ... }:
     let
       ownArgs = builtins.attrNames (lib.functionArgs (patchShellScript null));
       derivationArgs = removeAttrs args ownArgs;
@@ -20,7 +20,9 @@ let
         passAsFile = [ "text" "buildCommand" ] ++ passAsFile;
         text = ''
           #!${pkgs.runtimeShell}
+
           PATH="${lib.makeBinPath runtimeInputs}:$PATH"
+          ${lib.toShellVars overrideEnvironment}
 
           ${builtins.readFile script}
         '';
