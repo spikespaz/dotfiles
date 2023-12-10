@@ -57,21 +57,10 @@ in {
     ###############################
 
     inputs.homeage.homeManagerModules.homeage
-    {
-      home.packages = [
-        (pkgs.patchShellScript "${self}/scripts/dots.sh" rec {
-          name = "dots";
-          destination = "/bin/${name}";
-          # Recommended to use the `inputs.home-manager` overlay.
-          runtimeInputs = [ pkgs.home-manager ];
-          overrideEnvironment = {
-            NIXOS_FLAKE_BASENAME = "dotfiles";
-            NIXOS_FLAKE_IS_WORKTREE = true;
-            NIXOS_FLAKE_HOST_BRANCHES = true;
-          };
-        })
-      ];
-    }
+    (self.tree.scripts.dots pkgs {
+      flakeIsWorktree = true;
+      flakeBasename = "dotfiles.git";
+    })
 
     ### DEFAULT PROGRAMS ###
     # user.mimeApps

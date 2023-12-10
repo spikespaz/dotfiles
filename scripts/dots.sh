@@ -7,8 +7,12 @@
 
 set -eu -o pipefail
 
-: "${NIXOS_FLAKE_BASENAME:=dotfiles}"
-: "${NIXOS_FLAKE_IS_WORKTREE:=0}"
+if [[ "${NIXOS_FLAKE_IS_WORKTREE:=0}" -eq 1 ]]; then
+	: "${NIXOS_FLAKE_BASENAME:=dotfiles.git}"
+else
+	: "${NIXOS_FLAKE_BASENAME:=dotfiles}"
+fi
+
 : "${NIXOS_FLAKE_HOST_BRANCHES:=1}"
 if [[ "$NIXOS_FLAKE_HOST_BRANCHES" -eq 1 ]]; then
 	: "${NIXOS_FLAKE_WORKTREE_BRANCH:=$(hostname)}"
@@ -19,7 +23,7 @@ fi
 if [[ -z "${NIXOS_FLAKE_DIR:-}" ]]; then
 	: "${NIXOS_FLAKE_DIR:="$HOME/$NIXOS_FLAKE_BASENAME"}"
 	if [[ "$NIXOS_FLAKE_IS_WORKTREE" -eq 1 ]]; then
-		NIXOS_FLAKE_DIR+=".git/$NIXOS_FLAKE_WORKTREE_BRANCH"
+		NIXOS_FLAKE_DIR+="/$NIXOS_FLAKE_WORKTREE_BRANCH"
 	fi
 fi
 
