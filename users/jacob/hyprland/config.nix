@@ -22,7 +22,7 @@ in {
     # <https://wiki.hyprland.org/Configuring/Variables/#decoration>
     config.decoration = {
       rounding = 0;
-      shadow_range = 10;
+      shadow_range = 8;
       shadow_render_power = 2;
       active_shadow_color = shadow 0.9;
       inactive_shadow_color = shadow 0.6;
