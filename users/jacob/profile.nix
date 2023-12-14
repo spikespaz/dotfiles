@@ -79,7 +79,7 @@ in {
     programs.thunderbird
     # programs.discord.canary
     # programs.discord.webcord
-    programs.armcord
+    # programs.armcord
     programs.vesktop
     programs.hexchat
     programs.telegram
