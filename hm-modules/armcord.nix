@@ -12,7 +12,7 @@ let
     armcordCSP = true;
     minimizeToTray = true;
     automaticPatches = false;
-    keybinds = [];
+    keybinds = [ ];
     alternativePaste = false;
     multiInstance = false;
     mods = "none";

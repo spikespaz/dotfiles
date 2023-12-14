@@ -80,6 +80,7 @@ in {
     # programs.discord.canary
     # programs.discord.webcord
     programs.armcord
+    programs.vesktop
     programs.hexchat
     programs.telegram
     programs.matrix
