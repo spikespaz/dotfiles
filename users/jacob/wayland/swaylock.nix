@@ -9,7 +9,22 @@ let
   #     sha256 = "sha256-MKmWVYssO9HAcP5uqwpy9kDa6/kfZyV2NI7ibozt7Ug=";
   #   };
   # });
-  package = pkgs.swaylock-effects;
+  package = let super = pkgs.swaylock-effects;
+  in pkgs.symlinkJoin {
+    inherit (super) name pname version meta;
+    paths = [
+      (pkgs.writeShellScriptBin "swaylock" ''
+        pid=$(pidof -s swaylock)
+        if [[ -n "$pid" ]]
+        then
+          echo "swaylock is already running with PID $pid"
+        else
+          ${lib.getExe' super "swaylock"} "$@"
+        fi
+      '')
+      super
+    ];
+  };
   # withRandomImage = pkgs.writeShellScriptBin "swaylock" ''
   #   wallpapers='${config.home.sessionVariables.USER_WALLPAPERS_DIRECTORY}'
   #   if [ -n "$wallpapers" ]; then
