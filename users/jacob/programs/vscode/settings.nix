@@ -102,6 +102,9 @@
     "editor.cursorSmoothCaretAnimation" = "explicit";
     "editor.cursorStyle" = "block";
 
+    # popups are really annoying
+    "editor.hover.delay" = 700;
+
     # colors
     "workbench.colorTheme" = "Monokai Pro (Filter Spectrum)";
     "workbench.colorCustomizations" = {
