@@ -18,7 +18,7 @@ let
     y = 0;
   };
   inherit (config.wayland.windowManager.hyprland.monitors)
-    portable internal desk-dock hotplug;
+    portable internal desk-dock default;
 in {
   home.packages = [ pkgs.wdisplays ];
 
@@ -69,16 +69,15 @@ in {
         bitdepth = 10;
       };
 
-      # A random HDMI monitor gets assigned to the right of the internal one.
-      hotplug = {
-        name = "HDMI-A-1";
+      # Any other random monitors (for example HDMI, or portable on DP-1)
+      # should assume a position to the right of the internal display.
+      default = {
+        name = "";
+        resolution = "preferred";
         position.x = builtins.floor (internal.position.x + internal.size.x);
         position.y = internal.position.y;
       };
     };
-
-    # This is just a default.
-    config.monitor = [ ", preferred, auto, 1" ];
 
     # Unfortunately, fallbacks do not work.
     #
@@ -112,11 +111,11 @@ in {
       "17".monitor = portable.name;
       "19".monitor = portable.name;
 
-      "12".monitor = hotplug.name;
-      "14".monitor = hotplug.name;
-      "16".monitor = hotplug.name;
-      "18".monitor = hotplug.name;
-      "20".monitor = hotplug.name;
+      # "12".monitor = hotplug.name;
+      # "14".monitor = hotplug.name;
+      # "16".monitor = hotplug.name;
+      # "18".monitor = hotplug.name;
+      # "20".monitor = hotplug.name;
 
     };
 
