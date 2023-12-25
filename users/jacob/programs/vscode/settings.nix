@@ -48,6 +48,8 @@
       ionutvmi.path-autocomplete
       streetsidesoftware.code-spell-checker
 
+      phind.phind
+
       ## Version Control ##
       huizhou.githd
       mhutchie.git-graph
