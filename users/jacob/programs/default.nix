@@ -263,6 +263,15 @@ args@{ self, pkgs, lib, config, inputs, ... }:
     ### VIDEO GAMES ###
     ###################
 
+    steam = {
+      imports = [ self.homeManagerModules.steam ];
+      home.packages = [ pkgs.steam-tui ];
+      programs.steam.protonGE.versions = {
+        "7-55" = "sha256-6CL+9X4HBNoB/yUMIjA933XlSjE6eJC86RmwiJD6+Ws=";
+        "8-25" = "sha256-IoClZ6hl2lsz9OGfFgnz7vEAGlSY2+1K2lDEEsJQOfU=";
+      };
+    };
+
     ######################
     ### AUTHENTICATION ###
     ######################
