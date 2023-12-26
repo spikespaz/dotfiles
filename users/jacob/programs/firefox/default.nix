@@ -16,11 +16,21 @@ in {
 
   imports = [
     ./blocking.nix
-    (import ./chrome profile)
     # self.homeManagerModules.firefox-pwa
+    self.homeManagerModules.firefox-userchrome
   ];
 
   # programs.firefox.pwa.enable = true;
+
+  programs.firefox.userChrome.profiles.${profile} = {
+    source = ./chrome;
+    # recursive = true;
+    extraSettings = { # settings specific to my theme
+      "browser.uidensity" = 1;
+      "ui.prefersReducedMotion" = 1;
+      "tabMinWidth" = 130;
+    };
+  };
 
   programs.firefox.profiles.${profile} = lib.mkMerge [
     prefab
