@@ -36,8 +36,13 @@ in {
       # class = ["code-url-handler"];
     };
     discord = {
-      class = [ "ArmCord" "WebCord" "discord" ];
-      title = [ ".*ArmCord" "(\\[\\d+\\] )?WebCord.*" ".*Discord" ];
+      class = [ "VencordDesktop" "ArmCord" "WebCord" "discord" ];
+      title = [
+        "(\\[\\d+\\] )?Discord |.*"
+        ".*ArmCord"
+        "(\\[\\d+\\] )?WebCord.*"
+        ".*Discord"
+      ];
     };
     tidal.class = [ "tidal-hifi" ];
     calculator.class = [ "qalculate-gtk" ];
