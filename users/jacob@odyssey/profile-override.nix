@@ -1,3 +1,5 @@
-{ lib, ... }:
-let mkOverride = lib.mkOverride 80;
-in { programs.vscode.userSettings = { "editor.fontSize" = mkOverride 14; }; }
+{ lib, pkgs, ... }:
+{
+  home.sessionVariables = { GDK_SCALE = lib.mkForce 2; };
+  programs.vscode.userSettings = { "editor.fontSize" = lib.mkForce 14; };
+}
