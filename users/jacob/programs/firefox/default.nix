@@ -28,7 +28,7 @@ in {
     extraSettings = { # settings specific to my theme
       "browser.uidensity" = 1;
       "ui.prefersReducedMotion" = 1;
-      "tabMinWidth" = 130;
+      "browser.tabs.tabMinWidth" = 130;
     };
   };
 
