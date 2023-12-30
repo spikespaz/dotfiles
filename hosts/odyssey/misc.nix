@@ -268,6 +268,12 @@
       qemu.swtpm.enable = true;
       qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
     };
+
+    virtualisation.podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
   }
 
   ########################
