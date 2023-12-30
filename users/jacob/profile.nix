@@ -145,6 +145,7 @@ in {
     programs.gallery-dl
 
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
+    programs.remmina
     programs.anydesk
     programs.rustdesk
     programs.neofetch

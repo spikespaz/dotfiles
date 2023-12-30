@@ -253,6 +253,7 @@ args@{ self, pkgs, lib, config, inputs, ... }:
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
     ###########################################
 
+    remmina = { home.packages = [ pkgs.remmina ]; };
     anydesk = { home.packages = [ pkgs.anydesk ]; };
     rustdesk = { home.packages = [ pkgs.rustdesk ]; };
     neofetch = { home.packages = [ pkgs.neofetch ]; };
