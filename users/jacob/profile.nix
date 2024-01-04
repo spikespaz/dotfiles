@@ -154,6 +154,7 @@ in {
 
     ### VIDEO GAMES ###
     programs.minecraft.prism-launcher
+    programs.moonlight
     programs.steam
 
     ### AUTHENTICATION ###

@@ -264,6 +264,13 @@ args@{ self, pkgs, lib, config, inputs, ... }:
     ### VIDEO GAMES ###
     ###################
 
+    moonlight = {
+      home.packages = [
+        (pkgs.moonlight-qt.overrideAttrs (self: super: {
+          buildInputs = super.buildInputs ++ [ pkgs.libva1 ];
+        }))
+      ];
+    };
     steam = {
       imports = [ self.homeManagerModules.steam ];
       home.packages = [ pkgs.steam-tui pkgs.gamescope ];
