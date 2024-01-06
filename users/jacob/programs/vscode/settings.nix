@@ -34,11 +34,7 @@
       ## Appearances ##
       # jdinhlife.gruvbox
       monokai.theme-monokai-pro-vscode
-      # teeseal.ayu-legacy
-      # be5invis.theme-railgun
-      # origamid.origamid-next
-      # sainnhe.sonokai
-      # dimitarnonov.jellybeans-theme
+      bottledlactose.darkbox
       oderwat.indent-rainbow
 
       pkief.material-icon-theme
@@ -65,33 +61,6 @@
       tamasfe.even-better-toml
     ];
 
-  ## Gruvbox Dark Hard
-  #
-  # Hard to go wrong with this theme, has good contrast and balanced hues.
-  # Unfortunately, I've been using it the longest, so it feels boring.
-  # Strings in some languages are far too prominent--this is probably the
-  # fault of the grammar, but nevertheless, I'm ready for a change.
-
-  ## Railgun Chroma
-  #
-  # This theme looks really good. The colors are well-chosen,
-  # and I like that it leans on the warmer side of the spectrum.
-  # Almost like a rich espresso, not pitch black, and not blazing.
-  # I just wish the colors were lighter, because they are a little hard to see.
-  # This could easily be my favorite theme if text were more visible.
-  # TODO fork it, increase brightness in LAB colorspace.
-
-  ## Ayu Dark (Legacy)
-  #
-  # This theme has *perfect* vibrancy, well balanced colors, and excellent
-  # contrast and readability. Comments are pale though, and considering
-  # they are often the most important lines in a sea of code,
-  # it would be nice if they were slightly more emphasized.
-  # One minor nitpick is the navy-blue background:
-  # the foreground colors would be complimented better
-  # if the background were slightly less saturated, and more dark.
-  # Love the cursor color.
-
   programs.vscode.userSettings = {
     ## Appearances ##
 
@@ -108,13 +77,12 @@
     "editor.hover.delay" = 700;
 
     # colors
-    "workbench.colorTheme" = "Monokai Pro (Filter Spectrum)";
+    "workbench.colorTheme" = "Darkbox";
     "workbench.colorCustomizations" = {
       "[Monokai Pro (Filter Spectrum)]" = {
         "editorInlayHint.foreground" = "#69676c";
         "editorInlayHint.background" = "#222222";
       };
-      "[Sonokai Espresso]" = { "editor.background" = "#211e1d"; };
     };
 
     # hide the default indentation guides to make way for the extension
