@@ -72,6 +72,7 @@
     "editor.fontSize" = 13;
     "editor.cursorSmoothCaretAnimation" = "explicit";
     "editor.cursorStyle" = "block";
+    "window.density.editorTabHeight" = "compact";
 
     # popups are really annoying
     "editor.hover.delay" = 700;
