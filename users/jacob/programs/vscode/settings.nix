@@ -9,18 +9,6 @@
   in (pkgs.symlinkJoin {
     inherit (super) name pname version;
     paths = [ super ] ++ fontPackages;
-
-    # FIXME
-    # Can be removed when this issue is closed:
-    # <https://github.com/microsoft/vscode/issues/184124#issuecomment-1802930021>
-    #
-    # Another solution is:
-    # <https://github.com/microsoft/vscode/issues/181533#issuecomment-1597187136>
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/code \
-        --add-flags --disable-gpu-sandbox
-    '';
   });
 
   programs.vscode.enableExtensionUpdateCheck = false;
@@ -69,7 +57,7 @@
       "Material Design Icons"
       "JetBrainsMono Nerd Font"
     ];
-    "editor.fontSize" = 13;
+    "editor.fontSize" = 14;
     "editor.cursorSmoothCaretAnimation" = "explicit";
     "editor.cursorStyle" = "block";
     "editor.cursorBlinking" = "smooth";
@@ -121,8 +109,8 @@
       "appName"
     ];
 
-    # # scale the ui down
-    # "window.zoomLevel" = -1;
+    # scale the ui down
+    "window.zoomLevel" = -1;
     # hide the menu bar unless alt is pressed
     "window.menuBarVisibility" = "toggle";
     # the minimap gets in the way
