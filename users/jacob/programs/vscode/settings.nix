@@ -72,6 +72,7 @@
     "editor.fontSize" = 13;
     "editor.cursorSmoothCaretAnimation" = "explicit";
     "editor.cursorStyle" = "block";
+    "editor.cursorBlinking" = "smooth";
     "window.density.editorTabHeight" = "compact";
 
     # popups are really annoying
