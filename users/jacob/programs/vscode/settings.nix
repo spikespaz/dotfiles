@@ -35,8 +35,9 @@
       phind.phind
 
       ## Version Control ##
-      huizhou.githd
-      mhutchie.git-graph
+      # huizhou.githd
+      # mhutchie.git-graph
+      phil294.git-log--graph
 
       ## Editor Extension ##
       ryuta46.multi-command
