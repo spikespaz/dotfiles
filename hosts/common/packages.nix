@@ -16,6 +16,7 @@
     ### MISSING ###
     bc
     tree
+    unzip
 
     ### CLI UTILITIES ###
     fastfetch # neofetch but made in c
