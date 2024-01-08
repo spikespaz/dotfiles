@@ -12,7 +12,7 @@ in {
     lidSwitch = "suspend-then-hibernate";
     killUserProcesses = true;
     extraConfig = ''
-      HandlePowerKey=suspend-then-hibernate
+      HandlePowerKey=hibernate
       HandlePowerKeyLongPress=poweroff
       HandleLidSwitchExternalPower=suspend-then-hibernate
     '';
