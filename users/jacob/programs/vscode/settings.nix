@@ -131,8 +131,8 @@
     # put the sidebar on the right so that text doesn't jump
     "workbench.sideBar.location" = "right";
     # no delay when automatically hiding the sidebar or panels
-    "autoHide.sideBarDelay" = 0;
-    "autoHide.panelDelay" = 0;
+    "autoHide.sideBarDelay" = 30000; # seconds
+    "autoHide.panelDelay" = 30000; # seconds
 
     # show vcs changes and staged changes as a tree
     "scm.defaultViewMode" = "tree";
