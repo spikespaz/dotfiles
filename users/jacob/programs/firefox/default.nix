@@ -10,6 +10,7 @@ let
     rycee = pkgs.nur.repos.rycee.firefox-addons;
     bandithedoge = pkgs.nur.repos.bandithedoge.firefoxAddons;
     slaier = pkgs.nur.repos.slaier.firefox-addons;
+    spikespaz = pkgs.callPackage ./extensions.nix { };
   };
 in {
   programs.firefox.enable = true;
@@ -79,6 +80,9 @@ in {
         rycee.sponsorblock
         rycee.return-youtube-dislikes
         # rycee.enhancer-for-youtube
+
+        ### TWITCH ###
+        spikespaz.twitchautoclicker
 
         ### NEW INTERNET ###
         # rycee.ipfs-companion
