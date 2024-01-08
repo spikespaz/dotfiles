@@ -51,7 +51,7 @@ in {
 
       # "browser.tabs.inTitlebar" = 1; # needed for transparency
       # "userChrome.Linux.Transparency.Low.Enabled" = true;
-      # "userChrome.DarkTheme.Tabs.Shadows.Saturation.Low.Enabled" = true;
+      "userChrome.DarkTheme.Tabs.Shadows.Saturation.Low.Enabled" = true;
       "userChrome.TabSeparators.Saturation.Medium.Enabled" = true;
       # "userChrome.Menu.Size.Compact.Enabled" = true;
     };
