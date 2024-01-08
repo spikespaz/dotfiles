@@ -23,6 +23,13 @@ let
     '';
   });
 in {
+  programs.firefox.profiles."jacob.default" = {
+    settings = {
+      # enable new webrender everywhere
+      "gfx.webrender.all" = true;
+    };
+  };
+
   # <https://github.com/QNetITQ/WaveFox>
   programs.firefox.userChrome.profiles."jacob.default" = lib.mkForce {
     # recursive = true;
@@ -39,9 +46,8 @@ in {
       # WaveFox
       "svg.context-properties.content.enabled" = true;
 
+      # slight rounding
       "userChrome.Tabs.Option8.Enabled" = true;
-
-      "gfx.webrender.all" = true;
 
       # "browser.tabs.inTitlebar" = 1; # needed for transparency
       # "userChrome.Linux.Transparency.Low.Enabled" = true;
