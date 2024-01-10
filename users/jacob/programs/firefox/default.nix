@@ -82,7 +82,10 @@ in {
         # rycee.enhancer-for-youtube
 
         ### TWITCH ###
-        spikespaz.twitchautoclicker
+        spikespaz.twitch-auto-clicker
+        # For Twitch, it is also worth considering removing the extension and just using uBO.
+        # <https://github.com/pixeltris/TwitchAdSolutions>
+        spikespaz.ttv-lol-pro
 
         ### NEW INTERNET ###
         # rycee.ipfs-companion
