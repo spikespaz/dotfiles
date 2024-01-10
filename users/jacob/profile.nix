@@ -118,10 +118,10 @@ in {
     programs.vscode.other.marp
     # TODO broken idk why
     # programs.vscode.languages.all
-    programs.jetbrains.clion
-    programs.jetbrains.goland
-    programs.jetbrains.idea
-    programs.jetbrains.pycharm
+    # programs.jetbrains.clion
+    # programs.jetbrains.goland
+    # programs.jetbrains.idea
+    # programs.jetbrains.pycharm
     programs.rstudio
     programs.neovim
     programs.helix
