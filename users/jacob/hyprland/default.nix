@@ -1,6 +1,5 @@
 { self, config, lib, pkgs, inputs, ... }: {
   imports = [
-    self.homeManagerModules.desktop-portals
     inputs.hyprland-nix.homeManagerModules.default
     ./config.nix
     ./windowrules.nix
@@ -33,22 +32,5 @@
 
     # Needed for Qt GUI theme.
     environment = { QT_QPA_PLATFORMTHEME = "qt5ct"; };
-  };
-
-  xdg.desktopPortals = {
-    xdgOpenUsePortal = true;
-    enable = true;
-    portals = let useIn = [ "Hyprland" ];
-    in {
-      hyprland = {
-        package = pkgs.xdg-desktop-portal-hyprland;
-        inherit useIn;
-      };
-      kde = {
-        package = pkgs.libsForQt5.xdg-desktop-portal-kde;
-        interfaces = [ "org.freedesktop.impl.portal.FileChooser" ];
-        inherit useIn;
-      };
-    };
   };
 }
