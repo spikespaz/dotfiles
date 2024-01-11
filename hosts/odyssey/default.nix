@@ -10,6 +10,7 @@ lib.bird.mkHost args {
     common.amd-thinkpad.bootloader
     # common.amd-thinkpad.plymouth
     common.amd-thinkpad.user-desktop
+    common.amd-thinkpad.hardware
 
     common.touchpad-fix
     common.greetd-hyprland
