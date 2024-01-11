@@ -74,4 +74,6 @@ in {
     autoScrub.pools = [ rootPool ];
     autoScrub.interval = "weekly";
   };
+
+  services.fstrim.enable = lib.mkForce false;
 }
