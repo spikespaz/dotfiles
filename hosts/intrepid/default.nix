@@ -7,6 +7,7 @@ lib.bird.mkHost args {
   # determines if should use untested kernel with zfs
   specialArgs.enableUnstableZfs = false;
   modules = with tree.hosts; [
+    common.amd-thinkpad.hardware
     common.amd-thinkpad.bootloader
     # common.amd-thinkpad.plymouth
     common.amd-thinkpad.user-desktop
