@@ -1,6 +1,7 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i bash -p home-manager
 # shellcheck shell=bash
+# shellcheck disable=SC2016
 
 # We assume that the `nixos-rebuild` command is already present,
 # since this script is intended for NixOS.
@@ -42,16 +43,15 @@ command=()
 case "$noun" in
 	host)
 		flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
-		command+=(sudo nixos-rebuild)
 		case "$verb" in
 			build)
-				command+=(build)
+				command+=(nixos-rebuild build)
 				;;
 			switch)
-				command+=(switch)
+				command+=(sudo nixos-rebuild switch)
 				;;
 			boot)
-				command+=(boot)
+				command+=(sudo nixos-rebuild boot)
 				;;
 			*)
 				echo 'Unknown verb paired with noun `host`, must be one of: `build`, `switch`, or `boot`.'
@@ -62,13 +62,12 @@ case "$noun" in
 		;;
 	home)
 		flakeRef="path:$NIXOS_FLAKE_DIR#$(whoami)@$(hostname)"
-		command+=(home-manager)
 		case "$verb" in
 			build)
-				command+=(build)
+				command+=(home-manager build)
 				;;
 			switch)
-				command+=(switch)
+				command+=(home-manager switch)
 				;;
 			*)
 				echo 'Unknown verb paired with noun `home`, must be one of: `build`, or `switch`.'
