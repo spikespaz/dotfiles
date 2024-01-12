@@ -12,18 +12,8 @@
     kernelModules = [ "acpi_call" ];
     extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
-    kernelParams = [
-      # ensures that amdgpu is loaded over radeon
-      "amdgpu"
-    ];
-
-    initrd.kernelModules = [ "amdgpu" "nvme" ];
     initrd.availableKernelModules = [
-      "ehci_pci"
-      "xhci_pci"
       "usb_storage"
-      "usbhid"
-      "sd_mod"
       "rtsx_pci_sdmmc"
     ];
 

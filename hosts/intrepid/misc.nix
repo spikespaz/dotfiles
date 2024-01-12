@@ -146,9 +146,6 @@
       # required for some hardware, drivers contain proprietary blobs
       enableRedistributableFirmware = true;
 
-      # update processor firmware by loading from memory at boot
-      cpu.amd.updateMicrocode = true;
-
       # wifi adapter
       # error: rtw89-firmware has been removed because linux-firmware now contains it.
       # firmware = [pkgs.rtw89-firmware];
@@ -166,11 +163,6 @@
       # Display backlight brightness control (and keyboard, etc.),
       # allows the backlight to be controlled via software.
       "amdgpu.backlight=0"
-      # Checked `dmesg`, suggested that I add this.
-      # Not sure if this is placebo, but I seem to notice
-      # pointer acceleration being slightly smoother.
-      # Anyway, it doesn't sem to hurt.
-      "psmouse.synaptics_intertouch=1"
     ];
 
     # # gui tool for processor management
