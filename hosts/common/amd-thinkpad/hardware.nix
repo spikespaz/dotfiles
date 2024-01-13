@@ -5,10 +5,6 @@
     # ensures that amdgpu is loaded over radeon
     "amdgpu"
 
-    # Disable scatter/gather to prevent flickering and artifacts
-    # from the iGPU under memory pressure.
-    "amdgpu.sg_display=0"
-
     # Checked `dmesg`, it suggested that I add this.
     # Not sure if this is placebo, but I seem to notice
     # pointer acceleration being slightly smoother.
