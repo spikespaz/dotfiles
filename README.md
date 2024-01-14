@@ -3,6 +3,15 @@
 Welcome, this repository houses my personal configuration files
 for my computers running [NixOS].
 
+> [!WARNING]
+> This readme is very likely out-dated at at any given time. This is for two
+> reasons. The first is that Nix, as a language, suffers from an apparent need
+> to be frequently refractored. The second reason is that this is my personal
+> configuration, and it is under constant revision.
+>
+> As with all Nix code (and with software in general), the ultimate form of
+> documentation is the source code itself.
+
 There are may modules and packages that some people may find useful to
 utilize in their own [NixOS] or [Home Manager] environments.
 
