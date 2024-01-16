@@ -36,7 +36,7 @@ in {
     source = wavefox;
 
     extraSettings = {
-      # "browser.uidensity" = 1;
+      "browser.uidensity" = 1;
       # "ui.prefersReducedMotion" = 1;
       "browser.tabs.tabMinWidth" = 130;
 
