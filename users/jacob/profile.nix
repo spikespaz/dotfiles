@@ -122,7 +122,7 @@ in {
     # programs.jetbrains.goland
     # programs.jetbrains.idea
     # programs.jetbrains.pycharm
-    programs.rstudio
+    # programs.rstudio
     programs.neovim
     programs.helix
     programs.lapce
