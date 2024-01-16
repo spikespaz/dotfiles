@@ -25,8 +25,12 @@ let
 in {
   programs.firefox.profiles."jacob.default" = {
     settings = {
-      # enable new webrender everywhere
+      # Enable new WebRender everywhere.
       "gfx.webrender.all" = true;
+
+      # Hide the crap on the New Tab page.
+      "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+      "browser.newtabpage.activity-stream.feeds.topsites" = false;
     };
   };
 
