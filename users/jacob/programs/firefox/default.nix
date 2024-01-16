@@ -96,6 +96,7 @@ in {
         # rycee.don-t-fuck-with-paste
 
         ### UTILITIES ###
+        rycee.video-downloadhelper
         # rycee.export-tabs-urls-and-titles
         # rycee.markdownload
         # rycee.flagfox
