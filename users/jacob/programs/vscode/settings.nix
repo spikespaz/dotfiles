@@ -41,7 +41,7 @@
 
       ## Editor Extension ##
       ryuta46.multi-command
-      sirmspencer.vscode-autohide
+      # sirmspencer.vscode-autohide # This extension is buggy hot garbage.
       sleistner.vscode-fileutils
 
       ## Basic Config Languages ##
@@ -132,8 +132,11 @@
     # put the sidebar on the right so that text doesn't jump
     "workbench.sideBar.location" = "right";
     # no delay when automatically hiding the sidebar or panels
-    "autoHide.sideBarDelay" = 30000; # seconds
-    "autoHide.panelDelay" = 30000; # seconds
+
+    # AutoHide does not cancel the timer if the panel is re-selected,
+    # rendering these settings (and the extension) completely useless.
+    # "autoHide.sideBarDelay" = 30000; # seconds
+    # "autoHide.panelDelay" = 30000; # seconds
 
     # show vcs changes and staged changes as a tree
     "scm.defaultViewMode" = "tree";
