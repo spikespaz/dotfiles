@@ -11,20 +11,6 @@ in {
   #   ];
   # });
 
-  alacritty = pkgs0.alacritty.overrideAttrs (self: super: {
-    version = "0.13.1";
-    src = pkgs.fetchFromGitHub {
-      owner = "alacritty";
-      repo = "alacritty";
-      rev = "v${self.version}";
-      hash = "sha256-Nn/G7SkRuHXRSRgNjlmdX1G07sp7FPx8UyAn63Nivfg=";
-    };
-    cargoDeps = super.cargoDeps.overrideAttrs {
-      inherit (self) src;
-      outputHash = "sha256-ae+PuTNq2sDwxjw9Ff1aCpFxxWfvPPCsQ7RKQ7mVCiA=";
-    };
-  });
-
   vscode-marketplace = pkgs0.vscode-marketplace // {
     slint = pkgs0.vscode-marketplace.slint // {
       slint = pkgs0.vscode-marketplace.slint.slint.overrideAttrs (self: super: {
