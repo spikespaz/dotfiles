@@ -15,7 +15,7 @@
     #
     # Note that the EPP driver succeeds TLP's scheduler switching
     # and makes it obsolete. Disable that function of TLP.
-    "amd_cpufreq=active"
+    "amd_pstate=active"
   ];
 
   # This CPU (R7 8740U) has these energy performance preferences:
