@@ -2081,13 +2081,13 @@
       "locked": {
         "lastModified": 1702423186,
         "narHash": "sha256-vKt7hE7sj2zRyl0fyEkfGF7GELiaPbAWdq8PJ/IzFe8=",
-        "owner": "spikespaz",
+        "owner": "hyprland-community",
         "repo": "hyprland-nix",
         "rev": "c8d4392f4db3ba5e544b2af562f16c9d6db8a301",
         "type": "github"
       },
       "original": {
-        "owner": "spikespaz",
+        "owner": "hyprland-community",
         "repo": "hyprland-nix",
         "type": "github"
       }
