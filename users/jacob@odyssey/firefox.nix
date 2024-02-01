@@ -3,7 +3,10 @@ let
   wavefox = let
     wavefoxMajorMinor = "1.6";
     version = "${wavefoxMajorMinor}.${firefoxMajor}";
-    hash = "sha256-YV6d/yYC42EmN8fVMvC95GSNqUWrCuS5tdHpv+1+C1U=";
+    hashes = {
+      "1.6.121" = "sha256-YV6d/yYC42EmN8fVMvC95GSNqUWrCuS5tdHpv+1+C1U=";
+      "1.6.122" = "sha256-29LleIJ+c9HYyxlE59pP09OMzPKcx2JDeidZcBOs6+0=";
+    };
 
     firefoxVer = config.programs.firefox.package.version;
     firefoxMajor = (lib.lsplitString "." firefoxVer).l;
@@ -14,7 +17,7 @@ let
       owner = "QNetITQ";
       repo = "WaveFox";
       rev = "v${self.version}";
-      inherit hash;
+      hash = hashes.${self.version};
     };
     installPhase = ''
       mkdir $out
