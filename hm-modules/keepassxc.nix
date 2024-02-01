@@ -39,6 +39,16 @@ in {
           Settings to write in INI format to {file}`~/.config/keepassxc/keepassxc.ini`.
         '';
       };
+
+      browserIntegration.firefox = lib.mkEnableOption (lib.mdDoc ''
+        Create the native messaging manifest in {path}`$HOME/.mozilla/native-messaging-hosts`,
+        required for integration with the browser extension.
+
+        Enabling this option is required if you use declarative {option}`settings`.
+
+        Note that this also requires `Browser.Enabled = true` in {option}`settings`,
+        or enable it via the GUI.
+      '');
     };
   };
 
@@ -51,6 +61,18 @@ in {
       xdg.configFile."keepassxc/keepassxc.ini".source =
         iniFormat.generate "keepassxc.ini" program.settings;
     })
+
+    (lib.mkIf ((program.enable || service.enable)
+      && program.browserIntegration.firefox) {
+        home.file.".mozilla/native-messaging-hosts/org.keepassxc.keepassxc_browser.json".text =
+          builtins.toJSON {
+            allowed_extensions = [ "keepassxc-browser@keepassxc.org" ];
+            description = "KeePassXC integration with native messaging support";
+            name = "org.keepassxc.keepassxc_browser";
+            path = lib.getExe' program.package "keepassxc-proxy";
+            type = "stdio";
+          };
+      })
 
     (lib.mkIf service.enable {
       systemd.user.services.keepassxc = {

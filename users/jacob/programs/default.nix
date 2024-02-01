@@ -336,6 +336,8 @@ args@{ self, pkgs, lib, config, inputs, ... }:
             LockDatabaseIdleSeconds = minutes 10;
           };
         };
+
+        browserIntegration.firefox = true;
       };
     };
 
