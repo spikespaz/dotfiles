@@ -36,7 +36,7 @@ in {
       # class = ["code-url-handler"];
     };
     discord = {
-      class = [ "VencordDesktop" "ArmCord" "WebCord" "discord" ];
+      class = [ "vesktop" "ArmCord" "WebCord" "discord" ];
       title = [
         "(\\[\\d+\\] )?Discord |.*"
         ".*ArmCord"
