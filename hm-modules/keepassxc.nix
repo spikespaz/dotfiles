@@ -69,7 +69,7 @@ in {
             allowed_extensions = [ "keepassxc-browser@keepassxc.org" ];
             description = "KeePassXC integration with native messaging support";
             name = "org.keepassxc.keepassxc_browser";
-            path = lib.getExe' program.package "keepassxc-proxy";
+            path = lib.getExe' service.package "keepassxc-proxy";
             type = "stdio";
           };
       })
@@ -77,13 +77,13 @@ in {
     (lib.mkIf service.enable {
       systemd.user.services.keepassxc = {
         Unit = {
-          Description = program.package.meta.description;
+          Description = service.package.meta.description;
           After = [ "graphical-session.target" ];
         };
         Service = {
           Type = "simple";
           KillMode = "process";
-          ExecStart = lib.getExe program.package;
+          ExecStart = lib.getExe service.package;
           Restart = "on-failure";
           RestartSec = 5;
         };
