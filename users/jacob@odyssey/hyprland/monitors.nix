@@ -20,8 +20,6 @@ let
   inherit (config.wayland.windowManager.hyprland.monitors)
     portable internal desk-dock default;
 in {
-  home.packages = [ pkgs.wdisplays ];
-
   wayland.windowManager.hyprland = {
     monitors = {
       # The laptop is on an incline, positioned directly beneath the
