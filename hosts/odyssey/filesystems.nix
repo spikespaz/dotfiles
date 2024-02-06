@@ -45,6 +45,8 @@ in {
     # docs say this should be set auto when ""
     resumeDevice = "/dev/disk/by-label/swap";
 
+    loader.efi.efiSysMountPoint = "/boot";
+
     supportedFilesystems = [ "zfs" ];
     kernelModules = [ "zfs" ];
 
