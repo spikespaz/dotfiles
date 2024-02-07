@@ -14,7 +14,7 @@ in {
   vscode-marketplace = pkgs0.vscode-marketplace // {
     slint = pkgs0.vscode-marketplace.slint // {
       slint = pkgs0.vscode-marketplace.slint.slint.overrideAttrs (self: super: {
-        postInstall = (super.postInstall or "") + ''
+        postInstall = super.postInstall or "" + ''
           extBin=$out/share/vscode/extensions/slint.slint/bin/
           rm $out/share/vscode/extensions/slint.slint/bin/slint-lsp-*
           cp ${lib.getExe pkgs.slint-lsp} \
@@ -23,4 +23,30 @@ in {
       });
     };
   };
+
+  swaylock-effects = pkgs0.swaylock-effects.overrideAttrs (self: super: {
+    patches = super.patches or [ ] ++ [
+      # Pull request #49 for proper fprintd support.
+      (pkgs.fetchpatch {
+        url =
+          "https://patch-diff.githubusercontent.com/raw/jirutka/swaylock-effects/pull/49.diff";
+        hash = "sha256-hbPRFiKFxC2+TtadDSdlrgZlP/9/VHwasGZiCa7sT3A=";
+      })
+    ];
+    mesonFlags = super.mesonFlags ++ [ "-Dfingerprint=enabled" ];
+    # The `build.meson` does not use `pkg-config` for DBus interfaces,
+    # therefor `PKG_CONFIG_DBUS_1_INTERFACES_DIR` does not apply.
+    # <https://github.com/jirutka/swaylock-effects/pull/49#issuecomment-1932220922>
+    postPatch = let
+      dbusInterfacesDir = (pkgs.symlinkJoin {
+        name = "${self.pname}-${self.version}_dbus-interfaces-dir";
+        paths = self.buildInputs;
+        pathsToLink = [ "share/dbus-1/interfaces" ];
+      }) + "/share/dbus-1/interfaces";
+    in super.postPatch or "" + ''
+      sed -i 's@/usr/share/dbus-1/interfaces@${dbusInterfacesDir}@g' \
+        fingerprint/meson.build
+    '';
+    buildInputs = super.buildInputs ++ (with pkgs; [ dbus fprintd ]);
+  });
 }
