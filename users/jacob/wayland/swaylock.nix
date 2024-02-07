@@ -1,14 +1,5 @@
 { config, pkgs, lib, ... }:
 let
-  # package = pkgs.swaylock-effects.overrideAttrs (self: super: {
-  #   version = "1.6.11";
-  #   src = pkgs.fetchFromGitHub {
-  #     owner = "jirutka";
-  #     repo = "swaylock-effects";
-  #     rev = "v${self.version}";
-  #     sha256 = "sha256-MKmWVYssO9HAcP5uqwpy9kDa6/kfZyV2NI7ibozt7Ug=";
-  #   };
-  # });
   package = let super = pkgs.swaylock-effects;
   in pkgs.symlinkJoin {
     inherit (super) name pname version meta;
@@ -85,7 +76,8 @@ in {
   in {
     ### Behavior ###
 
-    # ignore-empty-password = true;
+    fingerprint = true;
+    ignore-empty-password = true;
     # daemonize = true;
     # grace = 5;  # Specify when auto-lock
     # grace-no-mouse = true;

@@ -108,15 +108,15 @@
   ### DESKTOP ENVIRONMENT: WAYLAND ###
   ####################################
   {
-    # <https://github.com/swaywm/swaylock/issues/61>
+    # Fingerprint support is provided by #49.
+    # `login` should include an `auth` line for fprintd if it is installed.
     security.pam.services.swaylock.text = ''
-      auth sufficient pam_unix.so try_first_pass nullok
-      auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so
+      auth include login
     '';
 
     # <https://github.com/swaywm/swaylock/issues/61>
     # security.pam.services.swaylock.text = ''
-    #   auth sufficient ${pkgs.fprintd-grosshack}/lib/security/pam_fprintd_grosshack.so
+    #   auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so
     #   auth sufficient pam_unix.so try_first_pass nullok
     # '';
   }
