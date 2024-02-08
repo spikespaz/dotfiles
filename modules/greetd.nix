@@ -116,7 +116,7 @@ in {
       services.xserver.displayManager.sessionPackages = [ cfg.sessionFiles ];
       services.greetd.sessionPath = let
         sessionPackage =
-          config.services.xserver.displayManager.sesisonData.desktops;
+          config.services.xserver.displayManager.sessionData.desktops;
       in [
         "${sessionPackage}/share/xsessions"
         "${sessionPackage}/share/wayand-sessions"
