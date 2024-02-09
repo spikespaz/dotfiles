@@ -15,6 +15,7 @@ let
     (lib.mapListToAttrs ({ user, package, ... }: {
       name = "${user}-${package.pname}";
       value = {
+        name = "${user} - ${package.pname} (${package.version})";
         comment = lib.attrByPath [ "meta" "description" ] null package;
         script = ''
           ${lib.getExe package} &> /dev/null
