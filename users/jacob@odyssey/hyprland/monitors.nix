@@ -1,13 +1,3 @@
-# The monitor and workspace positions are entirely dependent upon the order of
-# which I plug in the displays. The portable monitor has to be plugged in
-# with Thunderbolt before connecting the laptop to the dock.
-# If the portable monitor isn't connected to the dock before the laptop,
-# it will switch DP-5 and DP-6.
-#
-# TODO: Look into at a feature addition for Hyprland where
-# monitor descriptions can be matched.
-# Also could be fixed in HLWSP.
-#
 { lib, pkgs, config, ... }:
 let
   hyprctl =
@@ -27,7 +17,7 @@ in {
       # The internal Samsung display (for ThinkPad P14s) is 3.8k 16:10 OLED.
       # scaled to a virtual size of 1920x1080.
       internal = {
-        name = "eDP-1";
+        description = "Samsung Display Corp. 0x4193";
         resolution.x = 2880;
         resolution.y = 1800;
         scale = 1.5;
@@ -40,7 +30,7 @@ in {
 
       # I have a 2k 16:9 monitor on a mount at head level, directly forward.
       desk-dock = {
-        name = "DP-5";
+        description = "HKC OVERSEAS LIMITED GP01 0000000000001";
         resolution.x = 2560;
         resolution.y = 1440;
         # Align it directly above the internal monitor,
@@ -59,7 +49,7 @@ in {
       # just under the bottom corner of the desk monitor
       # and adjacent left of the internal one.
       portable = {
-        name = "DP-6";
+        description = "GWD ARZOPA 000000000000";
         resolution.x = 1920;
         resolution.y = 1080;
         position.x = origin.x;
@@ -114,28 +104,44 @@ in {
       # "16".monitor = hotplug.name;
       # "18".monitor = hotplug.name;
       # "20".monitor = hotplug.name;
-
     };
 
     # This is here to fix a Hyprland bug that seems to persist (repeat regression).
     # When a monitor is connected, all workspaces assigned to it will be moved.
     # Hyprland should already do that, but for some reason, it misses some.
-    eventListener.handler.monitorAdd =
+    eventListener.handler.monitorAddV2 =
       lib.pipe config.wayland.windowManager.hyprland.workspaceRules [
+        # For every workspace rule, pull out the identifier as `ws` and the
+        # monitor as `mon`. The `mon` may be a DRM node name (`eDP-1`, `HDMI-A-1`)
+        # or a description (prefixed with `desc:`).
+        # The result is a list of attribute sets containing `ws` and `mon`.
         (lib.mapAttrsToList (ws: attrs: {
           inherit ws;
           mon = attrs.monitor;
         }))
+        # Transform the list back into an attribute set, where every `mon` is its
+        # own attribute name, and the value of each is a list of workspace identifiers.
         (lib.groupBy' (wss: attrs: wss ++ [ attrs.ws ]) [ ] (attrs: attrs.mon))
-        (lib.mapAttrsToList (mon: wss: ''
-          if [[ "$HL_MONITOR_NAME" = '${mon}' ]]; then
-            ${
-              lib.concatStringsSep "\n  " (map (ws:
-                "${hyprctl} dispatch moveworkspacetomonitor '${ws}' '${mon}'")
-                wss)
-            }
-          fi
-        ''))
+        # Map every pair of monitor and workspace list back into a list again,
+        # item will be a block of Bash code corresponding to a monitor.
+        (lib.mapAttrsToList (mon: wss:
+          let
+            desc = lib.removePrefix "desc:" mon;
+            # Regardless of the form of `mon`, the dispatch command is the same.
+            # The result here is a list of commands that move each workspace to
+            # the monitor specified.
+            dispatches = map (ws:
+              "${hyprctl} dispatch moveworkspacetomonitor '${ws}' '${mon}'")
+              wss;
+          in if lib.hasPrefix "desc:" mon then ''
+            if [[ "$HL_MONITOR_DESC" = '${desc}' ]]; then
+              ${lib.concatStringsSep "\n  " dispatches}
+            fi
+          '' else ''
+            if [[ "$HL_MONITOR_NAME" = '${mon}' ]]; then
+              ${lib.concatStringsSep "\n  " dispatches}
+            fi
+          ''))
         lib.concatLines
       ];
   };
