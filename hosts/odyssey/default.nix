@@ -7,19 +7,19 @@ lib.bird.mkHost args {
   # determines if should use untested kernel with zfs
   specialArgs.enableUnstableZfs = false;
   modules = with tree.hosts; [
-    common.amd-thinkpad.hardware
-    common.amd-thinkpad.bootloader
-    # common.amd-thinkpad.plymouth
-    common.amd-thinkpad.user-desktop
+    shared.amd-thinkpad.hardware
+    shared.amd-thinkpad.bootloader
+    # shared.amd-thinkpad.plymouth
+    shared.amd-thinkpad.user-desktop
 
-    common.touchpad-fix
-    common.greetd-hyprland
-    # common.gamemode
-    common.run-game
-    common.packages
-    common.nix-registry
-    common.pia-openvpn
-    # common.nixbuild
+    shared.touchpad-fix
+    shared.greetd-hyprland
+    # shared.gamemode
+    shared.run-game
+    shared.packages
+    shared.nix-registry
+    shared.pia-openvpn
+    # shared.nixbuild
 
     ./misc.nix
     ./packages.nix
