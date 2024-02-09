@@ -1,15 +1,23 @@
-{ self, tree, config, lib, pkgs, inputs, ... }:
+{ self, config, lib, pkgs, ... }:
 let
   hyprlandUserSessions = lib.pipe self.homeConfigurations [
-    (lib.mapAttrs (_: attrs:
-      attrs.config.wayland.windowManager.hyprland.finalPackage or null))
-    (lib.filterAttrs (_: package: package != null))
-    (lib.mapAttrs' (user: package: {
+    (lib.mapAttrsToList (configName: attrs:
+      let userAtHost = lib.birdos.parseUserAtHost configName;
+      in if userAtHost == null then
+        { }
+      else {
+        inherit (userAtHost) user host;
+        package =
+          attrs.config.wayland.windowManager.hyprland.finalPackage or null;
+      }))
+    (lib.filter ({ user ? null, host ? null, package ? null }:
+      host == config.networking.hostName && package != null))
+    (lib.mapListToAttrs ({ user, package, ... }: {
       name = "${user}-${package.pname}";
       value = {
         comment = lib.attrByPath [ "meta" "description" ] null package;
         script = ''
-          ${lib.getExe package} &> /dev/null  
+          ${lib.getExe package} &> /dev/null
         '';
       };
     }))
