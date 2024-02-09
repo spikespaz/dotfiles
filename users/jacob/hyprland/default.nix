@@ -1,6 +1,7 @@
 { self, config, lib, pkgs, inputs, ... }: {
   imports = [
-    inputs.hyprland-nix.homeManagerModules.default
+    inputs.hyprland-nix.homeManagerModules.hyprland
+    # inputs.hyprland-nix.homeManagerModules.xdg-desktop-portals
     ./config.nix
     ./windowrules.nix
     ./keybinds.nix
@@ -33,4 +34,22 @@
     # Needed for Qt GUI theme.
     environment = { QT_QPA_PLATFORMTHEME = "qt5ct"; };
   };
+
+  # xdg.desktopPortals = {
+  #   enable = true;
+  #   extraPortals = [
+  #     pkgs.xdg-desktop-portal-hyprland
+  #     pkgs.xdg-desktop-portal-kde
+  #     pkgs.xdg-desktop-portal-gtk
+  #   ];
+  #   configPackages = [ config.wayland.windowManager.hyprland.package ];
+  #   config = {
+  #     x-cinnamon = { default = [ "xapp" "gtk" ]; };
+  #     pantheon = {
+  #       default = [ "pantheon" "gtk" ];
+  #       "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+  #     };
+  #     common = { default = [ "gtk" ]; };
+  #   };
+  # };
 }
