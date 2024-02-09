@@ -282,6 +282,15 @@
     i18n.defaultLocale = "en_US.UTF-8";
 
     xdg.portal.enable = true;
+    xdg.portal.extraPortals = [
+      pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal-wlr
+      pkgs.xdg-desktop-portal-kde
+      pkgs.xdg-desktop-portal-gtk
+    ];
+    xdg.portal.configPackages = [
+      pkgs.hyprland
+    ];
     services.flatpak.enable = true;
   }
   ### USERS CONFIGS ###
