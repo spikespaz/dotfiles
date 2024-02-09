@@ -141,16 +141,22 @@
       # wifi adapter
       # error: rtw89-firmware has been removed because linux-firmware now contains it.
       # firmware = [pkgs.rtw89-firmware];
-
-      # enable opengl just in case the compositor doesn't
-      opengl.enable = true;
-      opengl.driSupport32Bit = true;
     };
 
     # # gui tool for processor management
     # programs.corectrl.enable = true;
     # # sets the overdrive bit in amdgpu.ppfeaturemask
     # programs.corectrl.gpuOverclock.enable = true;
+  }
+
+  {
+    hardware.opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
+      extraPackages = [ pkgs.amdvlk ];
+      extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
+    };
   }
 
   ################
