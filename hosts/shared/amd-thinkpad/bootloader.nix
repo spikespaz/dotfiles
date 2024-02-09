@@ -27,7 +27,7 @@
 
       systemd-boot.enable = true;
       systemd-boot.editor = false;
-      systemd-boot.configurationLimit = 5;
+      systemd-boot.configurationLimit = 10;
 
       # need to hold space to get the boot menu to appear
       timeout = 0;
