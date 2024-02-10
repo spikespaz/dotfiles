@@ -38,6 +38,7 @@
       # huizhou.githd
       # mhutchie.git-graph
       phil294.git-log--graph
+      github.vscode-github-actions
 
       ## Editor Extension ##
       ryuta46.multi-command
