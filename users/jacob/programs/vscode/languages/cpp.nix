@@ -11,11 +11,10 @@
     ];
 
   programs.vscode.userSettings = {
-    "[rust]" = {
-      "editor.fontLigatures" = true;
-
-      "editor.formatOnSave" = true;
-    };
-
+    "cmake.showOptionsMovedNotification" = false;
+    "cmake.cmakePath" = lib.getExe pkgs.cmake;
+    # IntelliSense from Microsoft conflicts with clangd
+    "C_Cpp.intelliSenseEngine" = "disabled";
+    "clangd.path" = lib.getExe' pkgs.clang-tools "clangd";
   };
 }
