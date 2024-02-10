@@ -111,7 +111,7 @@
     ];
 
     # scale the ui down
-    "window.zoomLevel" = -1;
+    # "window.zoomLevel" = -1;
     # hide the menu bar unless alt is pressed
     "window.menuBarVisibility" = "toggle";
     # the minimap gets in the way
