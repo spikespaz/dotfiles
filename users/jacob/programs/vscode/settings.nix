@@ -40,6 +40,9 @@
       phil294.git-log--graph
       github.vscode-github-actions
 
+      ## Collaboration Features
+      ms-vsliveshare.vsliveshare
+
       ## Editor Extension ##
       ryuta46.multi-command
       # sirmspencer.vscode-autohide # This extension is buggy hot garbage.
