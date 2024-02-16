@@ -84,13 +84,15 @@ in {
     "($git_commit${sep.right})"
     "($git_metrics${sep.right})"
     "($git_status${sep.right})"
-    "$fill"
+    "($git_state${sep.right})"
+    "($cmd_duration${sep.right})"
+    # "$fill"
     "$line_break"
     "($status)"
     "$character"
   ];
 
-  right_format = lib.concatStrings [ "($cmd_duration)" "($git_state)" ];
+  # right_format = lib.concatStrings [ "($cmd_duration)" "($git_state)" ];
 
   directory = {
     format = "([$read_only]($read_only_style) )[$path]($style) ";
