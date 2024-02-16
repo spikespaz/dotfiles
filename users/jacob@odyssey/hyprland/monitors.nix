@@ -81,25 +81,37 @@ in {
     #
     # Such a feature has been explicitly declined for inclusion in Hyprland.
     workspaceRules = {
-      "1".monitor = internal.name;
+      "1" = {
+        monitor = internal.name;
+        default = true;
+      };
       "3".monitor = internal.name;
       "5".monitor = internal.name;
       "7".monitor = internal.name;
       "9".monitor = internal.name;
 
-      "2".monitor = desk-dock.name;
+      "2" = {
+        monitor = desk-dock.name;
+        default = true;
+      };
       "4".monitor = desk-dock.name;
       "6".monitor = desk-dock.name;
       "8".monitor = desk-dock.name;
       "10".monitor = desk-dock.name;
 
-      "11".monitor = portable.name;
+      "11" = {
+        monitor = portable.name;
+        default = true;
+      };
       "13".monitor = portable.name;
       "15".monitor = portable.name;
       "17".monitor = portable.name;
       "19".monitor = portable.name;
 
-      # "12".monitor = hotplug.name;
+      # "12" = {
+      #   monitor = hotplug.name;
+      #   default = true;
+      # };
       # "14".monitor = hotplug.name;
       # "16".monitor = hotplug.name;
       # "18".monitor = hotplug.name;
