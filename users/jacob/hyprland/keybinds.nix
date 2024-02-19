@@ -27,6 +27,14 @@
           config.wayland.windowManager.hyprland.package
         ];
       };
+      screenshotWindow = pkgs.patchShellScript ./scripts/screenshot.sh {
+        runtimeInputs = with pkgs; [
+          jq
+          grim
+          wl-clipboard
+          config.wayland.windowManager.hyprland.package
+        ];
+      };
     };
 
     # Collections of keybinds common across multiple submaps are collected into
@@ -219,8 +227,8 @@
       # Forcefully kill a program after selecting its window with the mouse.
       bind."SUPER_SHIFT, Q" = "exec, hyprctl kill";
 
-      # Select a monitor and take a screenshot, saving to a file.
-      bind."SUPER, print" = "exec, prtsc -m m -D -b 00000066";
+      # Screenshot the currently focused window and copy to clipboard.
+      bind."SUPER, print" = "exec, ${exec.screenshotWindow}";
 
       # Select a region and take a screenshot, saving to the clipboard.
       bind."SUPER_SHIFT, print" = "exec, prtsc -c -m r -D -b 00000066";
