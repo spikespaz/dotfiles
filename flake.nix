@@ -21,49 +21,47 @@
 
       formatter = eachSystem (system: inputs.nixfmt.packages.${system}.default);
 
-      /*
-        $ nix eval 'path:.#overlays' | sed 's/<|>/"/g' | nixfmt
-        ---
-        There is an overlay for each package:
+      /* $ nix eval 'path:.#overlays' | sed 's/<|>/"/g' | nixfmt
+         ---
+         There is an overlay for each package:
 
-          - fork-awesome
-          - idlehack
-          - ja-netfilter
-          - nerdfonts-symbols
-          - proton-ge-custom
-          - prtsc
-          - ttf-ms-win11
-          - zsh-plugins
+           - fork-awesome
+           - idlehack
+           - ja-netfilter
+           - nerdfonts-symbols
+           - proton-ge-custom
+           - prtsc
+           - ttf-ms-win11
+           - zsh-plugins
 
-        Then there are collections/utilities also available as overlays:
+         Then there are collections/utilities also available as overlays:
 
-          - lib = extra functions merged into `pkgs`
-          - allowUnfree - override `meta.license` of certain packages
-          - oraclejdk - overrides `oraclejdk` to not `requireFile`
-          - default - all packages from this flake
-          - updates - some small updates/fixes for certain packages
+           - lib = extra functions merged into `pkgs`
+           - allowUnfree - override `meta.license` of certain packages
+           - oraclejdk - overrides `oraclejdk` to not `requireFile`
+           - default - all packages from this flake
+           - updates - some small updates/fixes for certain packages
       */
       overlays = let packageOverlays = import ./packages/overlays.nix lib;
       in import ./overlays lib packageOverlays;
 
-      /*
-        $ nix eval 'path:.#packages.x86_64-linux' --apply 'builtins.attrNames' | nixfmt
-        [
-          "fork-awesome"
-          "idlehack"
-          "ja-netfilter"
-          "nerdfonts-symbols"
-          "proton-ge-custom"
-          "prtsc"
-          "ttf-ms-win11"
-          "zsh-auto-notify"
-          "zsh-autocomplete"
-          "zsh-autopair"
-          "zsh-autosuggestions"
-          "zsh-edit"
-          "zsh-fast-syntax-highlighting"
-          "zsh-window-title"
-        ]
+      /* $ nix eval 'path:.#packages.x86_64-linux' --apply 'builtins.attrNames' | nixfmt
+         [
+           "fork-awesome"
+           "idlehack"
+           "ja-netfilter"
+           "nerdfonts-symbols"
+           "proton-ge-custom"
+           "prtsc"
+           "ttf-ms-win11"
+           "zsh-auto-notify"
+           "zsh-autocomplete"
+           "zsh-autopair"
+           "zsh-autosuggestions"
+           "zsh-edit"
+           "zsh-fast-syntax-highlighting"
+           "zsh-window-title"
+         ]
       */
       packages =
         eachSystem (system: import ./packages { inherit lib system nixpkgs; });
@@ -123,6 +121,7 @@
     hyprland-git.url = "github:hyprwm/hyprland";
     hyprland-xdph-git.url = "github:hyprwm/xdg-desktop-portal-hyprland";
     hyprland-protocols-git.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    hyprlang-git.url = "github:hyprwm/hyprlang";
     # I want to lock each in my own `flake.lock`,
     # and let them be used by `hyprland-nix`.
     hyprland-nix.url = "github:hyprland-community/hyprland-nix";
@@ -130,6 +129,7 @@
       hyprland.follows = "hyprland-git";
       hyprland-xdph.follows = "hyprland-xdph-git";
       hyprland-protocols.follows = "hyprland-protocols-git";
+      hyprlang.follows = "hyprlang-git";
     };
 
     nil.url = "github:oxalica/nil";
