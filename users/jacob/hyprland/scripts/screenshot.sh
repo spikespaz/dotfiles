@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p jq hyprland grim wl-clipboard
+#! nix-shell -i bash -p hyprland jq grim wl-clipboard libnotify
 # shellcheck shell=bash
 
 set -eu -o pipefail
@@ -37,3 +37,17 @@ grim \
 	"$image_path"
 
 wl-copy -t image/png < "$image_path"
+
+summary="Window screenshot taken"
+description="An image of the window has been copied to your clipboard."
+description+="\n<b>Temporary file saved:</b>"
+description+="\n<tt>${image_path}</tt>"
+
+notify-send \
+	--app-name 'Screenshot' \
+	--urgency low \
+	--expire-time 3000 \
+	--icon "$image_path" \
+	--category screenshot \
+	"$summary" \
+	"$description"

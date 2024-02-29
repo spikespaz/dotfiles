@@ -29,10 +29,11 @@
       };
       screenshotWindow = pkgs.patchShellScript ./scripts/screenshot.sh {
         runtimeInputs = with pkgs; [
+          config.wayland.windowManager.hyprland.package
           jq
           grim
           wl-clipboard
-          config.wayland.windowManager.hyprland.package
+          libnotify
         ];
       };
     };
