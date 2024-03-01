@@ -113,6 +113,7 @@ in {
     programs.vscode.languages.rust
     programs.vscode.languages.web
     programs.vscode.languages.yuck
+    programs.vscode.languages.python
     programs.vscode.languages.nushell
     programs.vscode.other.marlin
     programs.vscode.other.marp
