@@ -20,6 +20,13 @@ in lib0 // {
       };
   };
 
+  systems = lib0.systems // {
+    architectures = lib0.systems.architectures // {
+      featureSupport = arch:
+        lib.mapAttrs (_: f: f arch) lib.systems.architectures.predicates;
+    };
+  };
+
   maintainers.spikespaz = {
     email = "jacob@birkett.dev";
     github = "spikespaz";
