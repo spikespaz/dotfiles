@@ -7,7 +7,7 @@
 # Further reading:
 # - <https://grahamc.com/blog/erase-your-darlings>
 # - <https://github.com/nix-community/impermanence>
-{ config, lib, pkgs, enableUnstableZfs, ... }:
+{ config, lib, pkgs, ... }:
 let
   rootPool = "intrepid";
   bootLabel = "INTRPD";
@@ -48,16 +48,7 @@ in {
     supportedFilesystems = [ "zfs" ];
     kernelModules = [ "zfs" ];
 
-    kernelPackages = lib.mkForce (if enableUnstableZfs then
-      (pkgs.linuxPackages_latest.extend (self: super: {
-        zfsUnstable = super.zfsUnstable.overrideAttrs
-          (self: super: { meta = super.meta // { broken = false; }; });
-      }))
-    else
-      config.boot.zfs.package.latestCompatibleLinuxPackages);
-
     zfs = {
-      enableUnstable = enableUnstableZfs;
       forceImportAll = false;
       forceImportRoot = false;
       allowHibernation = true;

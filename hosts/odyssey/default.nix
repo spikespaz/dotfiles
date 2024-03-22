@@ -5,9 +5,6 @@ lib.bird.mkHost args {
   } // lib.systems.architectures.featureSupport "znver4";
   nixpkgs = inputs.nixpkgs-unstable;
   nixpkgsArgs.config.allowUnfree = true;
-  # the bootloader module takes this as a param
-  # determines if should use untested kernel with zfs
-  specialArgs.enableUnstableZfs = false;
   modules = with tree.hosts; [
     shared.amd-thinkpad.hardware
     shared.amd-thinkpad.bootloader
