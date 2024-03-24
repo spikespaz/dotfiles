@@ -7,6 +7,7 @@ let
       "1.6.121" = "sha256-YV6d/yYC42EmN8fVMvC95GSNqUWrCuS5tdHpv+1+C1U=";
       "1.6.122" = "sha256-29LleIJ+c9HYyxlE59pP09OMzPKcx2JDeidZcBOs6+0=";
       "1.6.123" = "sha256-uVGNJKtT8MHo5a+GTW6DfpuRiCukC4e4UdnKmWIk3Zw=";
+      "1.6.124" = hashes."1.6.123";
     };
 
     firefoxVer = config.programs.firefox.package.version;
