@@ -134,7 +134,8 @@
 
     nil.url = "github:oxalica/nil";
 
-    nixfmt.url = "github:serokell/nixfmt";
+    # Do not update!
+    nixfmt.url = "github:nixos/nixfmt/v0.6.0";
 
     # polymc.url = "github:PolyMC/PolyMC";
 

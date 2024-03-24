@@ -3192,15 +3192,16 @@
         "serokell-nix": "serokell-nix_3"
       },
       "locked": {
-        "lastModified": 1702548379,
-        "narHash": "sha256-QxxQ316RGZf2TjM7UxMFKEQk9cMS8kkO0Ffw8KE33pE=",
-        "owner": "serokell",
+        "lastModified": 1698788988,
+        "narHash": "sha256-H3uH5zcz5gLJjrNP8OIKap441Zs9njaoK9u6aJVaAXo=",
+        "owner": "nixos",
         "repo": "nixfmt",
-        "rev": "422b1aebb44c4f12af025eda0ee6a99c6e50d738",
+        "rev": "7e9e06eefed52d6d698b828ee83b83ea5c163f3b",
         "type": "github"
       },
       "original": {
-        "owner": "serokell",
+        "owner": "nixos",
+        "ref": "v0.6.0",
         "repo": "nixfmt",
         "type": "github"
       }
