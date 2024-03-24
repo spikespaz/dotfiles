@@ -6,8 +6,8 @@ pkgs:
 flakeIsWorktree ? false
   # The basename of the flake repository's path.
 , flakeBasename
-  # If you have a working tree for each host in the flake, inside the bare repository.
-  # The current hostname will be used as the name of the working tree to build.
+# If you have a working tree for each host in the flake, inside the bare repository.
+# The current hostname will be used as the name of the working tree to build.
 , flakeHostBranches ? flakeIsWorktree
   # Manual override of the working tree directory's basename.
   # The default is determined by the script.

@@ -10,6 +10,5 @@
       ms-toolsai.jupyter
     ];
 
-  programs.vscode.userSettings = {
-  };
+  programs.vscode.userSettings = { };
 }

@@ -12,10 +12,7 @@
     kernelModules = [ "acpi_call" ];
     extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
-    initrd.availableKernelModules = [
-      "usb_storage"
-      "rtsx_pci_sdmmc"
-    ];
+    initrd.availableKernelModules = [ "usb_storage" "rtsx_pci_sdmmc" ];
 
     initrd.systemd.strip = false;
     initrd.systemd.enable = true;

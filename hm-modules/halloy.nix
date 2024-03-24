@@ -142,7 +142,7 @@ in {
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     { home.packages = [ cfg.package ]; }
-    (lib.mkIf (cfg.settings != {}) {
+    (lib.mkIf (cfg.settings != { }) {
       xdg.configFile."halloy/config.yaml".source =
         yamlFormat.generate "halloy-config.yaml" cfg.settings;
     })

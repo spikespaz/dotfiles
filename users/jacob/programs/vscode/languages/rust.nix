@@ -26,9 +26,7 @@
       "editor.formatOnSave" = true;
     };
 
-    "[slint]" = {
-      "editor.tabSize" = 2;
-    };
+    "[slint]" = { "editor.tabSize" = 2; };
 
     # use clippy over cargo check
     "rust-analyzer.check.command" = "clippy";

@@ -288,9 +288,7 @@
       pkgs.xdg-desktop-portal-kde
       pkgs.xdg-desktop-portal-gtk
     ];
-    xdg.portal.configPackages = [
-      pkgs.hyprland
-    ];
+    xdg.portal.configPackages = [ pkgs.hyprland ];
     services.flatpak.enable = true;
   }
   ### USERS CONFIGS ###

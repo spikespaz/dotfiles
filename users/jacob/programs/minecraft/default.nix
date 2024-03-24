@@ -1,3 +1,1 @@
-{
-  prism-launcher = import ./prism-launcher.nix;
-}
+{ prism-launcher = import ./prism-launcher.nix; }
