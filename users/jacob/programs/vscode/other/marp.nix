@@ -1,7 +1,9 @@
 { pkgs, ... }: {
   programs.vscode.extensions =
-    #
-    with pkgs.vscode-marketplace;
-    with pkgs.vscode-marketplace-release;
-    [ marp-team.marp-vscode ];
+    let extensions = pkgs.callPackage ../marketplace.nix { };
+    in with extensions.preferReleases;
+    [
+      #
+      marp-team.marp-vscode
+    ];
 }

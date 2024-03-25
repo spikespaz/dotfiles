@@ -2,9 +2,8 @@
   home.packages = [ pkgs.rust-analyzer ];
 
   programs.vscode.extensions =
-    #
-    with pkgs.vscode-marketplace;
-    with pkgs.vscode-marketplace-release; [
+    let extensions = pkgs.callPackage ../marketplace.nix { };
+    in with extensions.preferReleases; [
       rust-lang.rust-analyzer
       serayuzgur.crates
       tamasfe.even-better-toml
@@ -16,7 +15,7 @@
       # the extension properly, I should be able to provide
       # the binaries it wants and disable the auto download thing
       # <https://github.com/vadimcn/vscode-lldb/issues/310>
-      pkgs.vscode-extensions.vadimcn.vscode-lldb
+      pkgs.vscode-extensions.vadimcn.vscode-lldb # wrapped by nixpkgs
     ];
 
   programs.vscode.userSettings = {

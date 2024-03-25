@@ -2,12 +2,11 @@
   home.packages = [ pkgs.rust-analyzer pkgs.slint-lsp ];
 
   programs.vscode.extensions =
-    #
-    with pkgs.vscode-marketplace;
-    with pkgs.vscode-marketplace-release; [
+    let extensions = pkgs.callPackage ../marketplace.nix { };
+    in with extensions.preferReleases; [
       llvm-vs-code-extensions.vscode-clangd
       ms-vscode.cmake-tools
-      pkgs.vscode-extensions.vadimcn.vscode-lldb
+      pkgs.vscode-extensions.vadimcn.vscode-lldb # wrapped by nixpkgs
     ];
 
   programs.vscode.userSettings = {

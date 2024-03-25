@@ -1,11 +1,9 @@
 { lib, pkgs, ... }: {
   programs.vscode.extensions =
-    #
-    with pkgs.vscode-extensions;
-    with pkgs.vscode-marketplace;
-    with pkgs.vscode-marketplace-release; [
+    let extensions = pkgs.callPackage ../marketplace.nix { };
+    in with extensions.preferReleases; [
+      pkgs.vscode-extensions.ms-vscode.cpptools # wrapped by nixpkgs
       marlinfirmware.auto-build
-      ms-vscode.cpptools
       platformio.platformio-ide
     ];
 

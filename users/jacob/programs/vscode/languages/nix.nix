@@ -2,9 +2,8 @@
 let dictionary = [ "builtins" "pkgs" "concat" "nixos" "nixpkgs" ];
 in {
   programs.vscode.extensions =
-    #
-    with pkgs.vscode-marketplace;
-    with pkgs.vscode-marketplace-release; [
+    let extensions = pkgs.callPackage ../marketplace.nix { };
+    in with extensions.preferReleases; [
       jnoortheen.nix-ide
       # kamadorueda.alejandra
       arrterian.nix-env-selector

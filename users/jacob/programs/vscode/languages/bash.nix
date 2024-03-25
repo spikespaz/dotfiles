@@ -1,8 +1,7 @@
 { lib, pkgs, ... }: {
   programs.vscode.extensions =
-    #
-    with pkgs.vscode-marketplace;
-    with pkgs.vscode-marketplace-release; [
+    let extensions = pkgs.callPackage ../marketplace.nix { };
+    in with extensions.preferReleases; [
       mads-hartmann.bash-ide-vscode
       timonwong.shellcheck
       foxundermoon.shell-format
