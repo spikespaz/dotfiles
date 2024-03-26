@@ -88,8 +88,11 @@ in {
 
     ### MEDIA CREATION ###
     programs.obs-studio
-    programs.tools.video-editing
-    programs.tools.image-editing
+    programs.handbrake
+    programs.ffmpeg
+    programs.kdenlive
+    programs.pinta
+    programs.gimp
 
     ### MEDIA CONSUMPTION ###
     # programs.spotify

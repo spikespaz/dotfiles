@@ -68,6 +68,8 @@ args@{ self, pkgs, lib, config, inputs, ... }:
     ### MEDIA CREATION ###
     ######################
 
+    ## VIDEO ##
+
     obs-studio = {
       programs.obs-studio.enable = true;
       programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
@@ -78,12 +80,14 @@ args@{ self, pkgs, lib, config, inputs, ... }:
       # needed for screen selection on wayland
       home.packages = [ pkgs.slurp ];
     };
+    handbrake = { home.packages = [ pkgs.handbrake ]; };
+    ffmpeg = { home.packages = [ pkgs.ffmpeg ]; };
+    kdenlive = { home.packages = [ pkgs.libsForQt5.kdenlive ]; };
 
-    tools.video-editing = {
-      home.packages = with pkgs; [ libsForQt5.kdenlive handbrake ffmpeg ];
-    };
+    ## IMAGE ##
 
-    tools.image-editing = { home.packages = with pkgs; [ pinta gimp ]; };
+    pinta = { home.packages = [ pkgs.pinta ]; };
+    gimp = { home.packages = [ pkgs.gimp ]; };
 
     #########################
     ### MEDIA CONSUMPTION ###
