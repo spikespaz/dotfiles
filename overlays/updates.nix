@@ -11,6 +11,11 @@ in {
   #   ];
   # });
 
+  # TODO pull request
+  shotcut = pkgs0.shotcut.overrideAttrs (self: super: {
+    buildInputs = super.buildInputs or [ ] ++ [ pkgs.qt6.qtwayland ];
+  });
+
   vscode-marketplace = pkgs0.vscode-marketplace // {
     slint = pkgs0.vscode-marketplace.slint // {
       slint = pkgs0.vscode-marketplace.slint.slint.overrideAttrs (self: super: {
