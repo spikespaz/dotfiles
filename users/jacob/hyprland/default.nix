@@ -30,9 +30,6 @@
       # allow apps with risen perms after agent to connect to local xwayland
       "${lib.getExe pkgs.xorg.xhost} +local:"
     ];
-
-    # Needed for Qt GUI theme.
-    environment = { QT_QPA_PLATFORMTHEME = "qt5ct"; };
   };
 
   # xdg.desktopPortals = {
