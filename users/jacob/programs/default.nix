@@ -1,4 +1,4 @@
-args@{ self, pkgs, lib, config, inputs, ... }:
+args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
 (lib.mapAttrs (_: expr: if lib.isFunction expr then expr args else expr)
   (lib.importDir' ./. "default.nix")) // {
     ####################
@@ -80,7 +80,10 @@ args@{ self, pkgs, lib, config, inputs, ... }:
       # needed for screen selection on wayland
       home.packages = [ pkgs.slurp ];
     };
-    handbrake = { home.packages = [ pkgs.handbrake ]; };
+    handbrake = {
+      # Since the Handbrake package has a habit of breaking (ffmpeg), use the version from Nixpkgs stable.
+      home.packages = [ pkgs-stable.handbrake ];
+    };
     ffmpeg = { home.packages = [ pkgs.ffmpeg ]; };
     kdenlive = { home.packages = [ pkgs.libsForQt5.kdenlive ]; };
 
