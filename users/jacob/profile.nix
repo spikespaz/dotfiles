@@ -91,6 +91,7 @@ in {
     programs.handbrake
     programs.ffmpeg
     programs.kdenlive
+    programs.shotcut
     programs.pinta
     programs.gimp
 

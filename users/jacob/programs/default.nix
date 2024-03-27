@@ -86,6 +86,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
     };
     ffmpeg = { home.packages = [ pkgs.ffmpeg ]; };
     kdenlive = { home.packages = [ pkgs.libsForQt5.kdenlive ]; };
+    shotcut = { home.packages = [ pkgs.shotcut ]; };
 
     ## IMAGE ##
 
