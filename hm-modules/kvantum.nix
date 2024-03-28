@@ -19,38 +19,6 @@ in {
         '';
       };
 
-      qt5ct.enable = lib.mkEnableOption ''
-        Use the Qt5 Configuration Tool to supply the Qt theme, with
-        `QT_QPA_PLATFORMTHEME=qt5ct` as environment variable.
-      '';
-
-      qt5ct.package = lib.mkOption {
-        type = types.package;
-        default = pkgs.libsForQt5.qt5ct;
-        example = lib.literalExpression ''
-          pkgs.libsForQt5.qt5ct
-        '';
-        description = lib.mdDoc ''
-          The package providing the `qt5ct` binary.
-        '';
-      };
-
-      qt6ct.enable = lib.mkEnableOption ''
-        Use the Qt6 Configuration Tool to supply the Qt theme, with
-        `QT_QPA_PLATFORMTHEME=qt6ct` as environment variable.
-      '';
-
-      qt6ct.package = lib.mkOption {
-        type = types.package;
-        default = pkgs.qt6Packages.qt6ct;
-        example = lib.literalExpression ''
-          pkgs.qt6ct
-        '';
-        description = lib.mdDoc ''
-          The package providing the `qt6ct` binary.
-        '';
-      };
-
       theme.package = lib.mkOption {
         type = types.package;
         default = pkgs.adwaita-qt;
@@ -142,16 +110,6 @@ in {
       # <https://github.com/kellyjonbrazil/jc/issues/285>
       xdg.configFile."Kvantum/${newThemePath}".text =
         generators.toINI { } newTheme;
-    })
-    (lib.mkIf cfg.qt5ct.enable {
-      home.packages = [ cfg.qt5ct.package ];
-
-      home.sessionVariables = { QT_QPA_PLATFORMTHEME = "qt5ct"; };
-    })
-    (lib.mkIf cfg.qt6ct.enable {
-      home.packages = [ cfg.qt6ct.package ];
-
-      home.sessionVariables = { QT_QPA_PLATFORMTHEME = "qt6ct"; };
     })
   ];
 }
