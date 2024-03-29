@@ -16,6 +16,55 @@ in {
     buildInputs = super.buildInputs or [ ] ++ [ pkgs.qt6.qtwayland ];
   });
 
+  # This is used by the HM module `qt.nix`. The path there is hard-coded to
+  # `qt6Packages.qt6ct` and can't be changed with a `package` option.
+  # That is the reason this is an overlay, and not a separate package.
+  # ---
+  # Does someone know the difference between `kdePackages` and `qt6Packages`?
+  # I have tried to find where `kdePackages` is defined and all I can find
+  # (that isn't direct usage) is a scope splice.
+  # It seems that `qt6Packages` is the earliest instantiation of all the
+  # derivations within, and that `kdePackages` probably inherits from it
+  # (the scope splice I mentioned).
+  # But, `qt6Packages` is not listed in the (unstable) package search
+  # (it is in stable).
+  # Some Home Manager modules are hard-coded to use `qt6Packages`,
+  # but that namespace is (now) missing on the Package Search webpage.
+  qt6Packages = pkgs0.qt6Packages // {
+    qt6ct = pkgs0.qt6Packages.qt6ct.overrideAttrs (self: super: {
+      patches = super.patches or [ ] ++ [
+        (pkgs.fetchpatch {
+          url =
+            "https://patch-diff.githubusercontent.com/raw/trialuser02/qt6ct/pull/43.diff";
+          hash = "sha256-r7KtusyM7MWYN/RXpc/CJf3IOLkuN5+FJpa4dNa9b7M=";
+        })
+        (pkgs.fetchpatch {
+          url =
+            "https://patch-diff.githubusercontent.com/raw/trialuser02/qt6ct/pull/44.diff";
+          hash = "sha256-fafLjzPFaIBwMJuFUWISZepPypr6P3SHm6+vIuEdTIY=";
+        })
+      ];
+      buildInputs = super.buildInputs or [ ] ++ (with pkgs.kdePackages; [
+        qtdeclarative
+        kconfig
+        kcolorscheme
+        kiconthemes
+      ]);
+      # Original inputs removed, switch to cmake.
+      nativeBuildInputs = with pkgs;
+        with pkgs.kdePackages; [
+          cmake
+          qttools
+          wrapQtAppsHook
+        ];
+      cmakeFlags = [
+        "-DPLUGINDIR=${
+          placeholder "out"
+        }/${pkgs.kdePackages.qtbase.qtPluginPrefix}"
+      ];
+    });
+  };
+
   vscode-marketplace = pkgs0.vscode-marketplace // {
     slint = pkgs0.vscode-marketplace.slint // {
       slint = pkgs0.vscode-marketplace.slint.slint.overrideAttrs (self: super: {
