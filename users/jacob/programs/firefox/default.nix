@@ -86,6 +86,7 @@ in {
         # For Twitch, it is also worth considering removing the extension and just using uBO.
         # <https://github.com/pixeltris/TwitchAdSolutions>
         spikespaz.ttv-lol-pro
+        spikespaz.frankerfacez
 
         ### NEW INTERNET ###
         # rycee.ipfs-companion

@@ -57,4 +57,24 @@ in {
       ];
     };
   };
+  frankerfacez = let _fileId = null; # not on AMO
+  in buildFirefoxXpiAddon rec {
+    pname = "frankerfacez";
+    version = "4.0";
+    addonId = "frankerfacez@frankerfacez.com";
+    url = "https://cdn.frankerfacez.com/script/${pname}-${version}-an+fx.xpi";
+    hash = "sha256-U/yAra2c+RlGSaQtHfBz9XYsoDaJ67gmPJBsFrpqoE8=";
+    meta = with lib; {
+      description =
+        "The Twitch Enhancement Suite - Get custom emotes and tons of new features you'll never want to go without.";
+      license = licenses.asl20;
+      mozPermissions = [
+        "storage"
+        "webRequest"
+        "webRequestBlocking"
+        "*://*.twitch.tv/*"
+        "*://*.frankerfacez.com/*"
+      ];
+    };
+  };
 }
