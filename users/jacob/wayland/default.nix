@@ -2,6 +2,7 @@
   imports = [
     ./timeouts.nix
     ./swaylock.nix
+    ./wlogout.nix
     ./gui-theme.nix
     ./dunst.nix
     ./rofi.nix
