@@ -151,7 +151,8 @@
     services.avahi = {
       enable = true;
       # resolve .local domains for printers
-      nssmdns = true;
+      nssmdns4 = true;
+      nssmdns6 = false;
     };
   }
 
