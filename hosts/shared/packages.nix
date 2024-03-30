@@ -67,4 +67,9 @@
     ### VIRTUALIZATION ###
     libguestfs # filesystem driver for vm images
   ];
+
+  # # gui tool for processor management
+  # programs.corectrl.enable = true;
+  # # sets the overdrive bit in amdgpu.ppfeaturemask
+  # programs.corectrl.gpuOverclock.enable = true;
 }
