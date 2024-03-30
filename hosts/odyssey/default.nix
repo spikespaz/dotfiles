@@ -6,8 +6,9 @@ lib.bird.mkHost args {
   nixpkgs = inputs.nixpkgs-unstable;
   nixpkgsArgs.config.allowUnfree = true;
   modules = with tree.hosts; [
-    shared.amd-thinkpad.hardware
-    shared.amd-thinkpad.bootloader
+    shared.amd-thinkpad.hardware.default
+    shared.amd-thinkpad.hardware.bootloader
+    shared.amd-thinkpad.hardware.graphics
     # shared.amd-thinkpad.plymouth
     shared.amd-thinkpad.user-desktop
 

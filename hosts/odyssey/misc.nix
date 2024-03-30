@@ -109,67 +109,6 @@
           25572
         ];
       };
-
-      # networkmanager.enable = true;
-      # networkmanager.wifi.backend = "iwd";
-      wireless.iwd.enable = true;
-    };
-
-    hardware = {
-      # enable bluetooth but turn off power by default
-      bluetooth.enable = true;
-      bluetooth.powerOnBoot = false;
-    };
-  }
-
-  ###########################
-  ### HARDWARE & FIRMWARE ###
-  ###########################
-  {
-    ### SERVICES: FIRMWARE ###
-    # firmware updater for machine hardware
-    services.fwupd.enable = true;
-
-    ### FIRMWARE ###
-    hardware = {
-      # enable proprietary firmware that is still redistributable
-      # required for some hardware, drivers contain proprietary blobs
-      enableRedistributableFirmware = true;
-
-      # wifi adapter
-      # error: rtw89-firmware has been removed because linux-firmware now contains it.
-      # firmware = [pkgs.rtw89-firmware];
-    };
-
-    # # gui tool for processor management
-    # programs.corectrl.enable = true;
-    # # sets the overdrive bit in amdgpu.ppfeaturemask
-    # programs.corectrl.gpuOverclock.enable = true;
-  }
-
-  {
-    hardware.opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-      extraPackages = [ pkgs.amdvlk ];
-      extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
-    };
-
-    environment.variables = {
-      # Not sure if this should be necessary, but enabling RADV did not work.
-      VK_ICD_FILENAMES = lib.concatStringsSep ":" [
-        "/run/opengl-driver/share/vulkan/icd.d/amd_icd64.json"
-        "/run/opengl-driver-32/share/vulkan/icd.d/amd_icd32.json"
-        "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json"
-        "/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json"
-      ];
-      # From Mesa, for Vulkan, alongside `radeonsi` for OpenGL.
-      AMD_VULKAN_ICD = "RADV";
-      # Mesa Gallium driver, OpenGL to Vulkan. Third-layer abstraction.
-      # MESA_LOADER_DRIVER_OVERRIDE = "zink";
-      # Official AMD, directly provides OpenGL. Use RADV for Vulkan.
-      MESA_LOADER_DRIVER_OVERRIDE = "radeonsi";
     };
   }
 
@@ -192,11 +131,6 @@
     # storage daemon required for udiskie auto-mount
     services.udisks2.enable = true;
 
-    ### SERVICES: WIRELESS ###
-
-    # bluetooth
-    services.blueman.enable = true;
-
     ### SERVICES: LOCATION ###
 
     location.provider = "geoclue2";
@@ -207,14 +141,6 @@
   ### SERVIES: PRINTING ###
   #########################
   {
-    # audio and video drivers with legacy alsa, jack, and pulse support
-    services.pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-    };
-
     # enable cups and add some drivers for common printers
     services.printing = {
       enable = true;
@@ -239,8 +165,6 @@
     console.font = "Tamsyn10x20r";
     # enable shell completions for system packages
     environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
-    # enable fingerprint sensor
-    services.fprintd.enable = true;
 
     # registry for linux, thanks to gnome
     programs.dconf.enable = true;
@@ -304,6 +228,12 @@
     ];
     xdg.portal.configPackages = [ pkgs.hyprland ];
     services.flatpak.enable = true;
+  }
+  {
+    # # gui tool for processor management
+    # programs.corectrl.enable = true;
+    # # sets the overdrive bit in amdgpu.ppfeaturemask
+    # programs.corectrl.gpuOverclock.enable = true;
   }
   ### USERS CONFIGS ###
   {
