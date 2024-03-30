@@ -159,6 +159,10 @@
   ### SYSTEM ENVIRONMENT ###
   ##########################
   {
+    # locale and timezone
+    time.timeZone = "America/Phoenix";
+    i18n.defaultLocale = "en_US.UTF-8";
+
     # tty config
     console.keyMap = "us";
     console.packages = [ pkgs.tamsyn ];
@@ -182,14 +186,6 @@
       }"
     ];
   }
-  ### PERIPHERALS ###
-  {
-    hardware.openrazer = {
-      enable = true;
-      users = [ "jacob" ];
-      devicesOffOnScreensaver = false;
-    };
-  }
   ### VIRTUALIZATION ###
   {
     boot.kernelModules = [ "kvm-amd" ];
@@ -207,59 +203,5 @@
       dockerCompat = true;
       defaultNetwork.settings.dns_enabled = true;
     };
-  }
-
-  ########################
-  ### USER ENVIRONMENT ###
-  ########################
-  {
-    # allow users to mount fuse filesystems with allow_other
-    programs.fuse.userAllowOther = true;
-    # locale and timezone
-    time.timeZone = "America/Phoenix";
-    i18n.defaultLocale = "en_US.UTF-8";
-
-    xdg.portal.enable = true;
-    xdg.portal.extraPortals = [
-      pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-wlr
-      pkgs.xdg-desktop-portal-kde
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    xdg.portal.configPackages = [ pkgs.hyprland ];
-    services.flatpak.enable = true;
-  }
-  ### USERS CONFIGS ###
-  {
-    # users.mutableUsers = false;
-    users.users = let initialPassword = "password";
-    in {
-      root = { inherit initialPassword; };
-      jacob = {
-        description = "Jacob Birkett";
-        isNormalUser = true;
-        extraGroups = [ "audio" "video" "wheel" "libvirtd" ];
-        inherit initialPassword;
-      };
-      guest = {
-        description = "Guest User";
-        isNormalUser = true;
-        inherit initialPassword;
-      };
-    };
-  }
-  ### SHARED USER FILES ###
-  {
-    # public shared directory for users of the users group
-    systemd.tmpfiles.rules = let publicDir = "/home/public/share";
-    in lib.pipe config.users.users [
-      lib.attrValues
-      (builtins.filter (user: user.createHome && user.isNormalUser))
-      # if changed fix alignment with \t
-      #             Type   Path            Mode User Group Age Argument
-      (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
-      lib.concatLists
-      (links: [ "d	${publicDir}		0666	root	users	10d		-" ] ++ links)
-    ];
   }
 ]

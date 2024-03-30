@@ -10,7 +10,6 @@ lib.bird.mkHost args {
     shared.amd-thinkpad.hardware.bootloader
     shared.amd-thinkpad.hardware.graphics
     # shared.amd-thinkpad.plymouth
-    shared.amd-thinkpad.user-desktop
 
     shared.touchpad-fix
     shared.greetd-hyprland
@@ -20,6 +19,7 @@ lib.bird.mkHost args {
     shared.nix-registry
     shared.pia-openvpn
     # shared.nixbuild
+    shared.user-sessions
 
     ./misc.nix
     ./packages.nix
