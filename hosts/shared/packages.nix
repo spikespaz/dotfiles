@@ -44,6 +44,9 @@
     v4l-utils # proprietary media hardware and encoding
     pciutils # utilities for pci and pcie devices
 
+    ### GRAPHICS TOOLS ###
+    vulkan-tools
+
     ### STORAGE DEVICE DRIVERS ###
     cryptsetup
     ntfs3g
