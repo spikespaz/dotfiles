@@ -70,7 +70,9 @@
       # there are `default` attrs in some of the "folders".
       # `mapThruAttr` will take an attrs of attrs and transparently get the
       # `default` attributes for the second-level sets that have them.
-      nixosModules = lib.importDir' ./modules null;
+      nixosModules = lib.importDir' ./modules null // {
+        hardware = lib.importDir' ./hardware null;
+      };
       homeManagerModules = lib.importDir ./hm-modules null;
 
       # for more information about the host configurations,

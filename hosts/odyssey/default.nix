@@ -5,28 +5,32 @@ lib.bird.mkHost args {
   } // lib.systems.architectures.featureSupport "znver4";
   nixpkgs = inputs.nixpkgs-unstable;
   nixpkgsArgs.config.allowUnfree = true;
-  modules = with tree.hosts; [
-    shared.amd-thinkpad.hardware.default
-    shared.amd-thinkpad.hardware.bootloader
-    shared.amd-thinkpad.hardware.graphics
-    # shared.amd-thinkpad.plymouth
+  modules =
+    #
+    with self.nixosModules;
+    with tree.hosts; [
+      hardware.amd-thinkpad.common
+      hardware.amd-thinkpad.bootloader
+      hardware.amd-thinkpad.graphics
 
-    shared.touchpad-fix
-    shared.greetd-hyprland
-    # shared.gamemode
-    shared.run-game
-    shared.packages
-    shared.nix-registry
-    shared.pia-openvpn
-    # shared.nixbuild
-    shared.user-sessions
+      # shared.amd-thinkpad.plymouth
 
-    ./misc.nix
-    ./packages.nix
-    ./filesystems.nix
-    ./cpu-frequency.nix
-    ./powerplan.nix
-  ];
+      shared.touchpad-fix
+      shared.greetd-hyprland
+      # shared.gamemode
+      shared.run-game
+      shared.packages
+      shared.nix-registry
+      shared.pia-openvpn
+      # shared.nixbuild
+      shared.user-sessions
+
+      ./misc.nix
+      ./packages.nix
+      ./filesystems.nix
+      ./cpu-frequency.nix
+      ./powerplan.nix
+    ];
   overlays = [
     # flake packages
     self.overlays.default
