@@ -67,6 +67,9 @@
     "editor.cursorBlinking" = "smooth";
     "window.density.editorTabHeight" = "compact";
 
+    # for some reason it is not the same as the editor
+    "terminal.integrated.lineHeight" = 1.4;
+
     # popups are really annoying
     "editor.hover.delay" = 700;
 
