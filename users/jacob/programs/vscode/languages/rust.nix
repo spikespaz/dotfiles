@@ -23,6 +23,8 @@
       "editor.fontLigatures" = true;
 
       "editor.formatOnSave" = true;
+
+      "editor.defaultFormatter" = "rust-lang.rust-analyzer";
     };
 
     "[slint]" = { "editor.tabSize" = 2; };
