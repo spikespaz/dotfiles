@@ -1,67 +1,71 @@
 # desktop environment default programs
 { lib, pkgs, ... }: {
-  home.packages = with pkgs; [
-    # CLI Utilities
-    wl-clipboard
-    xdg-utils
+  home.packages = with pkgs;
+    lib.flatten [
+      # CLI Utilities
+      wl-clipboard
+      xdg-utils
 
-    # Diagnostics & System Tools
-    cpu-x
-    wev
-    qdirstat
-    gparted
+      # Diagnostics & System Tools
+      cpu-x
+      wev
+      qdirstat
+      gparted
 
-    # Device Configuration
-    lxqt.pavucontrol-qt # Pulse Audio Volume Control
-    system-config-printer
-    iwgtk # Wireless GUI
+      # Device Configuration
+      lxqt.pavucontrol-qt # Pulse Audio Volume Control
+      system-config-printer
+      iwgtk # Wireless GUI
 
-    # Authentication
-    # libsForQt5.kauth
-    # libsForQt514.polkit-kde-agent
-    # lxqt.lxqt-policykit
-    # polkit_gnome
-    # pantheon.pantheon-agent-polkit
-    # libsForQt5.kwallet
-    gnome.seahorse
-    libsecret
+      # Authentication
+      # libsForQt5.kauth
+      # libsForQt514.polkit-kde-agent
+      # lxqt.lxqt-policykit
+      # polkit_gnome
+      # pantheon.pantheon-agent-polkit
+      # libsForQt5.kwallet
+      gnome.seahorse
+      libsecret
 
-    # Dolphin File Manager
-    libsForQt5.dolphin
-    libsForQt5.dolphin-plugins
-    libsForQt5.kio-extras
-    libsForQt5.ffmpegthumbs # Video Thumbnails
-    libsForQt5.kimageformats # Proprieary Image Formats
-    resvg # SVG Thumbnails
-    taglib # Audio File Tags
-    libsForQt5.kfind # File Search
-    libsForQt5.ark # Archive GUI
+      (with pkgs.libsForQt5; [
+        # File Management
+        dolphin
+        dolphin-plugins
+        kio-extras
+        ffmpegthumbs # Video Thumbnails
+        kimageformats # Proprieary Image Formats
+        kfind # File Search
+        ark # Archive GUI
 
-    # KDE Utilities
-    libsForQt5.kcolorchooser # Color Chooser
-    libsForQt5.kate # Text Editor
-    libsForQt5.kdf # Disk Usage
-    libsForQt5.kompare # Difference Viewer
-    libsForQt5.okular # Document Viewer
-    libsForQt5.print-manager # Print Manager
-    libsForQt5.skanlite # Lightweight Document Scanner
+        # KDE Utilities
+        kcolorchooser # Color Chooser
+        kate # Text Editor
+        kdf # Disk Usage
+        kompare # Difference Viewer
+        okular # Document Viewer
+        print-manager # Print Manager
+        skanlite # Lightweight Document Scanner
+      ])
 
-    # General Utilities
-    gnome.gnome-sound-recorder
+      resvg # SVG Thumbnails
+      taglib # Audio File Tags
 
-    # Video Player
-    haruna
+      # General Utilities
+      gnome.gnome-sound-recorder
 
-    # LXQT Utilities
-    lxqt.lximage-qt # Image Viewer
+      # Video Player
+      haruna
 
-    # Generic Utilities
-    qalculate-gtk
-    font-manager
+      # LXQT Utilities
+      lxqt.lximage-qt # Image Viewer
 
-    # Compatibility
-    appimage-run
-  ];
+      # Generic Utilities
+      qalculate-gtk
+      font-manager
+
+      # Compatibility
+      appimage-run
+    ];
 
   xdg.configFile."dolphinrc".text = ''
     MenuBar=Disabled
