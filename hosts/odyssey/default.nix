@@ -12,6 +12,7 @@ lib.bird.mkHost args {
       hardware.amd-thinkpad.common
       hardware.amd-thinkpad.bootloader
       hardware.amd-thinkpad.graphics
+      hardware.amd-thinkpad.airplane-mode
 
       # shared.amd-thinkpad.plymouth
 

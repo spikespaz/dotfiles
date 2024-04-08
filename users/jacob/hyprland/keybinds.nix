@@ -36,6 +36,7 @@
           libnotify
         ];
       };
+      airplaneMode = "sudo /run/current-system/sw/bin/airplane-mode";
     };
 
     # Collections of keybinds common across multiple submaps are collected into
@@ -258,6 +259,8 @@
     {
       # The names of these keys can be found at:
       # <https://github.com/xkbcommon/libxkbcommon/blob/master/include/xkbcommon/xkbcommon-keysyms.h>
+
+      bindl."SHIFT, XF86WLAN" = "exec, ${exec.airplaneMode}";
 
       # Mute/unmute the active audio output.
       bindl.", XF86AudioMute" = "exec, ${exec.osdFunc} output mute";
