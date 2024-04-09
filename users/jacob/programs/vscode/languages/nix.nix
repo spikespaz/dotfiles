@@ -1,5 +1,10 @@
-{ lib, pkgs, ... }:
-let dictionary = [ "builtins" "pkgs" "concat" "nixos" "nixpkgs" ];
+{ config, lib, pkgs, ... }:
+let
+  dictionary = [ "builtins" "pkgs" "concat" "nixos" "nixpkgs" ];
+  fontIsEnabled = familyName:
+    (builtins.match ".*${familyName}.*"
+      config.programs.vscode.userSettings."editor.fontFamily") != [ ];
+  monaspiceLigatures = fontIsEnabled "MonaspiceNe Nerd Font";
 in {
   programs.vscode.extensions =
     let extensions = pkgs.callPackage ../marketplace.nix { };
@@ -23,6 +28,20 @@ in {
       "path-autocomplete.triggerOutsideStrings" = true;
       # don't add a trailing slash for dirs
       "path-autocomplete.enableFolderTrailingSlash" = false;
+
+      "editor.fontLigatures" = lib.concatMapStringsSep ", " (s: "'${s}'") [
+        "ss01" # == === =/= != !== /= /== ~~ =~ !~
+        "ss02" # >= <=
+        # "ss03" # -> <- => <!-- --> <~ <~~ <~>
+        # "ss04" # </ /> </> /\ \/
+        # "ss05" # |> <|
+        "ss06" # ## ###
+        "ss07" # *** /* */ /*/ (* *) (*)
+        # "ss08" # .= .- ..<
+        "liga" # <! !! ** :: =: == =! =/ != --
+        # "calt" # // /// && ?? ?. ?: || :: ::: ;; .. ... =~= #= := =:= :> >: :> ..= ==-
+        # "dlig" # all
+      ];
     };
 
     "cSpell.languageSettings" = [{
