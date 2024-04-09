@@ -4,7 +4,7 @@
     super = pkgs.vscode;
     fontPackages = with pkgs; [
       material-design-icons
-      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      (nerdfonts.override { fonts = [ "JetBrainsMono" "Monaspace" ]; })
     ];
   in (pkgs.symlinkJoin {
     inherit (super) name pname version;
@@ -59,8 +59,23 @@
     # the most important setting
     "editor.fontFamily" = lib.concatMapStringsSep ", " (s: "'${s}'") [
       "Material Design Icons"
-      "JetBrainsMono Nerd Font"
+      "MonaspiceNe Nerd Font"
+      # "JetBrainsMono Nerd Font"
     ];
+    # "editor.fontLigatures" = true;
+    # "editor.fontLigatures" = lib.concatMapStringsSep ", " (s: "'${s}'") [
+    #   "ss01" # == === =/= != !== /= /== ~~ =~ !~
+    #   "ss02" # >= <=
+    #   "ss03" # -> <- => <!-- --> <~ <~~ <~>
+    #   # "ss04" # </ /> </> /\ \/
+    #   # "ss05" # |> <|
+    #   "ss06" # ## ###
+    #   "ss07" # *** /* */ /*/ (* *) (*)
+    #   # "ss08" # .= .- ..<
+    #   "liga" # <! !! ** :: =: == =! =/ != --
+    #   "calt" # // /// && ?? ?. ?: || :: ::: ;; .. ... =~= #= := =:= :> >: :> ..= ==-
+    #   # "dlig" # all
+    # ];
     "editor.fontSize" = 14;
     "editor.cursorSmoothCaretAnimation" = "explicit";
     "editor.cursorStyle" = "block";
