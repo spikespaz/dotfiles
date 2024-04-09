@@ -20,9 +20,21 @@
 
   programs.vscode.userSettings = {
     "[rust]" = {
-      "editor.fontLigatures" = true;
-
       "editor.formatOnSave" = true;
+
+      "editor.fontLigatures" = lib.concatMapStringsSep ", " (s: "'${s}'") [
+        "ss01" # == === =/= != !== /= /== ~~ =~ !~
+        "ss02" # >= <=
+        "ss03" # -> <- => <!-- --> <~ <~~ <~>
+        # "ss04" # </ /> </> /\ \/
+        # "ss05" # |> <|
+        "ss06" # ## ###
+        "ss07" # *** /* */ /*/ (* *) (*)
+        # "ss08" # .= .- ..<
+        "liga" # <! !! ** :: =: == =! =/ != --
+        "calt" # // /// && ?? ?. ?: || :: ::: ;; .. ... =~= #= := =:= :> >: :> ..= ==-
+        # "dlig" # all
+      ];
 
       "editor.defaultFormatter" = "rust-lang.rust-analyzer";
     };
