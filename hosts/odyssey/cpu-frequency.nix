@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, lib, ... }: {
   # imports = [ self.nixosModules.amdctl ];
 
   environment.systemPackages = [
@@ -30,10 +30,14 @@
   # I assume `balance_performance` means to choose to balance
   # performance over power efficiency,
   # and `balance_power` chooses efficiency over performance.
-  services.udev.extraRules = ''
-    KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/scaling_governor}="powersave"
-    KERNEL=="cpu[0-9]|cpu1[0-5]", SUBSYSTEM=="cpu", ATTR{cpufreq/energy_performance_preference}="balance_power"
-  '';
+  services.udev.extraRules = let
+    num_cpus = 16;
+    scaling_governor = "powersave";
+    energy_performance_preference = "balance_power";
+  in lib.concatLines (lib.genList (cpu: ''
+    KERNEL=="cpu${toString cpu}", SUBSYSTEM=="cpu", ATTR{cpufreq/scaling_governor}="${scaling_governor}"
+    KERNEL=="cpu${toString cpu}", SUBSYSTEM=="cpu", ATTR{cpufreq/energy_performance_preference}="${energy_performance_preference}"
+  '') num_cpus);
 
   # Now TLP can be used to control this automatically while
   # the system is running. The values set above should be mostly fine,
