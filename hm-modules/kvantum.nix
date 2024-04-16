@@ -10,7 +10,7 @@ in {
 
       package = lib.mkOption {
         type = types.package;
-        default = pkgs.libsForQt5.qtstyleplugin-kvantum;
+        default = pkgs.kdePackages.qtstyleplugin-kvantum;
         example = lib.literalExpression ''
           pkgs.libsForQt5.qtstyleplugin-kvantum
         '';
