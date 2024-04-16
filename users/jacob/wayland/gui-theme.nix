@@ -3,6 +3,7 @@
     #
     self.homeManagerModules.randbg
     self.homeManagerModules.kvantum
+    ./kde-theme.nix
   ];
 
   ## WALLPAPER ##
@@ -25,14 +26,7 @@
     enable = true;
     iconTheme.package = pkgs.papirus-icon-theme;
     iconTheme.name = "Papirus-Dark";
-    # FIXME Should be investigated but...
-    # As of 2023-11-19, an update to nixpkgs in the last few days
-    # has caused this package to stop building,
-    # ```
-    # cp: cannot stat '/build/source/build/src/cinnamon/Materia.cinnamon.css': No such file or directory
-    # ```
-    # So, we use `pkgs-stable`.
-    theme.package = pkgs-stable.materia-theme;
+    theme.package = pkgs.materia-theme;
     theme.name = "Materia-dark-compact";
     font.package = pkgs.ubuntu_font_family;
     font.name = "Ubuntu";
@@ -55,33 +49,4 @@
   };
 
   home.sessionVariables.XCURSOR_SIZE = toString 24;
-
-  ## KDE THEME ##
-
-  qt.enable = true;
-  qt.platformTheme = "qtct";
-  qt.style.name = "kvantum";
-
-  programs.kvantum = {
-    enable = true;
-    theme.package = pkgs.materia-kde-theme;
-    theme.name = "MateriaDark";
-    theme.overrides = {
-      General = {
-        no_inactiveness = true;
-        translucent_windows = true;
-        reduce_window_opacity = 13;
-        reduce_menu_opacity = 13;
-        drag_from_buttons = false;
-        shadowless_popup = true;
-        popup_blurring = true;
-        menu_blur_radius = 5;
-        tooltip_blur_radius = 5;
-      };
-      Hacks = {
-        transparent_dolphin_view = true;
-        style_vertical_toolbars = true;
-      };
-    };
-  };
 }
