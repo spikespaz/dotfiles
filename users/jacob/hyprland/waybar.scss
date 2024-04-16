@@ -46,6 +46,17 @@ $highlight-foreground: #fbf1c7;
   }
 }
 
+@mixin indicate-hover($color) {
+  transition:
+    background 120ms ease-in;
+
+  &:hover {
+    transition:
+      background 120ms ease-out;
+    background: $color;
+  }
+}
+
 #clock,
 #submap,
 #backlight,
@@ -131,6 +142,16 @@ window.popup {
   font-weight: bold;
 }
 
+#tray {
+  &>* {
+    @include indicate-hover(#282828);
+  }
+}
+
+#mpris {
+  @include indicate-hover(#282828);
+}
+
 #submap {
   @include indicate-active(#d3869b, "&");
 }
@@ -140,6 +161,7 @@ window.popup {
     min-width: 26px;
     padding: 6px;
 
+    @include indicate-hover(#282828);
     @include indicate-active(#f38019, "&.active");
 
     &.urgent {
@@ -150,12 +172,14 @@ window.popup {
 }
 
 #network {
+  @include indicate-hover(#282828);
   @include indicate-active(#689d6a, "&.wifi");
   @include indicate-active(#458588, "&.ethernet");
   @include indicate-active(#b16286, "&.linked");
 }
 
 #bluetooth {
+  @include indicate-hover(#282828);
   @include indicate-active(#458588, "&.on");
   @include indicate-active(#98971a, "&.connected");
 
@@ -195,6 +219,7 @@ window.popup {
 }
 
 #idle_inhibitor {
+  @include indicate-hover(#282828);
   @include indicate-active(#d79921, "&.activated");
 
   &.activated {
@@ -202,6 +227,10 @@ window.popup {
   }
 }
 
-#pulseaudio.output:not(.safe) {
-  @include breathe-highlight(#cc241d, 10s);
+#pulseaudio {
+  @include indicate-hover(#282828);
+
+  &.output:not(.safe) {
+    @include breathe-highlight(#cc241d, 10s);
+  }
 }
