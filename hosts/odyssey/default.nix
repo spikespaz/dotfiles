@@ -33,6 +33,7 @@ lib.bird.mkHost args {
       ./powerplan.nix
     ];
   overlays = [
+    self.overlays.lib
     # flake packages
     self.overlays.default
     # override packages with an unfree license
