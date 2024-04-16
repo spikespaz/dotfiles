@@ -36,7 +36,7 @@ in {
         (pkgs.fetchpatch {
           url =
             "https://patch-diff.githubusercontent.com/raw/trialuser02/qt6ct/pull/43.diff";
-          hash = "sha256-r7KtusyM7MWYN/RXpc/CJf3IOLkuN5+FJpa4dNa9b7M=";
+          hash = "sha256-U0Mb7Quoh8V6Wix42ILobE4L8/2BCinxhPkEI50+T/w=";
         })
         (pkgs.fetchpatch {
           url =
