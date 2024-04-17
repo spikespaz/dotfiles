@@ -29,14 +29,21 @@
       };
       screenshotWindow = pkgs.patchShellScript ./scripts/screenshot.sh {
         runtimeInputs = with pkgs; [
-          config.wayland.windowManager.hyprland.package
           jq
           grim
           wl-clipboard
           libnotify
+          config.wayland.windowManager.hyprland.package
         ];
       };
       airplaneMode = "sudo /run/current-system/sw/bin/airplane-mode";
+      toggleGroupOrLock =
+        pkgs.patchShellScript ./scripts/toggle-group-or-lock.sh {
+          runtimeInputs = with pkgs; [
+            jq
+            config.wayland.windowManager.hyprland.package
+          ];
+        };
     };
 
     # Collections of keybinds common across multiple submaps are collected into
@@ -327,7 +334,7 @@
     groups.changeGroupActive
     {
       # Lock/unlock the active group without entering the submap.
-      bind."SUPER_SHIFT, G" = "lockactivegroup, toggle";
+      bind."SUPER_SHIFT, G" = "exec, ${exec.toggleGroupOrLock}";
 
       # Enter a submap for manipulating windows with relation to groups.
       bind."SUPER, G" = "submap, groups";
