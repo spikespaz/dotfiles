@@ -1,5 +1,5 @@
 # shellcheck shell=bash
-set -eu
+set -eux -o pipefail
 
 interval=
 chance=
@@ -49,9 +49,14 @@ echo "Chance = $chance"
 echo "Image Directory = $img_dir"
 echo "User = $USER"
 echo "Passthrough Argments = ${passthru_args[*]}"
+session_id=$(ps -o sess= -p $$ | tr -d '[:space:]')
+echo "Session ID = $session_id"
 
 set_img() {
-  old_pids="$(pgrep -U "$USER" -x 'swaybg' || :)"
+  old_pids="$(
+    ps -o pid,sess,cmd -u "$USER" \
+      | awk -v sess="$session_id" '$2 == sess && $0 ~ /swaybg/ {print $1}'
+  )"
   if [ -z "$old_pids" ]; then
     echo "Found old swaybg PIDs: $old_pids"
   fi
@@ -80,7 +85,7 @@ set_img() {
       sleep 10 # this is huge because of huge images
       echo 'Killing old swaybg PIDs...'
       # shellcheck disable=SC2086
-      kill -s 9 $old_pids
+      kill -s 9 $old_pids || :
     fi
 
     old_img="$new_img"

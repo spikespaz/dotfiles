@@ -85,7 +85,7 @@ in {
         NotifyAccess = "all"; # because of a bug?
         ExecStart = lib.concatStringsSep " " [
           (lib.wrapShellScript pkgs ./wallpaper.sh
-            (with pkgs; [ systemd coreutils procps findutils swaybg ]))
+            (with pkgs; [ systemd coreutils procps gawk findutils swaybg ]))
           "-i ${toString cfg.interval}"
           "-c ${toString cfg.chance}"
           "-d '${cfg.directory}'"
