@@ -9,7 +9,7 @@
     location = "top";
     yoffset = 6;
     extraConfig = {
-      modes = "run,drun,calc,emoji";
+      # modes = "run,drun,emoji";
       icon-theme = config.gtk.iconTheme.name;
     };
     # theme = ./gruvbox-dark-hard.rasi;
