@@ -63,11 +63,13 @@
         location = mkLiteral "center";
         width = mkLiteral "640";
         y-offset = mkLiteral "-200";
-        border-radius = mkLiteral "8";
+        # border-radius = mkLiteral "8";
+        border = mkLiteral "2px";
+        border-color = gb.fg3 1.0;
       };
 
       inputbar = {
-        font = "${font} 20";
+        font = "${font} 14";
         padding = mkLiteral "12px";
         spacing = mkLiteral "12px";
         children = mkLiteral "[ icon-search, entry ]";
@@ -76,7 +78,7 @@
       icon-search = {
         expand = mkLiteral "false";
         filename = "search";
-        size = mkLiteral "28px";
+        size = mkLiteral "1.4em";
       };
 
       "icon-search, entry, element-icon, element-text" = {
@@ -92,7 +94,7 @@
 
       message = {
         border = mkLiteral "2px 0 0";
-        border-color = gb.bg0_soft 0.9;
+        border-color = gb.bg1 1.0;
         background-color = gb.bg0_soft 0.9;
       };
 
@@ -104,7 +106,7 @@
 
         fixed-height = mkLiteral "false";
         border = mkLiteral "1px 0 0";
-        border-color = gb.bg0_soft 0.9;
+        border-color = gb.bg2 1.0;
       };
 
       element = {
