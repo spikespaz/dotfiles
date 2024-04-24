@@ -14,7 +14,9 @@ let
     };
   };
 in lib.bird.mkHome args rec {
-  hostPlatform.system = "x86_64-linux";
+  hostPlatform = {
+    system = "x86_64-linux";
+  } // lib.systems.architectures.featureSupport "znver2";
   nixpkgs = inputs.nixpkgs-unstable;
   nixpkgsArgs.config.allowUnfree = true;
   modules = with tree.users.jacob; [
