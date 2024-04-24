@@ -1,4 +1,5 @@
 { pkgs, lib }: {
+  # Clicks the stupid little green loot box for me.
   twitch-auto-clicker = let fileId = "3944212";
   in pkgs.buildFirefoxXpiAddon rec {
     pname = "twitchautoclicker";
@@ -15,6 +16,7 @@
       platforms = platforms.all;
     };
   };
+  # Get rid of Twitch's pre-roll ads (mostly). Let me browse in peace.
   ttv-lol-pro = let fileId = "4209247";
   in pkgs.buildFirefoxXpiAddon rec {
     pname = "ttv_lol_pro";
@@ -37,8 +39,9 @@
       ];
     };
   };
-  frankerfacez = let _fileId = null; # not on AMO
-  in pkgs.buildFirefoxXpiAddon rec {
+
+  # This extension is amazing, check it out if you use Twitch.
+  frankerfacez = pkgs.buildFirefoxXpiAddon rec {
     pname = "frankerfacez";
     version = "4.0";
     addonId = "frankerfacez@frankerfacez.com";

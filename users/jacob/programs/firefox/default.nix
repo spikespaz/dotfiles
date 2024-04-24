@@ -10,7 +10,7 @@ let
     rycee = pkgs.nur.repos.rycee.firefox-addons;
     bandithedoge = pkgs.nur.repos.bandithedoge.firefoxAddons;
     slaier = pkgs.nur.repos.slaier.firefox-addons;
-    spikespaz = pkgs.callPackage ./extensions.nix { };
+    spikespaz = pkgs.firefox-extensions;
   };
 in {
   programs.firefox.enable = true;

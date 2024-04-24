@@ -34,4 +34,9 @@ lib: {
   zsh-plugins = pkgs: pkgs0: {
     zsh-plugins = pkgs.callPackage ./zsh-plugins.nix { inherit lib; };
   };
+
+  firefox-extensions = pkgs: pkgs0: {
+    firefox-extensions =
+      pkgs.callPackage ./firefox-extensions.nix { inherit lib; };
+  };
 }
