@@ -1,20 +1,9 @@
-{ lib, pkgs, config, ... }:
+{ self, lib, pkgs, config, ... }:
 let
-  wavefox = pkgs.stdenv.mkDerivation (self: {
-    pname = "wavefox-userchrome";
-    version = "1.6.123";
-    src = pkgs.fetchFromGitHub {
-      owner = "QNetITQ";
-      repo = "WaveFox";
-      rev = "v${self.version}";
-      hash = "sha256-uVGNJKtT8MHo5a+GTW6DfpuRiCukC4e4UdnKmWIk3Zw=";
+  wavefox =
+    pkgs.callPackage "${self}/users/jacob/programs/firefox/wavefox.nix" {
+      inherit lib;
     };
-    installPhase = ''
-      mkdir $out
-      cp -r $src/chrome -T $out
-      cp -r $src/{README.md,LICENSE} -t $out
-    '';
-  });
 in {
   programs.firefox.profiles."jacob.default" = {
     settings = {
