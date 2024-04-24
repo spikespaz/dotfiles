@@ -32,6 +32,8 @@ in lib.bird.mkHome args rec {
   # from input flakes, otherwise this user config will fail
   # when it expects to find the twice-overridden package.
   overlays = [
+    # make the `home-manager` command follow flake input's version
+    (import "${inputs.home-manager}/overlay.nix")
     # nix user repo packages
     inputs.nur.overlay
     # packages for window manager
