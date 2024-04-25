@@ -159,9 +159,9 @@ in {
     programs.virt-manager
 
     ### VIDEO GAMES ###
-    programs.minecraft.prism-launcher
     programs.moonlight
     programs.steam
+    programs.prism-launcher
 
     ### AUTHENTICATION ###
     programs.keepassxc
