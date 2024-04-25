@@ -1,5 +1,14 @@
-{ pkgs, fetchurl, graalvmCEPackages }:
+{ lib, pkgs, fetchurl, callPackage, graalvmCEPackages }:
 let
+  mkJava = opts:
+    pkgs.callPackage (import
+      "${pkgs.path}/pkgs/development/compilers/temurin-bin/jdk-linux-base.nix"
+      opts) { };
+
+  temurinSources = lib.importJSON ./temurin-sources.json;
+
+  temurin20-jre-bin = mkJava { sourcePerArch = temurinSources.openjdk20; };
+
   graalvm8-ce = (graalvmCEPackages.buildGraalvm {
     version = "21.3.1";
     javaVersion = "8";
@@ -23,7 +32,6 @@ let
     '';
   });
 in {
-  inherit graalvm8-ce;
+  inherit temurin20-jre-bin graalvm8-ce;
   graalvm8-ce-jre = "${graalvm8-ce}/jre";
 }
-

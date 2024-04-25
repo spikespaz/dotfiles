@@ -29,6 +29,11 @@ lib: {
     nerdfonts-symbols = pkgs.callPackage ./nerdfonts-symbols { inherit lib; };
   };
 
+  java = pkgs: _: {
+    inherit (pkgs.callPackage ./java { inherit lib; })
+      temurin20-jre-bin graalvm8-ce graalvm8-ce-jre;
+  };
+
   # PACKAGE SETS #
 
   zsh-plugins = pkgs: pkgs0: {

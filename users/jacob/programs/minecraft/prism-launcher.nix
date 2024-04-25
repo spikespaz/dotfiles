@@ -2,27 +2,19 @@
 let
   package = pkgs.prismlauncher-qt5;
 
-  inherit (pkgs.callPackage ./graalvm.nix { }) graalvm8-ce-jre;
-  mkJava = opts:
-    pkgs.callPackage (import
-      "${nixpkgs}/pkgs/development/compilers/temurin-bin/jdk-linux-base.nix"
-      opts) { };
-  temurinSources = lib.importJSON ./temurin-sources.json;
-  temurin20-jre-bin = mkJava { sourcePerArch = temurinSources.openjdk20; };
-
-  javaPackages = [
+  javaPackages = with pkgs; [
     # Java 8
-    pkgs.temurin-jre-bin-8
-    pkgs.zulu8
+    temurin-jre-bin-8
+    zulu8
     graalvm8-ce-jre
     # Java 11
-    pkgs.temurin-jre-bin-11
+    temurin-jre-bin-11
     # Java 20
     temurin20-jre-bin
     # Latest
-    pkgs.temurin-jre-bin
-    pkgs.zulu
-    pkgs.graalvm-ce
+    temurin-jre-bin
+    zulu
+    graalvm-ce
   ];
 
   cmd.preLaunch = ''
