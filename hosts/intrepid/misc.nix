@@ -19,10 +19,8 @@
       persistent = true;
     };
 
-    # use a lower priority for builds
-    # so that the system is still usable with the following (extreme) settings
     nix.daemonCPUSchedPolicy = "batch";
-    nix.daemonIOSchedClass = "idle";
+    nix.daemonIOSchedClass = "best-effort";
 
     nix.settings = rec {
       # allow the flake settings
