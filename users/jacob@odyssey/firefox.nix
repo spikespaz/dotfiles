@@ -1,26 +1,13 @@
 { lib, pkgs, config, ... }:
 let
-  wavefox = let
-    wavefoxMajorMinor = "1.6";
-    version = "${wavefoxMajorMinor}.${firefoxMajor}";
-    hashes = {
-      "1.6.121" = "sha256-YV6d/yYC42EmN8fVMvC95GSNqUWrCuS5tdHpv+1+C1U=";
-      "1.6.122" = "sha256-29LleIJ+c9HYyxlE59pP09OMzPKcx2JDeidZcBOs6+0=";
-      "1.6.123" = "sha256-uVGNJKtT8MHo5a+GTW6DfpuRiCukC4e4UdnKmWIk3Zw=";
-      "1.6.124" = hashes."1.6.123";
-      "1.6.125" = hashes."1.6.123";
-    };
-
-    firefoxVer = config.programs.firefox.package.version;
-    firefoxMajor = (lib.lsplitString "." firefoxVer).l;
-  in pkgs.stdenv.mkDerivation (self: {
+  wavefox = pkgs.stdenv.mkDerivation (self: {
     pname = "wavefox-userchrome";
-    inherit version;
+    version = "1.6.123";
     src = pkgs.fetchFromGitHub {
       owner = "QNetITQ";
       repo = "WaveFox";
       rev = "v${self.version}";
-      hash = hashes.${self.version};
+      hash = "sha256-uVGNJKtT8MHo5a+GTW6DfpuRiCukC4e4UdnKmWIk3Zw=";
     };
     installPhase = ''
       mkdir $out
