@@ -1,6 +1,8 @@
 args@{ self, tree, lib, inputs }:
 lib.bird.mkHost args {
-  hostPlatform.system = "x86_64-linux";
+  hostPlatform = {
+    system = "x86_64-linux";
+  } // lib.systems.architectures.featureSupport "znver2";
   nixpkgs = inputs.nixpkgs-unstable;
   nixpkgsArgs.config.allowUnfree = true;
   modules = with tree.hosts; [
