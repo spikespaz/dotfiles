@@ -1,4 +1,7 @@
 { pkgs, config, ... }: {
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [ dotnet-runtime_8 ];
+
   # NOTE:
   # You're supposed to add users to the `adbusers` group for
   # these rules to work, but it works for me regardless.
