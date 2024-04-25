@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 set -eu
 
 if [ "$(id -u)" -eq 0 ]; then
