@@ -58,8 +58,8 @@ in {
 
     inputs.homeage.homeManagerModules.homeage
     (self.tree.scripts.dots pkgs {
-      flakeIsWorktree = true;
-      flakeBasename = "dotfiles.git";
+      flakeIsWorktree = false;
+      flakeBasename = "dotfiles";
     })
 
     ### DEFAULT PROGRAMS ###
@@ -72,38 +72,23 @@ in {
     ### WEB BROWSERS ###
     programs.firefox
     programs.chromium
-    programs.microsoft-edge
 
     ### COMMUNICATION & MESSAGING ###
-    # programs.mailspring
     programs.thunderbird
-    # programs.discord.canary
-    # programs.discord.webcord
-    # programs.armcord
     programs.vesktop
-    programs.hexchat
-    programs.telegram
-    programs.matrix
-    programs.mattermost
 
     ### MEDIA CREATION ###
     programs.obs-studio
-    programs.handbrake
+    # programs.handbrake
     programs.ffmpeg
-    programs.kdenlive
-    programs.shotcut
     programs.pinta
-    programs.gimp
+    # programs.gimp
 
     ### MEDIA CONSUMPTION ###
-    # programs.spotify
     programs.tidal
 
     ### OFFICE & WRITING SOFTWARE ###
-    programs.onlyoffice
     programs.libreoffice
-    # TODO doesn't work
-    # programs.apostrophe
 
     ### TERMINAL EMULATORS ###
     programs.alacritty
@@ -114,24 +99,9 @@ in {
     programs.vscode.languages.cpp
     programs.vscode.languages.bash
     programs.vscode.languages.nix
-    programs.vscode.languages.perl
     programs.vscode.languages.rust
-    programs.vscode.languages.web
-    programs.vscode.languages.yuck
     programs.vscode.languages.python
-    programs.vscode.languages.nushell
-    programs.vscode.other.marlin
-    programs.vscode.other.marp
-    # TODO broken idk why
-    # programs.vscode.languages.all
-    # programs.jetbrains.clion
-    # programs.jetbrains.goland
-    # programs.jetbrains.idea
-    # programs.jetbrains.pycharm
-    # programs.rstudio
     programs.neovim
-    programs.helix
-    programs.lapce
 
     ### DEVELOPMENT TOOLS ###
     programs.nix
@@ -141,7 +111,6 @@ in {
 
     ### SHELL ENVIRONMENTS ###
     programs.zsh
-    programs.nushell
 
     ### CLI UTILITIES ###
     programs.bat
@@ -152,15 +121,11 @@ in {
 
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
     programs.remmina
-    programs.anydesk
-    programs.rustdesk
     programs.neofetch
     programs.nix-index
     programs.virt-manager
 
     ### VIDEO GAMES ###
-    programs.moonlight
-    programs.steam
     programs.prism-launcher
 
     ### AUTHENTICATION ###
@@ -173,25 +138,14 @@ in {
     programs.jellyfin
 
     ### 3D PRINTING ###
-    programs.openscad
     programs.prusa-slicer
-    # disabled until <https://github.com/NixOS/nixpkgs/pull/225817> is merged
-    # programs.super-slicer
-    programs.cura
-
-    ### HARDWARE ###
-    # programs.hardware.razer
 
     ##############################
     ### USER-SPECIFIC SERVICES ###
     ##############################
 
-    ### BACKGROUND SYNC & NOTIFICATIONS ###
-    # services.thunderbird
-
     ### MEDIA ###
     services.playerctl
-    # services.spotify
 
     ### FILE SYNCHRONIZATION ###
     services.onedrive
