@@ -141,8 +141,8 @@
 
     # polymc.url = "github:PolyMC/PolyMC";
 
-    prism-launcher.url = "github:PrismLauncher/PrismLauncher";
-    prism-launcher.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # prism-launcher.url = "github:PrismLauncher/PrismLauncher";
+    # prism-launcher.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     slight.url = "github:spikespaz/slight";
 
