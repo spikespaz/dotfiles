@@ -39,6 +39,14 @@
 
       font = "Ubuntu Regular";
       accent = gb.hl_orange;
+
+      icons = with lib.birdos.colors.formats.hexRGB'.gruvbox.dark; {
+        text-search = (pkgs.substitute {
+          src = ./text-search.svg;
+          color = fg0;
+          substitutions = [ "--subst-var" "color" ];
+        }).outPath;
+      };
     in {
       #*****************************************************************************
       # MACOS SPOTLIGHT LIKE DARK THEME FOR ROFI
@@ -77,7 +85,7 @@
 
       icon-search = {
         expand = mkLiteral "false";
-        filename = "search";
+        filename = mkLiteral ''"${icons.text-search}"'';
         size = mkLiteral "1.4em";
       };
 
