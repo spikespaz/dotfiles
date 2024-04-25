@@ -58,7 +58,7 @@ in {
   programs.alacritty.enable = true;
 
   home.packages =
-    [ (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; }) ];
+    [ (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "Monaspace" ]; }) ];
 
   programs.alacritty.settings.shell = {
     program = "${lib.getExe pkgs.zsh}";
@@ -76,8 +76,9 @@ in {
     scrolling.history = 100000;
 
     font = {
-      normal.family = "JetBrainsMono Nerd Font";
-      size = 10;
+      # normal.family = "JetBrainsMono Nerd Font";
+      normal.family = "MonaspiceNe Nerd Font";
+      size = 11;
     };
 
     colors = themes.gruvbox_dark_harder;
