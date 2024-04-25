@@ -24,14 +24,6 @@
     nix.daemonCPUSchedPolicy = "batch";
     nix.daemonIOSchedClass = "idle";
 
-    nix.distributedBuilds = true;
-    nix.buildMachines = [{
-      hostName = "localhost";
-      system = pkgs.stdenv.hostPlatform.system;
-      supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
-      maxJobs = config.nix.settings.max-jobs;
-    }];
-
     nix.settings = rec {
       # allow the flake settings
       # accept-flake-config = true;
