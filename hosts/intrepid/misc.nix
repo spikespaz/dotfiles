@@ -117,16 +117,6 @@
           25572
         ];
       };
-
-      # networkmanager.enable = true;
-      # networkmanager.wifi.backend = "iwd";
-      wireless.iwd.enable = true;
-    };
-
-    hardware = {
-      # enable bluetooth but turn off power by default
-      bluetooth.enable = true;
-      bluetooth.powerOnBoot = false;
     };
   }
 
@@ -134,24 +124,8 @@
   ### HARDWARE & FIRMWARE ###
   ###########################
   {
-    ### SERVICES: FIRMWARE ###
-    # firmware updater for machine hardware
-    services.fwupd.enable = true;
-
     ### FIRMWARE ###
     hardware = {
-      # enable proprietary firmware that is still redistributable
-      # required for some hardware, drivers contain proprietary blobs
-      enableRedistributableFirmware = true;
-
-      # wifi adapter
-      # error: rtw89-firmware has been removed because linux-firmware now contains it.
-      # firmware = [pkgs.rtw89-firmware];
-
-      # enable opengl just in case the compositor doesn't
-      opengl.enable = true;
-      opengl.driSupport32Bit = true;
-
       # enable the lenovo trackpoint (default) but decrease sensitivity
       trackpoint.enable = true;
       trackpoint.speed = 85;
@@ -162,11 +136,6 @@
       # allows the backlight to be controlled via software.
       "amdgpu.backlight=0"
     ];
-
-    # # gui tool for processor management
-    # programs.corectrl.enable = true;
-    # # sets the overdrive bit in amdgpu.ppfeaturemask
-    # programs.corectrl.gpuOverclock.enable = true;
   }
 
   ################
@@ -188,11 +157,6 @@
     # storage daemon required for udiskie auto-mount
     services.udisks2.enable = true;
 
-    ### SERVICES: WIRELESS ###
-
-    # bluetooth
-    services.blueman.enable = true;
-
     ### SERVICES: LOCATION ###
 
     location.provider = "geoclue2";
@@ -203,14 +167,6 @@
   ### SERVIES: PRINTING ###
   #########################
   {
-    # audio and video drivers with legacy alsa, jack, and pulse support
-    services.pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-    };
-
     # enable cups and add some drivers for common printers
     services.printing = {
       enable = true;
@@ -221,7 +177,8 @@
     services.avahi = {
       enable = true;
       # resolve .local domains for printers
-      nssmdns = true;
+      nssmdns4 = true;
+      nssmdns6 = false;
     };
   }
 
@@ -229,14 +186,16 @@
   ### SYSTEM ENVIRONMENT ###
   ##########################
   {
+    # locale and timezone
+    time.timeZone = "America/Phoenix";
+    i18n.defaultLocale = "en_US.UTF-8";
+
     # tty config
     console.keyMap = "us";
     console.packages = [ pkgs.tamsyn ];
     console.font = "Tamsyn8x16r";
     # enable shell completions for system packages
     environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
-    # enable fingerprint sensor
-    services.fprintd.enable = true;
 
     # registry for linux, thanks to gnome
     programs.dconf.enable = true;
@@ -254,14 +213,6 @@
       }"
     ];
   }
-  ### PERIPHERALS ###
-  {
-    hardware.openrazer = {
-      enable = true;
-      users = [ "jacob" ];
-      devicesOffOnScreensaver = false;
-    };
-  }
   ### VIRTUALIZATION ###
   {
     boot.kernelModules = [ "kvm-amd" ];
@@ -273,52 +224,11 @@
       qemu.swtpm.enable = true;
       qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
     };
-  }
 
-  ########################
-  ### USER ENVIRONMENT ###
-  ########################
-  {
-    # allow users to mount fuse filesystems with allow_other
-    programs.fuse.userAllowOther = true;
-    # locale and timezone
-    time.timeZone = "America/Phoenix";
-    i18n.defaultLocale = "en_US.UTF-8";
-
-    xdg.portal.enable = true;
-    services.flatpak.enable = true;
-  }
-  ### USERS CONFIGS ###
-  {
-    # users.mutableUsers = false;
-    users.users = let initialPassword = "password";
-    in {
-      root = { inherit initialPassword; };
-      jacob = {
-        description = "Jacob Birkett";
-        isNormalUser = true;
-        extraGroups = [ "audio" "video" "wheel" "libvirtd" ];
-        inherit initialPassword;
-      };
-      guest = {
-        description = "Guest User";
-        isNormalUser = true;
-        inherit initialPassword;
-      };
+    virtualisation.podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
     };
-  }
-  ### SHARED USER FILES ###
-  {
-    # public shared directory for users of the users group
-    systemd.tmpfiles.rules = let publicDir = "/home/public/share";
-    in lib.pipe config.users.users [
-      lib.attrValues
-      (builtins.filter (user: user.createHome && user.isNormalUser))
-      # if changed fix alignment with \t
-      #             Type   Path            Mode User Group Age Argument
-      (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
-      lib.concatLists
-      (links: [ "d	${publicDir}		0666	root	users	10d		-" ] ++ links)
-    ];
   }
 ]

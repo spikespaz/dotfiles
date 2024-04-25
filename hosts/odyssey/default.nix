@@ -5,8 +5,7 @@ lib.bird.mkHost args {
   } // lib.systems.architectures.featureSupport "znver4";
   nixpkgs = inputs.nixpkgs-unstable;
   nixpkgsArgs.config.allowUnfree = true;
-  modules =
-    #
+  modules = # #
     with self.nixosModules;
     with tree.hosts; [
       hardware.amd-thinkpad.common
