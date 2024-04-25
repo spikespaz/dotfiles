@@ -48,7 +48,7 @@ in {
   ##########################
 
   imports = let
-    user = lib.importDir' ./. "profile.nix";
+    user = lib.importDir' ../jacob null;
     programs = user.programs args;
     services = user.services args;
   in [
@@ -192,6 +192,9 @@ in {
 
     ### BACKGROUND SYNC & NOTIFICATIONS ###
     # services.thunderbird
+
+    ### GAMING ###
+    services.steam
 
     ### MEDIA ###
     services.playerctl

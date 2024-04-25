@@ -21,11 +21,11 @@ in lib.bird.mkHome args rec {
   nixpkgsArgs.config.allowUnfree = true;
   modules = with tree.users.jacob; [
     disableHomeManagerNews
-    profile
     wayland.default
     wayland.suite # not included in default
     hyprland.default
     ./hyprland
+    ./profile.nix
   ];
   # Keep this flake's overlays towards the bottom;
   # order matters. `pkgs0` may need to contain packages
