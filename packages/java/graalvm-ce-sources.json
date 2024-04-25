@@ -1,0 +1,10 @@
+{
+  "java8": {
+    "linux-amd64": {
+      "javaVersion": 8,
+      "version": "21.3.1",
+      "url": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.1/graalvm-ce-java8-linux-amd64-21.3.1.tar.gz",
+      "sha256": "sha256-uey9VC3h7Qo9pGpinyJmqIIDJpj1/LxU2JI3K5GJsO0="
+    }
+  }
+}
