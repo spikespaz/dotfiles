@@ -334,10 +334,10 @@
     groups.changeGroupActive
     {
       # Lock/unlock the active group without entering the submap.
-      bind."SUPER_SHIFT, G" = "exec, ${exec.toggleGroupOrLock}";
+      bind."SUPER, G" = "exec, ${exec.toggleGroupOrLock}";
 
       # Enter a submap for manipulating windows with relation to groups.
-      bind."SUPER, G" = "submap, groups";
+      bind."SUPER_SHIFT, G" = "submap, groups";
       submap.groups = lib.mkMerge [
         # groups.launchPrograms
         groups.killWindow
