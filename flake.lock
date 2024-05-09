@@ -915,6 +915,22 @@
         "type": "github"
       }
     },
+    "flake-compat_20": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696426674,
+        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-compat_3": {
       "flake": false,
       "locked": {
@@ -4126,6 +4142,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_35": {
+      "locked": {
+        "lastModified": 1711163522,
+        "narHash": "sha256-YN/Ciidm+A0fmJPWlHBGvVkcarYWSC+s3NTPk/P+q3c=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "44d0940ea560dee511026a53f0e2e2cde489b4d4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_4": {
       "locked": {
         "lastModified": 1653581809,
@@ -4373,7 +4405,8 @@
         "ragenix": "ragenix",
         "slight": "slight",
         "systems": "systems_18",
-        "vscode-extensions": "vscode-extensions"
+        "vscode-extensions": "vscode-extensions",
+        "waybar": "waybar"
       }
     },
     "rust-overlay": {
@@ -5212,6 +5245,25 @@
       "original": {
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
+        "type": "github"
+      }
+    },
+    "waybar": {
+      "inputs": {
+        "flake-compat": "flake-compat_20",
+        "nixpkgs": "nixpkgs_35"
+      },
+      "locked": {
+        "lastModified": 1715070592,
+        "narHash": "sha256-PY6Vh9mOYjBC1wrWohIPw9eh1dDrDG9uBsZJjwRzGpI=",
+        "owner": "alexays",
+        "repo": "waybar",
+        "rev": "2ead1bbf84ff0fdb7234b1d9332c3b3a3bb8b799",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alexays",
+        "repo": "waybar",
         "type": "github"
       }
     },

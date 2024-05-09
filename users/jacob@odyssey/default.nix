@@ -40,6 +40,7 @@ in lib.bird.mkHome args rec {
     inputs.nur.overlay
     # packages for window manager
     inputs.hyprland-nix.overlays.default
+    inputs.waybar.overlays.default
     # nix related packages
     inputs.nix-your-shell.overlays.default
     inputs.ragenix.overlays.default

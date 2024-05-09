@@ -134,6 +134,8 @@
       hyprlang.follows = "hyprlang-git";
     };
 
+    waybar.url = "github:alexays/waybar";
+
     nil.url = "github:oxalica/nil";
 
     # Do not update!
