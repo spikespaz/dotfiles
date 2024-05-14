@@ -293,7 +293,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
       # Wrapper command
       #   export force_glsl_extensions_warn=true
       #   run-game "$@"
-      prismlauncher' = pkgs.prismlauncher-qt5.override {
+      prismlauncher' = pkgs.prismlauncher.override {
         withWaylandGLFW = true;
         jdks = with pkgs; [
           # Java 8
