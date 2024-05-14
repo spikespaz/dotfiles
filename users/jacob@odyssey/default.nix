@@ -47,7 +47,8 @@ in lib.bird.mkHome args rec {
     # other packages
     inputs.slight.overlays.default
     inputs.vscode-extensions.overlays.default
-    inputs.nil.overlays.default
+    # inputs.nil.overlays.default
+    inputs.nixd.overlays.default
     # inputs.prism-launcher.overlays.default
     # inputs.webcord.overlays.default
     # flake lib functions that are in pkgs

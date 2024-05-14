@@ -137,6 +137,7 @@
     waybar.url = "github:alexays/waybar";
 
     nil.url = "github:oxalica/nil";
+    nixd.url = "github:nix-community/nixd";
 
     # Do not update!
     nixfmt.url = "github:nixos/nixfmt/v0.6.0";
