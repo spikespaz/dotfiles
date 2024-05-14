@@ -16,4 +16,9 @@ in {
           # packages from qt6Packages
           qt6ct;
       });
+
+  haruna = pkgs0.haruna.overrideAttrs (self: super: {
+    buildInputs = super.buildInputs
+      ++ (with pkgs; [ kdePackages.qtwayland kdePackages.qtsvg ]);
+  });
 }
