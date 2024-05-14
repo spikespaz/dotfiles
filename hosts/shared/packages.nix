@@ -60,6 +60,7 @@
     e2fsprogs
 
     ### HARDWARE DIAGNOSTICS ###
+    glxinfo # graphics information
     smartmontools # for drive SMART status
     btop # system process monitor
     bottom # not top
