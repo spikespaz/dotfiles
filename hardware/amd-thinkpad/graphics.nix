@@ -31,7 +31,7 @@
     # These flags are not mutually exclusive according to the Arch Wiki.
     # <https://wiki.archlinux.org/title/AMDGPU>
     "amdgpu.si_support=1"
-    "amdgpu.cik_support=1"
+    # "amdgpu.cik_support=1"
 
     # Allow the GPU to power down when displays are attached.
     "amdgpu.runpm=-2"
