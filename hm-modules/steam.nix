@@ -14,6 +14,7 @@ let
       url =
         "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${name}/${name}.tar.gz";
     };
+
 in {
   options = {
     programs.steam.protonPackages = lib.mkOption {
@@ -24,6 +25,17 @@ in {
       versions = lib.mkOption {
         type = types.attrsOf (types.singleLineStr);
         default = { };
+      };
+    };
+
+    services.steam = {
+      enable = lib.mkEnableOption
+        "Start the Steam Desktop client minimized and silent on startup";
+      program = lib.mkOption {
+        type = types.either types.path types.package;
+        default = "/run/current-system/sw/bin/steam";
+        description = "The binary package or package to use for the service.";
+        apply = x: if lib.isDerivation x then lib.getExe x else x;
       };
     };
   };
@@ -87,5 +99,22 @@ in {
       programs.steam.protonPackages =
         lib.mapAttrsToList (ver: hash: fetchProtonGE ver hash) gloriousEggrolls;
     }
+    (lib.mkIf config.services.steam.enable {
+      systemd.user.services.steam = {
+        Unit = {
+          Description = "Steam Desktop Client for Linux";
+          After = [ "network.target" "graphical-session.target" ];
+          StartLimitIntervalSec = 300;
+          StartLimitBurst = 5;
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = "${config.services.steam.program} -silent";
+          Restart = "always";
+          RestartSec = "1s";
+        };
+        Install = { WantedBy = [ "graphical-session.target" ]; };
+      };
+    })
   ];
 }
