@@ -7,33 +7,33 @@ let
     options = {
       fileName = lib.mkOption {
         type = types.singleLineStr;
-        description = lib.mdDoc ''
+        description = ''
           The name of the generated `*.desktop` file, without the extension.
         '';
       };
       name = lib.mkOption {
         type = types.singleLineStr;
-        description = lib.mdDoc ''
+        description = ''
           The name of the session to be used in the Desktop Entry.
           By default this will be the same as {option}`fileName`.
         '';
       };
       comment = lib.mkOption {
         type = types.singleLineStr;
-        description = lib.mdDoc ''
+        description = ''
           The description to be used in the Desktop Entry.
         '';
       };
       script = lib.mkOption {
         type = types.lines;
-        description = lib.mdDoc ''
+        description = ''
           Lines of shell code to start the desktop session.
         '';
       };
       desktopFile = lib.mkOption {
         type = types.package;
         readOnly = true;
-        description = lib.mdDoc ''
+        description = ''
           The generated `*.desktop` file for this session.
           The file is in {path}`$out/share/wayland-sessions/`, so that
           this package can be merged with others via `pkgs.symlinkJoin`.
@@ -62,7 +62,7 @@ in {
       sessions = lib.mkOption {
         type = types.attrsOf desktopSession;
         default = { };
-        description = lib.mdDoc ''
+        description = ''
           Attribute set of desktop session specifications.
           Each attribute name will be used as the name of the
           corresponding `*.desktop` file, as well as the name of the session
@@ -74,7 +74,7 @@ in {
       nixosIntegration = lib.mkOption {
         type = types.bool;
         default = false;
-        description = lib.mdDoc ''
+        description = ''
           Whether to add `sessionFiles` to
           {option}`services.xserver.displayManager.sessionPackages`
           in order to integrate greetd's sessions with other modules provided by NixOS.
@@ -84,7 +84,7 @@ in {
       sessionFiles = lib.mkOption {
         type = types.package;
         readOnly = true;
-        description = lib.mdDoc ''
+        description = ''
           The final package of joined `*.desktop` files in
           {path}`$out/share/wayland-sessions`.
         '';
@@ -93,7 +93,7 @@ in {
       sessionPath = lib.mkOption {
         type = types.listOf types.path;
         apply = lib.concatStringsSep ":";
-        description = lib.mdDoc ''
+        description = ''
           This option is intended to be used recursively in your greetd
           configuration. For example, this value is appropriate for
           tuigreet's `--sessions` parameter.

@@ -86,7 +86,7 @@ in stdenv.mkDerivation {
   '';
 
   meta = {
-    description = lib.mdDoc ''
+    description = ''
       Shell script to execute actions when function keys are triggered
     '';
     license = lib.licenses.mit;

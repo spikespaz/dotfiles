@@ -24,7 +24,7 @@ in {
       themes = lib.mkOption {
         type = types.attrsOf types.path;
         default = { };
-        description = lib.mdDoc ''
+        description = ''
           An attribute set of themes, where each key is the name of the
           theme when linked into {path}`$XDG_CONFIG_HOME/WebCord/Themes`,
           and the value is the file path of the CSS source.
@@ -53,7 +53,7 @@ in {
         '';
       };
 
-      deleteThemes = lib.mkEnableOption (lib.mdDoc ''
+      deleteThemes = lib.mkEnableOption ''
         Whether to enable the DAG entry to delete files in the `Themes`
         directory before creating new links.
 
@@ -66,7 +66,7 @@ in {
 
         **The `Themes` directory contents will be permanently deleted**
         when activating a new generation!
-      '');
+      '';
     };
   };
 

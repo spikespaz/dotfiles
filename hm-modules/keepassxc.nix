@@ -16,31 +16,31 @@ in {
 
       package = lib.mkOption {
         type = types.package;
-        description = lib.mdDoc ''
+        description = ''
           Uses the program configuration's package by default.
         '';
-        defaultText = lib.mdDoc ''
+        defaultText = ''
           {option}`config.programs.keepassxc.package`
         '';
       };
     };
 
     programs.keepassxc = {
-      enable = lib.mkEnableOption (lib.mdDoc ''
+      enable = lib.mkEnableOption ''
         Whether to install KeePassXC.
-      '');
+      '';
 
       package = lib.mkPackageOption pkgs "keepassxc" { };
 
       settings = lib.mkOption {
         type = iniFormat.type;
         default = { };
-        description = lib.mdDoc ''
+        description = ''
           Settings to write in INI format to {file}`~/.config/keepassxc/keepassxc.ini`.
         '';
       };
 
-      browserIntegration.firefox = lib.mkEnableOption (lib.mdDoc ''
+      browserIntegration.firefox = lib.mkEnableOption ''
         Create the native messaging manifest in {path}`$HOME/.mozilla/native-messaging-hosts`,
         required for integration with the browser extension.
 
@@ -48,7 +48,7 @@ in {
 
         Note that this also requires `Browser.Enabled = true` in {option}`settings`,
         or enable it via the GUI.
-      '');
+      '';
     };
   };
 

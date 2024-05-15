@@ -5,19 +5,19 @@ let
 in {
   options = {
     services.undervolt.amdctl = {
-      enable = lib.mkEnableOption (lib.mdDoc ''
+      enable = lib.mkEnableOption ''
         Whether to enable the systemd unit for starting `amdctl`
         on requisite events to maintain a constant undervolt during
         different p-states during normal machine operation.
 
         The service will fail with code 33 if you have provided invalid
         offset values (recommend multiples of 100).
-      '');
+      '';
 
       package = lib.mkOption {
         type = types.package;
         default = pkgs.amdctl;
-        description = lib.mdDoc ''
+        description = ''
           The package to use for the `amdctl` binary.
         '';
       };
@@ -25,7 +25,7 @@ in {
       mode = lib.mkOption {
         type = types.enum [ "inc" "dec" "set" ];
         default = "dec";
-        description = lib.mdDoc ''
+        description = ''
           By default, {option}`pstateValues` are subtracted from whatever is
           current for each core when the service is executed.
           This is `dec` mode.
@@ -43,7 +43,7 @@ in {
       pstateVoltages = lib.mkOption {
         type = types.nullOr (types.listOf types.ints.unsigned);
         default = null;
-        description = lib.mdDoc ''
+        description = ''
           > **WARNING:**
           > For now this module assumes all cores
           > have the same pstates and default voltages.

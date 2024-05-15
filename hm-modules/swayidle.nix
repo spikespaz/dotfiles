@@ -13,21 +13,21 @@ let
       };
       timeout = lib.mkOption {
         type = types.ints.positive;
-        description = lib.mdDoc ''
+        description = ''
           The amount of idle time (in seconds) to wait before
           executing the provided script.
         '';
       };
       script = lib.mkOption {
         type = types.lines;
-        description = lib.mdDoc ''
+        description = ''
           Lines of shell code to execute after the idle timeout.
         '';
       };
       resumeScript = lib.mkOption {
         type = types.nullOr types.lines;
         default = null;
-        description = lib.mdDoc ''
+        description = ''
           Lines of shell code to execute when activity is detected again,
           after the main timeout script has executed.
         '';
@@ -48,9 +48,9 @@ in {
 
   options = {
     services.swayidle = {
-      enable = lib.mkEnableOption (lib.mdDoc ''
+      enable = lib.mkEnableOption ''
         Whether to enable the swayidle systemd service.
-      '');
+      '';
 
       package = lib.mkPackageOption pkgs "swayidle" { };
 
@@ -58,7 +58,7 @@ in {
         type =
           types.either types.singleLineStr (types.listOf types.singleLineStr);
         default = [ "sway-session.target" ];
-        description = lib.mdDoc ''
+        description = ''
           The target, or list of targets, to use for the
           systemd unit's `Install.WantedBy` option.
 
@@ -73,7 +73,7 @@ in {
         example = lib.literalExpression ''
           ["-w" "-d"]
         '';
-        description = lib.mdDoc ''
+        description = ''
           Extra arguments to pass to swayidle at the beginning of
           the systemd unit's command line.
         '';
@@ -85,7 +85,7 @@ in {
         example = lib.literalExpression ''
           2 * 60
         '';
-        description = lib.mdDoc ''
+        description = ''
           Indicate to logind that a session is idle after
           this number of seconds. Setting this will also
           cause swayidle to call `SetIdleHint(false)` when
@@ -108,7 +108,7 @@ in {
             '''''';
           }
         '';
-        description = lib.mdDoc ''
+        description = ''
           An attribute set with event names as keys (in camel case)
           and values as lines of a shell script. The value of each
           attribute will be run when the corresponding event
@@ -120,7 +120,7 @@ in {
         type = types.attrsOf typeTimeout;
         default = { };
         example = lib.literalExpression "";
-        description = lib.mdDoc ''
+        description = ''
           > Scripts defined in this option are power-supply-agnostic.
           >
           > If you are using a laptop, you may prefer to use
@@ -150,7 +150,7 @@ in {
         default = "/sys/class/power_supply/AC";
         example = lib.literalExpression
           "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:37/PNP0C09:00/ACPI0003:00/power_supply/AC";
-        description = lib.mdDoc ''
+        description = ''
           The power supply device to use when determining if the
           system is plugged in to an constant power supply,
           such as an AC or a DC adapter, or a UPS device.
@@ -176,7 +176,7 @@ in {
         type = types.attrsOf typeTimeout;
         default = { };
         example = lib.literalExpression "";
-        description = lib.mdDoc ''
+        description = ''
           > This option is only relevant for laptop users.
           > For devices that are always powered directly from
           > a constant supply, use {option}`timeouts` instead.
@@ -194,7 +194,7 @@ in {
         type = types.attrsOf typeTimeout;
         default = { };
         example = lib.literalExpression "";
-        description = lib.mdDoc ''
+        description = ''
           > This option is only relevant for laptop users.
           > For devices that are always powered directly from
           > a constant supply, use {option}`timeouts` instead.

@@ -114,7 +114,7 @@ in {
         }
       '';
 
-      description = lib.mdDoc ''
+      description = ''
         Each attribute of this option defines a systemd service that
         runs an OpenVPN instance.  These can be OpenVPN servers or
         clients.  The name of each systemd service is
@@ -127,7 +127,7 @@ in {
         options = {
           config = lib.mkOption {
             type = types.lines;
-            description = lib.mdDoc ''
+            description = ''
               Configuration of this OpenVPN instance.  See
               {manpage}`openvpn(8)`
               for details.
@@ -140,7 +140,7 @@ in {
           up = lib.mkOption {
             default = "";
             type = types.lines;
-            description = lib.mdDoc ''
+            description = ''
               Shell commands executed when the instance is starting.
             '';
           };
@@ -148,7 +148,7 @@ in {
           down = lib.mkOption {
             default = "";
             type = types.lines;
-            description = lib.mdDoc ''
+            description = ''
               Shell commands executed when the instance is shutting down.
             '';
           };
@@ -163,7 +163,7 @@ in {
           updateResolvConf = lib.mkOption {
             default = false;
             type = types.bool;
-            description = lib.mdDoc ''
+            description = ''
               Use the script from the update-resolv-conf package to automatically
               update resolv.conf with the DNS information provided by openvpn. The
               script will be run after the "up" commands and before the "down" commands.
@@ -172,7 +172,7 @@ in {
 
           authUserPass = lib.mkOption {
             default = null;
-            description = lib.mdDoc ''
+            description = ''
               This option can be used to store the username / password credentials
               with the "auth-user-pass" authentication method.
 

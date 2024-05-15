@@ -14,7 +14,7 @@ in {
         example = lib.literalExpression ''
           pkgs.libsForQt5.qtstyleplugin-kvantum
         '';
-        description = lib.mdDoc ''
+        description = ''
           The package providing the Kvantum theme engine.
         '';
       };
@@ -25,7 +25,7 @@ in {
         example = lib.literalExpression ''
           pkgs.materia-kde-theme
         '';
-        description = lib.mdDoc ''
+        description = ''
           The package providing the KDE/Qt/Kvantum theme.
         '';
       };
@@ -36,7 +36,7 @@ in {
         example = lib.literalExpression ''
           "MateriaDark"
         '';
-        description = lib.mdDoc ''
+        description = ''
           The name of the KDE/Qt/Kvantum theme provided by
           the package (specified in `index.theme`).
         '';
@@ -64,7 +64,7 @@ in {
             };
           }
         '';
-        description = lib.mdDoc ''
+        description = ''
           Extra configuraton for the Kvantum theme engine.
           See the Kvantum documentation for available options:
           <https://github.com/tsujan/Kvantum/blob/master/Kvantum/doc/Theme-Config>

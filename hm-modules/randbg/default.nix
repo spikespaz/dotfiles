@@ -24,7 +24,7 @@ in {
       interval = lib.mkOption {
         type = types.ints.positive;
         default = 30 * 60;
-        defaultText = lib.mdDoc "`30 * 60` seconds";
+        defaultText = "`30 * 60` seconds";
         description = ''
           The time interval between wallpaper cycles, in seconds.
         '';
@@ -33,7 +33,7 @@ in {
       chance = lib.mkOption {
         type = types.ints.between 1 100;
         default = 25;
-        defaultText = lib.mdDoc "`25` percent chance";
+        defaultText = "`25` percent chance";
         description = ''
           The percentage chance that the wallpaper will change
           after each interval.
@@ -43,7 +43,7 @@ in {
       swaybg.color = lib.mkOption {
         type = types.strMatching "^(#[a-fA-F0-9]{6})";
         default = "#121212";
-        description = lib.mdDoc ''
+        description = ''
           The RGBA color value to use as a background color (behind the mage).
         '';
       };
@@ -52,7 +52,7 @@ in {
         type =
           types.enum [ "stretch" "fill" "fit" "center" "tile" "solid_color" ];
         default = "fit";
-        description = lib.mdDoc ''
+        description = ''
           The mode to use when fitting the image to the display.
 
           See `swaybg(1)` for more information.

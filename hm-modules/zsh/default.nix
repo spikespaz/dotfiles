@@ -18,7 +18,7 @@ in {
         example = lib.literalExpression ''
           ${config.xdg.configHome}/zsh
         '';
-        description = lib.mdDoc ''
+        description = ''
           <https://zsh.sourceforge.io/Doc/Release/Files.html>
         '';
       };
@@ -29,7 +29,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
@@ -40,7 +40,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
@@ -51,7 +51,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
@@ -62,7 +62,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
@@ -73,7 +73,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
@@ -84,7 +84,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
@@ -95,7 +95,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
@@ -106,7 +106,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
@@ -117,7 +117,7 @@ in {
         example = lib.literalExpression ''
           "TODO"
         '';
-        description = lib.mdDoc ''
+        description = ''
           TODO
         '';
       };
