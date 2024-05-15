@@ -20,6 +20,8 @@ args@{ lib, config, ... }:
 
     keepassxc = { services.keepassxc.enable = true; };
 
+    steam = { services.steam.enable = true; };
+
     thunderbird = {
       systemd.user.services.thunderbird = {
         Unit = {
