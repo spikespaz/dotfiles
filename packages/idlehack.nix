@@ -40,5 +40,6 @@ stdenv.mkDerivation (self: {
     license = lib.licenses.isc;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ spikespaz ];
+    mainProgram = "idlehack";
   };
 })
