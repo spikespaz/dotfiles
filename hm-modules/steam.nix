@@ -2,6 +2,7 @@
 let
   inherit (lib) types;
 
+  # cfg for program
   protonPackages = config.programs.steam.protonPackages;
   gloriousEggrolls = config.programs.steam.protonGE.versions;
 
@@ -36,6 +37,14 @@ in {
         default = "/run/current-system/sw/bin/steam";
         description = "The binary package or package to use for the service.";
         apply = x: if lib.isDerivation x then lib.getExe x else x;
+      };
+      extraArgs = lib.mkOption {
+        type = types.listOf types.singleLineStr;
+        default = [ ];
+        description = ''
+          A list of extra arguments to pass to the Steam binary when starting it
+          silently as a service. Affects windows opened from the system tray.
+        '';
       };
     };
   };
@@ -109,8 +118,11 @@ in {
         };
         Service = {
           Type = "simple";
-          ExecStart = "${config.services.steam.program} -silent";
-          Restart = "always";
+          ExecStart = "${config.services.steam.program} ${
+              lib.escapeShellArgs
+              ([ "-silent" ] ++ config.services.steam.extraArgs)
+            }";
+          Restart = "unless-stopped";
           RestartSec = "1s";
         };
         Install = { WantedBy = [ "graphical-session.target" ]; };
