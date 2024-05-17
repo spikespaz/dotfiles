@@ -120,7 +120,7 @@
     vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     # Dependencies of packages from `hyprland-nix`.
-    hyprland-git.url = "github:hyprwm/hyprland";
+    hyprland-git.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland-xdph-git.url = "github:hyprwm/xdg-desktop-portal-hyprland";
     hyprland-protocols-git.url = "github:hyprwm/xdg-desktop-portal-hyprland";
     hyprlang-git.url = "github:hyprwm/hyprlang";
