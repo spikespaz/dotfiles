@@ -103,4 +103,14 @@ in {
     '';
     buildInputs = super.buildInputs ++ (with pkgs; [ dbus fprintd ]);
   });
+
+  onlyoffice-bin_latest = pkgs0.onlyoffice-bin_latest.overrideAttrs
+    (self: super: {
+      version = "8.0.1";
+      src = pkgs.fetchurl {
+        url =
+          "https://github.com/ONLYOFFICE/DesktopEditors/releases/download/v${self.version}/onlyoffice-desktopeditors_amd64.deb";
+        hash = "sha256-WXjPdGwwdO13vsyVYTuoLgMedsADS8aOvZL+cwccBWQ=";
+      };
+    });
 }
