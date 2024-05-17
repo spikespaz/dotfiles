@@ -155,7 +155,7 @@ in {
       tray = {
         show-passive-items = true;
         icon-size = 12;
-        spacing = 16;
+        spacing = 0;
       };
 
       mpris = {

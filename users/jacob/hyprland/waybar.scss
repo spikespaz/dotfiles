@@ -68,7 +68,6 @@ $highlight-foreground: #fbf1c7;
 #memory,
 #battery,
 #idle_inhibitor,
-#tray,
 #mpris,
 #window {
   padding-left: 8px;
@@ -143,8 +142,12 @@ window.popup {
 }
 
 #tray {
-  &>* {
+  &>widget {
     @include indicate-hover(#282828);
+  }
+
+  &>widget>image {
+    min-width: 28px;
   }
 }
 
