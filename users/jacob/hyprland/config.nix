@@ -13,8 +13,6 @@ in {
       gaps_outside = 10;
       active_border_color = gb.fg3 1.0;
       inactive_border_color = gb.bg3 1.0;
-      cursor_inactive_timeout = 10;
-      no_cursor_warps = true;
       resize_on_border = true;
       extend_border_grab_area = 10;
     };
@@ -35,6 +33,13 @@ in {
         contrast = 0.75; # 0.8916
         brightness = 0.8; # 0.8172
       };
+    };
+
+    # <https://wiki.hyprland.org/Configuring/Variables/#cursor>
+    config.cursor = {
+      no_hardware_cursors = true;
+      inactive_timeout = 10;
+      no_warps = true;
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#input>
