@@ -103,7 +103,19 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
     ### OFFICE & WRITING SOFTWARE ###
     #################################
 
-    onlyoffice = { home.packages = [ pkgs.onlyoffice-bin ]; };
+    onlyoffice = { home.packages = [ pkgs.onlyoffice-bin_latest ];
+      xdg.configFile."onlyoffice/DesktopEditors.conf".text = lib.generators.toINI {} {
+        General = {
+          UITheme2="theme-dark";
+          appdata="@ByteArray(eyJ1c2VybmFtZSI6ImphY29iIiwiZG9jb3Blbm1vZGUiOiJlZGl0IiwibGFuZ2lkIjoiZW4tRU4iLCJ1aXNjYWxpbmciOiIxNTAiLCJ1aXRoZW1lIjoidGhlbWUtZGFyayIsImVkaXRvcndpbmRvd21vZGUiOmZhbHNlfQ==)";
+          editorWindowMode=false;
+          openPath="/home/jacob/Downloads";
+          position="Rect(1450 61 1411 1720)";
+          savePath="/home/jacob/Desktop";
+          titlebar="system";
+        };
+      };
+    };
     libreoffice = { home.packages = [ pkgs.libreoffice-qt ]; };
     apostrophe = { home.packages = [ pkgs.apostrophe ]; };
 
