@@ -282,6 +282,7 @@ in {
           <b>Speeds:</b> {bandwidthUpBytes} UL, {bandwidthDownBytes} DL
         '';
       in {
+        interval = 2;
         format-ethernet = "󰈀 {bandwidthDownBytes}";
         format-wifi = "{icon} {bandwidthDownBytes}";
         format-linked = "󱫱 {bandwidthDownBytes}";
