@@ -134,7 +134,7 @@
       hyprlang.follows = "hyprlang-git";
     };
 
-    waybar.url = "github:alexays/waybar";
+    waybar.url = "git+https://github.com/alexays/waybar?submodules=1";
 
     nil.url = "github:oxalica/nil";
     nixd.url = "github:nix-community/nixd";
