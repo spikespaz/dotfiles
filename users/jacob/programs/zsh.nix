@@ -1,19 +1,19 @@
 args@{ self, config, lib, pkgs, ... }:
 let
-  # FIXME git_colors based on git config
-  nvimpager' = let
-    super = pkgs.nvimpager;
-    mainProgram = super.meta.mainProgram or super.pname;
-  in pkgs.symlinkJoin {
-    name = super.name;
-    paths = [ super ];
-    nativeBuildInputs = super.nativeBuildInputs or [ ] ++ [ pkgs.makeWrapper ];
-    postBuild = super.postInstall or "" + ''
-      wrapProgram $out/bin/${mainProgram} \
-        --add-flags '-- -c "lua nvimpager.maps = false; nvimpager.git_colors = true"'
-    '';
-    meta = super.meta // { inherit mainProgram; };
-  };
+  # # FIXME git_colors based on git config
+  # nvimpager' = let
+  #   super = pkgs.nvimpager;
+  #   mainProgram = super.meta.mainProgram or super.pname;
+  # in pkgs.symlinkJoin {
+  #   name = super.name;
+  #   paths = [ super ];
+  #   nativeBuildInputs = super.nativeBuildInputs or [ ] ++ [ pkgs.makeWrapper ];
+  #   postBuild = super.postInstall or "" + ''
+  #     wrapProgram $out/bin/${mainProgram} \
+  #       --add-flags '-- -c "lua nvimpager.maps = false; nvimpager.git_colors = true"'
+  #   '';
+  #   meta = super.meta // { inherit mainProgram; };
+  # };
 
   plugins = {
     inherit (pkgs.zsh-plugins)
@@ -23,7 +23,7 @@ let
 in {
   imports = [ self.homeManagerModules.zsh ];
 
-  home.packages = [ pkgs.most nvimpager' ];
+  home.packages = [ pkgs.most ];
 
   programs.starship = {
     enable = true;
@@ -151,7 +151,7 @@ in {
 
       plugin-load fast-syntax-highlighting
 
-      PAGER='${lib.getExe nvimpager'}'
+      PAGER='less'
 
       ### KEYBINDINGS ###
 
