@@ -74,6 +74,9 @@ in {
     programs.chromium
     programs.microsoft-edge
 
+    ### DOCUMENT/FILETYPE HANDLERS ###
+    programs.zathura
+
     ### COMMUNICATION & MESSAGING ###
     # programs.mailspring
     programs.thunderbird
