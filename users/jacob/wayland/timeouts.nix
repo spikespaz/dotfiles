@@ -33,7 +33,8 @@ let
   kbdLightOffValue = 0;
 
   # Sleep settings
-  sleepVerbBAT = "suspend-then-hibernate";
+  # sleepVerbBAT = "suspend-then-hibernate";
+  sleepVerbBAT = "hybrid-sleep";
   sleepVerbAC = "hybrid-sleep";
 
   # Utility functions

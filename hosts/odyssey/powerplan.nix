@@ -2,33 +2,33 @@
 # - <https://www.kernel.org/doc/Documentation/power/states.txt>
 # - `man sleep.conf.d`
 # - `man logind.conf`
-{ self, config, ... }:
+{ ... }:
 let
-  hours = h: minutes 60 * h;
-  minutes = m: seconds 60 * m;
-  seconds = s: s;
+  # hours = h: minutes 60 * h;
+  # minutes = m: seconds 60 * m;
+  # seconds = s: s;
 in {
   services.logind = {
-    lidSwitch = "suspend-then-hibernate";
+    lidSwitch = "suspend";
     killUserProcesses = true;
     extraConfig = ''
-      HandlePowerKey=hibernate
+      HandlePowerKey=suspend
       HandlePowerKeyLongPress=poweroff
-      HandleLidSwitchExternalPower=suspend-then-hibernate
+      HandleLidSwitchExternalPower=suspend
     '';
     # IdleAction=suspend-then-hibernate
     # IdleActionSec=${toString (minutes 5)}
   };
 
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=${toString (hours 1 + minutes 30)}
-  '';
+  # systemd.sleep.extraConfig = ''
+  #   HibernateDelaySec=${toString (hours 1 + minutes 30)}
+  # '';
 
   services.upower = {
     enable = true;
     percentageLow = 15;
     percentageCritical = 7;
     percentageAction = 5;
-    criticalPowerAction = "Hibernate";
+    criticalPowerAction = "HybridSleep";
   };
 }
