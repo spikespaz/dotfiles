@@ -2047,11 +2047,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1713399168,
-        "narHash": "sha256-fMNte6rj2E1aMoljWSXfJ3+xsZkg5wo7tgGriJrGguY=",
+        "lastModified": 1717293128,
+        "narHash": "sha256-A7PkoszPEDFyEACfVRvyU7FMFbBTvOEElsVDmAV3KfM=",
         "owner": "hyprland-community",
         "repo": "hyprland-nix",
-        "rev": "db43d5974c21c80bad03e3050070ad409f03d2bc",
+        "rev": "bea5c75378bc67d725ed290ace34ed4f7af3439e",
         "type": "github"
       },
       "original": {
@@ -3166,15 +3166,16 @@
         "serokell-nix": "serokell-nix_2"
       },
       "locked": {
-        "lastModified": 1696878571,
-        "narHash": "sha256-BvphIsOuxV0mJgf68BTJaZy69ejP40gDo/0e+bGrmnU=",
-        "owner": "serokell",
+        "lastModified": 1698788988,
+        "narHash": "sha256-H3uH5zcz5gLJjrNP8OIKap441Zs9njaoK9u6aJVaAXo=",
+        "owner": "nixos",
         "repo": "nixfmt",
-        "rev": "6e6385f06a5e8474a86b3036e0d2f4c9beb54700",
+        "rev": "7e9e06eefed52d6d698b828ee83b83ea5c163f3b",
         "type": "github"
       },
       "original": {
-        "owner": "serokell",
+        "owner": "nixos",
+        "ref": "v0.6.0",
         "repo": "nixfmt",
         "type": "github"
       }
@@ -3645,16 +3646,16 @@
     },
     "nixpkgs-stable_3": {
       "locked": {
-        "lastModified": 1672580127,
-        "narHash": "sha256-3lW3xZslREhJogoOkjeZtlBtvFMyxHku7I/9IVehhT8=",
+        "lastModified": 1704290814,
+        "narHash": "sha256-LWvKHp7kGxk/GEtlrGYV68qIvPHkU9iToomNFGagixU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0874168639713f547c05947c76124f78441ea46c",
+        "rev": "70bdadeb94ffc8806c0570eb5c2695ad29f0e421",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-22.05",
+        "ref": "nixos-23.05",
         "repo": "nixpkgs",
         "type": "github"
       }
