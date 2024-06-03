@@ -17,14 +17,13 @@
     };
   };
   # Get rid of Twitch's pre-roll ads (mostly). Let me browse in peace.
-  ttv-lol-pro = let fileId = "4209247";
-  in pkgs.buildFirefoxXpiAddon rec {
+  ttv-lol-pro = pkgs.buildFirefoxXpiAddon rec {
     pname = "ttv_lol_pro";
-    version = "2.2.3";
+    version = "2.3.7";
     addonId = "{76ef94a4-e3d0-4c6f-961a-d38a429a332b}";
     url =
-      "https://addons.mozilla.org/firefox/downloads/file/${fileId}/${pname}-${version}.xpi";
-    hash = "sha256-RsdyxyFqDJ6tOW6OvPk+Lp6IWn26jfm376K4pNmvi/I=";
+      "https://github.com/younesaassila/ttv-lol-pro/releases/download/v${version}/v${version}-firefox.zip";
+    hash = "sha256-uA9OaCk7+AqclkvPIO4lvL4iVVvQLKzK/i6Sz+wXoHg=";
     meta = with lib; {
       description = "TTV LOL PRO removes most livestream ads from Twitch.";
       license = licenses.gpl3;
