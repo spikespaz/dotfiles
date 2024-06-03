@@ -128,8 +128,36 @@
 
     ### SERVICES: AUTO MOUNT ###
 
-    # storage daemon required for udiskie auto-mount
-    services.udisks2.enable = true;
+    # daemon to mount drives using polkit permissions
+    services.udisks2 = {
+      enable = true;
+      settings."mount_options.conf" = {
+        defaults = {
+          # Reference: <https://docs.kernel.org/filesystems/ntfs3.html>
+          ntfs_drivers =
+            "ntfs3"; # remove the legacy FUSE driver, `,ntfs` (ntfs-3g)
+          "ntfs:ntfs3_defaults" = lib.concatStringsSep "," [
+            "uid=$UID"
+            "gid=$GID"
+            # read-write
+            "rw"
+            # disallow inode names that Windows can't handle
+            "windows_names"
+            # enable support for TRIM for SSD performance on delete operations
+            "discard"
+            # pre-allocate contiguous blocks when copying large files
+            "prealloc"
+            # do not allocate for large contiguous blocks of zero
+            "sparse"
+            # keep Windows' "hidden" attribute updated in accordance with
+            # the presence of the `.` prefix
+            "hide_dot_files"
+            # do not hide system files
+            # "showmeta"
+          ];
+        };
+      };
+    };
 
     ### SERVICES: LOCATION ###
 
