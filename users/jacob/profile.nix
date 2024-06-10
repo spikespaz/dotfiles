@@ -135,6 +135,7 @@ in {
     programs.neovim
     programs.helix
     programs.lapce
+    programs.zed
 
     ### DEVELOPMENT TOOLS ###
     programs.nix
