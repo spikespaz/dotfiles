@@ -229,7 +229,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
     nix = {
       # TODO fix overlay for this flake
       home.packages =
-        [ inputs.nixfmt.packages.${pkgs.hostPlatform.system}.nixfmt ];
+        [ inputs.nixfmt.packages.${pkgs.hostPlatform.system}.nixfmt pkgs.json2nix ];
     };
 
     java = let

@@ -44,4 +44,10 @@ lib: {
     firefox-extensions =
       pkgs.callPackage ./firefox-extensions.nix { inherit lib; };
   };
+
+  # SCRIPTS #
+
+  json2nix = pkgs: pkgs0: {
+    json2nix = pkgs.callPackage ./json2nix.nix { inherit lib; };
+  };
 }
