@@ -56,6 +56,7 @@
     exfatprogs
 
     ### STORAGE DEVICE TOOLS ###
+    parted
     gptfdisk
     e2fsprogs
 
