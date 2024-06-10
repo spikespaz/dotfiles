@@ -39,6 +39,8 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
         first-page-column = "1:1";
         # Use the basename of the file for the window title
         window-title-basename = true;
+        # Gruvbox foreground on dark mode
+        recolor-darkcolor = lib.birdos.colors.formats.hexRGB'.gruvbox.dark.fg1;
       };
       programs.zathura.mappings = {
         "<C-=>" = "zoom in";
