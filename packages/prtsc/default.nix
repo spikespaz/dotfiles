@@ -1,4 +1,4 @@
-{ lib, stdenv, makeWrapper, coreutils, perl, wl-clipboard, slurp, grim, ... }:
+{ lib, stdenv, makeBinaryWrapper, coreutils, perl, wl-clipboard, slurp, grim, ... }:
 stdenv.mkDerivation {
   pname = "prtsc";
   version = "0.0.1";
@@ -7,7 +7,7 @@ stdenv.mkDerivation {
 
   src = ./.;
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeBinaryWrapper ];
 
   installPhase = ''
     runHook preInstall

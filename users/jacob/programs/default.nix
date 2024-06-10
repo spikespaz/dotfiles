@@ -370,7 +370,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
         package = (pkgs.symlinkJoin {
           inherit (pkgs.keepassxc) name pname version meta;
           paths = [ pkgs.keepassxc ];
-          nativeBuildInputs = [ pkgs.makeWrapper ];
+          nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
           postBuild = ''
             wrapProgram $out/bin/keepassxc \
               --set QT_QPA_PLATFORMTHEME ""

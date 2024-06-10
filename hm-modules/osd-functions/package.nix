@@ -1,4 +1,4 @@
-{ lib, stdenv, makeWrapper, bash, coreutils, gawk, gnugrep, bc, libnotify
+{ lib, stdenv, makeBinaryWrapper, bash, coreutils, gawk, gnugrep, bc, libnotify
 , wireplumber, scriptOptions ? { }, }:
 let
   scriptOptions' = (lib.recursiveUpdate {
@@ -32,7 +32,7 @@ in stdenv.mkDerivation {
 
   src = ./.;
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeBinaryWrapper ];
   buildInputs = [ bash ];
 
   installPhase = ''

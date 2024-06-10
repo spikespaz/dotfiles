@@ -102,7 +102,7 @@ in {
       inherit version src;
 
       strictDeps = true;
-      nativeBuildInputs = [ pkgs.makeWrapper ];
+      nativeBuildInputs = [ pkgs.makeBinaryWrapper ];
 
       installPhase = let
         scriptName = "${baseName}-notify";
