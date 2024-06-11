@@ -16,7 +16,7 @@ in {
     wifiControl.class = [ "org.twosheds.iwgtk" "iwgtk" ];
     bluetoothControl = {
       class = [ ".*blueman-manager.*" ];
-      title = [ "Bluetooth Devices" ];
+      title = [ "Bluetooth Devices" ".*blueman-manager.*" ];
     };
     kvantumConfig.class = [ "kvantummanager" ];
 
@@ -96,6 +96,7 @@ in {
     [
       (rule [ "size 740 460" ] filePickerPortal)
       (rule [ "size 950 700" ] kvantumConfig)
+      (rule [ "size 530 600" ] bluetoothControl)
     ]
     # Because it can be shown and hidden with a systray icon.
     (map (rule [ "float" "pin" "move 10% 10%" "size 80% 80%" ]) [ tidal ])
