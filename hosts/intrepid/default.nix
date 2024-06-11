@@ -28,7 +28,7 @@ lib.bird.mkHost args {
     # override packages with an unfree license
     self.overlays.allowUnfree
     # window manager
-    inputs.hyprland-nix.overlays.default
+    inputs.hyprnix.overlays.default
     # other packages
     inputs.slight.overlays.default
     inputs.ragenix.overlays.default

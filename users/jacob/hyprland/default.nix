@@ -1,7 +1,7 @@
 { self, config, lib, pkgs, inputs, ... }: {
   imports = [
-    inputs.hyprland-nix.homeManagerModules.hyprland
-    # inputs.hyprland-nix.homeManagerModules.xdg-desktop-portals
+    inputs.hyprnix.homeManagerModules.hyprland
+    # inputs.hyprnix.homeManagerModules.xdg-desktop-portals
     ./config.nix
     ./windowrules.nix
     ./keybinds.nix
