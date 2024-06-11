@@ -19,7 +19,8 @@
 
       tree = lib.bird.importDirRecursive ./. "flake.nix";
 
-      formatter = eachSystem (system: inputs.nixfmt.packages.${system}.default);
+      formatter =
+        eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-classic);
 
       /* $ nix eval 'path:.#overlays' | sed 's/<|>/"/g' | nixfmt
          ---
@@ -138,9 +139,6 @@
 
     nil.url = "github:oxalica/nil";
     nixd.url = "github:nix-community/nixd";
-
-    # Do not update!
-    nixfmt.url = "github:nixos/nixfmt/v0.6.0";
 
     # polymc.url = "github:PolyMC/PolyMC";
 
