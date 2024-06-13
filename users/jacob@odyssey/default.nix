@@ -19,7 +19,7 @@ in lib.bird.mkHome args rec {
   } // lib.systems.architectures.featureSupport "znver4";
   nixpkgs = inputs.nixpkgs-unstable;
   nixpkgsArgs.config.allowUnfree = true;
-  modules = with tree.users.jacob; [
+  modules = with tree.users.shared; [
     disableHomeManagerNews
     wayland.default
     wayland.suite # not included in default

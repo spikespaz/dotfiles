@@ -48,7 +48,7 @@ in {
   ##########################
 
   imports = let
-    user = lib.importDir' ../jacob null;
+    user = lib.importDir' ../shared null;
     programs = user.programs args;
     services = user.services args;
   in [
