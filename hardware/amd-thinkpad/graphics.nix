@@ -1,8 +1,15 @@
 { lib, pkgs, ... }: {
-  hardware.opengl = {
+  hardware.amdgpu = {
+    # Ensure that AMDGPU is loaded over Radeon.
+    initrd.enable = true;
+    # Uses `radeon.*_support` by default, to use `amdgu.*_support`
+    # change this to `true`.
+    legacySupport.enable = false;
+  };
+
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = [ pkgs.amdvlk ];
     extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
   };
@@ -24,13 +31,10 @@
   };
 
   boot.kernelParams = [
-    # Ensure that AMDGPU is loaded over Radeon.
-    "amdgpu"
-
     # Enable Southern Islands and Sea Islands support.
     # These flags are not mutually exclusive according to the Arch Wiki.
     # <https://wiki.archlinux.org/title/AMDGPU>
-    "amdgpu.si_support=1"
+    # "amdgpu.si_support=1"
     # "amdgpu.cik_support=1"
 
     # Allow the GPU to power down when displays are attached.
