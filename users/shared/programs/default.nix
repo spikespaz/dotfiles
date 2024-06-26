@@ -250,19 +250,19 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
         name = "${homeJdksDir}/${package.name}";
         # I think this should work because binaries are ELF-patched.
         value = { source = "${package.home}"; };
-      }) [
+      }) (with pkgs; [
         defaultJdk
-        pkgs.jdk8
-        pkgs.jdk11
-        pkgs.jdk17
-        pkgs.jdk # latest
-        pkgs.temurin-bin-8
-        pkgs.temurin-bin-11
-        pkgs.temurin-bin-16
-        pkgs.temurin-bin-17
-        pkgs.temurin-bin-18
-        pkgs.temurin-bin # latest
-      ]);
+        jdk8
+        jdk11
+        jdk17
+        jdk # latest
+        temurin-bin-8
+        temurin-bin-11
+        temurin-bin-16
+        temurin-bin-17
+        temurin-bin-18
+        temurin-bin # latest
+      ]));
     };
 
     rust = {
