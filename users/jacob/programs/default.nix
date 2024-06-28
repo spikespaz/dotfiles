@@ -228,10 +228,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
       };
     };
 
-    nix = {
-      # TODO fix overlay for this flake
-      home.packages = with pkgs; [ nixfmt-classic json2nix ];
-    };
+    nix = { home.packages = with pkgs; [ nixfmt-classic json2nix ]; };
 
     java = let
       # IntelliJ likes to see a `~/.jdks` directory,
