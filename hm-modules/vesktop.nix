@@ -145,8 +145,8 @@ in {
     #     };
     # })
 
-    (lib.mkIf (cfg.recolorTheme.enable && ((cfg.recolorTheme.colors != { }
-      || (cfg.recolorTheme.extras != { })))) {
+    (lib.mkIf (cfg.recolorTheme.enable
+      && (cfg.recolorTheme.colors != { } || cfg.recolorTheme.extras != { })) {
         xdg.configFile."${settingsDir}/themes/DiscordRecolor.theme.css".text =
           # REDACTED
           # * @updateUrl https://mwittrien.github.io/BetterDiscordAddons/Themes/DiscordRecolor/DiscordRecolor.theme.css
