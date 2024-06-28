@@ -344,6 +344,8 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
           graalvm8-ce-jre
           # Java 11
           temurin-jre-bin-11
+          # Java 17
+          temurin-jre-bin-17
           # Java 20
           temurin20-jre-bin
           # Latest

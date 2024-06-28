@@ -11,6 +11,12 @@ lib.mkMerge [
         extraGroups = [ "audio" "video" "wheel" "libvirtd" ];
         inherit initialPassword;
       };
+      eyesack = {
+        description = "Little Brother";
+        isNormalUser = true;
+        extraGroups = [ "audio" "video" ];
+        inherit initialPassword;
+      };
       guest = {
         description = "Guest User";
         isNormalUser = true;
@@ -23,8 +29,10 @@ lib.mkMerge [
       users = [ "jacob" ];
       devicesOffOnScreensaver = false;
     };
+
+    nix.settings.allowed-users = [ "eyesack" ];
   }
-  # ### MISCELLANEOUS ###
+  ### MISCELLANEOUS ###
   {
     # policy kit
     # communication between unprivileged and privileged processes
