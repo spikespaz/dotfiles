@@ -41,6 +41,11 @@ in {
 
   # Only configure the necessary prerequisite boot parameters.
   boot = {
+    # tmpfs allocates for files on-demand
+    tmp.useTmpfs = true;
+    # this is the upper-limit, not a block
+    tmp.tmpfsSize = "20G";
+
     # for some reason not set automatically
     # docs say this should be set auto when ""
     resumeDevice = "/dev/disk/by-label/swap";
