@@ -83,7 +83,7 @@ in {
         Service = {
           Type = "simple";
           KillMode = "process";
-          ExecStart = lib.getExe service.package;
+          ExecStart = lib.getExe' service.package "keepassxc";
           Restart = "on-failure";
           RestartSec = 5;
         };
