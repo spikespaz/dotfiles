@@ -119,6 +119,7 @@ in {
     programs.vscode.languages.nix
     programs.vscode.languages.perl
     programs.vscode.languages.rust
+    programs.vscode.languages.hare
     programs.vscode.languages.web
     programs.vscode.languages.yuck
     programs.vscode.languages.python
