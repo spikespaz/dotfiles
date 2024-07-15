@@ -188,6 +188,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
     #########################
 
     git = {
+      home.packages = with pkgs; [ git-filter-repo ];
       programs.git = {
         enable = true;
         package = pkgs.git.override {
