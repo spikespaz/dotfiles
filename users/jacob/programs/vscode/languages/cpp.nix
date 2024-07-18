@@ -1,6 +1,4 @@
 { lib, pkgs, ... }: {
-  home.packages = [ pkgs.rust-analyzer pkgs.slint-lsp ];
-
   programs.vscode.extensions =
     let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [
