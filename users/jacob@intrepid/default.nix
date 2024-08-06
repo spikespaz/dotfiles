@@ -49,6 +49,7 @@ in lib.bird.mkHome args rec {
     self.overlays.default
     # updates to packages before committing upstream
     self.overlays.updates
+    self.overlays.patches
     # override packages with an unfree license
     self.overlays.allowUnfree
     # skip the manual download for oracle's jdk
