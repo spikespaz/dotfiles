@@ -5,7 +5,10 @@
     let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [
       rust-lang.rust-analyzer
-      serayuzgur.crates
+
+      # serayuzgur.crates // superseded by
+      fill-labs.dependi
+
       tamasfe.even-better-toml
       a5huynh.vscode-ron
       slint.slint
