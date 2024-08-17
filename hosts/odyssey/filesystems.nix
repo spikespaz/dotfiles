@@ -42,7 +42,7 @@ in {
   # Only configure the necessary prerequisite boot parameters.
   boot = {
     # tmpfs allocates for files on-demand
-    tmp.useTmpfs = true;
+    tmp.useTmpfs = false;
     # this is the upper-limit, not a block
     tmp.tmpfsSize = "20G";
 
