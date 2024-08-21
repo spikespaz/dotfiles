@@ -157,6 +157,8 @@ in {
 
       plugin-load zsh-edit
 
+      WORDCHARS=''''''
+
       ### NOTIFICATIONS ###
 
       AUTO_NOTIFY_THRESHOLD=300
