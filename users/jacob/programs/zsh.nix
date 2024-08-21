@@ -93,7 +93,6 @@ in {
       ### COMPLETION ###
 
       setopt AUTO_CD
-      setopt ALWAYS_TO_END
 
       ### GLOBBING ###
 
