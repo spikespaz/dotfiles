@@ -23,7 +23,7 @@ let
 in {
   imports = [ self.homeManagerModules.zsh ];
 
-  home.packages = [ pkgs.most ];
+  home.packages = [ pkgs.moar ];
 
   programs.starship = {
     enable = true;
@@ -151,7 +151,7 @@ in {
 
       plugin-load fast-syntax-highlighting
 
-      PAGER='less'
+      export PAGER='${lib.getExe pkgs.moar}'
 
       ### KEYBINDINGS ###
 
