@@ -24,7 +24,7 @@
       # polkit_gnome
       # pantheon.pantheon-agent-polkit
       # libsForQt5.kwallet
-      gnome.seahorse
+      seahorse
       libsecret
 
       (with pkgs.libsForQt5; [
