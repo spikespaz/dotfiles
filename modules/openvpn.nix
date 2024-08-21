@@ -208,7 +208,7 @@ in {
   ###### implementation
 
   config = lib.mkIf (cfg.servers != { }) {
-    systemd.services = lib.listToAttrs (lib.mapAttrsFlatten (name: value:
+    systemd.services = lib.listToAttrs (lib.mapAttrsToList (name: value:
       lib.nameValuePair "openvpn-${name}" (makeOpenVPNJob value name))
       cfg.servers);
 
