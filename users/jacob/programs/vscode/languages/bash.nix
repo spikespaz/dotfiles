@@ -11,6 +11,7 @@
     "[shellscript]" = {
       "editor.tabSize" = 2;
       "editor.insertSpaces" = false;
+      "editor.defaultFormatter" = "foxundermoon.shell-format";
     };
 
     "shellcheck.executablePath" = lib.getExe pkgs.shellcheck;
