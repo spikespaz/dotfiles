@@ -133,8 +133,15 @@
 
     # scale the ui down
     # "window.zoomLevel" = -1;
-    # hide the menu bar unless alt is pressed
-    "window.menuBarVisibility" = "toggle";
+
+    # use custom title bar (affects context menus)
+    "window.titleBarStyle" = "native";
+    # custom title bar is never used, but want feature to allow custom context menus (unavailable)
+    "window.customTitleBarVisibility" = "never";
+    # disable the menu bar
+    "window.menuBarVisibility" = "hidden";
+    # prevent conflict with WM binds
+    # "window.customMenuBarAltFocus" = false;
     # the minimap gets in the way
     "editor.minimap.enabled" = false;
     # scroll with an animation
