@@ -120,6 +120,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
 
     pinta = { home.packages = [ pkgs.pinta ]; };
     gimp = { home.packages = [ pkgs.gimp ]; };
+    upscayl = { home.packages = [ pkgs.upscayl ]; };
 
     #########################
     ### MEDIA CONSUMPTION ###

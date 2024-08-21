@@ -97,6 +97,7 @@ in {
     programs.shotcut
     programs.pinta
     programs.gimp
+    programs.upscayl
 
     ### MEDIA CONSUMPTION ###
     # programs.spotify
