@@ -110,6 +110,8 @@
 
     systems.url = "github:nix-systems/default";
 
+    rust-overlay.url = "github:oxalica/rust-overlay";
+
     nix-your-shell.url = "github:MercuryTechnologies/nix-your-shell";
     nix-your-shell.inputs.nixpkgs.follows = "nixpkgs";
 
