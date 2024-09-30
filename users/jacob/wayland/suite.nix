@@ -51,7 +51,7 @@
       taglib # Audio File Tags
 
       # General Utilities
-      gnome.gnome-sound-recorder
+      gnome-sound-recorder
 
       # Video Player
       haruna
