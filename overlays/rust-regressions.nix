@@ -12,4 +12,4 @@ let
 in builtins.listToAttrs (map (name: {
   inherit name;
   value = pkgs0.${name}.override { inherit rustPlatform; };
-}) [ "lapce" "deepfilternet" "rustdesk" "delta" "bandwhich" ])
+}) [ "deepfilternet" "rustdesk" "delta" "bandwhich" ])
