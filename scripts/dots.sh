@@ -33,53 +33,78 @@ if [[ ! -e "$NIXOS_FLAKE_DIR/.git" ]]; then
 	exit 1
 fi
 
-verb=$1
-noun=$2
-shift 2
-
 flakeRef=''
 command=()
 
-case "$noun" in
+function build() {
+	case "$1" in
 	host)
+		shift
 		flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
-		case "$verb" in
-			build)
-				command+=(nixos-rebuild build)
-				;;
-			switch)
-				command+=(sudo nixos-rebuild switch)
-				;;
-			boot)
-				command+=(sudo nixos-rebuild boot)
-				;;
-			*)
-				echo 'Unknown verb paired with noun `host`, must be one of: `build`, `switch`, or `boot`.'
-				exit 1
-				;;
-		esac
-		command+=(--flake "$flakeRef" "$@")
+		command=(nixos-rebuild build --flake "$flakeRef" "$@")
 		;;
 	home)
+		shift
 		flakeRef="path:$NIXOS_FLAKE_DIR#$(whoami)@$(hostname)"
-		case "$verb" in
-			build)
-				command+=(home-manager build)
-				;;
-			switch)
-				command+=(home-manager switch)
-				;;
-			*)
-				echo 'Unknown verb paired with noun `home`, must be one of: `build`, or `switch`.'
-				exit 1
-				;;
-		esac
-		command+=(--flake "$flakeRef" "$@")
+		command=(home-manager build --flake "$flakeRef" "$@")
 		;;
 	*)
-		echo 'Unknown noun. Must be one of: `host` or `home`.'
+		echo 'Unknown noun '"'$1'"' for verb `build`, must be one of: `host`, `home`.'
 		exit 1
 		;;
+	esac
+}
+
+function switch() {
+	case "$1" in
+	host)
+		shift
+		flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
+		command=(sudo nixos-rebuild switch --flake "$flakeRef" "$@")
+		;;
+	home)
+		shift
+		flakeRef="path:$NIXOS_FLAKE_DIR#$(whoami)@$(hostname)"
+		command=(home-manager switch --flake "$flakeRef" "$@")
+		;;
+	*)
+		echo 'Unknown noun '"'$1'"' for verb `switch`, must be one of: `host`, `home`.'
+		exit 1
+		;;
+	esac
+}
+
+function boot() {
+	case "$1" in
+	host)
+		shift
+		flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
+		command=(sudo nixos-rebuild boot --flake "$flakeRef" "$@")
+		;;
+	*)
+		echo 'Unknown noun '"'$1'"' for verb `boot`, must be one of: `host`.'
+		exit 1
+		;;
+	esac
+}
+
+verb=$1
+shift
+
+case "$verb" in
+build)
+	build "$@"
+	;;
+switch)
+	switch "$@"
+	;;
+boot)
+	boot "$@"
+	;;
+*)
+	echo 'Unknown verb '"'$verb'"', must be one of `build`, `switch` or `boot`.'
+	exit 1
+	;;
 esac
 
 echo "> ${command[*]}"
