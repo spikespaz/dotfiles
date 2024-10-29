@@ -44,6 +44,8 @@ lib.bird.mkHost args {
     self.overlays.allowUnfree
     # window manager
     inputs.hyprnix.overlays.default
+    # override certain packages to be fetchable in binary caches
+    self.overlays.hacks.nixpkgs-config-exceptions
     # other packages
     inputs.slight.overlays.default
     inputs.ragenix.overlays.default
