@@ -1,0 +1,8 @@
+[package]
+name = "hypr-alt-tab"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.91"
+hyprland = { git = "https://github.com/hyprland-community/hyprland-rs" }
