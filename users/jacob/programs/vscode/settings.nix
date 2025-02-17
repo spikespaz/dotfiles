@@ -243,6 +243,8 @@
     "editor.rulers" = [ 80 120 ];
     # files can be recovered with undo
     "explorer.confirmDelete" = false;
+    # prevent dragging text around by accident
+    "editor.dragAndDrop" = false;
     # set the integrated terminal to use zsh
     "terminal.integrated.defaultProfile.linux" = "zsh";
     # never ask to open parent git repo if one-off
