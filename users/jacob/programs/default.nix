@@ -257,9 +257,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
         pkgs.jdk # latest
         pkgs.temurin-bin-8
         pkgs.temurin-bin-11
-        pkgs.temurin-bin-16
         pkgs.temurin-bin-17
-        pkgs.temurin-bin-18
         pkgs.temurin-bin # latest
       ]);
     };
@@ -335,7 +333,6 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
       #   export force_glsl_extensions_warn=true
       #   run-game "$@"
       prismlauncher' = pkgs.prismlauncher.override {
-        withWaylandGLFW = true;
         jdks = with pkgs; [
           # Java 8
           temurin-jre-bin-8

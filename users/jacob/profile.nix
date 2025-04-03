@@ -72,7 +72,8 @@ in {
     ### WEB BROWSERS ###
     programs.firefox
     programs.chromium
-    programs.microsoft-edge
+    # TODO: the binary can't be wrapped because it isn't executable, patch please
+    # programs.microsoft-edge
 
     ### DOCUMENT/FILETYPE HANDLERS ###
     programs.zathura
@@ -86,7 +87,8 @@ in {
     programs.vesktop
     programs.hexchat
     programs.telegram
-    programs.matrix
+    # TODO: some client's dependencies are insecure, find out which and rename this module
+    # programs.matrix
     programs.mattermost
 
     ### MEDIA CREATION ###
@@ -125,7 +127,8 @@ in {
     programs.vscode.languages.yuck
     programs.vscode.languages.python
     programs.vscode.languages.nushell
-    programs.vscode.other.marlin
+    # TODO: error: do not use python3Packages when building Python packages, specify each used package as a separate argument
+    # programs.vscode.other.marlin
     programs.vscode.other.marp
     # TODO broken idk why
     # programs.vscode.languages.all
@@ -159,7 +162,8 @@ in {
     ### SYSTEM ADMINISTRATION & DIAGNOSTICS ###
     programs.remmina
     programs.anydesk
-    programs.rustdesk
+    # TODO: dependency `xtest` is failing to build
+    # programs.rustdesk
     programs.neofetch
     programs.nix-index
     programs.virt-manager
@@ -183,7 +187,8 @@ in {
     programs.prusa-slicer
     # disabled until <https://github.com/NixOS/nixpkgs/pull/225817> is merged
     # programs.super-slicer
-    programs.cura
+    # TODO: `python3.12-libarcus-4.12.0` marked as broken
+    # programs.cura
 
     ### HARDWARE ###
     # programs.hardware.razer

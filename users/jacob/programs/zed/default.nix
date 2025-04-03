@@ -2,10 +2,12 @@
 let
   zed-editor' = (let
     super = pkgs.zed-editor;
-    fontPackages = with pkgs; [
-      material-design-icons
-      (nerdfonts.override { fonts = [ "JetBrainsMono" "Monaspace" ]; })
-    ];
+    fontPackages = with pkgs;
+      with pkgs.nerd-fonts; [
+        material-design-icons
+        jetbrains-mono
+        monaspace
+      ];
   in pkgs.symlinkJoin {
     inherit (super) name pname version meta;
     paths = [ super fontPackages ];

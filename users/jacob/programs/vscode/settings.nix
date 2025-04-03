@@ -2,10 +2,12 @@
   programs.vscode.enable = true;
   programs.vscode.package = let
     super = pkgs.vscode;
-    fontPackages = with pkgs; [
-      material-design-icons
-      (nerdfonts.override { fonts = [ "JetBrainsMono" "Monaspace" ]; })
-    ];
+    fontPackages = with pkgs;
+      with pkgs.nerd-fonts; [
+        material-design-icons
+        jetbrains-mono
+        monaspace
+      ];
   in (pkgs.symlinkJoin {
     inherit (super) name pname version;
     paths = [ super ] ++ fontPackages;

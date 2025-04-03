@@ -57,8 +57,10 @@ in {
 
   programs.alacritty.enable = true;
 
-  home.packages =
-    [ (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "Monaspace" ]; }) ];
+  home.packages = [ # #
+    pkgs.nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.monaspace
+  ];
 
   programs.alacritty.settings.shell = {
     program = "${lib.getExe pkgs.zsh}";
