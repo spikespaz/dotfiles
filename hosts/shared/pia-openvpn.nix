@@ -6,7 +6,7 @@ let
   src = pkgs.fetchzip {
     stripRoot = false;
     url = "https://www.privateinternetaccess.com/openvpn/openvpn.zip";
-    sha256 = "sha256-ZA8RS6eIjMVQfBt+9hYyhaq8LByy5oJaO9Ed+x8KtW8=";
+    hash = "sha256-ZA8RS6eIjMVQfBt+9hYyhaq8LByy5oJaO9Ed+x8KtW8=";
   };
 
   configs = lib.pipe src.outPath [
@@ -28,7 +28,6 @@ let
     (attrs: removeAttrs attrs [ "_" ])
   ];
 in {
-  imports = [ self.nixosModules.openvpn ];
   age.secrets.pia-user-pass.file = "${self}/secrets/root.pia-user-pass.age";
-  services.openvpn.alt.servers = configs;
+  services.openvpn.servers = configs;
 }
