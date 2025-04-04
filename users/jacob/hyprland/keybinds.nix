@@ -12,38 +12,16 @@
     MOUSE_EX2 = "mouse:276";
 
     exec = {
+      inherit (pkgs.callPackages ./scripts {
+        hyprland = config.wayland.windowManager.hyprland.package;
+      })
+        pin-window toggle-silent-running screenshot-window toggle-group-or-lock;
+
       playerctl = lib.getExe pkgs.playerctl;
       slight = lib.getExe pkgs.slight;
       osdFunc = lib.getExe config.utilities.osd-functions.package;
       activateCleanMode = "disable-input-devices-notify";
-      pinWindow = pkgs.patchShellScript ./scripts/pin-window.sh {
-        runtimeInputs =
-          [ config.wayland.windowManager.hyprland.package pkgs.jq ];
-      };
-      toggleSilentRunning = pkgs.patchShellScript ./scripts/silent-running.sh {
-        runtimeInputs = [
-          pkgs.jq
-          pkgs.systemd
-          config.wayland.windowManager.hyprland.package
-        ];
-      };
-      screenshotWindow = pkgs.patchShellScript ./scripts/screenshot.sh {
-        runtimeInputs = with pkgs; [
-          jq
-          grim
-          wl-clipboard
-          libnotify
-          config.wayland.windowManager.hyprland.package
-        ];
-      };
       airplaneMode = "sudo /run/current-system/sw/bin/airplane-mode";
-      toggleGroupOrLock =
-        pkgs.patchShellScript ./scripts/toggle-group-or-lock.sh {
-          runtimeInputs = with pkgs; [
-            jq
-            config.wayland.windowManager.hyprland.package
-          ];
-        };
     };
 
     # Collections of keybinds common across multiple submaps are collected into
@@ -220,7 +198,7 @@
       bind."SUPER, F" = "togglefloating,";
 
       # Float and pin or unpin the active window.
-      bind."SUPER, P" = "exec, ${exec.pinWindow}";
+      bind."SUPER, P" = "exec, ${exec.pin-window}";
     }
     ### MISCELLANEOUS ###
     {
@@ -237,7 +215,7 @@
       bind."SUPER_SHIFT, Q" = "exec, hyprctl kill";
 
       # Screenshot the currently focused window and copy to clipboard.
-      bind."SUPER, print" = "exec, ${exec.screenshotWindow}";
+      bind."SUPER, print" = "exec, ${exec.screenshot-window}";
 
       # Select a region and take a screenshot, saving to the clipboard.
       bind."SUPER_SHIFT, print" = "exec, prtsc -c -m r -D -b 00000066";
@@ -285,7 +263,7 @@
 
       # Lock the session, and then turn off the display after some time.
       # Turn the display back on when triggered a second time.
-      bindrl.", XF86Display" = "exec, ${exec.toggleSilentRunning}";
+      bindrl.", XF86Display" = "exec, ${exec.toggle-silent-running}";
 
       # Regular media control keys, if your laptop or bluetooth device has them.
       bindl.", XF86AudioPlay" = "exec, ${exec.playerctl} play-pause";
@@ -334,7 +312,7 @@
     groups.changeGroupActive
     {
       # Lock/unlock the active group without entering the submap.
-      bind."SUPER, G" = "exec, ${exec.toggleGroupOrLock}";
+      bind."SUPER, G" = "exec, ${exec.toggle-group-or-lock}";
 
       # Enter a submap for manipulating windows with relation to groups.
       bind."SUPER_SHIFT, G" = "submap, groups";
