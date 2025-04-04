@@ -62,12 +62,12 @@ in {
     pkgs.nerd-fonts.monaspace
   ];
 
-  programs.alacritty.settings.shell = {
-    program = "${lib.getExe pkgs.zsh}";
-    args = [ "--login" ];
-  };
-
   programs.alacritty.settings = {
+    terminal.shell = {
+      program = "${lib.getExe pkgs.zsh}";
+      args = [ "--login" ];
+    };
+
     window = {
       opacity = 0.7;
       padding.x = 4;
