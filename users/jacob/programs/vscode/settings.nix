@@ -91,7 +91,7 @@
     "editor.hover.delay" = 700;
 
     # colors
-    "workbench.colorTheme" = "Darkbox (Modern)";
+    "workbench.colorTheme" = "Darkbox";
     "workbench.colorCustomizations" = {
       "[Monokai Pro (Filter Spectrum)]" = {
         "editorInlayHint.foreground" = "#69676c";
