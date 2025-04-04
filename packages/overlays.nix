@@ -34,6 +34,10 @@ lib: {
       temurin20-jre-bin graalvm8-ce graalvm8-ce-jre;
   };
 
+  wavefox = pkgs: _: {
+    wavefox = pkgs.callPackage ./wavefox.nix { inherit lib; };
+  };
+
   # PACKAGE SETS #
 
   zsh-plugins = pkgs: pkgs0: {

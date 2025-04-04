@@ -1,10 +1,4 @@
-{ self, lib, pkgs, config, ... }:
-let
-  wavefox =
-    pkgs.callPackage "${self}/users/jacob/programs/firefox/wavefox.nix" {
-      inherit lib;
-    };
-in {
+{ self, lib, pkgs, config, ... }: {
   programs.firefox.profiles."jacob.default" = {
     settings = {
       # Enable new WebRender everywhere.
@@ -19,7 +13,7 @@ in {
   # <https://github.com/QNetITQ/WaveFox>
   programs.firefox.userChrome.profiles."jacob.default" = lib.mkForce {
     # recursive = true;
-    source = wavefox;
+    source = pkgs.wavefox;
 
     extraSettings = {
       "browser.uidensity" = 1;
@@ -37,9 +31,10 @@ in {
 
       # "browser.tabs.inTitlebar" = 1; # needed for transparency
       # "userChrome.Linux.Transparency.Low.Enabled" = true;
-      "userChrome.DarkTheme.Tabs.Shadows.Saturation.Low.Enabled" = true;
-      "userChrome.TabSeparators.Saturation.Medium.Enabled" = true;
+      # "userChrome.DarkTheme.Tabs.Shadows.Saturation.Low.Enabled" = true;
+      # "userChrome.TabSeparators.Saturation.Medium.Enabled" = true;
       # "userChrome.Menu.Size.Compact.Enabled" = true;
+      "WaveFox.Tabs.Shape" = 5;
     };
   };
 }
