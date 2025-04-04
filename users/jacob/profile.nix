@@ -115,21 +115,22 @@ in {
     programs.alacritty
 
     ### CODE EDITORS ###
-    programs.vscode.settings
-    programs.vscode.keybinds
-    programs.vscode.languages.cpp
-    programs.vscode.languages.bash
-    programs.vscode.languages.nix
-    programs.vscode.languages.perl
-    programs.vscode.languages.rust
-    programs.vscode.languages.hare
-    programs.vscode.languages.web
-    programs.vscode.languages.yuck
-    programs.vscode.languages.python
-    programs.vscode.languages.nushell
+    (programs.vscode.enable "default")
+    (programs.vscode.settings.spikespaz "default")
+    (programs.vscode.keybinds.spikespaz "default")
+    (programs.vscode.languages.cpp "default")
+    (programs.vscode.languages.bash "default")
+    (programs.vscode.languages.nix "default")
+    (programs.vscode.languages.perl "default")
+    (programs.vscode.languages.rust "default")
+    (programs.vscode.languages.hare "default")
+    (programs.vscode.languages.web "default")
+    (programs.vscode.languages.yuck "default")
+    (programs.vscode.languages.python "default")
+    (programs.vscode.languages.nushell "default")
     # TODO: error: do not use python3Packages when building Python packages, specify each used package as a separate argument
-    # programs.vscode.other.marlin
-    programs.vscode.other.marp
+    # (programs.vscode.other.marlin "default")
+    (programs.vscode.other.marp "default")
     # TODO broken idk why
     # programs.vscode.languages.all
     # programs.jetbrains.clion

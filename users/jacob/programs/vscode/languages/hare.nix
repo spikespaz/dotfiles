@@ -1,3 +1,6 @@
+profileName:
 { pkgs, ... }: {
-  programs.vscode.extensions = with pkgs.vscode-marketplace; [ wackbyte.hare ];
+  programs.vscode.profiles.${profileName} = {
+    extensions = with pkgs.vscode-marketplace; [ wackbyte.hare ];
+  };
 }

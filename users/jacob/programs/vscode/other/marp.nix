@@ -1,9 +1,11 @@
+profileName:
 { pkgs, ... }: {
-  programs.vscode.extensions =
-    let extensions = pkgs.callPackage ../marketplace.nix { };
+  programs.vscode.profiles.${profileName} = {
+    extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases;
     [
       #
       marp-team.marp-vscode
     ];
+  };
 }

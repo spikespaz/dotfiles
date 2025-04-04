@@ -1,13 +1,15 @@
+profileName:
 { lib, pkgs, ... }: {
-  programs.vscode.extensions =
-    let extensions = pkgs.callPackage ../marketplace.nix { };
+  home.packages = [ pkgs.platformio ];
+
+  programs.vscode.profiles.${profileName} = {
+    extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [
       pkgs.vscode-extensions.ms-vscode.cpptools # wrapped by nixpkgs
       marlinfirmware.auto-build
       platformio.platformio-ide
     ];
 
-  home.packages = [ pkgs.platformio ];
-
-  programs.vscode.userSettings = { "auto-build.defaultEnv.update" = false; };
+    userSettings = { "auto-build.defaultEnv.update" = false; };
+  };
 }

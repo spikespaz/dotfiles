@@ -1,6 +1,7 @@
-{ lib, pkgs, ... }: {
-  programs.vscode.extensions =
-    let extensions = pkgs.callPackage ../marketplace.nix { };
+profileName:
+{ pkgs, ... }: {
+  programs.vscode.profiles.${profileName} = {
+    extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [
       ms-python.python
       ms-python.debugpy
@@ -9,5 +10,6 @@
       ms-toolsai.jupyter
     ];
 
-  programs.vscode.userSettings = { };
+    userSettings = { };
+  };
 }
