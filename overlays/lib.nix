@@ -10,9 +10,11 @@ let
     let
       ownArgs = builtins.attrNames (lib.functionArgs (patchShellScript null));
       derivationArgs = removeAttrs args ownArgs;
-      matchesBin = builtins.match "/bin/([^/]+)" destination;
+      mainProgram = let match = (builtins.match "/bin/([^/]+)" destination);
+      in if match == null then null else lib.elemAt match 0;
     in pkgs.stdenvNoCC.mkDerivation (self:
       {
+        pname = name;
         inherit name strictDeps;
 
         enableParallelBuilding = true;
@@ -44,8 +46,8 @@ let
       } // lib.optionalAttrs runLocal {
         preferLocalBuild = true;
         allowSubstitutes = false;
-      }) // lib.optionalAttrs (matchesBin != null) {
-        meta = { mainProgram = lib.head matchesBin; } // meta;
+      }) // lib.optionalAttrs (mainProgram != null) {
+        meta = { inherit mainProgram; } // meta;
       } // lib.optionalAttrs (checkPhase != null) {
         checkPhase = let
           shellcheckSupported = lib.meta.availableOn pkgs.stdenv.buildPlatform
