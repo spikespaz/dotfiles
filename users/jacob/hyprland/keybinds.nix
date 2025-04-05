@@ -2,7 +2,12 @@
 # search: ^(\s*)(bind[rwelm]*) = (|\w+), (|\$?\w+), (.+)$ /gm
 # replace: $1$2."$3, $4" = "$5";
 
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }:
+let
+  # This default ideally should be determined by the script,
+  # instead of being defined here (it renders the configuration non-portable).
+  laptopKeyboard = "at-translated-set-2-keyboard";
+in {
   # <https://wiki.hyprland.org/Configuring/Dispatchers/>
   wayland.windowManager.hyprland.keyBinds = let
     MOUSE_LMB = "mouse:272";
@@ -15,7 +20,8 @@
       inherit (pkgs.callPackages ./scripts {
         hyprland = config.wayland.windowManager.hyprland.package;
       })
-        pin-window toggle-silent-running screenshot-window toggle-group-or-lock;
+        pin-window toggle-silent-running screenshot-window
+        switch-keyboard-layout toggle-group-or-lock;
 
       playerctl = lib.getExe pkgs.playerctl;
       slight = lib.getExe pkgs.slight;
@@ -227,6 +233,18 @@
       # Enable cleaning mode, disable integrated input devices
       # for furious scrubbing with a damp cloth.
       bindrl."SUPER_CTRL_SHIFT, delete" = "exec, ${exec.activateCleanMode}";
+
+      # Switch the integrated keyboard's keymap, cycling forwards through `./keymaps.nix`.
+      bind.", XF86Favorites" =
+        "exec, ${exec.switch-keyboard-layout} ${laptopKeyboard} --cycle next";
+      # Switch backwards, but don't cycle (stop at the first of many).
+      bind."SUPER, XF86Favorites" =
+        "exec, ${exec.switch-keyboard-layout} ${laptopKeyboard} prev";
+      # Alternatively, if you don't see the `XF86Favorites` key.
+      bind."SUPER_ALT, space" =
+        "exec, ${exec.switch-keyboard-layout} ${laptopKeyboard} --cycle next";
+      bind."SUPER_CTRL, space" =
+        "exec, ${exec.switch-keyboard-layout} ${laptopKeyboard} prev";
 
       # Bypass all binds for the window manager and pass key combinations
       # directly to the active window.
