@@ -72,8 +72,7 @@ in {
     ### WEB BROWSERS ###
     programs.firefox
     programs.chromium
-    # TODO: the binary can't be wrapped because it isn't executable, patch please
-    # programs.microsoft-edge
+    programs.microsoft-edge
 
     ### DOCUMENT/FILETYPE HANDLERS ###
     programs.zathura

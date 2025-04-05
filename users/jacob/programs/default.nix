@@ -7,18 +7,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
 
     chromium = { programs.chromium.enable = true; };
 
-    microsoft-edge = {
-      home.packages = [
-        # TODO pull-request
-        (pkgs.microsoft-edge.overrideAttrs {
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          postFixup = ''
-            wrapProgram $out/opt/microsoft/msedge/microsoft-edge \
-              --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
-          '';
-        })
-      ];
-    };
+    microsoft-edge = { home.packages = [ pkgs.microsoft-edge ]; };
 
     ##################################
     ### DOCUMENT/FILETYPE HANDLERS ###
