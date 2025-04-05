@@ -71,7 +71,7 @@ in {
 
     ### WEB BROWSERS ###
     programs.firefox
-    programs.chromium
+    programs.brave
     programs.microsoft-edge
 
     ### DOCUMENT/FILETYPE HANDLERS ###

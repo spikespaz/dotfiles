@@ -5,7 +5,10 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
     ### WEB BROWSERS ###
     ####################
 
-    chromium = { programs.chromium.enable = true; };
+    brave = {
+      programs.chromium.enable = true;
+      programs.chromium.package = pkgs.brave;
+    };
 
     microsoft-edge = { home.packages = [ pkgs.microsoft-edge ]; };
 
