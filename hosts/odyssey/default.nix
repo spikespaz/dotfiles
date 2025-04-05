@@ -25,6 +25,7 @@ lib.bird.mkHost args {
       shared.pia-openvpn
       # shared.nixbuild
       shared.user-sessions
+      shared.peripherals
 
       ./misc.nix
       ./packages.nix
