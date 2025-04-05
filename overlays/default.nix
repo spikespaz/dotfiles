@@ -12,7 +12,7 @@ lib.updates [
     # The overlay `allowUnfree` is not included by default.
     # This is because the user should be explicitly aware
     # that they are using the "hack".
-    default = lib.bird.mkJoinedOverlays (lib.attrValues packageOverlays);
+    default = lib.composeManyExtensions (lib.attrValues packageOverlays);
 
     # This overlay is included as a hack to make the packages (last argument)
     # easier to work with. Proper handling of unfree packages is really confusing,
