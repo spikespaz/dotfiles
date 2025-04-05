@@ -65,10 +65,10 @@ in {
 
       # Swap the active window with another, in the specified direction.
       moveWindow = {
-        bind."SUPER_SHIFT, left" = "movewindow, l";
-        bind."SUPER_SHIFT, right" = "movewindow, r";
-        bind."SUPER_SHIFT, up" = "movewindow, u";
-        bind."SUPER_SHIFT, down" = "movewindow, d";
+        bind."SUPER_SHIFT, left" = "movewindoworgroup, l";
+        bind."SUPER_SHIFT, right" = "movewindoworgroup, r";
+        bind."SUPER_SHIFT, up" = "movewindoworgroup, u";
+        bind."SUPER_SHIFT, down" = "movewindoworgroup, d";
       };
 
       # Translate the dragged window by mouse movement.
