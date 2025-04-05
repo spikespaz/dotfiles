@@ -327,7 +327,7 @@ in {
         format-disabled = "󰂲";
         format-connected = "󰂱 {num_connections}";
         format-connected-battery =
-          "󰂱 {device_alias} ({device_battery_percentage}%) ({num_connections})";
+          "󰂱 {device_alias} ({device_battery_percentage}%) [{num_connections}]";
 
         on-click = commands.bluetoothSettings;
         on-click-middle = commands.bluetoothKill;
