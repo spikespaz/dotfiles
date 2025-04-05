@@ -21,7 +21,7 @@ in {
         hyprland = config.wayland.windowManager.hyprland.package;
       })
         pin-window toggle-silent-running screenshot-window
-        switch-keyboard-layout toggle-group-or-lock;
+        switch-keyboard-layout toggle-group-or-lock hypr-alt-tab;
 
       playerctl = lib.getExe pkgs.playerctl;
       slight = lib.getExe pkgs.slight;
@@ -89,7 +89,17 @@ in {
 
       # Switch to the next/previous tab in the active group.
       changeGroupActive = {
-        bind."ALT, tab" = "changegroupactive, f";
+        # First, I tried:
+        # ```nix
+        # bind."ALT, tab" = [
+        #   "changegroupactive, f"
+        #   # treat floating windows like they're in a group
+        #   "alterzorder, bottom, activewindow"
+        # ];
+        # ```
+        # But it didn't work so I wrote a simple Rust "script".
+        bind."ALT, tab" = "exec, ${exec.hypr-alt-tab}";
+        # TODO: cycle backwards also
         bind."ALT, grave" = "changegroupactive, b";
       };
 

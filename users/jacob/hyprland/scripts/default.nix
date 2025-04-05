@@ -1,5 +1,6 @@
-{ patchShellScript, patchNuScript, hyprland, jq, systemd, grim, wl-clipboard
-, libnotify, }: # #
+{ callPackage, patchShellScript, patchNuScript, hyprland, jq, systemd, grim
+, wl-clipboard, libnotify, }:
+
 {
   pin-window = patchShellScript ./pin-window.sh { # #
     runtimeInputs = [ hyprland jq ];
@@ -16,4 +17,5 @@
   toggle-group-or-lock = patchShellScript ./toggle-group-or-lock.sh {
     runtimeInputs = [ jq hyprland ];
   };
+  hypr-alt-tab = callPackage ./hypr-alt-tab { };
 }
