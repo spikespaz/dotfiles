@@ -32,6 +32,10 @@ let
     bluetoothctl = "${pkgs.bluez}/bin/bluetoothctl";
     systemctl = "${pkgs.systemd}/bin/systemctl";
     iwgtk = lib.getExe pkgs.iwgtk;
+    switch-keyboard-layout =
+      pkgs.patchNuScript ./scripts/switch-keyboard-layout.nu {
+        runtimeInputs = [ config.wayland.windowManager.hyprland.package ];
+      };
   in {
     backlightUp = "${slight} inc 5% -t 150ms";
     backlightDown = "${slight} dec 5% -t 150ms";
@@ -87,6 +91,10 @@ let
     wirelessSettings = iwgtk;
     workspaceSwitchPrev = "${hyprctl} dispatch workspace m-1";
     workspaceSwitchNext = "${hyprctl} dispatch workspace m+1";
+    keyboardLayoutNext =
+      "${switch-keyboard-layout} at-translated-set-2-keyboard --cycle next";
+    keyboardLayoutPrev =
+      "${switch-keyboard-layout} at-translated-set-2-keyboard --cycle prev";
   };
 in {
   programs.waybar.enable = true;
@@ -119,6 +127,7 @@ in {
 
       modules-right = [
         "hyprland/submap"
+        "hyprland/language"
         "pulseaudio#output"
         "pulseaudio#input"
         "backlight"
@@ -185,6 +194,13 @@ in {
       "hyprland/submap" = {
         format = "󰘳 {}";
         tooltip = false;
+      };
+
+      "hyprland/language" = {
+        keyboard-name = "at-translated-set-2-keyboard";
+        format = "󰌌 {}";
+        on-click = commands.keyboardLayoutNext;
+        on-click-right = commands.keyboardLayoutPrev;
       };
 
       "hyprland/window" = { max-length = 50; };

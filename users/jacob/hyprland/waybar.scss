@@ -59,6 +59,7 @@ $highlight-foreground: #fbf1c7;
 
 #clock,
 #submap,
+#language,
 #backlight,
 #network,
 #bluetooth,
@@ -157,6 +158,10 @@ window.popup {
 
 #submap {
   @include indicate-active(#d3869b, "&");
+}
+
+#language {
+  @include indicate-hover(#282828);
 }
 
 #workspaces {
