@@ -5,6 +5,7 @@
     ./config.nix
     ./windowrules.nix
     ./keybinds.nix
+    ./keymaps.nix
     ./waybar.nix
   ];
 
