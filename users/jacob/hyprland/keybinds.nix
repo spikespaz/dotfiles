@@ -28,9 +28,10 @@
     # groups, which can be merged together granularly.
     groups = {
       # Exit the submap and restore normal binds.
-      submapReset = {
+      submapReset = enterBind: {
         bind.", escape" = "submap, reset";
         bind."CTRL, C" = "submap, reset";
+        bind.${enterBind} = "submap, reset";
       };
 
       # Self-explanatory.
@@ -292,7 +293,7 @@
         # groups.changeGroupActive # you probably forgot you're in the submap
         groups.switchWorkspace
         groups.sendWindow
-        groups.submapReset
+        (groups.submapReset "SUPER, backslash")
         {
           # Large adjustments in the specified direction.
           binde.", right" = "resizeactive, 30 0";
@@ -325,7 +326,7 @@
         groups.changeGroupActive
         groups.switchWorkspace
         groups.sendWindow
-        groups.submapReset
+        (groups.submapReset "SUPER_SHIFT, G")
         {
           ### Binds specific to this submap:
 
