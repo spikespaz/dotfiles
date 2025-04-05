@@ -61,6 +61,72 @@ let
         '';
       } // derivationArgs;
 
+  patchNuScript = script:
+    args@{ name ? baseNameOf script, strictDeps ? true, runtimeInputs ? [ ]
+    , destination ? "", overrideEnvironment ? { }, checkPhase ? null
+    , runLocal ? true, meta ? { }, passAsFile ? [ ], ... }:
+    let
+      toNu = v:
+        ''("${lib.escape [ ''"'' "\\" ] (builtins.toJSON v)}" | from json)'';
+      makeBinPathArray = packages:
+        let
+          binOutputs = builtins.filter (x: x != null) (map lib.getBin packages);
+        in "[" + lib.concatMapStringsSep "," (p: ''"${p}/bin"'') binOutputs
+        + "]";
+
+      ownArgs = builtins.attrNames (lib.functionArgs (patchShellScript null));
+      derivationArgs = removeAttrs args ownArgs;
+      mainProgram = let match = (builtins.match "/bin/([^/]+)" destination);
+      in if match == null then null else lib.elemAt match 0;
+    in pkgs.stdenvNoCC.mkDerivation (self:
+      {
+        pname = name;
+        inherit name strictDeps;
+
+        enableParallelBuilding = true;
+
+        passAsFile = [ "text" "buildCommand" ] ++ passAsFile;
+
+        text = ''
+          #!${pkgs.nushell}/bin/nu
+        '' + lib.optionalString (runtimeInputs != [ ]) ''
+
+          $env.PATH = ${makeBinPathArray runtimeInputs} ++ $env.PATH
+        '' + lib.optionalString (overrideEnvironment != { }) ''
+
+          load-env ${toNu overrideEnvironment}
+        '' + ''
+
+          ${builtins.readFile script}
+        '';
+
+        buildCommand = ''
+          target=$out${lib.escapeShellArg destination}
+          mkdir -p "$(dirname "$target")"
+
+          if [ -e "$textPath" ]; then
+            mv "$textPath" "$target"
+          else
+            echo -n "$text" > "$target"
+          fi
+
+          chmod +x "$target"
+
+          eval "$checkPhase"
+        '';
+
+      } // lib.optionalAttrs runLocal {
+        preferLocalBuild = true;
+        allowSubstitutes = false;
+      }) // lib.optionalAttrs (mainProgram != null) {
+        meta = { inherit mainProgram; } // meta;
+      } // lib.optionalAttrs (checkPhase != null) {
+        checkPhase = ''
+          ${pkgs.stdenvNoCC.shellDryRun} "$target"
+          ${pkgs.nushell}/bin/nu --commands "nu-check --debug '$target'"
+        '';
+      } // derivationArgs;
+
   # Build a Firefox extension from an XPI file...
   buildFirefoxXpiAddon = lib.makeOverridable ({
     # Required:
@@ -86,5 +152,5 @@ let
       '';
     });
 in { # #
-  inherit patchShellScript buildFirefoxXpiAddon;
+  inherit patchShellScript patchNuScript buildFirefoxXpiAddon;
 }
