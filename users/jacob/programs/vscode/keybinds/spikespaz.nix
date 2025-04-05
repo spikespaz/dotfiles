@@ -66,6 +66,22 @@ profileName:
         key = "ctrl+e";
         command = "workbench.files.action.focusFilesExplorer";
       }
+
+      ### STAGE/UNSTAGE SELECTED RANGES ###
+      {
+        # key = "ctrl+k ctrl+alt+s",
+        key = "ctrl+alt+s";
+        command = "git.stageSelectedRanges";
+        when =
+          "editorTextFocus && !operationInProgress && resourceScheme == 'file'";
+      }
+      {
+        # key = "ctrl+k ctrl+n",
+        key = "ctrl+alt+shift+s";
+        command = "git.unstageSelectedRanges";
+        when =
+          "editorTextFocus && !operationInProgress && resourceScheme == 'file'";
+      }
     ];
   };
 }
