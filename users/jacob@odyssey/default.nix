@@ -27,7 +27,6 @@ in lib.bird.mkHome args rec {
     hyprland.default
     ./hyprland
     ./profile-override.nix
-    ./firefox.nix
   ];
   # Keep this flake's overlays towards the bottom;
   # order matters. `pkgs0` may need to contain packages

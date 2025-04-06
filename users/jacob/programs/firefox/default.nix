@@ -1,10 +1,7 @@
-{ self, lib, pkgs, ... }:
+{ self, pkgs, ... }:
 let
   profile = "jacob.default";
   profileName = "jacob-default";
-
-  # things to do for every user
-  prefab = { settings = { "trailhead.firstrun.didSeeAboutWelcome" = true; }; };
 
   extensions = {
     rycee = pkgs.nur.repos.rycee.firefox-addons;
@@ -23,88 +20,109 @@ in {
 
   # programs.firefox.pwa.enable = true;
 
+  # <https://github.com/QNetITQ/WaveFox>
   programs.firefox.userChrome.profiles.${profile} = {
-    source = ./chrome;
-    # recursive = true;
-    extraSettings = { # settings specific to my theme
+    source = pkgs.wavefox;
+
+    extraSettings = {
+      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      "svg.context-properties.content.enabled" = true;
+      "gfx.webrender.all" = true;
       "browser.uidensity" = 1;
-      "ui.prefersReducedMotion" = 1;
+      # "ui.prefersReducedMotion" = 1;
       "browser.tabs.tabMinWidth" = 130;
+
+      # slight rounding
+      "userChrome.Tabs.Option8.Enabled" = true;
+
+      # "browser.tabs.inTitlebar" = 1; # needed for transparency
+      # "userChrome.Linux.Transparency.Low.Enabled" = true;
+      # "userChrome.DarkTheme.Tabs.Shadows.Saturation.Low.Enabled" = true;
+      # "userChrome.TabSeparators.Saturation.Medium.Enabled" = true;
+      # "userChrome.Menu.Size.Compact.Enabled" = true;
+      "WaveFox.Tabs.Shape" = 5;
     };
   };
 
-  programs.firefox.profiles.${profile} = lib.mkMerge [
-    prefab
-    {
-      id = 0;
-      isDefault = true;
-      name = profileName;
+  programs.firefox.profiles.${profile} = {
+    id = 0;
+    isDefault = true;
+    name = profileName;
 
-      settings = {
-        "devtools.chrome.enabled" = true;
-        "devtools.debugger.remote-enabled" = true;
-        "signon.rememberSignons" = false;
-        # "Open previous windows and tabs"
-        "browser.startup.page" = 3;
-      };
+    settings = {
+      # Hide the crap on the New Tab page.
+      "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+      "browser.newtabpage.activity-stream.feeds.topsites" = false;
+      "trailhead.firstrun.didSeeAboutWelcome" = true;
 
-      extensions = with extensions; [
-        ### BASICS ###
-        rycee.darkreader
-        # rycee.tree-style-tab
-        rycee.tab-stash
-        rycee.translate-web-pages
+      "devtools.chrome.enabled" = true;
+      "devtools.debugger.remote-enabled" = true;
 
-        ### PERFORMANCE ###
-        rycee.auto-tab-discard
+      "signon.rememberSignons" = false;
 
-        ### BLOCKING ###
-        # Enable "Annoyances" lists in uBO instead
-        # rycee.i-dont-care-about-cookies
-        rycee.user-agent-string-switcher
-        # rycee.gaoptout
-        # rycee.clearurls
-        # rycee.disconnect
-        # rycee.libredirect
+      # "Open previous windows and tabs"
+      "browser.startup.page" = 3;
 
-        ### GITHUB ###
-        # bandithedoge.gitako
-        bandithedoge.sourcegraph
-        # rycee.enhanced-github
-        # rycee.refined-github
-        rycee.lovely-forks
-        # rycee.octolinker
-        # rycee.octotree
+      # Fix for the close button being inline wth tabs.
+      "browser.tabs.inTitlebar" = 0;
+    };
 
-        ### YOUTUBE ###
-        rycee.sponsorblock
-        rycee.return-youtube-dislikes
-        # rycee.enhancer-for-youtube
+    extensions = with extensions; [
+      ### BASICS ###
+      rycee.darkreader
+      # rycee.tree-style-tab
+      rycee.tab-stash
+      rycee.translate-web-pages
 
-        ### TWITCH ###
-        spikespaz.twitch-auto-clicker
-        # For Twitch, it is also worth considering removing the extension and just using uBO.
-        # <https://github.com/pixeltris/TwitchAdSolutions>
-        spikespaz.ttv-lol-pro
-        spikespaz.frankerfacez
+      ### PERFORMANCE ###
+      rycee.auto-tab-discard
 
-        ### NEW INTERNET ###
-        # rycee.ipfs-companion
+      ### BLOCKING ###
+      # Enable "Annoyances" lists in uBO instead
+      # rycee.i-dont-care-about-cookies
+      rycee.user-agent-string-switcher
+      # rycee.gaoptout
+      # rycee.clearurls
+      # rycee.disconnect
+      # rycee.libredirect
 
-        ### FIXES ###
-        # rycee.open-in-browser
-        # rycee.no-pdf-download
-        # rycee.don-t-fuck-with-paste
+      ### GITHUB ###
+      # bandithedoge.gitako
+      bandithedoge.sourcegraph
+      # rycee.enhanced-github
+      # rycee.refined-github
+      rycee.lovely-forks
+      # rycee.octolinker
+      # rycee.octotree
 
-        ### UTILITIES ###
-        rycee.video-downloadhelper
-        # rycee.export-tabs-urls-and-titles
-        # rycee.markdownload
-        # rycee.flagfox
-        rycee.keepassxc-browser
-        rycee.wappalyzer
-        # slaier.dictionary-anywhere
-      ];
-    }
-  ];
+      ### YOUTUBE ###
+      rycee.sponsorblock
+      rycee.return-youtube-dislikes
+      # rycee.enhancer-for-youtube
+
+      ### TWITCH ###
+      spikespaz.twitch-auto-clicker
+      # For Twitch, it is also worth considering removing the extension and just using uBO.
+      # <https://github.com/pixeltris/TwitchAdSolutions>
+      spikespaz.ttv-lol-pro
+      spikespaz.frankerfacez
+
+      ### NEW INTERNET ###
+      # rycee.ipfs-companion
+
+      ### FIXES ###
+      # rycee.open-in-browser
+      # rycee.no-pdf-download
+      # rycee.don-t-fuck-with-paste
+
+      ### UTILITIES ###
+      rycee.video-downloadhelper
+      # rycee.export-tabs-urls-and-titles
+      # rycee.markdownload
+      # rycee.flagfox
+      rycee.keepassxc-browser
+      rycee.wappalyzer
+      # slaier.dictionary-anywhere
+    ];
+  };
 }
