@@ -39,7 +39,7 @@ in lib.bird.mkHome args rec {
     inputs.rust-overlay.overlays.default
     self.overlays.rust-regressions
     # nix user repo packages
-    inputs.nur.overlay
+    inputs.nur.overlays.default
     # packages for window manager
     inputs.hyprnix.overlays.default
     inputs.waybar.overlays.default

@@ -31,7 +31,7 @@ in lib.bird.mkHome args rec {
   # when it expects to find the twice-overridden package.
   overlays = [
     # nix user repo packages
-    inputs.nur.overlay
+    inputs.nur.overlays.default
     # packages for window manager
     inputs.hyprnix.overlays.default
     # nix related packages
