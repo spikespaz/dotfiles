@@ -13,7 +13,7 @@ in {
   programs.firefox.enable = true;
 
   imports = [
-    ./blocking.nix
+    (import ./blocking.nix profile)
     # self.homeManagerModules.firefox-pwa
   ];
 
@@ -67,7 +67,7 @@ in {
       "WaveFox.Tabs.Shape" = 5;
     };
 
-    extensions = with extensions; [
+    extensions.packages = with extensions; [
       ### BASICS ###
       rycee.darkreader
       # rycee.tree-style-tab
