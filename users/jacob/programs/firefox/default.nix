@@ -30,41 +30,54 @@ in {
     settings = {
       "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
-      # Enable new WebRender everywhere.
       "gfx.webrender.all" = true;
-      "svg.context-properties.content.enabled" = true;
-
-      # Hide the crap on the New Tab page.
-      "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
-      "browser.newtabpage.activity-stream.feeds.topsites" = false;
-      "trailhead.firstrun.didSeeAboutWelcome" = true;
-
-      "browser.uidensity" = 1;
-      # "ui.prefersReducedMotion" = 1;
-      "browser.tabs.tabMinWidth" = 130;
-
-      "devtools.chrome.enabled" = true;
-      "devtools.debugger.remote-enabled" = true;
-
-      "signon.rememberSignons" = false;
-
-      # "Open previous windows and tabs"
-      "browser.startup.page" = 3;
 
       # Fix for the close button being inline wth tabs.
+      # "browser.tabs.inTitlebar" = 1;
+      # Also puts a close button in the title bar, which we want to hide.
+      # This is required to be `1` for transparency.
       "browser.tabs.inTitlebar" = 0;
+      "browser.tabs.tabMinWidth" = 130;
 
-      # WaveFox
+      # Selecting "Compact" in the toolbar customization menu sets both
+      # of these options.
+      "browser.uidensity" = 1;
+      "browser.compactmode.show" = true;
+      # "ui.prefersReducedMotion" = 1;
 
-      # slight rounding
-      "userChrome.Tabs.Option8.Enabled" = true;
+      "browser.download.autohideButton" = false;
 
-      # "browser.tabs.inTitlebar" = 1; # needed for transparency
-      # "userChrome.Linux.Transparency.Low.Enabled" = true;
-      # "userChrome.DarkTheme.Tabs.Shadows.Saturation.Low.Enabled" = true;
-      # "userChrome.TabSeparators.Saturation.Medium.Enabled" = true;
-      # "userChrome.Menu.Size.Compact.Enabled" = true;
-      "WaveFox.Tabs.Shape" = 5;
+      ### WaveFox ###
+
+      "WaveFox.Tabs.Shape" = 7;
+      "WaveFox.DarkTheme.Tabs.Shadows" = 2;
+      "WaveFox.Tabs.Separators" = 1;
+
+      # TODO: This doesn't look as good as I want unfortunately.
+      # I want to have more granular transparency control
+      # to match the values used in Hyprland window rules.
+      # Makes the tab text hard to read and requires `browser.tabs.inTitlebar`.
+      # "browser.tabs.inTitlebar" = 1;
+      # "WaveFox.Linux.Transparency.Enabled" = true;
+      # "WaveFox.Toolbar.Transparency" = 3;
+
+      "svg.context-properties.content.enabled" = true;
+      "WaveFox.LeptonIcons.Enabled" = true;
+      # I think `panel_photon` and `panel_full` are mutually exclusive, not sure which to use.
+      # In the hamburger menu, with both enabled, the zoom icon is offset to the left.
+      # "userChrome.icon.panel_photon" = true;
+      "userChrome.icon.panel_full" = true;
+      "userChrome.icon.library" = true;
+      "userChrome.icon.panel" = true;
+      "userChrome.icon.menu" = true;
+      "userChrome.icon.context_menu" = true;
+      "userChrome.icon.global_menu" = true;
+      "userChrome.icon.global_menubar" = true;
+      "userChrome.icon.1-25px_stroke" = true;
+      "userChrome.icon.account_image_to_right" = true;
+      "userChrome.icon.account_label_to_right" = true;
+      "userChrome.icon.menu.full" = true;
+      "userChrome.icon.global_menu.mac" = true;
     };
 
     extensions.packages = with extensions; [

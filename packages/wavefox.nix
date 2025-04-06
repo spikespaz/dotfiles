@@ -1,12 +1,13 @@
 { lib, stdenv, fetchFromGitHub }:
 stdenv.mkDerivation (self: {
   pname = "wavefox-userchrome";
-  version = "1.8.137";
+  version = "1.8.138-unstable";
   src = fetchFromGitHub {
     owner = "QNetITQ";
     repo = "WaveFox";
-    rev = "v${self.version}";
-    hash = "sha256-blDZoxLwP0wX0oFOXH2fBAgyOrSsvwrxs7ScMOfXHTQ=";
+    # Using this to respect `browser.tabs.tabMinWidth`.
+    rev = "b8edea63e6543267ee498ec976020f991199eca6";
+    hash = "sha256-wANcp1ZlZJDoFYwpfp/R63VdRvmhaBL+TgoReSuC11U=";
   };
   installPhase = ''
     mkdir $out
