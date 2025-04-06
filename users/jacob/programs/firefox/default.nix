@@ -1,4 +1,4 @@
-{ self, pkgs, ... }:
+{ pkgs, ... }:
 let
   profile = "jacob.default";
   profileName = "jacob-default";
@@ -15,45 +15,33 @@ in {
   imports = [
     ./blocking.nix
     # self.homeManagerModules.firefox-pwa
-    self.homeManagerModules.firefox-userchrome
   ];
 
   # programs.firefox.pwa.enable = true;
-
-  # <https://github.com/QNetITQ/WaveFox>
-  programs.firefox.userChrome.profiles.${profile} = {
-    source = pkgs.wavefox;
-
-    extraSettings = {
-      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      "svg.context-properties.content.enabled" = true;
-      "gfx.webrender.all" = true;
-      "browser.uidensity" = 1;
-      # "ui.prefersReducedMotion" = 1;
-      "browser.tabs.tabMinWidth" = 130;
-
-      # slight rounding
-      "userChrome.Tabs.Option8.Enabled" = true;
-
-      # "browser.tabs.inTitlebar" = 1; # needed for transparency
-      # "userChrome.Linux.Transparency.Low.Enabled" = true;
-      # "userChrome.DarkTheme.Tabs.Shadows.Saturation.Low.Enabled" = true;
-      # "userChrome.TabSeparators.Saturation.Medium.Enabled" = true;
-      # "userChrome.Menu.Size.Compact.Enabled" = true;
-      "WaveFox.Tabs.Shape" = 5;
-    };
-  };
 
   programs.firefox.profiles.${profile} = {
     id = 0;
     isDefault = true;
     name = profileName;
 
+    # <https://github.com/QNetITQ/WaveFox>
+    userChrome = pkgs.wavefox;
+
     settings = {
+      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+
+      # Enable new WebRender everywhere.
+      "gfx.webrender.all" = true;
+      "svg.context-properties.content.enabled" = true;
+
       # Hide the crap on the New Tab page.
       "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
       "browser.newtabpage.activity-stream.feeds.topsites" = false;
       "trailhead.firstrun.didSeeAboutWelcome" = true;
+
+      "browser.uidensity" = 1;
+      # "ui.prefersReducedMotion" = 1;
+      "browser.tabs.tabMinWidth" = 130;
 
       "devtools.chrome.enabled" = true;
       "devtools.debugger.remote-enabled" = true;
@@ -65,6 +53,18 @@ in {
 
       # Fix for the close button being inline wth tabs.
       "browser.tabs.inTitlebar" = 0;
+
+      # WaveFox
+
+      # slight rounding
+      "userChrome.Tabs.Option8.Enabled" = true;
+
+      # "browser.tabs.inTitlebar" = 1; # needed for transparency
+      # "userChrome.Linux.Transparency.Low.Enabled" = true;
+      # "userChrome.DarkTheme.Tabs.Shadows.Saturation.Low.Enabled" = true;
+      # "userChrome.TabSeparators.Saturation.Medium.Enabled" = true;
+      # "userChrome.Menu.Size.Compact.Enabled" = true;
+      "WaveFox.Tabs.Shape" = 5;
     };
 
     extensions = with extensions; [
