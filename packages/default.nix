@@ -13,6 +13,10 @@ in lib.updates [
       proton-ge-custom nerdfonts-symbols;
   })
 
+  {
+    inherit (pkgs.python3Packages) platformio-python;
+  }
+
   # PACKAGE SETS #
 
   (with pkgs.zsh-plugins; {

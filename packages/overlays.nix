@@ -49,6 +49,13 @@ lib: {
       pkgs.callPackage ./firefox-extensions.nix { inherit lib; };
   };
 
+  # SCOPED PACKAGES
+
+  platformio-python = _: pkgs0: {
+    python3Packages = pkgs0.python3Packages.overrideScope
+      (ps: _: { platformio = ps.callPackage ./platformio-python.nix { }; });
+  };
+
   # SCRIPTS #
 
   json2nix = pkgs: pkgs0: {

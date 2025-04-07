@@ -1,7 +1,5 @@
 profileName:
 { lib, pkgs, ... }: {
-  home.packages = [ pkgs.platformio ];
-
   programs.vscode.profiles.${profileName} = {
     extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [
@@ -10,6 +8,10 @@ profileName:
       platformio.platformio-ide
     ];
 
-    userSettings = { "auto-build.defaultEnv.update" = false; };
+    userSettings = {
+      "auto-build.defaultEnv.update" = false;
+      "platformio-ide.useBuiltinPIOCore" = false;
+      "platformio-ide.customPATH" = lib.makeBinPath [ pkgs.platformio ];
+    };
   };
 }
