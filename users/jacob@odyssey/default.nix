@@ -66,7 +66,6 @@ in lib.bird.mkHome args rec {
     self.overlays.allowUnfree
     # skip the manual download for oracle's jdk
     self.overlays.oraclejdk
-    self.overlays.kde-wayland
   ];
   extraSpecialArgs = {
     pkgs-stable = import inputs.nixpkgs-stable {
