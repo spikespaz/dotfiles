@@ -64,7 +64,7 @@ in {
 
   programs.alacritty.settings = {
     terminal.shell = {
-      program = "${lib.getExe pkgs.zsh}";
+      program = "${lib.getExe config.programs.fish.package}";
       args = [ "--login" ];
     };
 

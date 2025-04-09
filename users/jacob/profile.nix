@@ -150,6 +150,7 @@ in {
 
     ### SHELL ENVIRONMENTS ###
     programs.zsh
+    programs.fish
     programs.nushell
 
     ### CLI UTILITIES ###
