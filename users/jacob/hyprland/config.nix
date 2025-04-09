@@ -74,6 +74,8 @@ in {
     # <https://wiki.hyprland.org/Configuring/Variables/#misc>
     config.misc = let FULLSCREEN_ONLY = 2;
     in {
+      font_family = "Ubuntu";
+
       disable_hyprland_logo = true; # false
       disable_splash_rendering = true; # false
       force_default_wallpaper = 0; # disable weeb stuff
