@@ -91,6 +91,7 @@ in {
     config.group = {
       insert_after_current = true;
       focus_removed_window = true;
+      merge_groups_on_drag = false;
 
       active_border_color = gb.hl_yellow 1.0;
       inactive_border_color = gb.bg3 1.0;
