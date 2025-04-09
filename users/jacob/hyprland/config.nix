@@ -102,17 +102,24 @@ in {
       # <https://github.com/hyprwm/Hyprland/issues/2415>
       # @MightyPlaza is working on this, but not doing it how we expect.
       # <https://github.com/hyprwm/Hyprland/pull/3197>
-      groupbar = rec {
-        font_size = 9;
+      groupbar = {
+        font_size = 14;
         gradients = false;
         render_titles = true;
         scrolling = true;
-        text_color = gb.fg0 1.0;
 
-        active_color = gb.fg3 1.0;
-        inactive_color = gb.bg1 0.6;
-        locked_active_color = active_color;
-        locked_inactive_color = inactive_color;
+        height = 18;
+        indicator_height = 4;
+        rounding = 0;
+        gaps_in = 4;
+        gaps_out = 4;
+        keep_upper_gap = false;
+
+        text_color = gb.fg0 1.0;
+        active_color = cfg.group.active_border_color;
+        inactive_color = cfg.group.inactive_border_color;
+        locked_active_color = cfg.group.locked_active_border_color;
+        locked_inactive_color = cfg.group.locked_inactive_border_color;
       };
     };
 
