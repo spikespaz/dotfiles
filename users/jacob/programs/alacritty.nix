@@ -53,8 +53,6 @@ let
     };
   };
 in {
-  imports = [ self.homeManagerModules.alacritty ];
-
   programs.alacritty.enable = true;
 
   home.packages = [ # #
