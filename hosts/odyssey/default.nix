@@ -34,9 +34,6 @@ lib.bird.mkHost args {
       ./powerplan.nix
     ];
   overlays = [
-    # required for rust-regressions
-    inputs.rust-overlay.overlays.default
-    self.overlays.rust-regressions
     # this flake's lib
     self.overlays.lib
     # flake packages

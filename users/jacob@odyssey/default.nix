@@ -35,9 +35,6 @@ in lib.bird.mkHome args rec {
   overlays = [
     # make the `home-manager` command follow flake input's version
     (import "${inputs.home-manager}/overlay.nix")
-    # rust-bin interface (required by rust-regressions)
-    inputs.rust-overlay.overlays.default
-    self.overlays.rust-regressions
     # nix user repo packages
     inputs.nur.overlays.default
     # packages for window manager
