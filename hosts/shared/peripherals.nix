@@ -1,4 +1,4 @@
-{ self, lib, pkgs, ... }:
+{ self, lib, pkgs, config, ... }:
 let
   nuphy-udev-rules = pkgs.stdenvNoCC.mkDerivation {
     name = "nuphy-udev-rules";
@@ -21,11 +21,32 @@ let
       platforms = lib.platforms.linux;
     };
   };
+  xpadneo-udev-rules = pkgs.stdenvNoCC.mkDerivation {
+    name = "xpadneo-udev-rules";
+    version = config.boot.kernelPackages.xpadneo.version;
+    src = config.boot.kernelPackages.xpadneo.src;
+    dontBuild = true;
+    installPhase = ''
+      runHook preInstall
+      install -d $out/lib/udev/rules.d
+      install -D hid-xpadneo/etc-udev-rules.d/*.rules $out/lib/udev/rules.d
+      runHook postInstall
+    '';
+  };
 in {
   imports = [ self.nixosModules.qmk-devices ];
+
+  hardware.xpadneo.enable = true;
+
   hardware.keyboard.qmk.enable = true;
-  # udev rules from `pkgs.via` are too permissive
-  services.udev.packages = [ nuphy-udev-rules ];
+
+  services.udev.packages = [
+    # udev rules from `pkgs.via` are too permissive
+    nuphy-udev-rules
+    # There are conflicts with QMK, which the udev rules will resolve.
+    # Besides that, the `xpadneo` NixOS module doesn't add them at all.
+    xpadneo-udev-rules
+  ];
 
   # The `productId` changed after
   hardware.keyboard.qmk.extraDevices = [{
