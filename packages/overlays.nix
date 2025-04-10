@@ -44,13 +44,13 @@ lib: {
 
   # PACKAGE SETS #
 
-  zsh-plugins = pkgs: pkgs0: {
-    zsh-plugins = pkgs.callPackage ./zsh-plugins.nix { inherit lib; };
+  zsh-plugins = pkgs: _: {
+    zsh-plugins = pkgs.callPackages ./zsh-plugins.nix { inherit lib; };
   };
 
-  firefox-extensions = pkgs: pkgs0: {
+  firefox-extensions = pkgs: _: {
     firefox-extensions =
-      pkgs.callPackage ./firefox-extensions.nix { inherit lib; };
+      pkgs.callPackages ./firefox-extensions.nix { inherit lib; };
   };
 
   # SCOPED PACKAGES
