@@ -197,7 +197,8 @@
     console.packages = [ pkgs.tamsyn ];
     console.font = "Tamsyn10x20r";
     # enable shell completions for system packages
-    environment.pathsToLink = [ "/share/zsh" "/share/bash-completion" ];
+    environment.pathsToLink =
+      [ "/share/zsh" "/share/fish" "/share/bash-completion" ];
 
     # registry for linux, thanks to gnome
     programs.dconf.enable = true;
