@@ -1,13 +1,17 @@
 lib: {
   # INDIVIDUAL PACKAGES #
 
-  amdctl = pkgs: _: { amdctl = pkgs.callPackage ./amdctl.nix { }; };
+  amdctl = pkgs: _: { # #
+    amdctl = pkgs.callPackage ./amdctl.nix { };
+  };
 
   ja-netfilter = pkgs: _: {
     ja-netfilter = pkgs.callPackage ./ja-netfilter { inherit lib; };
   };
 
-  prtsc = pkgs: _: { prtsc = pkgs.callPackage ./prtsc { inherit lib; }; };
+  prtsc = pkgs: _: { # #
+    prtsc = pkgs.callPackage ./prtsc { inherit lib; };
+  };
 
   ttf-ms-win11 = pkgs: _: {
     ttf-ms-win11 = pkgs.callPackage ./ttf-ms-win11 { inherit lib; };
@@ -58,7 +62,7 @@ lib: {
 
   # SCRIPTS #
 
-  json2nix = pkgs: pkgs0: {
+  json2nix = pkgs: _: {
     json2nix = pkgs.callPackage ./json2nix.nix { inherit lib; };
   };
 }
