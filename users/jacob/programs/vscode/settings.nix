@@ -142,6 +142,8 @@
     "window.customTitleBarVisibility" = "never";
     # disable the menu bar
     "window.menuBarVisibility" = "hidden";
+    # Don't focus on the menu bar when Alt is pressed.
+    "window.customMenuBarAltFocus" = false;
     # prevent conflict with WM binds
     # "window.customMenuBarAltFocus" = false;
     # the minimap gets in the way
