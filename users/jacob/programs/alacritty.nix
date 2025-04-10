@@ -63,7 +63,11 @@ in {
   programs.alacritty.settings = {
     terminal.shell = {
       program = "${lib.getExe config.programs.fish.package}";
-      args = [ "--login" ];
+      args = if pkgs.hostPlatform.isDarwin then [
+        "--interactive"
+        "--login"
+      ] else
+        [ "--interactive" ];
     };
 
     window = {
