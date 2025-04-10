@@ -16,14 +16,15 @@
       platforms = platforms.all;
     };
   };
+
   # Get rid of Twitch's pre-roll ads (mostly). Let me browse in peace.
   ttv-lol-pro = buildFirefoxXpiAddon rec {
     pname = "ttv_lol_pro";
-    version = "2.3.7";
+    version = "2.4.0";
     addonId = "{76ef94a4-e3d0-4c6f-961a-d38a429a332b}";
     url =
       "https://github.com/younesaassila/ttv-lol-pro/releases/download/v${version}/v${version}-firefox.zip";
-    hash = "sha256-uA9OaCk7+AqclkvPIO4lvL4iVVvQLKzK/i6Sz+wXoHg=";
+    hash = "sha256-eQDTFwmB4VJRtoECMfWwLRkWzwiefg5FWL+az7sTOLY=";
     meta = with lib; {
       description = "TTV LOL PRO removes most livestream ads from Twitch.";
       license = licenses.gpl3;
@@ -40,12 +41,14 @@
   };
 
   # This extension is amazing, check it out if you use Twitch.
-  frankerfacez = buildFirefoxXpiAddon rec {
+  frankerfacez = let fileId = "4464564";
+  in buildFirefoxXpiAddon rec {
     pname = "frankerfacez";
-    version = "4.0";
+    version = "4.77.3.0";
     addonId = "frankerfacez@frankerfacez.com";
-    url = "https://cdn.frankerfacez.com/script/${pname}-${version}-an+fx.xpi";
-    hash = "sha256-U/yAra2c+RlGSaQtHfBz9XYsoDaJ67gmPJBsFrpqoE8=";
+    url =
+      "https://addons.mozilla.org/firefox/downloads/file/${fileId}/${pname}-${version}.xpi";
+    hash = "sha256-CEvsSSHlXgGQvyQhEt7Gs3ke7i/6UNDcLIdXNISpVLM=";
     meta = with lib; {
       description =
         "The Twitch Enhancement Suite - Get custom emotes and tons of new features you'll never want to go without.";
