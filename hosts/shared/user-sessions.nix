@@ -1,5 +1,5 @@
 { self, lib, pkgs, config, ... }:
-lib.mkMerge [
+(imports: { inherit imports; }) [
   {
     # users.mutableUsers = false;
     users.users = let initialPassword = "password";
@@ -86,7 +86,36 @@ lib.mkMerge [
     };
   }
   ### WAYLAND ###
+  self.nixosModules.uwsm
   {
+    programs.uwsm.enable = true;
+
+    services.greetd = {
+      enable = true;
+      vt = 2;
+      settings = {
+        default_session = {
+          command = lib.concatStringsSep " " [
+            (lib.getExe pkgs.greetd.tuigreet)
+            "--time"
+            "--remember"
+            "--remember-user-session"
+            "--asterisks"
+            # "--power-shutdown '${pkgs.systemd}/bin/systemctl shutdown'"
+            "--sessions '${
+              let
+                desktops = config.services.displayManager.sessionData.desktops;
+              in lib.concatStringsSep ":" [
+                "${desktops}/share/xsessions"
+                "${desktops}/share/wayland-sessions"
+              ]
+            }'"
+          ];
+          user = "greeter";
+        };
+      };
+    };
+
     xdg.portal.enable = true;
     xdg.portal.extraPortals = [
       pkgs.xdg-desktop-portal-hyprland
@@ -95,7 +124,9 @@ lib.mkMerge [
       pkgs.xdg-desktop-portal-gtk
     ];
     xdg.portal.configPackages = [ pkgs.hyprland ];
+
     environment.systemPackages = [ pkgs.slight ];
+
     services.udev.packages = [ pkgs.slight ];
 
     # Fingerprint support is provided by #49.
@@ -110,4 +141,29 @@ lib.mkMerge [
     #   auth sufficient pam_unix.so try_first_pass nullok
     # '';
   }
+  ### HYPRLAND ###
+  (let
+    hyprlandUserSessions = lib.pipe self.homeConfigurations [
+      (lib.mapAttrsToList (configName: output:
+        let userAtHost = lib.birdos.parseUserAtHost configName;
+        in if userAtHost == null then
+          { }
+        else {
+          inherit (userAtHost) user host;
+          package =
+            output.config.wayland.windowManager.hyprland.finalPackage or null;
+        }))
+      (lib.filter ({ user ? null, host ? null, package ? null }:
+        (lib.elem user (builtins.attrNames config.users.users)) # #
+        && host == config.networking.hostName && package != null))
+      (lib.mapListToAttrs ({ user, package, ... }: {
+        name = "${user}-${package.pname}";
+        value = {
+          name = "${user} - ${package.pname} (${package.version})";
+          comment = lib.attrByPath [ "meta" "description" ] null package;
+          exec = "${lib.getExe package} &> /dev/null";
+        };
+      }))
+    ];
+  in { programs.uwsm.desktopSessions = hyprlandUserSessions; })
 ]

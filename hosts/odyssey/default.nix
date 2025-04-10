@@ -17,7 +17,6 @@ lib.bird.mkHost args {
       # shared.amd-thinkpad.plymouth
 
       shared.touchpad-fix
-      shared.greetd-hyprland
       # shared.gamemode
       shared.run-game
       shared.packages
