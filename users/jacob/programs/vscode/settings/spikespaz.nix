@@ -2,12 +2,10 @@ profileName:
 { lib, pkgs, ... }: {
   programs.vscode.package = let
     super = pkgs.vscode;
-    fontPackages = with pkgs;
-      with pkgs.nerd-fonts; [
-        material-design-icons
-        jetbrains-mono
-        monaspace
-      ];
+    fontPackages = with pkgs; [ # #
+      material-design-icons
+      nerd-fonts.monaspace
+    ];
   in (pkgs.symlinkJoin {
     inherit (super) name pname version;
     paths = [ super ] ++ fontPackages;

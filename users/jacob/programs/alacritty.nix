@@ -55,10 +55,7 @@ let
 in {
   programs.alacritty.enable = true;
 
-  home.packages = [ # #
-    pkgs.nerd-fonts.jetbrains-mono
-    pkgs.nerd-fonts.monaspace
-  ];
+  home.packages = with pkgs; [ nerd-fonts.monaspace ];
 
   programs.alacritty.settings = {
     terminal.shell = {
