@@ -1,9 +1,11 @@
-{ lib, ... }:
+{ lib, config, ... }:
 let
   inherit (lib.birdos.colors) grayRGB;
   hyprRGBA = rgb: a: "rgba(${lib.birdos.colors.hexRGBA rgb a})";
   gb = (lib.birdos.colors.formats.custom hyprRGBA).gruvbox.dark;
   shadow = hyprRGBA (grayRGB 6.0e-2); # 6% of each channel
+
+  cfg = config.wayland.windowManager.hyprland.config;
 in {
   wayland.windowManager.hyprland = {
     # <https://wiki.hyprland.org/Configuring/Variables/#general>
