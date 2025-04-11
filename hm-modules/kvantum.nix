@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   description = "Home Manager module for the Kvantum Theme Engine";
-  inherit (lib) types generators;
+  inherit (lib) types;
   cfg = config.programs.kvantum;
 in {
   options = {
@@ -79,17 +79,13 @@ in {
   };
 
   config = let
-    oldThemePath = lib.concatStringsSep "/" [
-      cfg.theme.package
-      "/share/Kvantum/"
-      cfg.theme.name
-      "${cfg.theme.name}.kvconfig"
-    ];
-    newThemePath = "${cfg.theme.name}#/${cfg.theme.name}#.kvconfig";
-    oldTheme = lib.pipe
+    unmodifiedPath =
+      "${cfg.theme.package}/share/Kvantum/${cfg.theme.name}/${cfg.theme.name}.kvconfig";
+    modifiedName = "${cfg.theme.name}#/${cfg.theme.name}#.kvconfig";
+    originalTheme = lib.pipe
       (pkgs.runCommandLocal "convert-kvantum-${cfg.theme.name}-to-json" { } ''
         mkdir $out
-        cat '${oldThemePath}' \
+        cat '${unmodifiedPath}' \
           | '${lib.getExe pkgs.jc}' --ini \
           > "$out/${cfg.theme.name}.json"
       '') [
@@ -97,19 +93,17 @@ in {
         builtins.readFile
         builtins.fromJSON
       ];
-    newTheme = lib.recursiveUpdate oldTheme cfg.theme.overrides;
-  in lib.mkMerge [
-    (lib.mkIf cfg.enable {
-      home.packages = [ cfg.package cfg.theme.package ];
+    modifiedTheme = lib.recursiveUpdate originalTheme cfg.theme.overrides;
+  in (lib.mkIf cfg.enable {
+    home.packages = [ cfg.package cfg.theme.package ];
 
-      xdg.configFile."Kvantum/kvantum.kvconfig".text =
-        generators.toINI { } { General.theme = "${cfg.theme.name}#"; };
+    xdg.configFile."Kvantum/kvantum.kvconfig".text =
+      lib.generators.toINI { } { General.theme = "${cfg.theme.name}#"; };
 
-      # todo: fix incorrect casing on some keys,
-      # jc does not respect this when the INI parser is used.
-      # <https://github.com/kellyjonbrazil/jc/issues/285>
-      xdg.configFile."Kvantum/${newThemePath}".text =
-        generators.toINI { } newTheme;
-    })
-  ];
+    # todo: fix incorrect casing on some keys,
+    # jc does not respect this when the INI parser is used.
+    # <https://github.com/kellyjonbrazil/jc/issues/285>
+    xdg.configFile."Kvantum/${modifiedName}".text =
+      lib.generators.toINI { } modifiedTheme;
+  });
 }
