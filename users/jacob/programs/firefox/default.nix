@@ -28,6 +28,10 @@ in {
     userChrome = pkgs.wavefox;
 
     settings = {
+      # Do not require manual intervention to enable extensions.
+      # This might be a security hole.
+      "extensions.autoDisableScopes" = 0;
+
       "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
       "gfx.webrender.all" = true;
