@@ -53,6 +53,7 @@ in {
     in {
       follow_mouse = LOOSE;
       float_switch_override_focus = DISABLED;
+      repeat_delay = 400;
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#binds>
