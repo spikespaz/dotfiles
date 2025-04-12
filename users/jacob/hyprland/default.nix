@@ -14,6 +14,8 @@
     pkgs.prtsc
     # xwayland perm for pkexec
     pkgs.xorg.xhost
+
+    pkgs.hyprpolkitagent
   ];
 
   wayland.windowManager.hyprland = {
@@ -26,8 +28,6 @@
     xwayland.enable = true;
 
     config.exec_once = [
-      # polkit agent, raises to root access with gui
-      "${lib.getExe pkgs.lxqt.lxqt-policykit}"
       # allow apps with risen perms after agent to connect to local xwayland
       "${lib.getExe pkgs.xorg.xhost} +local:"
     ];
