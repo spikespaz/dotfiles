@@ -135,7 +135,8 @@ profileName:
       "window.customTitleBarVisibility" = "never";
       # disable the menu bar
       "window.menuBarVisibility" = "hidden";
-      # prevent conflict with WM binds
+      # don't focus on the menu bar when Alt is pressed.
+      "window.customMenuBarAltFocus" = false;
       # "window.customMenuBarAltFocus" = false;
       # the minimap gets in the way
       "editor.minimap.enabled" = false;
@@ -150,7 +151,7 @@ profileName:
       # fix fuzzy text in integrated terminal
       "terminal.integrated.gpuAcceleration" = "on";
 
-      # hide the action bar, I know the keybinds
+      # keep this out of the way, but sometimes good on touchpad
       "workbench.activityBar.location" = "bottom";
       # put the sidebar on the right so that text doesn't jump
       "workbench.sideBar.location" = "right";
@@ -235,6 +236,8 @@ profileName:
       "editor.rulers" = [ 80 120 ];
       # files can be recovered with undo
       "explorer.confirmDelete" = false;
+      # prevent dragging text around by accident
+      "editor.dragAndDrop" = false;
       # set the integrated terminal to use zsh
       "terminal.integrated.defaultProfile.linux" = "zsh";
       # never ask to open parent git repo if one-off
