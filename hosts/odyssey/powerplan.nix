@@ -31,4 +31,60 @@ in {
     percentageAction = 5;
     criticalPowerAction = "HybridSleep";
   };
+
+  services.thinkfan = {
+    enable = true;
+
+    # <https://github.com/m4tx/thinkpad-p14s-g4-linux/blob/dc24c03f00548d1f5f723c178cd49c639b5c35ec/thinkfan.conf>
+    settings = {
+      sensors = [
+        # GPU
+        {
+          hwmon = "/sys/class/hwmon";
+          name = "amdgpu";
+          indices = [ 1 ];
+        }
+        # CPU
+        {
+          hwmon = "/sys/class/hwmon";
+          name = "k10temp";
+          indices = [ 1 ];
+        }
+        # Chassis
+        {
+          hwmon = "/sys/class/hwmon";
+          name = "thinkpad";
+          indices = [ 1 3 6 7 ];
+          max_errors = 10;
+        }
+        # SSD
+        {
+          hwmon = "/sys/class/hwmon";
+          name = "nvme";
+          indices = [ 1 2 3 ];
+          correction = [ (-5) 0 0 ];
+        }
+        # Motherboard
+        {
+          hwmon = "/sys/class/hwmon";
+          name = "acpitz";
+          indices = [ 1 ];
+        }
+      ];
+
+      fans = [{ tpacpi = "/proc/acpi/ibm/fan"; }];
+
+      levels = [
+        [ 0 0 60 ]
+        [ 1 58 63 ]
+        [ 2 61 66 ]
+        [ 3 64 69 ]
+        [ 4 67 72 ]
+        [ 5 70 75 ]
+        [ 6 73 78 ]
+        [ 7 76 81 ]
+        [ "level full-speed" 79 32767 ]
+      ];
+    };
+  };
 }
