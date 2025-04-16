@@ -33,21 +33,18 @@
     ];
   };
 
-  # xdg.desktopPortals = {
-  #   enable = true;
-  #   extraPortals = [
-  #     pkgs.xdg-desktop-portal-hyprland
-  #     pkgs.xdg-desktop-portal-kde
-  #     pkgs.xdg-desktop-portal-gtk
-  #   ];
-  #   configPackages = [ config.wayland.windowManager.hyprland.package ];
-  #   config = {
-  #     x-cinnamon = { default = [ "xapp" "gtk" ]; };
-  #     pantheon = {
-  #       default = [ "pantheon" "gtk" ];
-  #       "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-  #     };
-  #     common = { default = [ "gtk" ]; };
-  #   };
-  # };
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+      kdePackages.xdg-desktop-portal-kde
+    ];
+    configPackages = [ config.wayland.windowManager.hyprland.package ];
+    config.hyprland = {
+      default = [ "hyprland" "gtk" ];
+      "org.freedesktop.impl.portal.FileChooser" = "kde";
+      "org.freedesktop.impl.portal.Print" = "kde";
+    };
+  };
 }

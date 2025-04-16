@@ -31,6 +31,7 @@
     security.polkit.enable = true;
     # auth
     services.gnome.gnome-keyring.enable = true;
+    xdg.portal.enable = true; # no portals configured, do it as a user
     # allow users to mount fuse filesystems with allow_other
     programs.fuse.userAllowOther = true;
     services.flatpak.enable = true;
@@ -115,15 +116,6 @@
         };
       };
     };
-
-    xdg.portal.enable = true;
-    xdg.portal.extraPortals = [
-      pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-wlr
-      pkgs.kdePackages.xdg-desktop-portal-kde
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    xdg.portal.configPackages = [ pkgs.hyprland ];
 
     environment.systemPackages = [ pkgs.slight ];
 
