@@ -1,4 +1,4 @@
-{ self, lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 let
   inherit (lib.birdos.colors) grayRGB hexRGB';
   gray = percent: hexRGB' (grayRGB percent);
