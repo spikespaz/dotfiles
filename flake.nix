@@ -127,7 +127,7 @@
     hyprnix.url = "github:hyprland-community/hyprnix";
     hyprnix.inputs.hyprland.follows = "hyprland";
 
-    waybar.url = "git+https://github.com/alexays/waybar?submodules=1";
+    waybar.url = "github:alexays/waybar";
 
     nil.url = "github:oxalica/nil";
     nixd.url = "github:nix-community/nixd";

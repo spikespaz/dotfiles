@@ -1570,19 +1570,17 @@
         "nixpkgs": "nixpkgs_13"
       },
       "locked": {
-        "lastModified": 1743507505,
-        "narHash": "sha256-SvyJavr14AT+XDRcLE0naKdw08W01rJXYbFU3WQXjB0=",
-        "ref": "refs/heads/master",
-        "rev": "569445f8b3211c8e2b2a67a3269efaace5f3bb75",
-        "revCount": 3819,
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/alexays/waybar"
+        "lastModified": 1744741692,
+        "narHash": "sha256-CqcPJGKhzmLSh+m1/JwJkQxcAd1CLSKPQma58uPhEDY=",
+        "owner": "alexays",
+        "repo": "waybar",
+        "rev": "c8484ebb1d1c85f9faa27019be7deed1c1b27e10",
+        "type": "github"
       },
       "original": {
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/alexays/waybar"
+        "owner": "alexays",
+        "repo": "waybar",
+        "type": "github"
       }
     },
     "xdph": {
