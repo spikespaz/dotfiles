@@ -11,6 +11,7 @@
     in {
       lib = nixpkgs.lib.extend (nixpkgs.lib.composeManyExtensions [
         inputs.bird-nix-lib.lib.overlay
+        inputs.hyprnix.lib.overlay
         (import ./lib)
       ]);
 
