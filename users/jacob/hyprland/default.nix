@@ -47,4 +47,9 @@
       "org.freedesktop.impl.portal.Print" = "kde";
     };
   };
+
+  wayland.windowManager.hyprland.configFile."xdph.conf".text =
+    lib.generators.toHyprlang { } { # #
+      screencopy.allow_token_by_default = true;
+    };
 }
