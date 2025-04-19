@@ -9,10 +9,10 @@
       inherit (self) lib tree;
       eachSystem = lib.genAttrs (import systems);
     in {
-      lib = builtins.foldl' (lib: overlay: lib.extend overlay) nixpkgs.lib [
-        (inputs.bird-nix-lib.lib.overlay)
+      lib = nixpkgs.lib.extend (nixpkgs.lib.composeManyExtensions [
+        inputs.bird-nix-lib.lib.overlay
         (import ./lib)
-      ];
+      ]);
 
       # $ nix eval 'path:.#tests'
       tests = import ./tests { inherit lib; };
