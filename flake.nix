@@ -123,8 +123,9 @@
 
     vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
+    hyprland.url = "github:hyprwm/hyprland";
     hyprnix.url = "github:hyprland-community/hyprnix";
-    hyprnix.inputs.nixpkgs.follows = "nixpkgs";
+    hyprnix.inputs.hyprland.follows = "hyprland";
 
     waybar.url = "git+https://github.com/alexays/waybar?submodules=1";
 

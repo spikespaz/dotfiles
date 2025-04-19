@@ -38,7 +38,7 @@ in lib.bird.mkHome args rec {
     # nix user repo packages
     inputs.nur.overlays.default
     # packages for window manager
-    inputs.hyprnix.overlays.default
+    inputs.hyprland.overlays.default
     inputs.waybar.overlays.default
     # override certain packages to be fetchable in binary caches
     self.overlays.hacks.nixpkgs-config-exceptions
