@@ -991,10 +991,12 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1743760403,
-        "narHash": "sha256-IL2rfuAUmn55+WkWGQUcKkJMBBMMNcfdvORL366uQ8g=",
-        "path": "/home/jacob/Projects/nixpkgs",
-        "type": "path"
+        "lastModified": 1745026109,
+        "narHash": "sha256-sja6YkxnHor3GqQDuHIVRAaCD4jAac0WvKWtUBAHemo=",
+        "owner": "spikespaz-contrib",
+        "repo": "nixpkgs",
+        "rev": "7833aebd8215ada1547d58d527d72bce2640e6bc",
+        "type": "github"
       },
       "original": {
         "owner": "nixos",
