@@ -1,14 +1,12 @@
 # TODO maybe?
 # <https://gist.github.com/dAnjou/b99f55de34b90246f381e71e3c8f9262>
 # <https://github.com/keepassxreboot/keepassxc/issues/613>
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let
   inherit (lib) types;
 
   service = config.services.keepassxc;
   program = config.programs.keepassxc;
-
-  iniFormat = pkgs.formats.ini { };
 in {
   options = {
     services.keepassxc = {
@@ -26,20 +24,6 @@ in {
     };
 
     programs.keepassxc = {
-      enable = lib.mkEnableOption ''
-        Whether to install KeePassXC.
-      '';
-
-      package = lib.mkPackageOption pkgs "keepassxc" { };
-
-      settings = lib.mkOption {
-        type = iniFormat.type;
-        default = { };
-        description = ''
-          Settings to write in INI format to {file}`~/.config/keepassxc/keepassxc.ini`.
-        '';
-      };
-
       browserIntegration.firefox = lib.mkEnableOption ''
         Create the native messaging manifest in {path}`$HOME/.mozilla/native-messaging-hosts`,
         required for integration with the browser extension.
@@ -53,14 +37,7 @@ in {
   };
 
   config = lib.mkMerge [
-    (lib.mkIf program.enable { home.packages = [ program.package ]; })
-
     { services.keepassxc.package = lib.mkDefault program.package; }
-
-    (lib.mkIf (program.enable && program.settings != { }) {
-      xdg.configFile."keepassxc/keepassxc.ini".source =
-        iniFormat.generate "keepassxc.ini" program.settings;
-    })
 
     (lib.mkIf ((program.enable || service.enable)
       && program.browserIntegration.firefox) {
