@@ -58,6 +58,7 @@ in {
       class = [ "Minecraft.+" ];
       title = [ "Minecraft.+" ];
     };
+    catanUniverse.class = [ "steam_app_544730" ];
     virtManagerConsole = {
       class = [ "virt-manager" ];
       title = [ ".+on.+" ];
@@ -98,7 +99,20 @@ in {
       (rule [ "size 950 700" ] kvantumConfig)
       (rule [ "size 530 600" ] bluetoothControl)
     ]
-    (map (rule [ "idleinhibit focus" ]) [ minecraft virtManagerConsole ])
+    (map (rule [
+      "content game"
+      "tile"
+      "suppressevent fullscreen"
+      "syncfullscreen 0"
+      "fullscreen"
+    ]) [ # #
+      catanUniverse
+    ])
+    (map (rule [ "idleinhibit focus" ]) [
+      minecraft
+      catanUniverse
+      virtManagerConsole
+    ])
     (map (rule [ "float" ]) [
       kvantumConfig
       keePassModal
