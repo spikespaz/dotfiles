@@ -30,7 +30,7 @@ lib.bird.mkHost args {
       ./packages.nix
       ./filesystems.nix
       ./cpu-frequency.nix
-      ./powerplan.nix
+      ./powerplan
     ];
   overlays = [
     # this flake's lib
