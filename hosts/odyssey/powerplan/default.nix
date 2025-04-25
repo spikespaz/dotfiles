@@ -1,1 +1,1 @@
-{ imports = [ ./general.nix ./thermals.nix ]; }
+{ imports = [ ./general.nix ./amd-pstate-epp.nix ./thermals.nix ]; }

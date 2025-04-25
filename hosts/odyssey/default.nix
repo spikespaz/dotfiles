@@ -29,7 +29,6 @@ lib.bird.mkHost args {
       ./misc.nix
       ./packages.nix
       ./filesystems.nix
-      ./cpu-frequency.nix
       ./powerplan
     ];
   overlays = [
