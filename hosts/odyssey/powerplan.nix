@@ -2,7 +2,7 @@
 # - <https://www.kernel.org/doc/Documentation/power/states.txt>
 # - `man sleep.conf.d`
 # - `man logind.conf`
-{ ... }:
+{ lib, ... }:
 let
   # hours = h: minutes 60 * h;
   # minutes = m: seconds 60 * m;
@@ -85,6 +85,18 @@ in {
         [ 7 76 81 ]
         [ "level full-speed" 79 32767 ]
       ];
+    };
+  };
+
+  systemd.services.thinkfan = {
+    serviceConfig = lib.mapAttrs (_: lib.mkForce) {
+      # <https://github.com/NixOS/nixpkgs/pull/400282>
+      # <https://github.com/vmatare/thinkfan/pull/198>
+      CPUSchedulingPolicy = "fifo";
+      CPUSchedulingPriority = 20; # high, but not the highest
+      RestartSec = "2s"; # slow restart is a problem if not exit cleanly
+      OOMScoreAdjust = -1000; # never kill this unit if out of memory
+      MemorySwapMax = 0; # never swap
     };
   };
 }
