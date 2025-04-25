@@ -94,11 +94,16 @@ in {
       class = [ "filezilla" ];
       title = [ "Site Manager" ];
     };
+    prismLauncherModal = {
+      class = [ "org.prismlauncher.PrismLauncher" ];
+      title = [ "Select a Java version.*" "Blocked mods found.*" ];
+    };
   in lib.concatLists [
     [
       (rule [ "size 740 460" ] filePickerPortal)
       (rule [ "size 950 700" ] kvantumConfig)
       (rule [ "size 530 600" ] bluetoothControl)
+      (rule [ "size 920 600" ] prismLauncherModal)
     ]
     (map (rule [
       "content game"
