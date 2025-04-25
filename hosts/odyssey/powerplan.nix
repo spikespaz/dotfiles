@@ -32,8 +32,16 @@ in {
     criticalPowerAction = "HybridSleep";
   };
 
-  services.thinkfan = {
+  # See `man thinkfan` and `man thinkfan.conf`.
+  services.thinkfan = let
+    # The manpage says the default is 15, but the help message says 5.
+    # More detail, a negative number can smooth out fluctuating readings from,
+    # for example, an on-die sensor that responds rapidly to load.
+    bias = -1;
+  in {
     enable = true;
+
+    extraArgs = [ "-b${toString bias}" ];
 
     # <https://github.com/m4tx/thinkpad-p14s-g4-linux/blob/dc24c03f00548d1f5f723c178cd49c639b5c35ec/thinkfan.conf>
     settings = {
@@ -74,7 +82,8 @@ in {
 
       fans = [{ tpacpi = "/proc/acpi/ibm/fan"; }];
 
-      levels = [
+      levels = let INF = 32767;
+      in [
         [ 0 0 60 ]
         [ 1 58 63 ]
         [ 2 61 66 ]
@@ -83,7 +92,7 @@ in {
         [ 5 70 75 ]
         [ 6 73 78 ]
         [ 7 76 81 ]
-        [ "level full-speed" 79 32767 ]
+        [ "level full-speed" 79 INF ]
       ];
     };
   };
