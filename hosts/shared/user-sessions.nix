@@ -90,6 +90,7 @@
   self.nixosModules.uwsm
   {
     programs.uwsm.enable = true;
+    services.logind.killUserProcesses = true;
 
     services.greetd = {
       enable = true;

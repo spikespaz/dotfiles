@@ -10,7 +10,6 @@ let
 in {
   services.logind = {
     lidSwitch = "suspend";
-    killUserProcesses = true;
     extraConfig = ''
       HandlePowerKey=suspend
       HandlePowerKeyLongPress=poweroff
