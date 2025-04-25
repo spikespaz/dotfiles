@@ -79,6 +79,7 @@ in {
         "Unlock Database.+KeePassXC"
         "Generate Password"
         "KeePassXC.+Browser Access Request"
+        "KeePassXC.+Access Request"
       ];
     };
     firefoxModal = {
