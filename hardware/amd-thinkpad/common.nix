@@ -11,15 +11,14 @@
     # error: rtw89-firmware has been removed because linux-firmware now contains it.
     # firmware = [pkgs.rtw89-firmware];
 
-    # enable bluetooth but turn off power by default
     bluetooth.enable = true;
-    bluetooth.powerOnBoot = false;
+    # bluetooth.powerOnBoot = false;
   };
 
   # firmware updater for machine hardware
   services.fwupd.enable = true;
 
-    # enable fingerprint sensor
+  # enable fingerprint sensor
   services.fprintd.enable = true;
 
   # networking.networkmanager.enable = true;
