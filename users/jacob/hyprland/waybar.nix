@@ -23,6 +23,11 @@ let
   # TODO when using store paths to executables, they do not inherit the user's
   # environment (at least with systemd) and therefore GUIs use the default theme
   commands = let
+    inherit (pkgs.callPackages ./scripts {
+      hyprland = config.wayland.windowManager.hyprland.package;
+    })
+      bluetooth;
+
     slight = "${lib.getExe pkgs.slight}";
     hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
     # TODO this is duplicated from the hyprland config, make it a module
@@ -49,45 +54,10 @@ let
     inputVolumeMute = "${kbFns} input mute";
     # inputVolumeUp = "${kbFns} input +0.05";
     # inputVolumeDown = "${kbFns} input -0.05";
-    bluetoothSettings = (pkgs.writeShellScript "waybar-bluetooth-settings" ''
-      set -eux
-      export PATH="${
-        lib.makeBinPath
-        (with pkgs; [ coreutils gawk util-linux bluez nettools blueman ])
-      }:$PATH"
-      is_powered_on="$(
-        bluetoothctl show | \
-        awk '/Name: '"$(hostname)"'$/{p=1} p && /Powered: yes/{print "true"; exit} END{if(!NR || !p) print "false"}'
-      )"
-      if [[ $is_powered_on == 'true' ]]; then
-        blueman-manager
-      else
-        rfkill unblock bluetooth && sleep 1 || true
-        bluetoothctl power on
-        sleep 0.5
-        blueman-manager
-      fi
-    '').outPath;
-    bluetoothToggle = (pkgs.writeShellScript "waybar-bluetooth-toggle" ''
-      set -eux
-      export PATH="${
-        lib.makeBinPath
-        (with pkgs; [ coreutils gawk util-linux bluez nettools ])
-      }:$PATH"
-      is_powered_on="$(
-        bluetoothctl show | \
-        awk '/Name: '"$(hostname)"'$/{p=1} p && /Powered: yes/{print "true"; exit} END{if(!NR || !p) print "false"}'
-      )"
-      if [[ $is_powered_on == 'true' ]]; then
-        bluetoothctl power off
-      else
-        rfkill unblock bluetooth && sleep 1 || true
-        bluetoothctl power on
-      fi
-    '').outPath;
-    bluetoothKill =
-      "rfkill block bluetooth && ${systemctl} restart bluetooth.service";
-    bluetoothOff = "${bluetoothctl} power off";
+    bluetoothSettings = "${bluetooth} settings hci0";
+    bluetoothToggle = "${bluetooth} toggle hci0";
+    bluetoothKill = "${bluetooth} kill hci0";
+    bluetoothOff = "${bluetooth} rfkill-block hci0";
     wirelessSettings = iwgtk;
     workspaceSwitchPrev = "${hyprctl} dispatch workspace m-1";
     workspaceSwitchNext = "${hyprctl} dispatch workspace m+1";

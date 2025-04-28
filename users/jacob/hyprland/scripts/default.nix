@@ -1,7 +1,10 @@
 { callPackage, patchShellScript, patchNuScript, hyprland, jq, systemd, grim
-, wl-clipboard, libnotify, }:
+, wl-clipboard, libnotify, coreutils, util-linux, blueman }:
 
 {
+  bluetooth = patchShellScript ./bluetooth.sh {
+    runtimeInputs = [ coreutils util-linux systemd blueman ];
+  };
   pin-window = patchShellScript ./pin-window.sh { # #
     runtimeInputs = [ hyprland jq ];
   };
