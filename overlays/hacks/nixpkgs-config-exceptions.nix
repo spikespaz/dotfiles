@@ -22,4 +22,7 @@ in {
 
   kdePackages = pkgs0.kdePackages.overrideScope
     (_: _: { qtwebengine = unoptimizedPkgs.kdePackages.qtwebengine; });
+
+  libsForQt5 = pkgs0.libsForQt5.overrideScope
+    (_: _: { qtwebengine = unoptimizedPkgs.libsForQt5.qtwebengine; });
 }
