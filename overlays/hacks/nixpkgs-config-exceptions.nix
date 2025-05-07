@@ -2,6 +2,9 @@
 # `nixpkgs` using custom platform settings.
 pkgs: pkgs0:
 let
+  # Using `pkgs0` to avoid infinite recursion, usually `pkgs` should be used.
+  inherit (pkgs0) lib;
+
   # Attempt to construct a `pkgs` instance which matches the current fix-point `pkgs`,
   # without extra customizations to `stdenv` (or any overlays).
   # The arguments used for the new `localSystem` and `crossSystem` are not exactly correct,
@@ -14,7 +17,9 @@ let
     localSystem.system = pkgs.stdenvNoCC.buildPlatform.system;
     crossSystem.system = pkgs.stdenvNoCC.targetPlatform.system;
   };
-in {
+
+  names = [ "electron" "electron_35" "electron_34" "electron_33" ];
+in (lib.getAttrs names unoptimizedPkgs) // {
   # This will interfere with other overlays. A more surgical approach is necessary if desire is otherwise.
 
   qt6Packages = pkgs0.qt6Packages.overrideScope
