@@ -10,7 +10,7 @@ let
   # `localSystem` and `crossSystem` which produced the original `pkgs` point.
   # I could surgically construct a new set of arguments for the new Nixpkgs import,
   # but I would rather not.
-  unoptimizedPkgs = import "${pkgs}" {
+  unoptimizedPkgs = import pkgs.path {
     localSystem.system = pkgs.stdenvNoCC.buildPlatform.system;
     crossSystem.system = pkgs.stdenvNoCC.targetPlatform.system;
   };
