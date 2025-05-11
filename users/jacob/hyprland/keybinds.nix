@@ -41,11 +41,11 @@ in {
       };
 
       # Self-explanatory.
-      launchPrograms = {
+      launchPrograms = with config.home.defaultPrograms.hyprland; {
         # Launch the program with a shortcut.
-        bind."SUPER, E" = "exec, dolphin";
-        bind."SUPER, T" = "exec, alacritty";
-        bind."SUPER, C" = "exec, qalculate-gtk";
+        bind."SUPER, T" = "exec, ${terminal.exec}";
+        bind."SUPER, E" = "exec, ${fileManager.exec}";
+        bind."SUPER, C" = "exec, ${calculator.exec}";
       };
 
       # Kill the active window.
