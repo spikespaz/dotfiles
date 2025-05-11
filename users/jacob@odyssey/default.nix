@@ -20,6 +20,7 @@ in lib.bird.mkHome args rec {
   nixpkgs = inputs.nixpkgs-unstable;
   nixpkgsArgs.config.allowUnfree = true;
   modules = with tree.users.jacob; [
+    self.homeManagerModules.default-programs
     disableHomeManagerNews
     profile
     wayland.default

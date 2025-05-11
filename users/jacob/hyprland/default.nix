@@ -7,6 +7,7 @@
     ./keybinds.nix
     ./keymaps.nix
     ./waybar.nix
+    ./default-programs.nix
   ];
 
   home.packages = [
