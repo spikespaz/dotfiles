@@ -44,6 +44,7 @@ in {
       launchPrograms = with config.home.defaultPrograms.hyprland; {
         # Launch the program with a shortcut.
         bind."SUPER, T" = "exec, ${terminal.exec}";
+        bind."SUPER, B" = "exec, ${browser.exec}";
         bind."SUPER, E" = "exec, ${fileManager.exec}";
         bind."SUPER, C" = "exec, ${calculator.exec}";
       };
