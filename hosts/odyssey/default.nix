@@ -34,6 +34,8 @@ lib.bird.mkHost args {
   overlays = [
     # this flake's lib
     self.overlays.lib
+    # updates to packages before committing upstream
+    self.overlays.patches
     # flake packages
     self.overlays.default
     # override packages with an unfree license
