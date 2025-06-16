@@ -25,7 +25,6 @@ in {
         position.x = portable.position.x + builtins.floor portable.size.x;
         position.y = desk-dock.position.y + builtins.floor desk-dock.size.y;
         refreshRate = 90;
-        bitdepth = 10;
       };
 
       # I have a 2k 16:9 monitor on a mount at head level, directly forward.
@@ -42,7 +41,6 @@ in {
             - desk-dock.size.x / 2);
         position.y = origin.y;
         refreshRate = 165;
-        bitdepth = 10;
       };
 
       # The portable monitor is on my lower-left,
@@ -54,7 +52,6 @@ in {
         resolution.y = 1080;
         position.x = origin.x;
         position.y = desk-dock.position.y + builtins.floor desk-dock.size.y;
-        bitdepth = 10;
       };
 
       # Any other random monitors (for example HDMI, or portable on DP-1)
