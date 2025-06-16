@@ -320,29 +320,26 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
         "9-27" = "sha256-70au1dx9co3X+X7xkBCDGf1BxEouuw3zN+7eDyT7i5c=";
       };
     };
-    prism-launcher = let
-      # Pre-launch command
-      #   test -f '$INST_MC_DIR/options.txt' && sed -i 's/fullscreen:true/fullscreen:false/' '$INST_MC_DIR/options.txt' || exit 0
-      # Wrapper command
-      #   export force_glsl_extensions_warn=true
-      #   run-game "$@"
-      prismlauncher' = pkgs.prismlauncher.override {
-        jdks = with pkgs; [
-          # Java 8
-          temurin-jre-bin-8
-          zulu8
-          graalvm8-ce-jre
-          # Java 11
-          temurin-jre-bin-11
-          # Java 20
-          temurin20-jre-bin
-          # Latest
-          temurin-jre-bin
-          zulu
-          graalvm-ce
-        ];
-      };
-    in { home.packages = [ prismlauncher' ]; };
+    prism-launcher = {
+      home.packages = [
+        (pkgs.prismlauncher.override {
+          jdks = with pkgs; [
+            # Java 8
+            temurin-jre-bin-8
+            zulu8
+            graalvm8-ce-jre
+            # Java 11
+            temurin-jre-bin-11
+            # Java 20
+            temurin20-jre-bin
+            # Latest
+            temurin-jre-bin
+            zulu
+            graalvm-ce
+          ];
+        })
+      ];
+    };
 
     ######################
     ### AUTHENTICATION ###
