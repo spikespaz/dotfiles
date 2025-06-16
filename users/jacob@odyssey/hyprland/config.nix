@@ -13,6 +13,9 @@
       clickfinger_behavior = true;
     };
 
+    binds = let LAST_ACTIVE_WINDOW = 1;
+    in { workspace_center_on = LAST_ACTIVE_WINDOW; };
+
     gestures.workspace_swipe = { min_speed_to_force = lib.mkForce 10; };
   };
 }
