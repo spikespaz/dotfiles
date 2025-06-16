@@ -75,8 +75,7 @@ profileName:
       "rust-analyzer.imports.prefix" = "self";
 
       # show hints for elided lifetimes
-      "rust-analyzer.inlayHints.lifetimeElisionHints.enable" =
-        "always"; # or 'skip_trivial'
+      "rust-analyzer.inlayHints.lifetimeElisionHints.enable" = "skip_trivial";
       # "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames" = true;
       "rust-analyzer.inlayHints.expressionAdjustmentHints.enable" = "always";
       "rust-analyzer.inlayHints.expressionAdjustmentHints.hideOutsideUnsafe" =
