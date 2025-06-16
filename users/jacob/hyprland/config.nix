@@ -140,6 +140,10 @@ in {
       # no_gaps_when_only = true;
     };
 
+    config.ecosystem = {
+      no_donation_nag = true;
+    };
+
     # <https://wiki.hyprland.org/Configuring/Animations/#curves>
     animations.animation = {
       # window creation
