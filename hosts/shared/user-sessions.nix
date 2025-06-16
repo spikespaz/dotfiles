@@ -55,17 +55,16 @@
   }
   ### SHARED USER FILES ###
   {
-    # public shared directory for users of the users group
-    systemd.tmpfiles.rules = let publicDir = "/home/public/share";
-    in lib.pipe config.users.users [
-      lib.attrValues
-      (builtins.filter (user: user.createHome && user.isNormalUser))
-      # if changed fix alignment with \t
-      #             Type   Path            Mode User Group Age Argument
-      (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
-      lib.concatLists
-      (links: [ "d	${publicDir}		0744	root	users	10d		-" ] ++ links)
-    ];
+    # Public shared directory for users of the `users` group.
+    # Type, Path, Mode, User, Group, Age, Argument
+    # Alignment uses tab characters.
+    systemd.tmpfiles.rules = let
+      publicDir = "/home/public/share";
+      allowedUsers = lib.filter (user: user.createHome && user.isNormalUser)
+        (lib.attrValues config.users.users);
+    in [ "d	${publicDir}		0774	root	users	10d		-" ]
+    ++ (map (user: "L	${user.home}/Public		-		-		-		-		${publicDir}")
+      allowedUsers);
   }
   ### GENERAL DESKTOP ###
   {
