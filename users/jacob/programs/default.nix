@@ -335,7 +335,9 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
             # Latest
             temurin-jre-bin
             zulu
-            graalvm-ce
+            graalvmPackages.graalvm-ce
+            graalvmPackages.graalvm-ce-21
+            graalvmPackages.graalvm-ce-22
           ];
         })
       ];
