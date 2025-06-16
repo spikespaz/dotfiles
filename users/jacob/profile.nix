@@ -72,7 +72,6 @@ in {
     ### WEB BROWSERS ###
     programs.firefox
     programs.brave
-    programs.microsoft-edge
 
     ### DOCUMENT/FILETYPE HANDLERS ###
     programs.zathura

@@ -10,8 +10,6 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
       programs.chromium.package = pkgs.brave;
     };
 
-    microsoft-edge = { home.packages = [ pkgs.microsoft-edge ]; };
-
     ##################################
     ### DOCUMENT/FILETYPE HANDLERS ###
     ##################################
