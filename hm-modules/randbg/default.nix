@@ -51,7 +51,7 @@ in {
       swaybg.mode = lib.mkOption {
         type =
           types.enum [ "stretch" "fill" "fit" "center" "tile" "solid_color" ];
-        default = "fit";
+        default = "fill";
         description = ''
           The mode to use when fitting the image to the display.
 
