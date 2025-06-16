@@ -59,6 +59,10 @@ in {
       title = [ "Minecraft.+" ];
     };
     catanUniverse.class = [ "steam_app_544730" ];
+    unrailedGame = {
+      class = ["mono"];
+      title = ["Unrailed!"];
+    };
     virtManagerConsole = {
       class = [ "virt-manager" ];
       title = [ ".+on.+" ];
@@ -113,6 +117,7 @@ in {
       "fullscreen"
     ]) [ # #
       catanUniverse
+      unrailedGame
     ])
     (map (rule [ "idleinhibit focus" ]) [
       minecraft
