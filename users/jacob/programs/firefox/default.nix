@@ -12,12 +12,12 @@ let
 in {
   programs.firefox.enable = true;
 
-  imports = [
+  imports = [ # #
     (import ./blocking.nix profile)
-    # self.homeManagerModules.firefox-pwa
   ];
 
-  # programs.firefox.pwa.enable = true;
+  home.packages = [ pkgs.firefoxpwa ];
+  programs.firefox.nativeMessagingHosts = [ pkgs.firefoxpwa ];
 
   programs.firefox.profiles.${profile} = {
     id = 0;
@@ -140,6 +140,7 @@ in {
       rycee.keepassxc-browser
       rycee.wappalyzer
       # slaier.dictionary-anywhere
+      spikespaz.pwas-for-firefox
     ];
   };
 }
