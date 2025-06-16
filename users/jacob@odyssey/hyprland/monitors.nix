@@ -14,8 +14,8 @@ in {
     monitors = {
       # The laptop is on an incline, positioned directly beneath the
       # monitor affixed to my desk.
-      # The internal Samsung display (for ThinkPad P14s) is 3.8k 16:10 OLED.
-      # scaled to a virtual size of 1920x1080.
+      # The internal Samsung display (for ThinkPad P14s G4) is 2.8k 16:10 OLED.
+      # scaled to a virtual size of 1920x1200.
       internal = {
         description = "Samsung Display Corp. 0x4193";
         resolution.x = 2880;
