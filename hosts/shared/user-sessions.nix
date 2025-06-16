@@ -64,7 +64,7 @@
       #             Type   Path            Mode User Group Age Argument
       (map (user: [ "L	${user.home}/Public		-		-		-		-		${publicDir}" ]))
       lib.concatLists
-      (links: [ "d	${publicDir}		0666	root	users	10d		-" ] ++ links)
+      (links: [ "d	${publicDir}		0744	root	users	10d		-" ] ++ links)
     ];
   }
   ### GENERAL DESKTOP ###
