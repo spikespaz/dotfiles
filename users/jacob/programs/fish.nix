@@ -5,6 +5,9 @@
     interactiveShellInit = lib.concatLines [
       # Overrides the `source` and `.` commands to work with `.sh` files.
       "source ${pkgs.babelfish.src}/babel.fish"
+
+      # Don't remove failed commands from history until the next session.
+      "set sponge_purge_only_on_exit true"
     ];
   };
 
