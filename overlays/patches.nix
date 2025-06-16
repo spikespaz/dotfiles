@@ -49,4 +49,18 @@ in {
     '';
     buildInputs = super.buildInputs ++ (with pkgs; [ dbus fprintd ]);
   });
+
+  # May consider switching to <https://github.com/cdown/zcfan>
+  thinkfan = pkgs0.thinkfan.overrideAttrs (self: super: {
+    patches = super.patches or [ ] ++ [
+      # "Fixing unexpected short fan activation when on level 0 for new gen ThinkPads"
+      # <https://github.com/vmatare/thinkfan/pull/248>
+      # Fixes <https://github.com/vmatare/thinkfan/issues/114>
+      (pkgs.fetchpatch {
+        url =
+          "https://patch-diff.githubusercontent.com/raw/vmatare/thinkfan/pull/248.diff";
+        hash = "sha256-X1LcylfeWD8Ix//4AgLRPlOUzb/cx34SmZ0j3fKeW+A=";
+      })
+    ];
+  });
 }
