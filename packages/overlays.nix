@@ -42,6 +42,10 @@ lib: {
     wavefox = pkgs.callPackage ./wavefox.nix { inherit lib; };
   };
 
+  discord-recolor-theme = pkgs: _: {
+    discord-recolor-theme = pkgs.callPackage ./discord-recolor-theme.nix { };
+  };
+
   # PACKAGE SETS #
 
   zsh-plugins = pkgs: _: {
