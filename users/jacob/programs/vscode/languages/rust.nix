@@ -74,6 +74,8 @@ profileName:
       "rust-analyzer.imports.granularity.group" = "module";
       "rust-analyzer.imports.prefix" = "self";
 
+      # set the max length of hints to some known value
+      "rust-analyzer.inlayHints.maxLength" = 50;
       # show hints for elided lifetimes
       "rust-analyzer.inlayHints.lifetimeElisionHints.enable" = "skip_trivial";
       # "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames" = true;
