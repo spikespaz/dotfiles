@@ -17,6 +17,12 @@ in {
       inactive_border_color = gb.bg3 1.0;
       resize_on_border = true;
       extend_border_grab_area = 10;
+      snap = {
+        enabled = true;
+        window_gap = 10;
+        monitor_gap = 20;
+        border_overlap = false;
+      };
     };
 
     # <https://wiki.hyprland.org/Configuring/Variables/#decoration>
