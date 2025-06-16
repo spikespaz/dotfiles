@@ -64,4 +64,29 @@
       ];
     };
   };
+
+  pwas-for-firefox = let fileId = "4437768";
+  in buildFirefoxXpiAddon rec {
+    pname = "pwas_for_firefox";
+    version = "2.14.1";
+    addonId = "firefoxpwa@filips.si";
+    url =
+      "https://addons.mozilla.org/firefox/downloads/file/${fileId}/${pname}-${version}.xpi";
+    hash = "sha256-+Om6CuOnKAhNdG0RWY9oQKy72kW9wunlK3S9G5XsXRw=";
+    meta = with lib; {
+      description =
+        "A tool to install, manage and use Progressive Web Apps (PWAs) in Mozilla Firefox";
+      license = licenses.mpl20;
+      mozPermissions = [
+        "http://*/*"
+        "https://*/*"
+        "nativeMessaging"
+        "notifications"
+        "storage"
+        "webNavigation"
+        "webRequest"
+        "webRequestBlocking"
+      ];
+    };
+  };
 }
