@@ -24,4 +24,29 @@
       };
     };
   };
+  "22" = rec {
+    version = "22.0.2";
+    hashes = {
+      "aarch64-linux" = {
+        sha256 = "";
+        url =
+          "https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-${version}/graalvm-community-jdk-${version}_linux-aarch64_bin.tar.gz";
+      };
+      "x86_64-linux" = {
+        sha256 = "sha256-66wd2WpeD7zR3ZgE+liBXxRjkKQKrpZvAqjCbRl0Nk8=";
+        url =
+          "https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-${version}/graalvm-community-jdk-${version}_linux-x64_bin.tar.gz";
+      };
+      "x86_64-darwin" = {
+        sha256 = "";
+        url =
+          "https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-${version}/graalvm-community-jdk-${version}_macos-x64_bin.tar.gz";
+      };
+      "aarch64-darwin" = {
+        sha256 = "";
+        url =
+          "https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-${version}/graalvm-community-jdk-${version}_macos-aarch64_bin.tar.gz";
+      };
+    };
+  };
 }
