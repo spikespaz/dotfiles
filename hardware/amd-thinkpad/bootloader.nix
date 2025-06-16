@@ -15,7 +15,6 @@
     initrd.availableKernelModules = [ "usb_storage" "rtsx_pci_sdmmc" ];
     initrd.kernelModules = [ "amdgpu" "nvme" ];
 
-    initrd.systemd.strip = false;
     initrd.systemd.enable = true;
 
     loader = {
