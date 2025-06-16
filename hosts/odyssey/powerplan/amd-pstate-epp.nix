@@ -56,7 +56,7 @@
     # according to `freq_deficit_bat` above.
     CPU_BOOST_ON_BAT = true;
 
-    CPU_SCALING_GOVERNOR_ON_AC = "performance";
+    CPU_SCALING_GOVERNOR_ON_AC = "powersave";
     CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
 
     CPU_SCALING_MIN_FREQ_ON_AC = lowest_nonlinear_freq;
