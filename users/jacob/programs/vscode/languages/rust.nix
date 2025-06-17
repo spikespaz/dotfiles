@@ -25,19 +25,20 @@ profileName:
     userSettings = {
       "[rust]" = {
         "editor.formatOnSave" = true;
-
+        # <https://monaspace.githubnext.com/#code-ligatures>
         "editor.fontLigatures" = lib.concatMapStringsSep ", " (s: "'${s}'") [
-          "ss01" # == === =/= != !== /= /== ~~ =~ !~
+          "ss01" # === !== =!= =/= /== /= #= == != ~~ =~ !~ ~- -~ &=
           "ss02" # >= <=
-          "ss03" # -> <- => <!-- --> <~ <~~ <~>
-          # "ss04" # </ /> </> /\ \/
-          # "ss05" # |> <|
-          "ss06" # ## ###
-          "ss07" # *** /* */ /*/ (* *) (*)
-          # "ss08" # .= .- ..<
-          "liga" # <! !! ** :: =: == =! =/ != --
-          "calt" # // /// && ?? ?. ?: || :: ::: ;; .. ... =~= #= := =:= :> >: :> ..= ==-
-          # "dlig" # all
+          "ss03" # <--> <-> <!-- <-- <- -> <~> <~~ ~~> <~ ~>
+          # "ss04" # </ /> </> <>
+          # "ss05" # [| |] /\ \/ |> <| <|> {| |}
+          "ss06" # ### +++ &&&
+          "ss07" # -:- =:= :>: :<: ::> <:: :: :::
+          # "ss08" # ..= ..- ..< .= .-
+          "ss09" # <=> <<= =>> =<< >>= => << >>
+          "ss10" # #[ #(
+          "liga" # ... /// // !! || ;; ;;;
+          "calt" # texture healing
         ];
 
         "editor.defaultFormatter" = "rust-lang.rust-analyzer";
