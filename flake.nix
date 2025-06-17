@@ -117,6 +117,7 @@
     nix-your-shell.url = "github:MercuryTechnologies/nix-your-shell";
     nix-your-shell.inputs.nixpkgs.follows = "nixpkgs";
 
+    # WARNING: This may often be overridden in `flake.lock` to point a my fork.
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
