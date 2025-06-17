@@ -31,7 +31,12 @@
     security.polkit.enable = true;
     # auth
     services.gnome.gnome-keyring.enable = true;
-    xdg.portal.enable = true; # no portals configured, do it as a user
+    # Enable the portal daemon, but don't configure any specific portals.
+    # Instead, configure specific portals in the HM configuration per-user.
+    xdg.portal.enable = true;
+    # To silence the warning:
+    # <https://github.com/NixOS/nixpkgs/blob/ee930f9755f58096ac6e8ca94a1887e0534e2d81/nixos/modules/config/xdg/portal.nix#L119>
+    xdg.portal.config.common.default = "*";
     # allow users to mount fuse filesystems with allow_other
     programs.fuse.userAllowOther = true;
     services.flatpak.enable = true;
