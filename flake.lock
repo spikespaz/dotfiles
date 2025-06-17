@@ -965,11 +965,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1745026109,
-        "narHash": "sha256-sja6YkxnHor3GqQDuHIVRAaCD4jAac0WvKWtUBAHemo=",
+        "lastModified": 1750190321,
+        "narHash": "sha256-8jDz1IZfM5zAmZlE7sZf+RGLiGM9btT9X0NVCedZj2o=",
         "owner": "spikespaz-contrib",
         "repo": "nixpkgs",
-        "rev": "7833aebd8215ada1547d58d527d72bce2640e6bc",
+        "rev": "68b06e34e07db1be388374cce29a2d8765d4b4d7",
         "type": "github"
       },
       "original": {

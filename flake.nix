@@ -104,6 +104,7 @@
   inputs = {
     bird-nix-lib.url = "github:spikespaz/bird-nix-lib";
 
+    # WARNING: These may often be overridden in `flake.lock` to point a my fork.
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
