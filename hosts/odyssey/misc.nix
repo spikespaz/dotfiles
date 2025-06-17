@@ -224,6 +224,7 @@
       onBoot = "ignore";
       qemu.swtpm.enable = true;
       qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
+      qemu.vhostUserPackages = [ pkgs.virtiofsd ];
     };
 
     virtualisation.podman = {
