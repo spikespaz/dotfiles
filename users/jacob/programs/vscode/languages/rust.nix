@@ -41,6 +41,8 @@ profileName:
         ];
 
         "editor.defaultFormatter" = "rust-lang.rust-analyzer";
+
+        "editor.inlayHints.enabled" = "offUnlessPressed";
       };
 
       "[slint]" = { "editor.tabSize" = 2; };
