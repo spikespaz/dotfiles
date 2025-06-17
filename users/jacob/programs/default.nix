@@ -201,6 +201,9 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
 
           credential.helper =
             "${config.programs.git.package}/bin/git-credential-libsecret";
+
+          # Merge commits are for those who are unwise.
+          pull.rebase = true;
         };
 
         # better looking diffs
