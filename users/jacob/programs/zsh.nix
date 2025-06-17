@@ -43,7 +43,7 @@ in {
 
   programs.lsd = {
     enable = true;
-    enableAliases = true;
+    enableZshIntegration = true;
   };
 
   xdg.configFile = lib.mapAttrs' (_: source: {
