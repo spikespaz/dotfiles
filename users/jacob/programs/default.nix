@@ -204,6 +204,9 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
 
           # Merge commits are for those who are unwise.
           pull.rebase = true;
+
+          # Don't warn when switching to a detached HEAD.
+          advice.detachedHead = false;
         };
 
         # better looking diffs
