@@ -116,7 +116,7 @@ in {
       groupbar = {
         font_size = 14;
         gradients = false;
-        render_titles = true;
+        render_titles = false;
         scrolling = true;
 
         height = 18;
