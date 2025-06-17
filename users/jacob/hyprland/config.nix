@@ -42,6 +42,8 @@ in {
         noise = 6.5e-2; # 0.0117
         contrast = 0.75; # 0.8916
         brightness = 0.8; # 0.8172
+        # Whether to blur popups (context menus).
+        popups = true;
       };
     };
 
