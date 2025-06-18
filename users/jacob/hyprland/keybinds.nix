@@ -99,9 +99,9 @@ in {
         # ];
         # ```
         # But it didn't work so I wrote a simple Rust "script".
-        bind."ALT, tab" = "exec, ${exec.hypr-alt-tab}";
+        binde."ALT, tab" = "exec, ${exec.hypr-alt-tab}";
         # TODO: cycle backwards also
-        bind."ALT, grave" = "changegroupactive, b";
+        binde."ALT, grave" = "changegroupactive, b";
       };
 
       # Switch to another workspace.
