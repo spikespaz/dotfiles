@@ -140,17 +140,15 @@ in {
 
       # Switch to workspaces relative to the current one.
       switchWorkspaceRelative = {
-        # Switch to the next/previous used workspace with page keys.
+        # Switch used workspaces on the current monitor with page keys.
         bind."SUPER, page_down" = "workspace, m+1";
         bind."SUPER, page_up" = "workspace, m-1";
 
-        # Switch to the next/previous used workspace
-        # with the right and left square brackets,
-        # while holding super and shift.
-        bind."SUPER, bracketright " = "workspace, m+1";
+        # Switch used workspaces on the current monitor with bracket keys.
+        bind."SUPER, bracketright" = "workspace, m+1";
         bind."SUPER, bracketleft" = "workspace, m-1";
 
-        # Switch to the next/previous used workspace with the mouse wheel.
+        # Switch used workspaces on the current monitor with the scroll wheel.
         bind."SUPER, mouse_up" = "workspace, m+1";
         bind."SUPER, mouse_down" = "workspace, m-1";
       };
