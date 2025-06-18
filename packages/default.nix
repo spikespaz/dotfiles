@@ -10,7 +10,7 @@ in lib.updates [
 
   (with pkgs; {
     inherit amdctl ja-netfilter prtsc ttf-ms-win11 fork-awesome idlehack
-      proton-ge-custom nerdfonts-symbols discord-recolor-theme;
+      proton-ge-custom nerdfonts-symbols wavefox discord-recolor-theme;
   })
 
   {
