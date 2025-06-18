@@ -7,15 +7,15 @@ let
   # This default ideally should be determined by the script,
   # instead of being defined here (it renders the configuration non-portable).
   laptopKeyboard = "at-translated-set-2-keyboard";
+
+  MOUSE_LMB = "mouse:272";
+  MOUSE_RMB = "mouse:273";
+  # MOUSE_MMB = "mouse:274";
+  MOUSE_EX1 = "mouse:275";
+  MOUSE_EX2 = "mouse:276";
 in {
   # <https://wiki.hyprland.org/Configuring/Dispatchers/>
   wayland.windowManager.hyprland.keyBinds = let
-    MOUSE_LMB = "mouse:272";
-    MOUSE_RMB = "mouse:273";
-    # MOUSE_MMB = "mouse:274";
-    MOUSE_EX1 = "mouse:275";
-    MOUSE_EX2 = "mouse:276";
-
     exec = {
       inherit (pkgs.callPackages ./scripts {
         hyprland = config.wayland.windowManager.hyprland.package;
@@ -395,4 +395,29 @@ in {
     ### WORKSPACE WINDOW MOVEMENT ###
     groups.sendWindow
   ];
+
+  # Ideally this event could trigger a "gaming" submap instead,
+  # where that submap has all of the default bindings and some select few
+  # `unbind` keys. Maybe even a special behavior for "all modifiers".
+  # Unfortunately, it's impossible to do this without duplicating the
+  # entire default keymap.
+  wayland.windowManager.hyprland.eventListener = let
+    gameWindowClasses = [
+      "factorio"
+      "steam_app_881100" # Noita
+    ];
+  in {
+    enable = true;
+    handler.windowFocus = ''
+      if [[ "$HL_WINDOW_CLASS" =~ ^(${
+        lib.concatMapStringsSep "|" lib.escapeRegex gameWindowClasses
+      })$ ]]; then
+        hyprctl keyword unbind , ${MOUSE_EX1}
+        hyprctl keyword unbind , ${MOUSE_EX2}
+      else
+        hyprctl keyword bindm , ${MOUSE_EX1}, resizewindow
+        hyprctl keyword bindm , ${MOUSE_EX2}, movewindow
+      fi
+    '';
+  };
 }
