@@ -144,13 +144,25 @@ in {
         bind."SUPER, page_down" = "workspace, m+1";
         bind."SUPER, page_up" = "workspace, m-1";
 
+        # Switch workspaces on the current monitor, including empty, with page keys.
+        bind."SUPER_ALT, page_down" = "workspace, r+1";
+        bind."SUPER_ALT, page_up" = "workspace, r-1";
+
         # Switch used workspaces on the current monitor with bracket keys.
         bind."SUPER, bracketright" = "workspace, m+1";
         bind."SUPER, bracketleft" = "workspace, m-1";
 
+        # Switch workspaces on the current monitor, including empty, with bracket keys.
+        bind."SUPER_ALT, bracketright" = "workspace, r+1";
+        bind."SUPER_ALT, bracketleft" = "workspace, r-1";
+
         # Switch used workspaces on the current monitor with the scroll wheel.
         bind."SUPER, mouse_up" = "workspace, m+1";
         bind."SUPER, mouse_down" = "workspace, m-1";
+
+        # Switch workspaces on the current monitor, including empty, with the scroll wheel.
+        bind."SUPER_ALT, mouse_up" = "workspace, r+1";
+        bind."SUPER_ALT, mouse_down" = "workspace, r-1";
       };
 
       # Send a window to another workspace.
