@@ -23,7 +23,7 @@
     enable = true;
     package = pkgs.hyprland;
     reloadConfig = true;
-    systemdIntegration = true;
+    systemd.enable = true;
     recommendedEnvironment = true;
 
     xwayland.enable = true;
