@@ -138,8 +138,8 @@
       settings."mount_options.conf" = {
         defaults = {
           # Reference: <https://docs.kernel.org/filesystems/ntfs3.html>
-          ntfs_drivers =
-            "ntfs3"; # remove the legacy FUSE driver, `,ntfs` (ntfs-3g)
+          # Removes the legacy FUSE driver, `,ntfs` (ntfs-3g)
+          ntfs_drivers = "ntfs3";
           "ntfs:ntfs3_defaults" = lib.concatStringsSep "," [
             "uid=$UID"
             "gid=$GID"
