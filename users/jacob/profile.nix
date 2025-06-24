@@ -85,8 +85,7 @@ in {
     programs.vesktop
     programs.hexchat
     programs.telegram
-    # TODO: some client's dependencies are insecure, find out which and rename this module
-    # programs.matrix
+    programs.element
     programs.mattermost
 
     ### MEDIA CREATION ###

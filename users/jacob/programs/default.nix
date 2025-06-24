@@ -78,7 +78,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
 
     telegram = { home.packages = [ pkgs.tdesktop ]; };
 
-    matrix = { home.packages = [ pkgs.libsForQt5.neochat ]; };
+    element = { home.packages = [ pkgs.element-desktop ]; };
 
     mattermost = { home.packages = [ pkgs.mattermost-desktop ]; };
 
