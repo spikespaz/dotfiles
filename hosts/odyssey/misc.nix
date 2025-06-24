@@ -73,6 +73,12 @@
     nix.extraOptions = ''
       !include ${config.age.secrets.nix-access-tokens-github.path}
     '';
+
+    # The Nix daemon can use `binfmt` translators to run compilers for the
+    # emulated systems here. This allows cross-compilation of derivations
+    # without worrying about `crossSystem` in Nixpkgs instantiation.
+    boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+    boot.binfmt.addEmulatedSystemsToNixSandbox = true;
   }
 
   #############################
