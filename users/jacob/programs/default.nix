@@ -283,6 +283,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
     ### CLI UTILITIES ###
     #####################
 
+    fd = { programs.fd.enable = true; };
     bat = {
       programs.bat.enable = true;
       programs.bat.config.theme = "gruvbox-dark";

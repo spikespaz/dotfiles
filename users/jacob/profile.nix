@@ -153,6 +153,7 @@ in {
     programs.nushell
 
     ### CLI UTILITIES ###
+    programs.fd
     programs.bat
     programs.lsd
     programs.fzf
