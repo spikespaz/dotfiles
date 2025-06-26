@@ -205,6 +205,10 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
           # Merge commits are for those who are unwise.
           pull.rebase = true;
 
+          # Set use `--ff-only` when merging, avoid merge commits.
+          # If a merge commit is desired, `--no-ff` may be used explicitly.
+          merge.ff = "only";
+
           # Convert CRLF to LF on commit, but not the other way around.
           core.autocrlf = "input";
 
