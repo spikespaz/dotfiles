@@ -205,6 +205,9 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
           # Merge commits are for those who are unwise.
           pull.rebase = true;
 
+          # Convert CRLF to LF on commit, but not the other way around.
+          core.autocrlf = "input";
+
           # Don't warn when switching to a detached HEAD.
           advice.detachedHead = false;
         };
