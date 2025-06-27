@@ -193,7 +193,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
         extraConfig = {
           alias.c-m = "commit -m";
           alias.undo = "reset --soft HEAD~1";
-          alias.am = "commit --amend --no-edit";
+          alias.cane = "commit --amend --no-edit";
           alias.cl = "clone";
           alias.sw = "switch";
           alias.ic = "commit -m 'initial commit' --allow-empty";
