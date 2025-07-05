@@ -181,6 +181,9 @@ profileName:
       # allow 6 more characters from default 50 in commit subject
       "git.inputValidationSubjectLength" = 56;
 
+      # disable the built-in status bar item because GitLG provides one
+      "git.blame.statusBarItem.enabled" = false;
+
       # prevent pollute history with whitespace changes
       "diffEditor.ignoreTrimWhitespace" = false;
       # show blames at the end of current line
