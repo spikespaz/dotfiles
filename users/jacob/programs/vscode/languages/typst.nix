@@ -7,6 +7,8 @@ profileName:
       mathematic.vscode-pdf
     ];
 
-    userSettings = { };
+    userSettings = {
+      "tinymist.formatterMode" = "typstyle";
+    };
   };
 }
