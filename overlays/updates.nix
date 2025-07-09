@@ -2,12 +2,12 @@ pkgs: pkgs0:
 let inherit (pkgs) lib;
 in {
   materia-kde-theme = pkgs0.materia-kde-theme.overrideAttrs (self: _: {
-    version = "20220823";
+    version = "20220823+unstable-2023-07-15";
     src = pkgs.fetchFromGitHub {
       owner = "PapirusDevelopmentTeam";
       repo = "materia-kde";
-      rev = self.version;
-      hash = "sha256-/O+/L6C9WjxhfWZ8RzIeimNU+8sjKvbDvQwNlvVOjU4=";
+      rev = "6cc4c1867c78b62f01254f6e369ee71dce167a15";
+      hash = "sha256-tZWEVq2VYIvsQyFyMp7VVU1INbO7qikpQs4mYwghAVM=";
     };
   });
 
