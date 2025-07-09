@@ -9,6 +9,8 @@ profileName:
 
     userSettings = {
       "tinymist.formatterMode" = "typstyle";
+
+      "tinymist.lint.enabled" = true;
     };
   };
 }
