@@ -78,6 +78,8 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
 
     telegram = { home.packages = [ pkgs.tdesktop ]; };
 
+    signal = { home.packages = [ pkgs.signal-desktop ]; };
+
     element = { home.packages = [ pkgs.element-desktop ]; };
 
     mattermost = { home.packages = [ pkgs.mattermost-desktop ]; };

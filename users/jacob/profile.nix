@@ -85,6 +85,7 @@ in {
     programs.vesktop
     programs.hexchat
     programs.telegram
+    programs.signal
     programs.element
     programs.mattermost
 
