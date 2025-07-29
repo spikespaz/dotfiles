@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
     # Sans-serif
+    carlito
     lato
 
     # Monospace
