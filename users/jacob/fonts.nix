@@ -1,5 +1,8 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
+    # Superfamilies
+    ibm-plex
+
     # Sans-serif
     carlito
     lato
