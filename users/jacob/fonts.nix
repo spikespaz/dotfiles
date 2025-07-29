@@ -1,5 +1,8 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
+    # Sans-serif
+    lato
+
     # Monospace
     jetbrains-mono
     monaspace
