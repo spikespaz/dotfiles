@@ -703,11 +703,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1750282055,
-        "narHash": "sha256-8mbx3BVmejt1hVvnaUzZRH7zo+miWEqb0nJyqZufsMk=",
+        "lastModified": 1753770706,
+        "narHash": "sha256-oxLEZ/AmdkuepV309BmxlIo+UUllZrFj3LUAtDHnTf0=",
         "owner": "hyprland-community",
         "repo": "hyprnix",
-        "rev": "2d7206a890b1f80f0ce0e1eb508b86c710655a09",
+        "rev": "03263fa1f9fd92d651019fb5cf1c7d0775404f41",
         "type": "github"
       },
       "original": {
