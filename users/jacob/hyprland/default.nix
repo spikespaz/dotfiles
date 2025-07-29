@@ -32,25 +32,22 @@
       # allow apps with risen perms after agent to connect to local xwayland
       "${lib.getExe pkgs.xorg.xhost} +local:"
     ];
+
+    portal = {
+      enable = true;
+      config = { screencopy.allow_token_by_default = true; };
+    };
   };
 
   xdg.portal = {
-    enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
       kdePackages.xdg-desktop-portal-kde
     ];
-    configPackages = [ config.wayland.windowManager.hyprland.package ];
     config.hyprland = {
       default = [ "hyprland" "gtk" ];
       "org.freedesktop.impl.portal.FileChooser" = "kde";
       "org.freedesktop.impl.portal.Print" = "kde";
     };
   };
-
-  wayland.windowManager.hyprland.configFile."xdph.conf".text =
-    lib.generators.toHyprlang { } { # #
-      screencopy.allow_token_by_default = true;
-    };
 }
