@@ -62,6 +62,8 @@ in {
       flakeBasename = "dotfiles.git";
     })
 
+    ./fonts.nix
+
     ### DEFAULT PROGRAMS ###
     # user.mimeApps
 
