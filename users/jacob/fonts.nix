@@ -3,6 +3,9 @@
     # Superfamilies
     ibm-plex
 
+    # Serif
+    gentium-plus
+
     # Sans-serif
     carlito
     lato
