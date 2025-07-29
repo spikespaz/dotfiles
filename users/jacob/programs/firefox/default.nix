@@ -25,7 +25,7 @@ in {
     name = profileName;
 
     # <https://github.com/QNetITQ/WaveFox>
-    userChrome = pkgs.wavefox;
+    # userChrome = pkgs.wavefox;
 
     settings = {
       # Do not require manual intervention to enable extensions.
