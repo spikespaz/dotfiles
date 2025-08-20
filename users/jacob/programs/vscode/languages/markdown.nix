@@ -6,6 +6,7 @@ profileName:
     extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [ # #
       yzhang.markdown-all-in-one
+      davidanson.vscode-markdownlint
 
       bierner.markdown-emoji
       bierner.emojisense
