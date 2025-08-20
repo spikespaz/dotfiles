@@ -40,6 +40,8 @@ profileName:
       "markdownlint.config" = {
         # allow multiple top-level headings
         "MD025" = false;
+        # allow blank lines inside block-quotes (to allow adjacency)
+        "MD028" = false;
       };
     };
   };
