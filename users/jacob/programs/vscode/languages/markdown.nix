@@ -4,6 +4,9 @@ profileName:
     extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [ # #
       yzhang.markdown-all-in-one
+
+      bierner.markdown-emoji
+      bierner.emojisense
     ];
 
     userSettings = { };
