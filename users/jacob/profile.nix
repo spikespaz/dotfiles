@@ -113,6 +113,7 @@ in {
 
     ### TERMINAL EMULATORS ###
     programs.alacritty
+    programs.rio
 
     ### CODE EDITORS ###
     (programs.vscode.enable "default")
