@@ -43,6 +43,11 @@ profileName:
         # allow blank lines inside block-quotes (to allow adjacency)
         "MD028" = false;
       };
+
+      # format with `vscode-markdownlint` instead of `markdown-all-in-one`
+      "[markdown]" = {
+        "editor.defaultFormatter" = "DavidAnson.vscode-markdownlint";
+      };
     };
   };
 }
