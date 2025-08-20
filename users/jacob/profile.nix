@@ -130,6 +130,7 @@ in {
     (programs.vscode.languages.python "default")
     (programs.vscode.languages.nushell "default")
     (programs.vscode.languages.typst "default")
+    (programs.vscode.languages.markdown "default")
     # TODO: error: do not use python3Packages when building Python packages, specify each used package as a separate argument
     # (programs.vscode.other.marlin "default")
     (programs.vscode.other.marp "default")
