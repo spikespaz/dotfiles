@@ -18,6 +18,9 @@ profileName:
       # ask if links should be updated when a markdown file is moved in the workspace
       "markdown.updateLinksOnFileMove.enabled" = "prompt";
 
+      # enable completion, for example lists and block quotes
+      "markdown.extension.completion.enabled" = true;
+
       # language-neutral beautification (such as asymmetric quotations)
       "markdown.preview.typographer" = true;
     };
