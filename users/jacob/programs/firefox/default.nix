@@ -82,6 +82,11 @@ in {
       "userChrome.icon.account_label_to_right" = true;
       "userChrome.icon.menu.full" = true;
       "userChrome.icon.global_menu.mac" = true;
+
+      # <wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration>
+      "widget.use-xdg-desktop-portal.file-picker" = 1;
+      "widget.use-xdg-desktop-portal.mime-handler" = 1;
+      "widget.use-xdg-desktop-portal.open-uri" = 1;
     };
 
     extensions.packages = with extensions; [
