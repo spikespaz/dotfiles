@@ -11,6 +11,7 @@ profileName:
       bierner.emojisense
       bierner.markdown-footnotes
       bierner.markdown-mermaid
+      bpruitt-goddard.mermaid-markdown-syntax-highlighting
     ];
 
     userSettings = {
