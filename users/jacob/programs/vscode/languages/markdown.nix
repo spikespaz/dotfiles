@@ -36,6 +36,11 @@ profileName:
           "system-ui"
         ];
       "markdown.preview.fontSize" = 16;
+
+      "markdownlint.config" = {
+        # allow multiple top-level headings
+        "MD025" = false;
+      };
     };
   };
 }
