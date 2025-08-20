@@ -1,5 +1,7 @@
 profileName:
 { lib, pkgs, ... }: {
+  home.packages = with pkgs; [ noto-fonts ];
+
   programs.vscode.profiles.${profileName} = {
     extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [ # #
@@ -23,6 +25,15 @@ profileName:
 
       # language-neutral beautification (such as asymmetric quotations)
       "markdown.preview.typographer" = true;
+
+      # configure font and size
+      "markdown.preview.fontFamily" =
+        lib.concatMapStringsSep ", " (s: "'${s}'") [
+          "Noto Sans"
+          "Noto Color Emoji"
+          "system-ui"
+        ];
+      "markdown.preview.fontSize" = 16;
     };
   };
 }
