@@ -17,6 +17,9 @@ profileName:
 
       # ask if links should be updated when a markdown file is moved in the workspace
       "markdown.updateLinksOnFileMove.enabled" = "prompt";
+
+      # language-neutral beautification (such as asymmetric quotations)
+      "markdown.preview.typographer" = true;
     };
   };
 }
