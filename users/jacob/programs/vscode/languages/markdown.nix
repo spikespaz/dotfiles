@@ -8,6 +8,7 @@ profileName:
       bierner.markdown-emoji
       bierner.emojisense
       bierner.markdown-footnotes
+      bierner.markdown-mermaid
     ];
 
     userSettings = { };
