@@ -11,6 +11,9 @@ profileName:
       bierner.markdown-mermaid
     ];
 
-    userSettings = { };
+    userSettings = {
+      # enable error reporting, missing or unused links for example
+      "markdown.validate.enabled" = true;
+    };
   };
 }
