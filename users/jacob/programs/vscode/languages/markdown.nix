@@ -42,6 +42,12 @@ profileName:
         "MD025" = false;
         # allow blank lines inside block-quotes (to allow adjacency)
         "MD028" = false;
+        # allow some HTML
+        "MD033".allowed_elements = [
+          # spoilers
+          "summary"
+          "details"
+        ];
       };
 
       # format with `vscode-markdownlint` instead of `markdown-all-in-one`
