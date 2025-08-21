@@ -16,8 +16,8 @@ profileName:
     ];
 
     userSettings = {
-      # enable error reporting, missing or unused links for example
-      "markdown.validate.enabled" = true;
+      # disable error reporting, markdownlint does more
+      "markdown.validate.enabled" = false;
 
       # ask if links should be updated when a markdown file is moved in the workspace
       "markdown.updateLinksOnFileMove.enabled" = "prompt";
