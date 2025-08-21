@@ -90,6 +90,8 @@ profileName:
       "rust-analyzer.inlayHints.expressionAdjustmentHints.enable" = "always";
       "rust-analyzer.inlayHints.expressionAdjustmentHints.hideOutsideUnsafe" =
         true;
+
+      "rustowl.displayDelay" = 700; # ms
     };
   };
 }
