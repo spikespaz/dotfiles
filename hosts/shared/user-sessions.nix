@@ -98,7 +98,6 @@
 
     services.greetd = {
       enable = true;
-      vt = 2;
       settings = {
         default_session = {
           command = lib.concatStringsSep " " [
