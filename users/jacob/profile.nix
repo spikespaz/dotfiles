@@ -126,7 +126,7 @@ in {
     (programs.vscode.languages.rust "default")
     (programs.vscode.languages.hare "default")
     (programs.vscode.languages.web "default")
-    (programs.vscode.languages.yuck "default")
+    # (programs.vscode.languages.yuck "default")
     (programs.vscode.languages.python "default")
     (programs.vscode.languages.nushell "default")
     (programs.vscode.languages.typst "default")
