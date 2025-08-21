@@ -1529,11 +1529,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1750212334,
-        "narHash": "sha256-wLZj7wKuky8jh9USmi2BKUFTOn8ENh1g5/C5ODolTWc=",
+        "lastModified": 1755741560,
+        "narHash": "sha256-cWO1S6kExRvq4dpvUY03/CRUbVXWQfydfremyxT1wwg=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "33d4864b366ab1ca7657221fb13f82ea2308e5af",
+        "rev": "e54263b2980ec0f39f3148775045bd8f6e1fc567",
         "type": "github"
       },
       "original": {
