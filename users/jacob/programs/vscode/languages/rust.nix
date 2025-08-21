@@ -10,6 +10,9 @@ profileName:
       # serayuzgur.crates // superseded by
       fill-labs.dependi
 
+      # syntax support for cargo insta snapshots
+      mitsuhiko.insta
+
       tamasfe.even-better-toml
       a5huynh.vscode-ron
       slint.slint
