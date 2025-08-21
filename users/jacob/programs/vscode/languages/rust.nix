@@ -6,6 +6,8 @@ profileName:
     extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [
       rust-lang.rust-analyzer
+      # lifetime analysis
+      cordx56.rustowl-vscode
 
       # serayuzgur.crates // superseded by
       fill-labs.dependi
