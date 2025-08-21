@@ -101,7 +101,7 @@
       settings = {
         default_session = {
           command = lib.concatStringsSep " " [
-            (lib.getExe pkgs.greetd.tuigreet)
+            (lib.getExe pkgs.tuigreet)
             "--time"
             "--remember"
             "--remember-user-session"
