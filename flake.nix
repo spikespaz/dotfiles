@@ -131,7 +131,6 @@
 
     waybar.url = "github:alexays/waybar";
 
-    nil.url = "github:oxalica/nil";
     nixd.url = "github:nix-community/nixd";
 
     # polymc.url = "github:PolyMC/PolyMC";

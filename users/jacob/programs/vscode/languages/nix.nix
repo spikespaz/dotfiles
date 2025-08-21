@@ -18,10 +18,6 @@ in {
 
     userSettings = {
       "nix.enableLanguageServer" = true;
-      # "nix.serverPath" = lib.getExe pkgs.nil;
-      # "nix.serverSettings".nil = {
-      #   formatting.command = [ "nix" "fmt" "--" "--" ];
-      # };
       "nix.serverPath" = lib.getExe pkgs.nixd;
       "nix.serverSettings".nixd = {
         formatting.command = [ "nix" "fmt" "--" "--" ];
