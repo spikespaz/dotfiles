@@ -193,6 +193,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
         userEmail = "jacob@birkett.dev";
 
         extraConfig = {
+          alias.stat = "status";
           alias.c-m = "commit -m";
           alias.undo = "reset --soft HEAD~1";
           alias.cane = "commit --amend --no-edit";
