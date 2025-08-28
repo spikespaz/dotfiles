@@ -269,6 +269,7 @@ args@{ self, lib, pkgs, pkgs-stable, config, inputs, ... }:
     };
 
     rust = {
+      home.packages = [ pkgs.evcxr ]; # REPL
       home.file.".cargo/config.toml".source =
         (pkgs.formats.toml { }).generate "cargo-config" {
           "target.x86_64-unknown-linux-gnu" = {

@@ -150,7 +150,7 @@ in {
     programs.nix
     programs.git
     programs.java
-    programs.rust # Does not contain packages, use devshell.
+    programs.rust # Does not contain compiler, use devshell.
 
     ### SHELL ENVIRONMENTS ###
     programs.zsh
