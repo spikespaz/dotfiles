@@ -27,8 +27,9 @@ in {
     # <https://github.com/QNetITQ/WaveFox>
     # userChrome = pkgs.wavefox;
 
+    # Clobber unconditionally, `./search-engines.nix` is source of truth.
+    search.force = true;
     search.default = "ddg";
-
     search.engines = import ./search-engines.nix { inherit lib; };
 
     settings = {
