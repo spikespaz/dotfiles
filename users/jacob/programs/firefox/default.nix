@@ -29,6 +29,8 @@ in {
 
     search.default = "ddg";
 
+    search.engines = import ./search-engines.nix;
+
     settings = {
       # Do not require manual intervention to enable extensions.
       # This might be a security hole.
