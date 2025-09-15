@@ -36,4 +36,13 @@ in {
     }];
     definedAliases = [ "@hm" "@home-manager" ];
   };
+
+  lib-rs = {
+    name = "Lib.rs";
+    urls = [{
+      template = "https://lib.rs/search";
+      params = mkParams { q = "{searchTerms}"; };
+    }];
+    definedAliases = [ "@crate" "@librs" ];
+  };
 }
