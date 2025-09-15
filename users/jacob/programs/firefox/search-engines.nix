@@ -45,4 +45,10 @@ in {
     }];
     definedAliases = [ "@crate" "@librs" ];
   };
+
+  docs-rs = {
+    name = "Docs.rs";
+    urls = [{ template = "https://docs.rs/{searchTerms}"; }];
+    definedAliases = [ "@rs" "@docsrs" ];
+  };
 }
