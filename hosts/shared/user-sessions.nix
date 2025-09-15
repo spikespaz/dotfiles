@@ -96,6 +96,9 @@
     programs.uwsm.enable = true;
     services.logind.killUserProcesses = true;
 
+    # UWSM states that `dbus-broker` is a more reliable re-implementation.
+    services.dbus.implementation = "broker";
+
     services.greetd = {
       enable = true;
       settings = {
