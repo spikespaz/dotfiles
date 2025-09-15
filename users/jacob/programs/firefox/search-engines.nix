@@ -3,6 +3,7 @@ let mkParams = lib.mapAttrsToList lib.nameValuePair;
 in {
   nixpkgs-unstable = {
     name = "Nixpkgs (unstable)";
+    icon = "https://nixos.org/favicon.ico";
     urls = [{
       template = "https://search.nixos.org/packages";
       params = mkParams {
@@ -15,6 +16,7 @@ in {
 
   nixos-unstable = {
     name = "NixOS Options (unstable)";
+    icon = "https://nixos.org/favicon.ico";
     urls = [{
       template = "https://search.nixos.org/options";
       params = mkParams {
@@ -27,6 +29,7 @@ in {
 
   home-manager-master = {
     name = "Home Manager Options (master)";
+    icon = "https://home-manager-options.extranix.com/images/favicon.ico";
     urls = [{
       template = "https://home-manager-options.extranix.com";
       params = mkParams {
@@ -39,6 +42,7 @@ in {
 
   lib-rs = {
     name = "Lib.rs";
+    icon = "https://lib.rs/favicon.ico";
     urls = [{
       template = "https://lib.rs/search";
       params = mkParams { q = "{searchTerms}"; };
@@ -48,6 +52,7 @@ in {
 
   docs-rs = {
     name = "Docs.rs";
+    icon = "https://docs.rs/-/static/favicon.ico";
     urls = [{ template = "https://docs.rs/{searchTerms}"; }];
     definedAliases = [ "@rs" "@docsrs" ];
   };
