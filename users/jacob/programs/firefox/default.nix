@@ -66,6 +66,9 @@ in {
       "browser.newtabpage.activity-stream.showSponsoredCheckboxes" = false;
       "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
 
+      # No sponsored suggestions.
+      "browser.urlbar.suggest.quicksuggest.sponsored" = false;
+
       ### WaveFox ###
 
       "WaveFox.Tabs.Shape" = 7;
