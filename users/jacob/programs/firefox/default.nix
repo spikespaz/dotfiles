@@ -58,6 +58,13 @@ in {
       # Restore previous windows and tabs
       "browser.startup.page" = 3;
 
+      # No clickbait or trash on new-tab page.
+      "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+      "browser.newtabpage.activity-stream.feeds.topsites" = false;
+      "browser.newtabpage.activity-stream.showSponsored" = false;
+      "browser.newtabpage.activity-stream.showSponsoredCheckboxes" = false;
+      "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+
       ### WaveFox ###
 
       "WaveFox.Tabs.Shape" = 7;
