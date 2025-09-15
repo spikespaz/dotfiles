@@ -69,6 +69,9 @@ in {
       # No sponsored suggestions.
       "browser.urlbar.suggest.quicksuggest.sponsored" = false;
 
+      # Allow playing DRM-controlled content.
+      "media.eme.enabled" = true;
+
       ### WaveFox ###
 
       "WaveFox.Tabs.Shape" = 7;
