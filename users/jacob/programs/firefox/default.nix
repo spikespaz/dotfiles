@@ -53,6 +53,9 @@ in {
 
       "browser.download.autohideButton" = false;
 
+      # Restore previous windows and tabs
+      "browser.startup.page" = 3;
+
       ### WaveFox ###
 
       "WaveFox.Tabs.Shape" = 7;
