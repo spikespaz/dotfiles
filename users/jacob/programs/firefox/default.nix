@@ -1,5 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 let
+  cfg = config.programs.firefox;
+
   profile = "jacob.default";
   profileName = "jacob-default";
 
@@ -19,13 +21,17 @@ in {
   home.packages = [ pkgs.firefoxpwa ];
   programs.firefox.nativeMessagingHosts = [ pkgs.firefoxpwa ];
 
+  # <https://github.com/QNetITQ/WaveFox>
+  home.file."${cfg.profilesPath}/${profile}/chrome".source = pkgs.wavefox;
+
   programs.firefox.profiles.${profile} = {
     id = 0;
     isDefault = true;
     name = profileName;
 
-    # <https://github.com/QNetITQ/WaveFox>
-    # userChrome = pkgs.wavefox;
+    # Must be set so that the individual entries are not created.
+    userChrome = "";
+    userContent = "";
 
     # Clobber unconditionally, `./search-engines.nix` is source of truth.
     search.force = true;
@@ -94,10 +100,7 @@ in {
       # "WaveFox.Toolbar.Transparency" = 3;
 
       "svg.context-properties.content.enabled" = true;
-      "WaveFox.LeptonIcons.Enabled" = true;
-      # I think `panel_photon` and `panel_full` are mutually exclusive, not sure which to use.
-      # In the hamburger menu, with both enabled, the zoom icon is offset to the left.
-      # "userChrome.icon.panel_photon" = true;
+      "WaveFox.Icons" = 2;
       "userChrome.icon.panel_full" = true;
       "userChrome.icon.library" = true;
       "userChrome.icon.panel" = true;
