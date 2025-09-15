@@ -1,18 +1,14 @@
-{
+{ lib }:
+let mkParams = lib.mapAttrsToList lib.nameValuePair;
+in {
   nixpkgs-unstable = {
     name = "Nixpkgs (unstable)";
     urls = [{
       template = "https://search.nixos.org/packages";
-      params = [
-        {
-          name = "channel";
-          value = "unstable";
-        }
-        {
-          name = "query";
-          value = "{searchTerms}";
-        }
-      ];
+      params = mkParams {
+        channel = "unstable";
+        query = "{searchTerms}";
+      };
     }];
     definedAliases = [ "@pkg" "@nixpkgs" ];
   };
@@ -21,16 +17,10 @@
     name = "NixOS Options (unstable)";
     urls = [{
       template = "https://search.nixos.org/options";
-      params = [
-        {
-          name = "channel";
-          value = "unstable";
-        }
-        {
-          name = "query";
-          value = "{searchTerms}";
-        }
-      ];
+      params = mkParams {
+        channel = "unstable";
+        query = "{searchTerms}";
+      };
     }];
     definedAliases = [ "@opt" "@nixos" ];
   };

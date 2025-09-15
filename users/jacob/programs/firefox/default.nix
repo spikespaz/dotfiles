@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   profile = "jacob.default";
   profileName = "jacob-default";
@@ -29,7 +29,7 @@ in {
 
     search.default = "ddg";
 
-    search.engines = import ./search-engines.nix;
+    search.engines = import ./search-engines.nix { inherit lib; };
 
     settings = {
       # Do not require manual intervention to enable extensions.
