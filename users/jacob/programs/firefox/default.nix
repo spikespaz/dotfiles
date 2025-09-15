@@ -31,6 +31,8 @@ in {
     search.engines = import ./search-engines.nix { inherit lib; };
 
     settings = {
+      "browser.shell.checkDefaultBrowser" = false;
+
       # Do not require manual intervention to enable extensions.
       # This might be a security hole.
       "extensions.autoDisableScopes" = 0;
