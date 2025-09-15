@@ -72,6 +72,9 @@ in {
       # Allow playing DRM-controlled content.
       "media.eme.enabled" = true;
 
+      # Tell websites not to sell or share my data.
+      "privacy.globalprivacycontrol.enabled" = true;
+
       ### WaveFox ###
 
       "WaveFox.Tabs.Shape" = 7;
