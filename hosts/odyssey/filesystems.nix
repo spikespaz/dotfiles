@@ -22,6 +22,10 @@ in {
   # we never want to allow nix to create hard-links
   # because the filesystem takes care of that
   nix.settings.auto-optimise-store = false;
+  # The directory `/nix/build` lives on a dataset that is more friendly to tests
+  # involving non-UTF-8 file paths.
+  # See `scripts/partition.sh` to see the options for this dataset.
+  nix.settings.build-dir = "/nix/build";
 
   fileSystems = {
     "/" = zfsAuto "${rootPool}/root";
@@ -29,6 +33,7 @@ in {
     "/var/log" = zfsAuto "${rootPool}/var/log";
     "/var/cache" = zfsAuto "${rootPool}/var/cache";
     "/nix" = zfsAuto "${rootPool}/nix";
+    "/nix/build" = zfsAuto "${rootPool}/nix/build";
     "/home" = zfsAuto "${rootPool}/home";
 
     "/boot" = {
