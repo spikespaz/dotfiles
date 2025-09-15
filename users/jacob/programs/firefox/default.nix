@@ -1,7 +1,5 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, ... }:
 let
-  cfg = config.programs.firefox;
-
   profile = "jacob.default";
   profileName = "jacob-default";
 
@@ -16,22 +14,16 @@ in {
 
   imports = [ # #
     (import ./blocking.nix profile)
+    (import ./wavefox.nix profile)
   ];
 
   home.packages = [ pkgs.firefoxpwa ];
   programs.firefox.nativeMessagingHosts = [ pkgs.firefoxpwa ];
 
-  # <https://github.com/QNetITQ/WaveFox>
-  home.file."${cfg.profilesPath}/${profile}/chrome".source = pkgs.wavefox;
-
   programs.firefox.profiles.${profile} = {
     id = 0;
     isDefault = true;
     name = profileName;
-
-    # Must be set so that the individual entries are not created.
-    userChrome = "";
-    userContent = "";
 
     # Clobber unconditionally, `./search-engines.nix` is source of truth.
     search.force = true;
@@ -42,23 +34,6 @@ in {
       # Do not require manual intervention to enable extensions.
       # This might be a security hole.
       "extensions.autoDisableScopes" = 0;
-
-      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-
-      "gfx.webrender.all" = true;
-
-      # Fix for the close button being inline wth tabs.
-      # "browser.tabs.inTitlebar" = 1;
-      # Also puts a close button in the title bar, which we want to hide.
-      # This is required to be `1` for transparency.
-      "browser.tabs.inTitlebar" = 0;
-      "browser.tabs.tabMinWidth" = 130;
-
-      # Selecting "Compact" in the toolbar customization menu sets both
-      # of these options.
-      "browser.uidensity" = 1;
-      "browser.compactmode.show" = true;
-      # "ui.prefersReducedMotion" = 1;
 
       "browser.download.autohideButton" = false;
 
@@ -84,35 +59,6 @@ in {
       # Disable "Firefox Labs" because I'm afraid of it messing with extensions and user chrome.
       # Note that `enabled = false` is the correct value to disable, despite being named "opt-out".
       "app.shield.optoutstudies.enabled" = false;
-
-      ### WaveFox ###
-
-      "WaveFox.Tabs.Shape" = 7;
-      "WaveFox.DarkTheme.Tabs.Shadows" = 2;
-      "WaveFox.Tabs.Separators" = 1;
-
-      # TODO: This doesn't look as good as I want unfortunately.
-      # I want to have more granular transparency control
-      # to match the values used in Hyprland window rules.
-      # Makes the tab text hard to read and requires `browser.tabs.inTitlebar`.
-      # "browser.tabs.inTitlebar" = 1;
-      # "WaveFox.Linux.Transparency.Enabled" = true;
-      # "WaveFox.Toolbar.Transparency" = 3;
-
-      "svg.context-properties.content.enabled" = true;
-      "WaveFox.Icons" = 2;
-      "userChrome.icon.panel_full" = true;
-      "userChrome.icon.library" = true;
-      "userChrome.icon.panel" = true;
-      "userChrome.icon.menu" = true;
-      "userChrome.icon.context_menu" = true;
-      "userChrome.icon.global_menu" = true;
-      "userChrome.icon.global_menubar" = true;
-      "userChrome.icon.1-25px_stroke" = true;
-      "userChrome.icon.account_image_to_right" = true;
-      "userChrome.icon.account_label_to_right" = true;
-      "userChrome.icon.menu.full" = true;
-      "userChrome.icon.global_menu.mac" = true;
 
       # <wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration>
       "widget.use-xdg-desktop-portal.file-picker" = 1;
