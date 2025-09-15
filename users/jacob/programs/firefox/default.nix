@@ -75,6 +75,10 @@ in {
       # Tell websites not to sell or share my data.
       "privacy.globalprivacycontrol.enabled" = true;
 
+      # Disable "Firefox Labs" because I'm afraid of it messing with extensions and user chrome.
+      # Note that `enabled = false` is the correct value to disable, despite being named "opt-out".
+      "app.shield.optoutstudies.enabled" = false;
+
       ### WaveFox ###
 
       "WaveFox.Tabs.Shape" = 7;
