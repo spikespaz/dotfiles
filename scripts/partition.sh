@@ -83,6 +83,7 @@ datasets=(
 	"$POOL_NAME/var/log"    "canmount=on   mountpoint=/var/log    compression=zstd-fast"
 	"$POOL_NAME/var/cache"  "canmount=on   mountpoint=/var/cache  compression=zstd-fast"
 	"$POOL_NAME/nix"        "canmount=on   mountpoint=/nix        compression=zstd-5      relatime=off  dedup=on"
+	"$POOL_NAME/nix/build"  "canmount=on   mountpoint=/nix/build  compression=zstd-fast   relatime=off  dedup=off  normalization=none  utf8only=off"
 	"$POOL_NAME/home"       "canmount=on   mountpoint=/home"
 )
 
