@@ -27,6 +27,8 @@ in {
     # <https://github.com/QNetITQ/WaveFox>
     # userChrome = pkgs.wavefox;
 
+    search.default = "ddg";
+
     settings = {
       # Do not require manual intervention to enable extensions.
       # This might be a security hole.
