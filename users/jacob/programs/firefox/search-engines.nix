@@ -24,4 +24,16 @@ in {
     }];
     definedAliases = [ "@opt" "@nixos" ];
   };
+
+  home-manager-master = {
+    name = "Home Manager Options (master)";
+    urls = [{
+      template = "https://home-manager-options.extranix.com";
+      params = mkParams {
+        release = "master";
+        query = "{searchTerms}";
+      };
+    }];
+    definedAliases = [ "@hm" "@home-manager" ];
+  };
 }
