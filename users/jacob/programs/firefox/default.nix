@@ -38,6 +38,8 @@ in {
       "extensions.autoDisableScopes" = 0;
 
       "browser.download.autohideButton" = false;
+      # Don't show blue dot to notify about AI chat.
+      "sidebar.notification.badge.aichat" = false;
 
       # Restore previous windows and tabs
       "browser.startup.page" = 3;
