@@ -39,7 +39,7 @@ lib: {
   };
 
   wavefox = pkgs: _: {
-    wavefox = pkgs.callPackage ./wavefox.nix { inherit lib; };
+    wavefox = pkgs.callPackage ./wavefox.nix { };
   };
 
   discord-recolor-theme = pkgs: _: {
