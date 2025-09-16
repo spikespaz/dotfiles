@@ -29,7 +29,7 @@ in {
       ### WaveFox ###
 
       "WaveFox.Tabs.Shape" = 7;
-      "WaveFox.DarkTheme.Tabs.Shadows" = 2;
+      "WaveFox.DarkTheme.Tabs.Shadows" = 1;
       "WaveFox.Tabs.Separators" = 1;
 
       # TODO: This doesn't look as good as I want unfortunately.
