@@ -64,6 +64,10 @@ in {
       # Note that `enabled = false` is the correct value to disable, despite being named "opt-out".
       "app.shield.optoutstudies.enabled" = false;
 
+      # Regarding tab ordering:
+      # <https://support.mozilla.org/en-US/questions/1229062>
+      "browser.tabs.insertAfterCurrent" = true;
+
       # <wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration>
       "widget.use-xdg-desktop-portal.file-picker" = 1;
       "widget.use-xdg-desktop-portal.mime-handler" = 1;
