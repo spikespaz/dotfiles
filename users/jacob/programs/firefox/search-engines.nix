@@ -40,6 +40,18 @@ in {
     definedAliases = [ "@hm" "@home-manager" ];
   };
 
+  noogle = {
+    name = "Noogle - Nixpkgs Functions";
+    # The Noogle favicon is just the Nix logo, but lower quality.
+    # icon = "https://noogle.dev/favicon.png";
+    icon = "https://nixos.org/favicon.ico";
+    urls = [{
+      template = "https://noogle.dev/q";
+      params = mkParams { term = "{searchTerms}"; };
+    }];
+    definedAliases = [ "@ngl" "@noogle" ];
+  };
+
   lib-rs = {
     name = "Lib.rs";
     icon = "https://lib.rs/favicon.ico";
