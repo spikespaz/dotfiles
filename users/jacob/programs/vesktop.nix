@@ -38,13 +38,17 @@ let
 in {
   programs.vesktop = {
     enable = true;
-    # settings = {
-    #   tray = true;
-    #   minimizeToTray = false; # false
-    #   performanceMode = "battery";
-    #   channel = "ptb";
-    #   mods = "vencord";
-    # };
+
+    settings = {
+      arRPC = true;
+      clickTrayToShowHide = true;
+      discordBranch = "stable";
+      hardwareAcceleration = true;
+      hardwareVideoAcceleration = true;
+      minimizeToTray = true;
+      tray = true;
+    };
+
     vencord.themes = recolorThemes;
   };
 }
