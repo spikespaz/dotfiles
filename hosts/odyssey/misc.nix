@@ -81,45 +81,28 @@
     boot.binfmt.addEmulatedSystemsToNixSandbox = true;
   }
 
-  #############################
-  ### NETWORKING & WIRELESS ###
-  #############################
+  ##################
+  ### NETWORKING ###
+  ##################
   {
-    networking = {
-      hostName = "odyssey";
-      hostId = builtins.substring 0 8
-        (builtins.hashString "md5" config.networking.hostName);
-
-      # CloudFlare nameservers
-      nameservers =
-        [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
-
-      firewall = {
-        enable = true;
-        allowedTCPPorts = [
-          # Web Servers
-          80
-          443
-          # Jellyfin
-          8096
-          8920
-          # Minecraft
-          25565
-          25572
-        ];
-        allowedUDPPorts = [
-          # Minecraft
-          25565
-          25572
-        ];
-      };
-    };
-
-    services.resolved = {
-      enable = true;
-      fallbackDns = [ "8.8.8.8" "2001:4860:4860::8844" ];
-      dnssec = "allow-downgrade";
-      dnsovertls = "opportunistic";
+    networking.hostName = "odyssey";
+    networking.firewall = {
+      allowedTCPPorts = [
+        # Web Servers
+        80
+        443
+        # Jellyfin
+        8096
+        8920
+        # Minecraft
+        25565
+        25572
+      ];
+      allowedUDPPorts = [
+        # Minecraft
+        25565
+        25572
+      ];
     };
   }
 

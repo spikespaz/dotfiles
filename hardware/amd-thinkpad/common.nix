@@ -21,19 +21,6 @@
   # enable fingerprint sensor
   services.fprintd.enable = true;
 
-  networking.wireless.iwd = {
-    enable = true;
-    settings = {
-      # Use iwd's DHCP handling for wifi interfaces.
-      General.EnableNetworkConfiguration = true;
-      # Default is `"systemd"`, but we want `resolved` to directly provide
-      # the DNS servers from `networking.nameservers`.
-      Network.NameResolvingService = "none";
-    };
-  };
-  # Prevent conflicts with iwd's DHCP handling.
-  networking.dhcpcd.denyInterfaces = [ "wl*" ];
-
   # bluetooth
   services.blueman.enable = true;
 
