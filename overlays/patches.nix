@@ -63,4 +63,16 @@ in {
       })
     ];
   });
+
+  vesktop = pkgs0.vesktop.overrideAttrs (self: super: {
+    postFixup = super.postFixup + ''
+      wrapProgram $out/bin/vesktop \
+        --prefix LD_PRELOAD : ${
+          pkgs.procname-shim.override { procName = self.pname; }
+        } \
+        --set-default ELECTRON_FORCE_IS_PACKAGED 1 \
+        --set-default ELECTRON_IS_DEV 0 \
+        --inherit-argv0
+    '';
+  });
 }
