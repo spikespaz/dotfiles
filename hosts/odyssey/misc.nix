@@ -168,14 +168,6 @@
       enable = true;
       drivers = with pkgs; [ gutenprint hplip ];
     };
-
-    # required for network discovery of printers
-    services.avahi = {
-      enable = true;
-      # resolve .local domains for printers
-      nssmdns4 = true;
-      nssmdns6 = false;
-    };
   }
 
   ##########################

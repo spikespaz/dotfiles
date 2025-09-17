@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ lib, config, ... }: {
   networking.hostId = builtins.substring 0 8
     (builtins.hashString "md5" config.networking.hostName);
 
@@ -18,9 +18,25 @@
 
   services.resolved = {
     enable = true;
+    # domains = [ "~." ] ++ config.networking.search;
     fallbackDns = [ "8.8.8.8" "2001:4860:4860::8844" ];
     dnssec = "allow-downgrade";
     dnsovertls = "opportunistic";
+    # Allegedly, Link-Local Multicast Name Resolution (port 5355) is rarely used
+    # outside of Windows hosts. It can be re-enabled without fear of conflict with Avahi.
+    llmnr = "false";
+    extraConfig = lib.generators.toKeyValue { } {
+      # Disabled for Avahi to own `.local` resolutions and discovery (port 5353).
+      MulticastDNS = false;
+    };
+  };
+
+  # Required for network discovery of printers.
+  services.avahi = {
+    enable = true;
+    # Resolve `.local` domains.
+    nssmdns4 = true;
+    nssmdns6 = false;
   };
 
   # CloudFlare nameservers
