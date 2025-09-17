@@ -6,6 +6,7 @@ profileName:
       llvm-vs-code-extensions.vscode-clangd
       pkgs.vscode-extensions.ms-vscode.cmake-tools # wrapped by nixpkgs
       pkgs.vscode-extensions.vadimcn.vscode-lldb # wrapped by nixpkgs
+      mesonbuild.mesonbuild
     ];
 
     userSettings = {
@@ -14,6 +15,9 @@ profileName:
       # IntelliSense from Microsoft conflicts with clangd
       "C_Cpp.intelliSenseEngine" = "disabled";
       "clangd.path" = lib.getExe' pkgs.clang-tools "clangd";
+      "mesonbuild.downloadLanguageServer" = false;
+      "mesonbuild.languageServerPath" = lib.getExe pkgs.mesonlsp;
+      "mesonbuild.mesonlsp.others.muonPath" = lib.getExe pkgs.muon;
     };
   };
 }
