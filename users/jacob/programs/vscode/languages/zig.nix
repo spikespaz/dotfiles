@@ -15,6 +15,8 @@ profileName:
       "zig.zls.highlightGlobalVarDeclarations" = true;
       "zig.zls.inlayHintsHideRedundantParamNames" = true;
       "zig.zls.warnStyle" = true;
+      "zig.zlint.enabled" = true;
+      "zig.zlint.path" = lib.getExe pkgs.zig-zlint;
     };
   };
 }
