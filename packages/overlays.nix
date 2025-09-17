@@ -69,4 +69,10 @@ lib: {
   json2nix = pkgs: _: {
     json2nix = pkgs.callPackage ./json2nix.nix { inherit lib; };
   };
+
+  # HACKS #
+
+  procname-shim = pkgs: _: {
+    procname-shim = pkgs.callPackage ./procname-shim { procName = null; };
+  };
 }
