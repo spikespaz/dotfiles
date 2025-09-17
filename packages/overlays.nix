@@ -38,9 +38,7 @@ lib: {
       temurin20-jre-bin graalvm8-ce graalvm8-ce-jre;
   };
 
-  wavefox = pkgs: _: {
-    wavefox = pkgs.callPackage ./wavefox.nix { };
-  };
+  wavefox = pkgs: _: { wavefox = pkgs.callPackage ./wavefox.nix { }; };
 
   discord-recolor-theme = pkgs: _: {
     discord-recolor-theme = pkgs.callPackage ./discord-recolor-theme.nix { };
