@@ -1,0 +1,15 @@
+{
+    "idea": "II,PCWMP,PSI",
+    "clion": "CL,PSI,PCWMP",
+    "phpstorm": "PS,PCWMP,PSI",
+    "goland": "GO,PSI,PCWMP",
+    "pycharm": "PC,PSI,PCWMP",
+    "webstorm": "WS,PCWMP,PSI",
+    "rider": "RD,PDB,PSI,PCWMP",
+    "datagrip": "DB,PSI,PDB",
+    "rubymine": "RM,PCWMP,PSI",
+    "appcode": "AC,PCWMP,PSI",
+    "dataspell": "DS,PSI,PCWMP",
+    "dotmemory": "DM",
+    "rustrover": "RR,PSI,PCWP"
+}
