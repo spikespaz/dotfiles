@@ -1,13 +1,15 @@
 #!/usr/bin/env nu
 
-def fetch-configs [
-    plugins: list<string>,
-    base_url: string
-]: nothing -> record {
-    $plugins | reduce -f { } {|plugin, acc|
-        let key = $plugin | str downcase
-        let text = http get --raw $"($base_url)/config/($plugin).conf" | decode
-        $acc | upsert $key $text
+def fetch-configs [plugins: list<string>, base_url: string]: nothing -> record {
+    try {
+        $plugins | reduce -f {} {|plugin, acc|
+            let key = $plugin | str downcase
+            let text = http get -r $"($base_url)/config/($plugin).conf" | decode
+            $acc | upsert $key $text
+        }
+    } catch {|err|
+        ($err.json | from json).labels.0.text | print
+        {}
     }
 }
 
@@ -136,7 +138,7 @@ def "main license" [
 }
 
 def main []: nothing -> error {
-    error make -u  {
+    error make -u {
         msg: "no subcommand was specified"
         help: "available subcommands: config, license"
     }
