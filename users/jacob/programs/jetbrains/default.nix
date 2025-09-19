@@ -26,6 +26,9 @@ let
     };
   wrapJetBrains = package: name:
     forkingWrapper (package.override { inherit vmopts; }) name;
+  versionYearMinor = version:
+    let split = lib.splitVersion version;
+    in "${lib.elemAt split 0}.${lib.elemAt split 1}";
 in {
   clion = let clion' = wrapJetBrains pkgs.jetbrains.clion "clion";
   in { home.packages = [ clion' ]; };
@@ -36,8 +39,15 @@ in {
   webstorm = let webstorm' = wrapJetBrains pkgs.jetbrains.webstorm "webstorm";
   in { home.packages = [ webstorm' ]; };
 
-  idea = let idea' = wrapJetBrains pkgs.jetbrains.idea-ultimate "idea";
-  in { home.packages = [ idea' ]; };
+  idea = let
+    super = pkgs.jetbrains.idea-ultimate;
+    idea' = wrapJetBrains super "idea";
+    keyPath =
+      "JetBrains/IntelliJIdea${versionYearMinor super.version}/idea.key";
+  in {
+    home.packages = [ idea' ];
+    xdg.configFile.${keyPath}.source = ./licenses/idea.key;
+  };
 
   pycharm =
     let pycharm' = wrapJetBrains pkgs.jetbrains.pycharm-professional "pycharm";
