@@ -1,22 +1,35 @@
-{ lib, writeTextDir, callPackage, symlinkJoin, programName ? null
-, enabledPlugins ? null, pluginConfigs ? null, }:
+{ lib, callPackages, runCommandLocal, programName ? null, enabledPlugins ? [ ]
+, pluginConfigs ? { }, }:
 let
-  packages = callPackage ./packages.nix { };
-  ja-netfilter = callPackage packages.ja-netfilter { };
-  callPlugin = name: callPackage packages."plugin-${name}" { };
-  pluginPackages =
-    lib.optionals (enabledPlugins != null) (map callPlugin enabledPlugins);
-  configFiles = lib.optionals (pluginConfigs != null) (lib.mapAttrsToList
-    (name: value: writeTextDir "share/ja-netfilter/config/${name}.conf" value)
-    pluginConfigs);
-in symlinkJoin {
-  name = if programName == null then
-    "ja-netfilter"
-  else
-    "ja-netfilter-${programName}";
-  paths = [ ja-netfilter ] ++ pluginPackages ++ configFiles;
-  postBuild = lib.optionalString (programName != null) ''
-    mv $out/share/ja-netfilter/plugins $out/share/ja-netfilter/plugins-${programName}
-    mv $out/share/ja-netfilter/config $out/share/ja-netfilter/config-${programName}
-  '';
-}
+  packages = callPackages ./packages.nix { };
+  suffixProgram = string:
+    if programName == null then string else "${string}-${programName}";
+  buildName = suffixProgram "ja-netfilter";
+  pluginsDir = suffixProgram "plugins";
+  configsDir = suffixProgram "config";
+  configFileArgs = lib.mapAttrs' (pluginName: text: {
+    name = "${pluginName}_config";
+    value = text;
+  }) pluginConfigs;
+  derivationArgs = configFileArgs // {
+    passAsFile = lib.attrNames configFileArgs;
+  };
+in runCommandLocal buildName derivationArgs ''
+  mkdir -p $out/share/ja-netfilter
+  mkdir $out/share/ja-netfilter/{${pluginsDir},${configsDir}}
+
+  cp ${packages.ja-netfilter}/ja-netfilter-jar-with-dependencies.jar \
+    $out/share/ja-netfilter/ja-netfilter.jar
+
+  ${lib.concatLines (map (pluginName:
+    let plugin = packages."ja-netfilter-plugin-${pluginName}";
+    in ''
+      cp ${plugin}/${pluginName}-v${plugin.version}-jar-with-dependencies.jar \
+        $out/share/ja-netfilter/${pluginsDir}/${pluginName}.jar
+    '') enabledPlugins)}
+
+  ${lib.concatLines (lib.mapAttrsToList (pluginName: configText: ''
+    mv ''$${pluginName}_configPath \
+      $out/share/ja-netfilter/${configsDir}/${pluginName}.conf
+  '') pluginConfigs)}
+''

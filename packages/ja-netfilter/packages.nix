@@ -1,69 +1,77 @@
-{ fetchgit, }:
+{ lib, fetchgit, maven, jdk8 }:
 let
-  repoOwner = "ja-netfilter";
-  baseName = "ja-netfilter";
+  packageBase = { pname, version, src, mvnHash }:
+    maven.buildMavenPackage {
+      inherit pname version src;
+      buildOffline = true;
+      mvnJdk = jdk8;
+      mvnHash = mvnHash;
+      installPhase = ''
+        runHook preInstall
+        install -Dm644 target/*.jar -t $out
+        runHook postInstall
+      '';
+    };
 
-  packageBase = import ./base.nix;
-  pluginBase = { name, version, srcHash, depsHash, }:
+  pluginBase = { name, version, srcHash, mvnHash }:
     packageBase {
-      pname = "${baseName}-plugin-${name}";
+      pname = "ja-netfilter-plugin-${name}";
       src = fetchgit {
-        url = "https://gitee.com/${repoOwner}/plugin-${name}.git";
-        rev = version;
+        url = "https://gitee.com/ja-netfilter/plugin-${name}.git";
+        rev = "v${version}";
         sha256 = srcHash;
       };
-      # maven outputs the jar name with an extra `v` in the version segment
-      targetJar = "${name}-v${version}-jar-with-dependencies.jar";
-      renameJar = "share/${baseName}/plugins/${name}.jar";
-      inherit version depsHash;
+      inherit version mvnHash;
     };
-in {
+
   ja-netfilter = packageBase rec {
-    pname = baseName;
+    pname = "ja-netfilter";
     version = "2022.2.0";
     src = fetchgit {
-      url = "https://gitee.com/${repoOwner}/ja-netfilter.git";
+      url = "https://gitee.com/ja-netfilter/ja-netfilter.git";
       rev = version;
       sha256 = "sha256-jlRJ2r9EnbaqG7tGhJduFCchORdraZL3aTBa1btgMIU=";
     };
-    depsHash = "sha256-B8kZKC1FilK/wWNzlrQgDVj+T0EhScK2o2lAtFK8FqY=";
-    targetJar = "ja-netfilter-jar-with-dependencies.jar";
-    renameJar = "share/${baseName}/ja-netfilter.jar";
+    mvnHash = "sha256-qi4j6w8zwszb3vzrehx4UmKyYD0OcKfjlQ7QsDKK8C4=";
   };
-  plugin-dns = pluginBase {
-    name = "dns";
-    version = "v1.1.0";
-    srcHash = "sha256-JSBGjQY7KmO7pcrATY5Ql9eg+hQUHqy9869uINLz+Fo=";
-    depsHash = "sha256-B8kZKC1FilK/wWNzlrQgDVj+T0EhScK2o2lAtFK8FqY=";
+
+  plugins = {
+    dns = {
+      version = "1.1.0";
+      srcHash = "sha256-JSBGjQY7KmO7pcrATY5Ql9eg+hQUHqy9869uINLz+Fo=";
+      mvnHash = "sha256-qi4j6w8zwszb3vzrehx4UmKyYD0OcKfjlQ7QsDKK8C4=";
+    };
+    url = {
+      version = "1.1.0";
+      srcHash = "sha256-7YiiPDjQr6vN933svHwz1yK3PdWTsY2SeJsw+PBv+zY=";
+      mvnHash = "sha256-qi4j6w8zwszb3vzrehx4UmKyYD0OcKfjlQ7QsDKK8C4=";
+    };
+    hideme = {
+      version = "1.1.0";
+      srcHash = "sha256-tGAesHIGmdlp2PCTfX5zrikqjD9ZiQ+0tLsJFGiWwPQ=";
+      mvnHash = "sha256-qi4j6w8zwszb3vzrehx4UmKyYD0OcKfjlQ7QsDKK8C4=";
+    };
+    dump = {
+      version = "1.0.1";
+      srcHash = "";
+      mvnHash = "";
+    };
+    native = {
+      version = "1.0.0";
+      srcHash = "";
+      mvnHash = "";
+    };
+    power = {
+      version = "1.1.0";
+      srcHash = "sha256-sTjHvpQYF6soRIDhPspCdLYqLfZwPCjERq1EhIvX9z0=";
+      mvnHash = "sha256-Xev7pJdMXw8ArZVAnfQbKxUMKB291+YigNlPOpt2yII=";
+    };
   };
-  plugin-url = pluginBase {
-    name = "url";
-    version = "v1.1.0";
-    srcHash = "sha256-7YiiPDjQr6vN933svHwz1yK3PdWTsY2SeJsw+PBv+zY=";
-    depsHash = "sha256-B8kZKC1FilK/wWNzlrQgDVj+T0EhScK2o2lAtFK8FqY=";
-  };
-  plugin-hideme = pluginBase {
-    name = "hideme";
-    version = "v1.1.0";
-    srcHash = "sha256-tGAesHIGmdlp2PCTfX5zrikqjD9ZiQ+0tLsJFGiWwPQ=";
-    depsHash = "sha256-B8kZKC1FilK/wWNzlrQgDVj+T0EhScK2o2lAtFK8FqY=";
-  };
-  plugin-dump = pluginBase {
-    name = "dump";
-    version = "v1.0.1";
-    srcHash = "";
-    depsHash = "";
-  };
-  plugin-native = pluginBase {
-    name = "native";
-    version = "v1.0.0";
-    srcHash = "";
-    depsHash = "";
-  };
-  plugin-power = pluginBase {
-    name = "power";
-    version = "v1.1.0";
-    srcHash = "sha256-sTjHvpQYF6soRIDhPspCdLYqLfZwPCjERq1EhIvX9z0=";
-    depsHash = "sha256-S5SnS27x+vTwHd8Z6J8dO/wgThQClkgQv1WPJkFiyK8=";
-  };
-}
+in {
+  inherit ja-netfilter;
+} // lib.mapAttrs' (name: attrs:
+  let package = pluginBase ({ inherit name; } // attrs);
+  in {
+    name = package.pname;
+    value = package;
+  }) plugins
