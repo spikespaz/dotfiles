@@ -59,4 +59,4 @@ fn ctor() callconv(.c) void {
     _ = linux.prctl(@intCast(c.PR_SET_NAME), @intFromPtr(force_proc_name.ptr), 0, 0, 0);
 }
 
-export const _procname_shim_ctor: [1]@TypeOf(&ctor) linksection(".init_array") = .{&ctor};
+pub export const _procname_shim_ctor: [1]@TypeOf(&ctor) linksection(".init_array") = .{&ctor};
