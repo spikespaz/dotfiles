@@ -4,7 +4,6 @@ profileName:
     extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
     in with extensions.preferReleases; [
       mads-hartmann.bash-ide-vscode
-      timonwong.shellcheck
       foxundermoon.shell-format
     ];
 
@@ -15,7 +14,8 @@ profileName:
         "editor.defaultFormatter" = "foxundermoon.shell-format";
       };
 
-      "shellcheck.executablePath" = lib.getExe pkgs.shellcheck;
+      "bashIde.shellcheckPath" = lib.getExe pkgs.shellcheck;
+
       "shellformat.path" = lib.getExe pkgs.shfmt;
       "shellformat.flag" = lib.concatStringsSep " " [
         "--indent 0"
