@@ -1,5 +1,3 @@
-const force_proc_name: slice_z_t = "@procName@";
-
 const c = @cImport({
     @cInclude("dlfcn.h");
     @cInclude("pthread.h");
@@ -9,10 +7,11 @@ const c = @cImport({
 const std_c = @import("std").c;
 const linux = @import("std").os.linux;
 
-const slice_z_t = [:0]const u8;
 const str_z_t = [*:0]const u8;
 
 const pthread_t = @import("std").c.pthread_t;
+
+var force_proc_name: str_z_t = undefined;
 
 fn isMainThread() bool {
     return linux.getpid() == linux.gettid();
@@ -42,7 +41,7 @@ fn callPthreadSetnameNp(thread: pthread_t, name: str_z_t) c_int {
 
 pub export fn prctl(op: c_int, arg2: c_ulong, arg3: c_ulong, arg4: c_ulong, arg5: c_ulong) callconv(.c) c_int {
     return if (op == c.PR_SET_NAME and isMainThread())
-        callPrctl(op, @intFromPtr(force_proc_name.ptr), arg3, arg4, arg5)
+        callPrctl(op, @intFromPtr(force_proc_name), arg3, arg4, arg5)
     else
         callPrctl(op, arg2, arg3, arg4, arg5);
 }
@@ -56,7 +55,8 @@ pub export fn pthread_setname_np(thread: pthread_t, name: str_z_t) callconv(.c) 
 
 fn ctor() callconv(.c) void {
     if (!isMainThread()) return;
-    _ = linux.prctl(@intCast(c.PR_SET_NAME), @intFromPtr(force_proc_name.ptr), 0, 0, 0);
+    force_proc_name = std_c.getenv("_PROCNAME_SHIM_OVERRIDE_NAME").?;
+    _ = linux.prctl(@intCast(c.PR_SET_NAME), @intFromPtr(force_proc_name), 0, 0, 0);
 }
 
 pub export const _procname_shim_ctor: [1]@TypeOf(&ctor) linksection(".init_array") = .{&ctor};

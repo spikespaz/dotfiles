@@ -71,6 +71,6 @@ lib: {
   # HACKS #
 
   procname-shim = pkgs: _: {
-    procname-shim = pkgs.callPackage ./procname-shim { procName = null; };
+    procname-shim = pkgs.callPackage ./procname-shim { };
   };
 }

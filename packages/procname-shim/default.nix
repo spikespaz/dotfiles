@@ -1,7 +1,7 @@
-{ lib, stdenv, zig, replaceVars, procName ? null }:
+{ lib, stdenv, zig }:
 stdenv.mkDerivation {
   name = "libprocname-shim.so";
-  src = replaceVars ./procname_shim.zig { inherit procName; };
+  src = ./procname_shim.zig;
   dontUnpack = true;
   nativeBuildInputs = [ zig.hook ];
   buildPhase = ''
