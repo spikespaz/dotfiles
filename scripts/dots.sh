@@ -33,22 +33,20 @@ if [[ ! -e "$NIXOS_FLAKE_DIR/.git" ]]; then
 	exit 1
 fi
 
-flakeRef=''
+flakeRef="git+file:$NIXOS_FLAKE_DIR"
 command=()
 
 function build() {
 	case "$1" in
 		host)
 			shift
-			flakeRef="path:$NIXOS_FLAKE_DIR#nixosConfigurations.$(hostname).config.system.build.toplevel"
+			flakeRef+="#nixosConfigurations.$(hostname).config.system.build.toplevel"
 			command=(nix build "$flakeRef" "$@")
-			# command=(nixos-rebuild build --flake "$flakeRef" "$@")
 			;;
 		home)
 			shift
-			flakeRef="path:$NIXOS_FLAKE_DIR#homeConfigurations.$(whoami)@$(hostname).activationPackage"
+			flakeRef+="#homeConfigurations.$(whoami)@$(hostname).activationPackage"
 			command=(nix build "$flakeRef" "$@")
-			# command=(home-manager build --flake "$flakeRef" "$@")
 			;;
 		*)
 			echo 'Unknown noun '"'$1'"' for verb `build`, must be one of: `host`, `home`.'
@@ -61,12 +59,12 @@ function switch() {
 	case "$1" in
 		host)
 			shift
-			flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
+			flakeRef+="#$(hostname)"
 			command=(sudo nixos-rebuild switch --flake "$flakeRef" "$@")
 			;;
 		home)
 			shift
-			flakeRef="path:$NIXOS_FLAKE_DIR#$(whoami)@$(hostname)"
+			flakeRef+="#$(whoami)@$(hostname)"
 			command=(home-manager switch --flake "$flakeRef" "$@")
 			;;
 		*)
@@ -80,7 +78,7 @@ function boot() {
 	case "$1" in
 		host)
 			shift
-			flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
+			flakeRef+="#$(hostname)"
 			command=(sudo nixos-rebuild boot --flake "$flakeRef" "$@")
 			;;
 		*)
