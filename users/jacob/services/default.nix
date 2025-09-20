@@ -1,7 +1,15 @@
 args@{ lib, config, ... }:
 (lib.mapAttrs (_: expr: if lib.isFunction expr then expr args else expr)
   (lib.importDir ./. "default.nix")) // {
-    onedrive = { programs.onedrive.enable = true; };
+    onedrive = {
+      programs.onedrive = {
+        enable = true;
+        settings = lib.mapAttrs (_: toString) {
+          # Remove local files when deleted remotely.
+          cleanup_local_files = true;
+        };
+      };
+    };
 
     udiskie = {
       # service that auto-mounts storage devices with udisks2
