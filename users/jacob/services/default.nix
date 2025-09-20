@@ -23,10 +23,7 @@ args@{ lib, config, ... }:
       };
     };
 
-    playerctl = {
-      services.playerctld.enable = true;
-      home.packages = [ config.services.playerctld.package ];
-    };
+    playerctl = { services.playerctld.enable = true; };
 
     keepassxc = { services.keepassxc.enable = true; };
 
