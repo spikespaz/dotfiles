@@ -38,55 +38,55 @@ command=()
 
 function build() {
 	case "$1" in
-	host)
-		shift
-		flakeRef="path:$NIXOS_FLAKE_DIR#nixosConfigurations.$(hostname).config.system.build.toplevel"
-		command=(nix build "$flakeRef" "$@")
-		# command=(nixos-rebuild build --flake "$flakeRef" "$@")
-		;;
-	home)
-		shift
-		flakeRef="path:$NIXOS_FLAKE_DIR#homeConfigurations.$(whoami)@$(hostname).activationPackage"
-		command=(nix build "$flakeRef" "$@")
-		# command=(home-manager build --flake "$flakeRef" "$@")
-		;;
-	*)
-		echo 'Unknown noun '"'$1'"' for verb `build`, must be one of: `host`, `home`.'
-		exit 1
-		;;
+		host)
+			shift
+			flakeRef="path:$NIXOS_FLAKE_DIR#nixosConfigurations.$(hostname).config.system.build.toplevel"
+			command=(nix build "$flakeRef" "$@")
+			# command=(nixos-rebuild build --flake "$flakeRef" "$@")
+			;;
+		home)
+			shift
+			flakeRef="path:$NIXOS_FLAKE_DIR#homeConfigurations.$(whoami)@$(hostname).activationPackage"
+			command=(nix build "$flakeRef" "$@")
+			# command=(home-manager build --flake "$flakeRef" "$@")
+			;;
+		*)
+			echo 'Unknown noun '"'$1'"' for verb `build`, must be one of: `host`, `home`.'
+			exit 1
+			;;
 	esac
 }
 
 function switch() {
 	case "$1" in
-	host)
-		shift
-		flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
-		command=(sudo nixos-rebuild switch --flake "$flakeRef" "$@")
-		;;
-	home)
-		shift
-		flakeRef="path:$NIXOS_FLAKE_DIR#$(whoami)@$(hostname)"
-		command=(home-manager switch --flake "$flakeRef" "$@")
-		;;
-	*)
-		echo 'Unknown noun '"'$1'"' for verb `switch`, must be one of: `host`, `home`.'
-		exit 1
-		;;
+		host)
+			shift
+			flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
+			command=(sudo nixos-rebuild switch --flake "$flakeRef" "$@")
+			;;
+		home)
+			shift
+			flakeRef="path:$NIXOS_FLAKE_DIR#$(whoami)@$(hostname)"
+			command=(home-manager switch --flake "$flakeRef" "$@")
+			;;
+		*)
+			echo 'Unknown noun '"'$1'"' for verb `switch`, must be one of: `host`, `home`.'
+			exit 1
+			;;
 	esac
 }
 
 function boot() {
 	case "$1" in
-	host)
-		shift
-		flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
-		command=(sudo nixos-rebuild boot --flake "$flakeRef" "$@")
-		;;
-	*)
-		echo 'Unknown noun '"'$1'"' for verb `boot`, must be one of: `host`.'
-		exit 1
-		;;
+		host)
+			shift
+			flakeRef="path:$NIXOS_FLAKE_DIR#$(hostname)"
+			command=(sudo nixos-rebuild boot --flake "$flakeRef" "$@")
+			;;
+		*)
+			echo 'Unknown noun '"'$1'"' for verb `boot`, must be one of: `host`.'
+			exit 1
+			;;
 	esac
 }
 
@@ -94,19 +94,19 @@ verb=$1
 shift
 
 case "$verb" in
-build)
-	build "$@"
-	;;
-switch)
-	switch "$@"
-	;;
-boot)
-	boot "$@"
-	;;
-*)
-	echo 'Unknown verb '"'$verb'"', must be one of `build`, `switch` or `boot`.'
-	exit 1
-	;;
+	build)
+		build "$@"
+		;;
+	switch)
+		switch "$@"
+		;;
+	boot)
+		boot "$@"
+		;;
+	*)
+		echo 'Unknown verb '"'$verb'"', must be one of `build`, `switch` or `boot`.'
+		exit 1
+		;;
 esac
 
 echo "> ${command[*]}"
