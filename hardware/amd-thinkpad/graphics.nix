@@ -35,5 +35,10 @@
   boot.kernelParams = [
     # Allow the GPU to power down when displays are attached.
     "amdgpu.runpm=-2"
+    # <https://gitlab.freedesktop.org/drm/amd/-/issues/4141>
+    # <https://www.kernel.org/doc/html/latest/gpu/amdgpu/driver-core.html#c.DC_DEBUG_MASK>
+    # <https://github.com/torvalds/linux/blob/cd89d487374c49f18a8c4af312ecc74d997f3b07/drivers/gpu/drm/amd/include/amd_shared.h#L259>
+    # DC_DISABLE_PSR - Panel Self-Refresh, causes display hangs
+    "amdgpu.dcdebugmask=0x10"
   ];
 }
