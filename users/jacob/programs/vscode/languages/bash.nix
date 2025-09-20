@@ -2,28 +2,22 @@ profileName:
 { lib, pkgs, ... }: {
   programs.vscode.profiles.${profileName} = {
     extensions = let extensions = pkgs.callPackage ../marketplace.nix { };
-    in with extensions.preferReleases; [
-      mads-hartmann.bash-ide-vscode
-      foxundermoon.shell-format
-    ];
+    in with extensions.preferReleases; [ mads-hartmann.bash-ide-vscode ];
 
     userSettings = {
       "[shellscript]" = {
         "editor.tabSize" = 2;
         "editor.insertSpaces" = false;
-        "editor.defaultFormatter" = "foxundermoon.shell-format";
+        "editor.defaultFormatter" = "mads-hartmann.bash-ide-vscode";
       };
 
       "bashIde.shellcheckPath" = lib.getExe pkgs.shellcheck;
 
-      "shellformat.path" = lib.getExe pkgs.shfmt;
-      "shellformat.flag" = lib.concatStringsSep " " [
-        "--indent 0"
-        "--binary-next-line"
-        "--case-indent"
-        "--space-redirects"
-        "--keep-padding"
-      ];
+      "bashIde.shfmt.path" = lib.getExe pkgs.shfmt;
+      "bashIde.shfmt.binaryNextLine" = true;
+      "bashIde.shfmt.caseIndent" = true;
+      "bashIde.shfmt.keepPadding" = true;
+      "bashIde.shfmt.spaceRedirects" = true;
     };
   };
 }
