@@ -1,6 +1,7 @@
 { lib, stdenv, zig }:
-stdenv.mkDerivation {
-  name = "libprocname-shim.so";
+stdenv.mkDerivation (finalAttrs: {
+  pname = "procname-shim";
+  name = finalAttrs.pname;
   src = ./procname_shim.zig;
   dontUnpack = true;
   nativeBuildInputs = [ zig.hook ];
@@ -8,8 +9,9 @@ stdenv.mkDerivation {
     zig build-lib -dynamic -fPIC -O ReleaseFast -femit-bin=libprocname-shim.so $src -ldl -lpthread
   '';
   installPhase = ''
-    install -m0644 libprocname-shim.so $out
+    install -Dm0644 libprocname-shim.so -t $out/lib/
   '';
+  passthru.shim = "${finalAttrs.finalPackage}/lib/libprocname-shim.so";
   meta = {
     description = ''
       LD_PRELOAD shim to lock Linux process (comm) name for main thread
@@ -17,4 +19,4 @@ stdenv.mkDerivation {
     platforms = lib.platforms.linux;
     license = lib.licenses.mit;
   };
-}
+})

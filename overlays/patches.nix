@@ -67,7 +67,7 @@ in {
   vesktop = pkgs0.vesktop.overrideAttrs (self: super: {
     postFixup = super.postFixup + ''
       wrapProgram $out/bin/vesktop \
-        --prefix LD_PRELOAD : ${pkgs.procname-shim} \
+        --prefix LD_PRELOAD : ${pkgs.procname-shim.shim} \
         --set _PROCNAME_SHIM_OVERRIDE_NAME vesktop \
         --set-default ELECTRON_FORCE_IS_PACKAGED 1 \
         --set-default ELECTRON_IS_DEV 0 \
