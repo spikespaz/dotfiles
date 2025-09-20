@@ -74,6 +74,20 @@ function switch() {
 	esac
 }
 
+function test_() {
+	case "$1" in
+		host)
+			shift
+			flakeRef+="#$(hostname)"
+			command=(sudo nixos-rebuild test --flake "$flakeRef" "$@")
+			;;
+		*)
+			echo 'Unknown noun '"'$1'"' for verb `test`, must be one of: `host`.'
+			exit 1
+			;;
+	esac
+}
+
 function boot() {
 	case "$1" in
 		host)
@@ -97,6 +111,9 @@ case "$verb" in
 		;;
 	switch)
 		switch "$@"
+		;;
+	test)
+		test_ "$@"
 		;;
 	boot)
 		boot "$@"
