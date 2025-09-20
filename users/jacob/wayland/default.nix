@@ -26,6 +26,8 @@
     QT_QPA_PLATFORM = "wayland";
     # set backend for sdl
     SDL_VIDEODRIVER = "wayland";
+    # minimizing does nothing except turn the screen black in most games
+    SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS = b false;
     # fix modals from being attached on tiling wms
     _JAVA_AWT_WM_NONREPARENTING = b true;
     # fix java gui antialiasing
