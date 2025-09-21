@@ -129,6 +129,7 @@ in {
     # (programs.vscode.languages.yuck "default")
     (programs.vscode.languages.python "default")
     (programs.vscode.languages.nushell "default")
+    (programs.vscode.languages.javascript "default")
     (programs.vscode.languages.typst "default")
     (programs.vscode.languages.markdown "default")
     (programs.vscode.languages.zig "default")
