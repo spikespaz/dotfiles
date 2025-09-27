@@ -42,6 +42,7 @@ profileName:
 
       ## Basic Config Languages ##
       kdl-org.kdl
+      redhat.vscode-xml
       redhat.vscode-yaml
       tamasfe.even-better-toml
       mechatroner.rainbow-csv
