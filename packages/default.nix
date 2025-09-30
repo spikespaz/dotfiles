@@ -11,7 +11,7 @@ in lib.updates [
   (with pkgs; {
     inherit amdctl ja-netfilter prtsc ttf-ms-win11 fork-awesome idlehack
       proton-ge-custom nerdfonts-symbols wavefox discord-recolor-theme
-      procname-shim;
+      procname-shim noita-entangled-worlds;
   })
 
   {

@@ -44,6 +44,10 @@ lib: {
     discord-recolor-theme = pkgs.callPackage ./discord-recolor-theme.nix { };
   };
 
+  noita-entangled-worlds = pkgs: _: {
+    noita-entangled-worlds = pkgs.callPackage ./noita-entangled-worlds.nix { };
+  };
+
   # PACKAGE SETS #
 
   zsh-plugins = pkgs: _: {
