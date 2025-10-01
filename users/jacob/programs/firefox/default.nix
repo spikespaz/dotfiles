@@ -1,5 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 let
+  cfg = config.programs.firefox;
+
   profile = "jacob.default";
   profileName = "jacob-default";
 
@@ -11,6 +13,7 @@ let
   };
 in {
   programs.firefox.enable = true;
+  programs.firefox.package = pkgs.firefox-devedition;
 
   imports = [ # #
     (import ./blocking.nix profile)
@@ -19,6 +22,9 @@ in {
 
   home.packages = [ pkgs.firefoxpwa ];
   programs.firefox.nativeMessagingHosts = [ pkgs.firefoxpwa ];
+
+  # Don't require a separate profile for DevEdition, just use the default one.
+  home.file."${cfg.configPath}/ignore-dev-edition-profile".text = "";
 
   programs.firefox.profiles.${profile} = {
     id = 0;
