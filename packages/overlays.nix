@@ -38,6 +38,10 @@ lib: {
       temurin20-jre-bin graalvm8-ce graalvm8-ce-jre;
   };
 
+  hotswap-agent = pkgs: _: {
+    hotswap-agent = pkgs.callPackage ./hotswap-agent.nix { };
+  };
+
   wavefox = pkgs: _: { wavefox = pkgs.callPackage ./wavefox.nix { }; };
 
   discord-recolor-theme = pkgs: _: {
