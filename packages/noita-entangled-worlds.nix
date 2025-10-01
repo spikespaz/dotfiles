@@ -2,89 +2,90 @@
 , makeDesktopItem, pkg-config, cmake, patchelf, imagemagick, openssl, libjack2
 , alsa-lib, libopus, wayland, libxkbcommon, libGL }:
 
-rustPlatform.buildRustPackage (finalAttrs: {
-  pname = "noita-entangled-worlds-proxy";
-  version = "1.6.2";
+rustPlatform.buildRustPackage (finalAttrs:
+  let inherit (finalAttrs) src pname version meta buildInputs steamworksRedist;
+  in {
+    pname = "noita-entangled-worlds-proxy";
+    version = "1.6.2";
 
-  src = fetchFromGitHub {
-    owner = "intquant";
-    repo = "noita_entangled_worlds";
-    rev = "v${finalAttrs.version}";
-    hash = "sha256-DAGLpGo8K6qSfxMwTELSU9HLHRX2lp5qbmmq/tL08JM=";
-  };
-  sourceRoot = "${finalAttrs.src.name}/noita-proxy";
+    src = fetchFromGitHub {
+      owner = "intquant";
+      repo = "noita_entangled_worlds";
+      rev = "v${version}";
+      hash = "sha256-DAGLpGo8K6qSfxMwTELSU9HLHRX2lp5qbmmq/tL08JM=";
+    };
+    sourceRoot = "${src.name}/noita-proxy";
 
-  cargoHash = "sha256-VIOr/3inwP79756UD6JIImk7rOuiHK1QiZBoqW5cSTo=";
+    cargoHash = "sha256-VIOr/3inwP79756UD6JIImk7rOuiHK1QiZBoqW5cSTo=";
 
-  strictDeps = true;
-  nativeBuildInputs =
-    [ copyDesktopItems pkg-config cmake patchelf imagemagick ];
-  buildInputs = [
-    openssl
-    libjack2
-    alsa-lib
-    libopus
-    wayland
-    libxkbcommon
-    libGL
-    finalAttrs.steamworksRedist
-  ];
+    strictDeps = true;
+    nativeBuildInputs =
+      [ copyDesktopItems pkg-config cmake patchelf imagemagick ];
+    buildInputs = [
+      openssl
+      libjack2
+      alsa-lib
+      libopus
+      wayland
+      libxkbcommon
+      libGL
+      steamworksRedist
+    ];
 
-  env = {
-    OPENSSL_DIR = "${lib.getDev openssl}";
-    OPENSSL_LIB_DIR = "${lib.getLib openssl}/lib";
-    OPENSSL_NO_VENDOR = 1;
-  };
+    env = {
+      OPENSSL_DIR = "${lib.getDev openssl}";
+      OPENSSL_LIB_DIR = "${lib.getLib openssl}/lib";
+      OPENSSL_NO_VENDOR = 1;
+    };
 
-  checkFlags = [
-    # Disable networked tests
-    "--skip bookkeeping::releases::test::release_assets"
-  ];
+    checkFlags = [
+      # Disable networked tests
+      "--skip bookkeeping::releases::test::release_assets"
+    ];
 
-  # TODO: Research which sizes are most important. These are what I found on my system.
-  postInstall = ''
-    for size in 16 20 22 24 32 48 64 96 128 144 180 192 256 512 1024; do
-      icon_dir=$out/share/icons/hicolor/''${size}x''${size}/apps
-      mkdir -p $icon_dir
-      magick assets/icon.png \
-        -strip -filter Point -resize ''${size}x''${size} \
-        $icon_dir/noita-proxy.png
-    done
-  '';
+    # TODO: Research which sizes are most important. These are what I found on my system.
+    postInstall = ''
+      for size in 16 20 22 24 32 48 64 96 128 144 180 192 256 512 1024; do
+        icon_dir=$out/share/icons/hicolor/''${size}x''${size}/apps
+        mkdir -p $icon_dir
+        magick assets/icon.png \
+          -strip -filter Point -resize ''${size}x''${size} \
+          $icon_dir/noita-proxy.png
+      done
+    '';
 
-  postFixup = ''
-    patchelf $out/bin/noita-proxy \
-      --set-rpath ${lib.makeLibraryPath finalAttrs.buildInputs}
-  '';
+    postFixup = ''
+      patchelf $out/bin/noita-proxy \
+        --set-rpath ${lib.makeLibraryPath buildInputs}
+    '';
 
-  steamworksRedist = runCommandNoCC "${finalAttrs.pname}-steamworks-redist" {
-    inherit (finalAttrs) src;
-  } ''
-    install -Dm555 $src/redist/libsteam_api.so -t $out/lib
-  '';
+    steamworksRedist =
+      runCommandNoCC "${pname}-steamworks-redist" { inherit src; } ''
+        install -Dm555 $src/redist/libsteam_api.so -t $out/lib
+      '';
 
-  desktopItems = [
-    (makeDesktopItem {
-      name = "noita-proxy";
-      desktopName = "Noita Entangled Worlds";
-      comment = finalAttrs.meta.description;
-      exec = "noita-proxy";
-      icon = "noita-proxy";
-      categories = [ "Game" "Utility" ];
-      keywords = [ "noita" "proxy" "server" "steam" "game" ];
-      terminal = false;
-      singleMainWindow = true;
-    })
-  ];
+    desktopItems = [
+      (makeDesktopItem {
+        name = "noita-proxy";
+        desktopName = "Noita Entangled Worlds";
+        comment = meta.description;
+        exec = "noita-proxy";
+        icon = "noita-proxy";
+        categories = [ "Game" "Utility" ];
+        keywords = [ "noita" "proxy" "server" "steam" "game" ];
+        terminal = false;
+        singleMainWindow = true;
+      })
+    ];
 
-  meta = {
-    description = "Noita Entangled Worlds proxy application.";
-    homepage = "https://github.com/IntQuant/noita_entangled_worlds/releases";
-    changelog =
-      "https://github.com/IntQuant/noita_entangled_worlds/releases/tag/v${finalAttrs.version}";
-    license = with lib.licenses; [ mit asl20 ];
-    platforms = [ "x86_64-linux" ];
-    maintainers = with lib.maintainers; [ spikespaz ];
-    mainProgram = "noita-proxy";
-  };
-})
+    meta = {
+      description = "Noita Entangled Worlds proxy application.";
+      homepage = "https://github.com/IntQuant/noita_entangled_worlds/releases";
+      changelog =
+        "https://github.com/IntQuant/noita_entangled_worlds/releases/tag/v${version}";
+      license = with lib.licenses; [ mit asl20 ];
+      platforms = [ "x86_64-linux" ];
+      maintainers = with lib.maintainers; [ spikespaz ];
+      mainProgram = "noita-proxy";
+    };
+  })
